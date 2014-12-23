@@ -9,6 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unturned", "Unturned", "{C7
 	ProjectSection(SolutionItems) = preProject
 		Unturned\Assembly-CSharp-firstpass.dll = Unturned\Assembly-CSharp-firstpass.dll
 		Unturned\Assembly-CSharp.dll = Unturned\Assembly-CSharp.dll
+		Unturned\Assembly-UnityScript-firstpass.dll = Unturned\Assembly-UnityScript-firstpass.dll
+		Unturned\Pathfinding.ClipperLib.dll = Unturned\Pathfinding.ClipperLib.dll
+		Unturned\Pathfinding.Ionic.Zip.Reduced.dll = Unturned\Pathfinding.Ionic.Zip.Reduced.dll
+		Unturned\Pathfinding.JsonFx.dll = Unturned\Pathfinding.JsonFx.dll
+		Unturned\Pathfinding.Poly2Tri.dll = Unturned\Pathfinding.Poly2Tri.dll
 		Unturned\UnityEngine.dll = Unturned\UnityEngine.dll
 	EndProjectSection
 EndProject
