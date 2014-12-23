@@ -163,7 +163,6 @@ namespace Rocket.RocketLauncher
 
                 Process patcher = new Process();
                 patcher.StartInfo.FileName = Path.Combine(loaderDir, "RocketLoader.exe");
-                patcher.StartInfo.Arguments = " -silent";
                 patcher.StartInfo.WorkingDirectory = loaderDir;
                 patcher.StartInfo.UseShellExecute = false;
                 patcher.StartInfo.RedirectStandardOutput = true;
