@@ -45,10 +45,8 @@ namespace Rocket.RocketLauncher
             return true;
         }
 
-
         
-        static string name = "Rocket";
-        static string loaderDir = @".\Unturned_Data\" + name;
+        static string loaderDir = @".\Unturned_Data\Rocket";
         static string apiUrl = "https://ci.bam.yt/view/Rocket/job/RocketAPI/lastStableBuild/artifact/RocketAPI/bin/Release/RocketAPI.dll";
         static string loaderUrl = "https://ci.bam.yt/view/Rocket/job/RocketLoader/lastStableBuild/artifact/RocketLoader/bin/Release/RocketLoader.exe";
 
@@ -86,7 +84,7 @@ namespace Rocket.RocketLauncher
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("An errer occured in " + name + ", please fetch a newer version or contact the developers!\n");
+                Console.WriteLine("The Rocket blew up, please fetch a newer version or contact the developers!\n");
                 Console.ReadKey();
                 Console.WriteLine(ex.ToString());
                 Console.ReadKey();
@@ -116,13 +114,13 @@ namespace Rocket.RocketLauncher
 
             if (Directory.Exists(loaderDir))
             {
-                Console.WriteLine("LoaderDir exists...");
-                Console.WriteLine("Checking if loaderDir is up to date...");
+                Console.WriteLine("Rocket Folder exists...");
+                Console.WriteLine("Checking if Rocket is up to date...");
                 foreach (string fileName in checkFiles)
                 {
                     if (!fileCompare(Path.Combine(loaderDir, fileName + ".original"), Path.Combine(@".\Unturned_Data\Managed", fileName)))
                     {
-                        Console.WriteLine("Recreating loaderDir...");
+                        Console.WriteLine("Recreating Rocket Folder...");
                         FileInfo[] loaderFiles = new DirectoryInfo(loaderDir).GetFiles();
                         foreach (FileInfo file in loaderFiles)
                         {
@@ -143,7 +141,7 @@ namespace Rocket.RocketLauncher
             }
             else
             {
-                Console.WriteLine("LoaderDir does not exist, creating...");
+                Console.WriteLine("Rocket Folder does not exist, creating...");
                 Directory.CreateDirectory(loaderDir);
 
                 FileInfo[] originalFiles = new DirectoryInfo(@".\Unturned_Data\Managed").GetFiles();
@@ -153,15 +151,15 @@ namespace Rocket.RocketLauncher
                 }
             }
 
-            if (!File.Exists(Path.Combine(loaderDir, name)))
+            if (!File.Exists(Path.Combine(loaderDir, "Rocket")))
             {
 
-                Console.WriteLine("Downloading " + name + "...");
+                Console.WriteLine("Downloading Rocket...");
                 WebClient webClient = new WebClient();
                 webClient.DownloadFile(apiUrl, Path.Combine(loaderDir, "RocketAPI.dll"));
                 webClient.DownloadFile(loaderUrl, Path.Combine(loaderDir, "RocketLoader.exe"));
 
-                Console.WriteLine("Patching " + name + "...");
+                Console.WriteLine("Patching Rocket...");
 
                 Process patcher = new Process();
                 patcher.StartInfo.FileName = Path.Combine(loaderDir, "RocketLoader.exe");
@@ -179,7 +177,7 @@ namespace Rocket.RocketLauncher
                 }
                 patcher.WaitForExit();
 
-                File.Create(Path.Combine(loaderDir, name));
+                File.Create(Path.Combine(loaderDir, "Rocket"));
 
                 Console.ForegroundColor = ConsoleColor.White;
             }
