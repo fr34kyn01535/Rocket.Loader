@@ -244,6 +244,8 @@ namespace Rocket.RocketLauncher
 
                 }
             }
+
+            launcherProcess.WaitForExit();
         }
         private static bool GrantAccess(string fullPath)
         {
