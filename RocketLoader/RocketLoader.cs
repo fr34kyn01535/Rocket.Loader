@@ -153,6 +153,11 @@ namespace Rocket
             TypeDefinition unturnedType = unturnedAssembly.MainModule.GetType("SDG.Managers");
             MethodDefinition awake = getMethod(unturnedType, "Awake");
 
+            if (awake.Body.Instructions[0].ToString().Contains("LaunchRocket")) {
+                Console.WriteLine("Already patched!");
+                Environment.Exit(0);
+            }
+
             awake.Body.GetILProcessor().InsertBefore(awake.Body.Instructions[0], Instruction.Create(OpCodes.Call, unturnedAssembly.MainModule.Import(initBootstrap)));
             Console.WriteLine("Attached Bootstrap");
         }
@@ -160,27 +165,27 @@ namespace Rocket
         private static void fixHash()
         {
             byte[] unturned, unturned_firstpass, other, other_firstpass;
-            using (FileStream csharpFilestream = new FileStream("Assembly-CSharp.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream filestream = new FileStream("Assembly-CSharp.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                unturned = new byte[csharpFilestream.Length];
+                unturned = new byte[filestream.Length];
             }
 
-            using (FileStream csharpFilestream = new FileStream("Assembly-CSharp-firstpass.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream filestream = new FileStream("Assembly-CSharp-firstpass.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                unturned_firstpass = new byte[csharpFilestream.Length];
+                unturned_firstpass = new byte[filestream.Length];
             }
 
-            using (FileStream csharpFilestream = new FileStream("Other-Assembly-CSharp.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream filestream = new FileStream("Other-Assembly-CSharp.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                other = new byte[csharpFilestream.Length];
+                other = new byte[filestream.Length];
             }
 
-            using (FileStream csharpFilestream = new FileStream("Other-Assembly-CSharp-firstpass.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream filestream = new FileStream("Other-Assembly-CSharp-firstpass.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                other_firstpass = new byte[csharpFilestream.Length];
+                other_firstpass = new byte[filestream.Length];
             }
 
-            byte[] combined = combine(new byte[][] { SHA1(unturned), SHA1(unturned_firstpass), SHA1(other), SHA1(other_firstpass) });
+            byte[] combined = combine(new byte[][] { SHA1(unturned), SHA1(other), SHA1(unturned_firstpass), SHA1(other_firstpass) });
 
 
             MethodDefinition unturnedMethod = getMethod(unturnedAssembly.MainModule.GetType("SDG.ReadWrite"), "getAssemblyHash");
@@ -195,15 +200,23 @@ namespace Rocket
             Console.WriteLine("Cleared hash func, injecting new code");
 
             TypeReference fieldType = unturnedAssembly.MainModule.Import(byteType);
-
+            bool flag1 = false, flag2 = false;
             foreach (Instruction i in overrideMethod.Body.Instructions)
             {
-                if (i.OpCode.Name.ToLower().Equals("newarr"))
-                    unturnedMethod.Body.Instructions.Add(Instruction.Create(OpCodes.Newarr, fieldType));
-                else
-                    unturnedMethod.Body.Instructions.Add(i);
+                if (i.OpCode.Name.ToLower().Equals("stloc.0"))
+                    flag1 = true;
+                else if (!i.OpCode.Name.ToLower().Equals("ldloc.0"))
+                    flag1 = false;
 
-                if (i.OpCode.Name.ToLower().Equals("stloc.0") && i.OpCode.Name.ToLower().Equals("ldloc.0"))
+                if (flag1 && i.OpCode.Name.ToLower().Equals("ldloc.0"))
+                    flag2 = true;
+
+                if (!i.OpCode.Name.ToLower().Equals("newarr"))
+                    unturnedMethod.Body.Instructions.Add(i);
+                else
+                    unturnedMethod.Body.Instructions.Add(Instruction.Create(OpCodes.Newarr, fieldType));
+
+                    if (flag1 && flag2)
                 {
                     for (int i2 = 0; i2 < combined.Length; i2++)
                     {
@@ -213,8 +226,7 @@ namespace Rocket
                         unturnedMethod.Body.Instructions.Add(inst1);
                         unturnedMethod.Body.Instructions.Add(inst2);
                         unturnedMethod.Body.Instructions.Add(Instruction.Create(OpCodes.Stelem_I1));
-                        Console.WriteLine("Fixed byte: " + i2 + ", " + combined[i2]);
-                    }
+                        }
                 }
             }
             Console.WriteLine("Fixed static hash");

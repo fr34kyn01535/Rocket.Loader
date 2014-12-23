@@ -16,8 +16,11 @@ namespace Rocket.RocketAPI
 
         public static void LaunchRocket()
         {
-            instance = new Bootstrap();
-            InitializeBootstrap();
+            if (instance == null)
+            {
+                instance = new Bootstrap();
+                InitializeBootstrap();
+            }
         }
 
         public static void InitializeBootstrap() {
