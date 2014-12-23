@@ -4,7 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text;
 
 namespace Rocket.RocketLauncher
@@ -46,30 +49,30 @@ namespace Rocket.RocketLauncher
         }
 
         
-        static string loaderDir = @".\Unturned_Data\Rocket";
+        static string loaderDir = @"Unturned_Data\Rocket";
         static string apiUrl = "https://ci.bam.yt/view/Rocket/job/RocketAPI/lastStableBuild/artifact/RocketAPI/bin/Release/RocketAPI.dll";
         static string loaderUrl = "https://ci.bam.yt/view/Rocket/job/RocketLoader/lastStableBuild/artifact/RocketLoader/bin/Release/RocketLoader.exe";
 
         static void Restore()
         {
-            if (Directory.Exists(@".\Unturned_Data\Managed.original"))
+            if (Directory.Exists(@"Unturned_Data\Managed.original"))
             {
-                if (Directory.Exists(@".\Unturned_Data\Managed"))
+                if (Directory.Exists(@"Unturned_Data\Managed"))
                 {
                     if (Directory.Exists(loaderDir))
                     {
-                        Directory.Delete(@".\Unturned_Data\Managed");
-                        Directory.Move(@".\Unturned_Data\Managed.original", @".\Unturned_Data\Managed");
+                        Directory.Delete(@"Unturned_Data\Managed",true);
+                        Directory.Move(@"Unturned_Data\Managed.original", @"Unturned_Data\Managed");
                     }
                     else
                     {
-                        Directory.Move(@".\Unturned_Data\Managed", loaderDir);
-                        Directory.Move(@".\Unturned_Data\Managed.original", @".\Unturned_Data\Managed");
+                        Directory.Move(@"Unturned_Data\Managed", loaderDir);
+                        Directory.Move(@"Unturned_Data\Managed.original", @"Unturned_Data\Managed");
                     }
                 }
                 else
                 {
-                    Directory.Move(@".\Unturned_Data\Managed.original", @".\Unturned_Data\Managed");
+                    Directory.Move(@"Unturned_Data\Managed.original", @"Unturned_Data\Managed");
                 }
             }
         }
@@ -78,10 +81,19 @@ namespace Rocket.RocketLauncher
         {
             try
             {
-                 main(args);
+                Console.Title = "RocketLauncher";
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(@"                _                                                              ");
+                Console.WriteLine(@"               |_)  _   _ |   _ _|_ |   _.     ._   _ |_   _  ._               ");
+                Console.WriteLine(@"               | \ (_) (_ |< (/_ |_ |_ (_| |_| | | (_ | | (/_ |                ");
+                Console.WriteLine("                                               Version: "+Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                Console.ForegroundColor = ConsoleColor.White;
+                main(args);
             }
+
             catch (Exception ex)
             {
+                Restore();
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("The Rocket blew up, please fetch a newer version or contact the developers!\n");
@@ -105,28 +117,30 @@ namespace Rocket.RocketLauncher
 
             Restore();
 
-            string[] checkFiles = { @".\Assembly-CSharp.dll", @".\Assembly-CSharp-firstpass.dll", @".\Other-Assembly-CSharp.dll", @".\Other-Assembly-CSharp-firstpass.dll" };
+            string[] checkFiles = { @"Assembly-CSharp.dll", @"Assembly-CSharp-firstpass.dll", @"Other-Assembly-CSharp.dll", @"Other-Assembly-CSharp-firstpass.dll" };
 
             foreach (string file in checkFiles)
             {
-                if (!File.Exists(Path.Combine(@".\Unturned_Data\Managed", file))) { Console.WriteLine(file + " not found"); Console.ReadKey(); return; };
+                if (!File.Exists(Path.Combine(@"Unturned_Data\Managed", file))) { Console.WriteLine(file + " not found"); Console.ReadKey(); return; };
             }
 
+            Console.WriteLine("Checking Rocket folder...");
             if (Directory.Exists(loaderDir))
             {
-                Console.WriteLine("Rocket Folder exists...");
-                Console.WriteLine("Checking if Rocket is up to date...");
+                Console.Write("exists");
+                Console.WriteLine("Checking Rocket version...");
                 foreach (string fileName in checkFiles)
                 {
-                    if (!fileCompare(Path.Combine(loaderDir, fileName + ".original"), Path.Combine(@".\Unturned_Data\Managed", fileName)))
+                    if (!fileCompare(Path.Combine(loaderDir, fileName + ".original"), Path.Combine(@"Unturned_Data\Managed", fileName)))
                     {
+                        Console.Write("outdated");
                         Console.WriteLine("Recreating Rocket Folder...");
                         FileInfo[] loaderFiles = new DirectoryInfo(loaderDir).GetFiles();
                         foreach (FileInfo file in loaderFiles)
                         {
                             file.Delete();
                         }
-                        FileInfo[] originalFiles = new DirectoryInfo(@".\Unturned_Data\Managed").GetFiles();
+                        FileInfo[] originalFiles = new DirectoryInfo(@"Unturned_Data\Managed").GetFiles();
                         foreach (FileInfo file in originalFiles)
                         {
                             file.CopyTo(Path.Combine(loaderDir, file.Name), false);
@@ -137,14 +151,18 @@ namespace Rocket.RocketLauncher
                         }
                         break;
                     }
+                    else {
+                        Console.Write("up to date");
+                    }
                 }
             }
             else
             {
-                Console.WriteLine("Rocket Folder does not exist, creating...");
+                Console.Write("does not exist");
                 Directory.CreateDirectory(loaderDir);
+                GrantAccess(loaderDir);
 
-                FileInfo[] originalFiles = new DirectoryInfo(@".\Unturned_Data\Managed").GetFiles();
+                FileInfo[] originalFiles = new DirectoryInfo(@"Unturned_Data\Managed").GetFiles();
                 foreach (FileInfo file in originalFiles)
                 {
                     file.CopyTo(Path.Combine(loaderDir, file.Name), false);
@@ -180,21 +198,15 @@ namespace Rocket.RocketLauncher
 
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            Console.Write("\nLaunching");
+            Console.Write("\nInitiating launch sequence");
+
+            Directory.Move(@"Unturned_Data\Managed", @"Unturned_Data\Managed.original");
+            Directory.Move(loaderDir, @"Unturned_Data\Managed");
+
             for (int i = 0; i < 6; i++)
             {
                 Console.Write(".");
                 System.Threading.Thread.Sleep(500);
-            }
-
-
-            Directory.Move(@".\Unturned_Data\Managed", @".\Unturned_Data\Managed.original");
-            Directory.Move(loaderDir, @".\Unturned_Data\Managed");
-
-            for (int i = 0; i < 6; i++)
-            {
-                Console.Write(".");
-                System.Threading.Thread.Sleep(300);
             }
 
             System.Diagnostics.ProcessStartInfo launcher = new System.Diagnostics.ProcessStartInfo();
@@ -211,15 +223,23 @@ namespace Rocket.RocketLauncher
 
             Process launcherProcess = Process.Start(launcher);
 
-            Console.Write("\nRocket launch in T-3");
-            for (int i = 3; i > 0; i--)
+            Console.Write("\nRocket launch in T-5");
+            for (int i = 5; i > 0; i--)
             {
                 Console.Write("\b"+i);
                 System.Threading.Thread.Sleep(1000);
             }
 
-            Directory.Move(@".\Unturned_Data\Managed", loaderDir); 
-            Directory.Move(@".\Unturned_Data\Managed.original", @".\Unturned_Data\Managed");
+            Directory.Move(@"Unturned_Data\Managed", loaderDir); 
+            Directory.Move(@"Unturned_Data\Managed.original", @"Unturned_Data\Managed");
+        }
+        private static bool GrantAccess(string fullPath)
+        {
+            DirectoryInfo dInfo = new DirectoryInfo(fullPath);
+            DirectorySecurity dSecurity = dInfo.GetAccessControl();
+            dSecurity.AddAccessRule(new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), FileSystemRights.FullControl, InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit, PropagationFlags.NoPropagateInherit, AccessControlType.Allow));
+            dInfo.SetAccessControl(dSecurity);
+            return true;
         }
 
         static bool fileCompare(string file1, string file2)

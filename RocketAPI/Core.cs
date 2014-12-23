@@ -18,7 +18,7 @@ namespace Rocket.RocketAPI
         
         public void Initialize()
         {
-            Logger.LogError(("loading RocketLoader API v" + Version + "#").PadLeft(80, '.'));
+            Logger.LogError(("RocketLoader API v" + Version + "#").PadLeft(80, '.'));
 
             if (!Directory.Exists("Unturned_Data/Managed/Plugins/")) Directory.CreateDirectory("Unturned_Data/Managed/Plugins/");
             /*
@@ -28,7 +28,7 @@ namespace Rocket.RocketAPI
             */
             List<Type> pluginTypes = loadPlugins();
             executePlugins(pluginTypes);
-            Logger.LogError("done#".PadLeft(80, '.'));
+            Logger.LogError("".PadLeft(80, '.'));
         }
         
 
