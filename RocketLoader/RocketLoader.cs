@@ -25,7 +25,6 @@ namespace Rocket
             try
             {
                 unturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
-                unturnedFirstpassAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp-firstpass.dll");
                 patcherAssembly = AssemblyDefinition.ReadAssembly(System.Reflection.Assembly.GetExecutingAssembly().Location);
                 loaderAssembly = AssemblyDefinition.ReadAssembly("RocketAPI.dll");
             }
