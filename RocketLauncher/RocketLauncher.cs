@@ -49,8 +49,8 @@ namespace Rocket.RocketLauncher
         
         static string name = "Rocket";
         static string loaderDir = @".\Unturned_Data\" + name;
-        static string loaderUrl = "https://ci.bam.yt/job/kPatcher/lastBuild/artifact/Unturned%20Loader/bin/Release/kLoader.dll";
-        static string patcherUrl ="https://ci.bam.yt/job/kPatcher/lastBuild/artifact/Unturned%20Loader/bin/Release/kPatcher.exe";
+        static string apiUrl = "https://ci.bam.yt/view/Rocket/job/RocketAPI/lastStableBuild/artifact/RocketAPI/bin/Release/RocketAPI.dll";
+        static string loaderUrl = "https://ci.bam.yt/view/Rocket/job/RocketLoader/lastStableBuild/artifact/RocketLoader/bin/Release/RocketLoader.exe";
 
         static void Restore()
         {
@@ -158,8 +158,8 @@ namespace Rocket.RocketLauncher
 
                 Console.WriteLine("Downloading " + name + "...");
                 WebClient webClient = new WebClient();
-                //webClient.DownloadFile(loaderUrl, Path.Combine(loaderDir, "RocketAPI.dll"));
-                //webClient.DownloadFile(patcherUrl, Path.Combine(loaderDir, "RocketLoader.exe"));
+                webClient.DownloadFile(apiUrl, Path.Combine(loaderDir, "RocketAPI.dll"));
+                webClient.DownloadFile(loaderUrl, Path.Combine(loaderDir, "RocketLoader.exe"));
 
                 Console.WriteLine("Patching " + name + "...");
 
