@@ -203,11 +203,8 @@ namespace Rocket.RocketLauncher
             Directory.Move(@"Unturned_Data\Managed", @"Unturned_Data\Managed.original");
             Directory.Move(loaderDir, @"Unturned_Data\Managed");
 
-            for (int i = 0; i < 6; i++)
-            {
-                Console.Write(".");
-                System.Threading.Thread.Sleep(500);
-            }
+
+            System.Threading.Thread.Sleep(500);
 
             System.Diagnostics.ProcessStartInfo launcher = new System.Diagnostics.ProcessStartInfo();
             launcher.FileName = "Unturned.exe";
@@ -223,15 +220,30 @@ namespace Rocket.RocketLauncher
 
             Process launcherProcess = Process.Start(launcher);
 
-            Console.Write("\nRocket launch in T-5");
-            for (int i = 5; i > 0; i--)
+
+            for (int i = 0; i < 6; i++)
             {
-                Console.Write("\b"+i);
-                System.Threading.Thread.Sleep(1000);
+                Console.Write(".");
+                System.Threading.Thread.Sleep(500);
             }
 
-            Directory.Move(@"Unturned_Data\Managed", loaderDir); 
-            Directory.Move(@"Unturned_Data\Managed.original", @"Unturned_Data\Managed");
+            Console.Write("\nRocket launch immediate");
+            bool success = false;
+            while (!success)
+            {
+                System.Threading.Thread.Sleep(500);
+
+                try
+                {
+                    Directory.Move(@"Unturned_Data\Managed", loaderDir);
+                    Directory.Move(@"Unturned_Data\Managed.original", @"Unturned_Data\Managed");
+                    success = true;
+                }
+                catch (Exception)
+                {
+
+                }
+            }
         }
         private static bool GrantAccess(string fullPath)
         {
