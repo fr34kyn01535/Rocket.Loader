@@ -33,6 +33,7 @@ namespace Rocket.RocketAPI
             string filename = String.Format(configFile, type.Assembly.GetName().Name);
             if (File.Exists(filename))
             {
+                SaveConfiguration();
                 XmlSerializer serializer = new XmlSerializer(type);
                 return serializer.Deserialize(new StreamReader(filename));
             }
