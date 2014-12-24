@@ -13,7 +13,7 @@ namespace Rocket.RocketAPI
             foreach (Command ccommand in Commander.commandList)
                 if (ccommand.commandName.ToLower().Equals(command.commandName.ToLower()))
                 {
-                    Logger.Log("Command already registered: " + command.GetType().FullName);
+                    //Logger.Log("Command already registered: " + command.GetType().FullName);
                     return;
                 }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SDG;
+using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
@@ -18,9 +19,9 @@ namespace Rocket.RocketAPI
 
         protected override void execute(SteamPlayerID m, string s)
         {
-            Bootstrap.InitializeBootstrap();
-            Logger.Log("Reloaded plugins");
-            ChatManager.say("Reloaded plugins");
+            Bootstrap.RocketAPI.LoadPlugins();
+            Logger.Log("Reloaded Rocket");
+            ChatManager.say("Reloaded Rocket");
         }
 
     }

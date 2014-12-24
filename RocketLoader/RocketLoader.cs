@@ -16,7 +16,7 @@ namespace Rocket
     {
         static String version = "1.0";
 
-        static AssemblyDefinition unturnedAssembly, unturnedFirstpassAssembly, patcherAssembly, loaderAssembly;
+        static AssemblyDefinition unturnedAssembly, patcherAssembly, loaderAssembly;
 
         static void Main(string[] args)
         {
@@ -39,7 +39,9 @@ namespace Rocket
 
             fixHash();
 
+            patchPlayer();
             patchChatMan();
+            patchSteamCalls();
             patchCommander();
             patchCommand();
 
@@ -49,6 +51,159 @@ namespace Rocket
 
             Console.WriteLine("Writing to file...");
             unturnedAssembly.Write("Assembly-CSharp.dll");
+        }
+
+        private static void patchPlayer()
+        {
+
+            TypeDefinition td = unturnedAssembly.MainModule.GetType("SDG.Player");
+
+            foreach (FieldDefinition f in td.Fields)
+            {
+                if (f.FieldType.FullName.ToLower() == "sdg.playerinput")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "playerInput";
+                    Console.WriteLine("PlayerInput unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.playerstance")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "playerStance";
+                    Console.WriteLine("PlayerStance unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.playerequipment")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "playerEquipment";
+                    Console.WriteLine("PlayerEquipment unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.playeranimator")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "playerAnimator";
+                    Console.WriteLine("PlayerAnimator unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.playerhitbox")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "playerHitbox";
+                    Console.WriteLine("PlayerHitbox unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.playermovement")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "playerMovement";
+                    Console.WriteLine("PlayerMovement unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.playerlook")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "playerLook";
+                    Console.WriteLine("PlayerLook unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.playerclothing")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "playerClothing";
+                    Console.WriteLine("PlayerClothing unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.playerinventory")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "playerInventory";
+                    Console.WriteLine("PlayerInventory unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.playerlife")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "playerLife";
+                    Console.WriteLine("PlayerLife unlocked");
+                }
+
+            }
+
+            Console.WriteLine("Done patching player!");
+
+        }
+
+        private static void patchSteamCalls()
+        {
+
+            TypeDefinition td = unturnedAssembly.MainModule.GetType("SDG.Steam");
+
+            foreach (FieldDefinition f in td.Fields)
+            {
+                if (f.FieldType.FullName.ToLower() == "sdg.steam/clientconnected")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "clientConnected";
+                    Console.WriteLine("ClientConnected unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.steam/clientdisconnected")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "clientDisconnected";
+                    Console.WriteLine("ClientDisconnected unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.steam/serverhosted")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "serverHosted";
+                    Console.WriteLine("ServerConnected unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.steam/servershutdown")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "serverShutdown";
+                    Console.WriteLine("ServerShutdown unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.steam/serverconnected")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "serverConnected";
+                    Console.WriteLine("ServerConnected unlocked");
+                }
+
+                if (f.FieldType.FullName.ToLower() == "sdg.steam/serverdisconnected")
+                {
+                    f.IsPublic = true;
+                    f.IsPrivate = false;
+                    f.Name = "serverDisconnected";
+                    Console.WriteLine("ServerDisconnected unlocked");
+                }
+            }
+
+            Console.WriteLine("Done patching steamcalls!");
+
         }
 
         private static void patchCommand()
@@ -226,7 +381,7 @@ namespace Rocket
                         unturnedMethod.Body.Instructions.Add(inst1);
                         unturnedMethod.Body.Instructions.Add(inst2);
                         unturnedMethod.Body.Instructions.Add(Instruction.Create(OpCodes.Stelem_I1));
-                        }
+                    }
                 }
             }
             Console.WriteLine("Fixed static hash");

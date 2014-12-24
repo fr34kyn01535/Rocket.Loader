@@ -18,19 +18,30 @@ namespace Rocket.RocketAPI
         
         public void Initialize()
         {
-            Logger.LogError(("RocketLoader API v" + Version).PadLeft(80, '.'));
+            Logger.LogError("".PadLeft(80, '.'));
+            Logger.LogError(@"                        ______           _        _ ");
+            Logger.LogError(@"                        | ___ \         | |      | |");
+            Logger.LogError(@"                        | |_/ /___   ___| | _____| |_");
+            Logger.LogError(@"                        |    // _ \ / __| |/ / _ \ __|");
+            Logger.LogError(@"                        | |\ \ (_) | (__|   <  __/ |_");
+            Logger.LogError(@"                        \_| \_\___/ \___|_|\_\___|\__\ v" + Version + "\n");
 
             if (!Directory.Exists("Unturned_Data/Managed/Plugins/")) Directory.CreateDirectory("Unturned_Data/Managed/Plugins/");
-            /*
+            
             Commands.RegisterCommand(new CommandReload());
-            Commands.RegisterCommand(new CommandReloot());
             Commands.RegisterCommand(new CommandPlugins());
-            */
-            List<Type> pluginTypes = loadPlugins();
-            executePlugins(pluginTypes);
+            /*
+            Commands.RegisterCommand(new CommandReloot());*/
+
+            LoadPlugins();
             Logger.LogError("".PadLeft(80, '.'));
         }
         
+        public void LoadPlugins(){
+            Plugins.Clear();
+            List<Type> pluginTypes = loadPlugins();
+            executePlugins(pluginTypes);
+        }
 
         private void executePlugins(List<Type> pluginTypes)
         {

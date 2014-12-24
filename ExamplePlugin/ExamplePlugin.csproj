@@ -19,7 +19,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
-    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\SteamApps\common\Unturned Development\Unturned_Data\Rocket\Plugins\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\SteamApps\common\Unturned Development\Unturned_Data\Managed\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -69,6 +69,7 @@
     <ProjectReference Include="..\RocketAPI\RocketAPI.csproj">
       <Project>{c362df2f-1336-4932-aadc-4f2074fedb64}</Project>
       <Name>RocketAPI</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
