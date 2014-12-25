@@ -18,6 +18,7 @@ namespace Rocket.RocketAPI
         
         public void Initialize()
         {
+            SDG.Commander.init();
             Logger.LogError("".PadLeft(80, '.'));
             Logger.LogError(@"                        ______           _        _ ");
             Logger.LogError(@"                        | ___ \         | |      | |");
@@ -26,17 +27,33 @@ namespace Rocket.RocketAPI
             Logger.LogError(@"                        | |\ \ (_) | (__|   <  __/ |_");
             Logger.LogError(@"                        \_| \_\___/ \___|_|\_\___|\__\ v" + Version + "\n");
 
+            Logger.LogError("".PadLeft(80, '.'));
+
             if (!Directory.Exists("Unturned_Data/Managed/Plugins/")) Directory.CreateDirectory("Unturned_Data/Managed/Plugins/");
             
-            Commands.RegisterCommand(new CommandReload());
-            Commands.RegisterCommand(new CommandPlugins());
+            RegisterCommand(new CommandReload());
+            RegisterCommand(new CommandPlugins());
             /*
             Commands.RegisterCommand(new CommandReloot());*/
 
             LoadPlugins();
-            Logger.LogError("".PadLeft(80, '.'));
         }
-        
+
+        public static void RegisterCommand(Command command, bool checkForDupe = false)
+        {
+            foreach (Command ccommand in Commander.commandList)
+            {
+                if (ccommand.commandName.ToLower().Equals(command.commandName.ToLower()))
+                {
+                    Logger.Log("Command already registered: " + command.GetType().FullName);
+                    return;
+                }
+            }
+            List<Command> commandList = Commander.commandList.ToList();
+            commandList.Add(command);
+            Commander.commandList = commandList.ToArray();
+        }
+
         public void LoadPlugins(){
             Plugins.Clear();
             List<Type> pluginTypes = loadPlugins();

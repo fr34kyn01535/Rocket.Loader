@@ -11,7 +11,6 @@ namespace Rocket.RocketAPI
     {
         private static string configFile = "./Unturned_Data/Managed/Plugins/{0}.config";
 
-
         public void SaveConfiguration(bool overwrite = true){
             Type type = this.GetType();
             string filename = String.Format(configFile, type.Assembly.GetName().Name);
@@ -33,11 +32,12 @@ namespace Rocket.RocketAPI
             string filename = String.Format(configFile, type.Assembly.GetName().Name);
             if (File.Exists(filename))
             {
-                SaveConfiguration();
                 XmlSerializer serializer = new XmlSerializer(type);
                 return serializer.Deserialize(new StreamReader(filename));
             }
-            else {
+            else
+            {
+                SaveConfiguration();
                 return Activator.CreateInstance(type);
             }
         }

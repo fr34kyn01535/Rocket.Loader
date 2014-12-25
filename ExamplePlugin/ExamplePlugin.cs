@@ -5,6 +5,7 @@ using System.Text;
 using Steamworks;
 using SDG;
 using Rocket.RocketAPI;
+using System.Reflection;
 
 namespace ExamplePlugin
 {
@@ -17,7 +18,7 @@ namespace ExamplePlugin
 
         string RocketPlugin.Version
         {
-            get { return "1.0"; }
+            get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); }
         }
 
         string RocketPlugin.Author
@@ -35,7 +36,7 @@ namespace ExamplePlugin
         void RocketPlugin.Load()
         {
             Logger.Log("This is the Testmod load()!" + config.bla);
-            Commands.RegisterCommand(new CommandTest("testcmd", "testcmd - testinfo", "testcmd - testhelp"));
+            Core.RegisterCommand(new CommandTest("testcmd", "testcmd - testinfo", "testcmd - testhelp"));
 
             /*SDG.Steam.clientConnected += onConnected;
             SDG.Steam.clientDisconnected += onDisconnected;

@@ -97,7 +97,6 @@
     <Compile Include="CommandPlugins.cs" />
     <Compile Include="CommandReload.cs" />
     <Compile Include="CommandReloot.cs" />
-    <Compile Include="Commands.cs" />
     <Compile Include="RocketConfiguration.cs" />
     <Compile Include="RocketPlugin.cs" />
     <Compile Include="Logging.cs" />

@@ -23,6 +23,13 @@ namespace Rocket.RocketAPI
             }
         }
 
+        /*This method will be injected into Unturned, do not touch!*/
+        public static System.Byte[] getAssemblyHash()
+        {
+            byte[] b = new System.Byte[20];
+            return b;
+        }
+
         public static void InitializeBootstrap() {
             if (!Directory.Exists("Unturned_Data/Managed/Plugins/")) Directory.CreateDirectory("Unturned_Data/Managed/Plugins/");
 
