@@ -9,17 +9,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unturned", "Unturned", "{C7
 	ProjectSection(SolutionItems) = preProject
 		Unturned\Assembly-CSharp-firstpass.dll = Unturned\Assembly-CSharp-firstpass.dll
 		Unturned\Assembly-CSharp.dll = Unturned\Assembly-CSharp.dll
-		Unturned\Assembly-UnityScript-firstpass.dll = Unturned\Assembly-UnityScript-firstpass.dll
-		Unturned\Pathfinding.ClipperLib.dll = Unturned\Pathfinding.ClipperLib.dll
-		Unturned\Pathfinding.Ionic.Zip.Reduced.dll = Unturned\Pathfinding.Ionic.Zip.Reduced.dll
-		Unturned\Pathfinding.JsonFx.dll = Unturned\Pathfinding.JsonFx.dll
-		Unturned\Pathfinding.Poly2Tri.dll = Unturned\Pathfinding.Poly2Tri.dll
 		Unturned\UnityEngine.dll = Unturned\UnityEngine.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketLauncher", "RocketLauncher\RocketLauncher.csproj", "{8FFDDA87-4AA7-42D4-8CC9-22DBB513E19C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C362DF2F-1336-4932-AADC-4F2074FEDB64} = {C362DF2F-1336-4932-AADC-4F2074FEDB64}
+		{67CD3888-82BF-4D69-AE86-A9026018765C} = {67CD3888-82BF-4D69-AE86-A9026018765C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamplePlugin", "ExamplePlugin\ExamplePlugin.csproj", "{602882B6-F16C-4247-9F5D-21846BC4C09A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{67CD3888-82BF-4D69-AE86-A9026018765C} = {67CD3888-82BF-4D69-AE86-A9026018765C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketAPI", "RocketAPI\RocketAPI.csproj", "{C362DF2F-1336-4932-AADC-4F2074FEDB64}"
 EndProject

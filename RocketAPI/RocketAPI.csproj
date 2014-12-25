@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\SteamApps\common\Unturned Development\Unturned_Data\Rocket\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\SteamApps\common\Unturned Development\Unturned_Data\Managed\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -98,12 +98,16 @@
     <Compile Include="CommandReload.cs" />
     <Compile Include="CommandReloot.cs" />
     <Compile Include="Commands.cs" />
-    <Compile Include="Configuration.cs" />
+    <Compile Include="RocketConfiguration.cs" />
     <Compile Include="RocketPlugin.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>del /F /Q /S ".\*"
+copy "..\..\..\Unturned\Unturned_Data\Managed\" ".\"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
