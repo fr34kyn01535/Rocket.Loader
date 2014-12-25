@@ -238,7 +238,9 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>RocketLoader.exe</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Debug (
+    RocketLoader.exe
+)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
