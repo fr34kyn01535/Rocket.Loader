@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using System.IO;
+using SDG;
 namespace Rocket.RocketAPI
 {
     public class Bootstrap : MonoBehaviour
     {
-
         public static GameObject RocketAPIObject = null;
         public static Core RocketAPI;
+
+        public static string InstanceName = null;
 
         private static Bootstrap instance = null;
 
@@ -36,6 +38,10 @@ namespace Rocket.RocketAPI
             try
             {
                 RocketAPI = new Core();
+
+                ESteamSecurity security;
+                CommandLine.tryGetServer(out security, out InstanceName);
+
                 UnityEngine.Object.Destroy(RocketAPIObject);
                 RocketAPIObject = new GameObject(instance.GetType().FullName);
                 RocketAPIObject.AddComponent(instance.GetType());
