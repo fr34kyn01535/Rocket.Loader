@@ -42,6 +42,7 @@ namespace Rocket.RocketAPI
 
         public void LoadPlugins(){
             Plugins.Clear();
+            Commander.init();
             List<Type> pluginTypes = loadPlugins();
             executePlugins(pluginTypes);
             Permissions.LoadConfiguration();

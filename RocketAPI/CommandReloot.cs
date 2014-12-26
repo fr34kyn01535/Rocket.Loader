@@ -11,7 +11,7 @@ namespace Rocket.RocketAPI
 
         public CommandReloot()
         {
-            base.commandName = "reloot";
+            base.commandName = "Reloot";
             base.commandInfo = "Reloot - Resets all lootspawns";
             base.commandHelp = "Resets all lootspawns";
         }

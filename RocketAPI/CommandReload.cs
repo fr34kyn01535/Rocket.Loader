@@ -12,7 +12,7 @@ namespace Rocket.RocketAPI
 
         public CommandReload()
         {
-            base.commandName = "reload";
+            base.commandName = "Reload";
             base.commandInfo = "Reload - Re-initializes all plugins";
             base.commandHelp = "Re-initializes all plugins";
         }
