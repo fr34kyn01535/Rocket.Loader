@@ -11,7 +11,7 @@ namespace Rocket.RocketAPI
 {
     public static class Permissions
     {
-        private static string permissionsFile = "./Unturned_Data/Managed/Rocket/groups.config";
+        private static string permissionsFile = "./Unturned_Data/Managed/Rocket/Permissions.config";
 
         private static List<Group> defaultGroups = new List<Group>() { new Group("default", null, new List<string>() { "plugins", "vote","reward"}) };
         private static List<Group> Groups = null;

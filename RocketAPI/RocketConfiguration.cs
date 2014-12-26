@@ -13,12 +13,16 @@ namespace Rocket.RocketAPI
 
         public void SaveConfiguration(bool overwrite = true){
             Type type = this.GetType();
-            string filename = String.Format(configFile, type.Assembly.GetName().Name);
+            string filename = String.Format(configFile,type.Assembly.GetName().Name);
 
-            XmlSerializer serializer = new XmlSerializer(type);
+            if (!Directory.Exists(Path.GetDirectoryName(filename)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(filename));
+            }
 
             if (!File.Exists(filename) && overwrite)
             {
+                XmlSerializer serializer = new XmlSerializer(type);
                 using (TextWriter writer = new StreamWriter(filename))
                 {
                     serializer.Serialize(writer, Activator.CreateInstance(type));

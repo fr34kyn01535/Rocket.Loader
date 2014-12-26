@@ -5,6 +5,7 @@ using System.Text;
 using SDG;
 using UnityEngine;
 using Rocket.RocketAPI;
+using System.Web.Script.Serialization;
 
 namespace ExamplePlugin
 {
@@ -21,11 +22,8 @@ namespace ExamplePlugin
 
         protected override void execute(SteamPlayerID m, string s)
         {
-            Logger.Log("SteamPlayerID: " + m);
-            Logger.Log("String: " + s);
-
-            ChatManager.say("SteamPlayerID: " + m);
-            ChatManager.say("String: " + s);
+            JavaScriptSerializer st = new JavaScriptSerializer();
+            st.Serialize(typeof(SDG.Steam));
         }
     }
 }

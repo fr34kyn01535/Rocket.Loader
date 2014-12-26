@@ -12,14 +12,14 @@ namespace Rocket.Patches
         {
             TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.Steam");
 
-            FieldDefinition[] stringFields = t.Fields.Where(f => f.FieldType.FullName.ToLower() == "system.string").ToArray();
-
             PatchHelper.UnlockByType(t, "sdg.steam/clientconnected", "clientConnected");
             PatchHelper.UnlockByType(t, "sdg.steam/clientdisconnected", "clientDisconnected");
             PatchHelper.UnlockByType(t, "sdg.steam/serverhosted", "serverHosted");
             PatchHelper.UnlockByType(t, "sdg.steam/servershutdown", "serverShutdown");
             PatchHelper.UnlockByType(t, "sdg.steam/serverconnected", "serverConnected");
             PatchHelper.UnlockByType(t, "sdg.steam/serverdisconnected", "serverDisconnected");
+
+            PatchHelper.UnlockByType(t, "system.string", "Servername", 7);
         }
     }
 }
