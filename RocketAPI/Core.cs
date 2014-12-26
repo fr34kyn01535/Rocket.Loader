@@ -31,18 +31,20 @@ namespace Rocket.RocketAPI
 
             if (!Directory.Exists("Unturned_Data/Managed/Plugins/")) Directory.CreateDirectory("Unturned_Data/Managed/Plugins/");
             
+            Permissions.LoadConfiguration();
+            LoadPlugins();
+        }
+
+        public void LoadPlugins()
+        {
+            Commander.init();
+            Plugins.Clear();
+
             Commands.RegisterCommand(new CommandReload());
             Commands.RegisterCommand(new CommandPlugins());
             /*
             Commands.RegisterCommand(new CommandReloot());*/
 
-            Permissions.LoadConfiguration();
-            LoadPlugins();
-        }
-
-        public void LoadPlugins(){
-            Plugins.Clear();
-            Commander.init();
             List<Type> pluginTypes = loadPlugins();
             executePlugins(pluginTypes);
             Permissions.LoadConfiguration();

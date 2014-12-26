@@ -14,7 +14,7 @@ namespace Rocket.RocketAPI
             {
                 if (ccommand.commandName.ToLower().Equals(command.commandName.ToLower()))
                 {
-                    //Logger.Log("Command already registered: " + command.GetType().FullName);
+                    Logger.Log("Command already registered: " + command.GetType().FullName);
                     return;
                 }
             }
