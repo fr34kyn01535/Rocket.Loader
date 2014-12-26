@@ -36,7 +36,7 @@ namespace ExamplePlugin
         void RocketPlugin.Load()
         {
             Logger.Log("This is the Testmod load()!" + config.bla);
-            Core.RegisterCommand(new CommandTest("testcmd", "testcmd - testinfo", "testcmd - testhelp"));
+            Commands.RegisterCommand(new CommandTest("testcmd", "testcmd - testinfo", "testcmd - testhelp"));
 
             /*SDG.Steam.clientConnected += onConnected;
             SDG.Steam.clientDisconnected += onDisconnected;

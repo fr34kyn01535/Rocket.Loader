@@ -14,7 +14,7 @@ namespace Rocket
 {
     public class RocketLoader
     {
-        public static AssemblyDefinition UnturnedAssembly, loaderAssembly;
+        public static AssemblyDefinition UnturnedAssembly, LoaderAssembly;
 
         static void Main(string[] args)
         {
@@ -23,7 +23,7 @@ namespace Rocket
             try
             {
                 UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
-                loaderAssembly = AssemblyDefinition.ReadAssembly("RocketAPI.dll");
+                LoaderAssembly = AssemblyDefinition.ReadAssembly("RocketAPI.dll");
             }
             catch (Exception e)
             {
@@ -54,17 +54,17 @@ namespace Rocket
         {
             Console.WriteLine("Removing Play Button");
             TypeDefinition td = UnturnedAssembly.MainModule.GetType("SDG.MenuPlayUI");
-            MethodDefinition ctor = getMethod(td, ".ctor");
+            MethodDefinition ctor = GetMethod(td, ".ctor");
             ctor.Body.Instructions.Clear();
         }
 
         private static void attachBootstrap()
         {
-            TypeDefinition loaderType = loaderAssembly.MainModule.GetType("Rocket.RocketAPI.Bootstrap");
-            MethodDefinition initBootstrap = getMethod(loaderType, "LaunchRocket");
+            TypeDefinition loaderType = LoaderAssembly.MainModule.GetType("Rocket.RocketAPI.Bootstrap");
+            MethodDefinition initBootstrap = GetMethod(loaderType, "LaunchRocket");
 
             TypeDefinition unturnedType = UnturnedAssembly.MainModule.GetType("SDG.Managers");
-            MethodDefinition awake = getMethod(unturnedType, "Awake");
+            MethodDefinition awake = GetMethod(unturnedType, "Awake");
 
             if (awake.Body.Instructions[0].ToString().Contains("LaunchRocket")) {
                 Console.WriteLine("Already patched!");
@@ -101,8 +101,8 @@ namespace Rocket
             byte[] combined = combine(new byte[][] { SHA1(unturned), SHA1(other), SHA1(unturned_firstpass), SHA1(other_firstpass) });
 
 
-            MethodDefinition unturnedMethod = getMethod(UnturnedAssembly.MainModule.GetType("SDG.ReadWrite"), "getAssemblyHash");
-            MethodDefinition overrideMethod = getMethod(loaderAssembly.MainModule.GetType("Rocket.RocketAPI.Bootstrap"), "getAssemblyHash");
+            MethodDefinition unturnedMethod = GetMethod(UnturnedAssembly.MainModule.GetType("SDG.ReadWrite"), "getAssemblyHash");
+            MethodDefinition overrideMethod = GetMethod(LoaderAssembly.MainModule.GetType("Rocket.RocketAPI.Bootstrap"), "getAssemblyHash");
 
             TypeReference byteType = AssemblyDefinition.ReadAssembly("mscorlib.dll").MainModule.GetType("System.Byte");
 
@@ -161,7 +161,7 @@ namespace Rocket
             return sha.ComputeHash(U);
         }
 
-        public static MethodDefinition getMethod(TypeDefinition td, String method)
+        public static MethodDefinition GetMethod(TypeDefinition td, String method)
         {
             MethodDefinition md = null;
 

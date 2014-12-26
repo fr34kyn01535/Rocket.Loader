@@ -31,33 +31,20 @@ namespace Rocket.RocketAPI
 
             if (!Directory.Exists("Unturned_Data/Managed/Plugins/")) Directory.CreateDirectory("Unturned_Data/Managed/Plugins/");
             
-            RegisterCommand(new CommandReload());
-            RegisterCommand(new CommandPlugins());
+            Commands.RegisterCommand(new CommandReload());
+            Commands.RegisterCommand(new CommandPlugins());
             /*
             Commands.RegisterCommand(new CommandReloot());*/
 
+            Permissions.LoadConfiguration();
             LoadPlugins();
-        }
-
-        public static void RegisterCommand(Command command, bool checkForDupe = false)
-        {
-            foreach (Command ccommand in Commander.commandList)
-            {
-                if (ccommand.commandName.ToLower().Equals(command.commandName.ToLower()))
-                {
-                    Logger.Log("Command already registered: " + command.GetType().FullName);
-                    return;
-                }
-            }
-            List<Command> commandList = Commander.commandList.ToList();
-            commandList.Add(command);
-            Commander.commandList = commandList.ToArray();
         }
 
         public void LoadPlugins(){
             Plugins.Clear();
             List<Type> pluginTypes = loadPlugins();
             executePlugins(pluginTypes);
+            Permissions.LoadConfiguration();
         }
 
         private void executePlugins(List<Type> pluginTypes)

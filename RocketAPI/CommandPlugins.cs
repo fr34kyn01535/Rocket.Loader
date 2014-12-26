@@ -11,8 +11,8 @@ namespace Rocket.RocketAPI
 
         public CommandPlugins()
         {
-            base.commandName = "plugins";
-            base.commandInfo = "plugins - shows all plugins";
+            base.commandName = "Plugins";
+            base.commandInfo = "Plugins - shows all plugins";
             base.commandHelp = "Shows all plugins";
         }
 
@@ -20,7 +20,7 @@ namespace Rocket.RocketAPI
         {
             string message = "The following plugins are currently loaded: " + string.Join(",", Core.Plugins.Select(x => x.Name).ToArray());
             Logger.Log(message);
-            ChatManager.say(m.G, message);
+            ChatManager.say(m.SteamId, message);
         }
 
     }
