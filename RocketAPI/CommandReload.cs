@@ -19,7 +19,7 @@ namespace Rocket.RocketAPI
 
         protected override void execute(SteamPlayerID m, string s)
         {
-            Bootstrap.RocketAPI.LoadPlugins();
+            Bootstrap.RocketAPI = new Core();
             Logger.Log("Reloaded Rocket");
             ChatManager.say("Reloaded Rocket");
         }
