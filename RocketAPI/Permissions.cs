@@ -16,7 +16,7 @@ namespace Rocket.RocketAPI
         private static List<Group> defaultGroups = new List<Group>() { new Group("default", null, new List<string>() { "plugins", "vote","reward"}) };
         private static List<Group> Groups = null;
 
-        public static void LoadConfiguration()
+        public static void Load()
         {
             if (!Directory.Exists(Path.GetDirectoryName(permissionsFile))) {
                 Directory.CreateDirectory(Path.GetDirectoryName(permissionsFile));

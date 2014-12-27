@@ -31,12 +31,12 @@ namespace Rocket.RocketAPI
 
             if (!Directory.Exists("Unturned_Data/Managed/Plugins/")) Directory.CreateDirectory("Unturned_Data/Managed/Plugins/");
             
-            Permissions.LoadConfiguration();
             LoadPlugins();
         }
 
         public void LoadPlugins()
         {
+            Permissions.Load();
             Commander.init();
             Plugins.Clear();
 
@@ -47,7 +47,6 @@ namespace Rocket.RocketAPI
 
             List<Type> pluginTypes = loadPlugins();
             executePlugins(pluginTypes);
-            Permissions.LoadConfiguration();
         }
 
         private void executePlugins(List<Type> pluginTypes)
