@@ -11,39 +11,25 @@ namespace ExamplePlugin
 {
     public class ExamplePlugin : RocketPlugin
     {
-        string RocketPlugin.Name
-        {
-            get { return "ExamplePlugin"; }
-        }
 
-        string RocketPlugin.Version
-        {
-            get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); }
-        }
-
+        private ExampleConfiguration configuration = RocketConfiguration.LoadConfiguration<ExampleConfiguration>();
+     
         string RocketPlugin.Author
         {
             get { return "fr34kyn01535"; }
         }
-
-        public ExampleConfiguration config;
-
-        public ExamplePlugin() {
-            config = (ExampleConfiguration)(new ExampleConfiguration()).LoadConfiguration(); //Still searching a way to make this easier..
-        }
-
-
+        
         void RocketPlugin.Load()
         {
-            Logger.Log("This is the Testmod load()!" + config.bla);
-            Commands.RegisterCommand(new CommandTest("testcmd", "testcmd - testinfo", "testcmd - testhelp"));
+            Logger.Log("This is the Testmod load()!" + configuration.bla);
+            Commands.RegisterCommand(new CommandTest());
 
-            /*SDG.Steam.clientConnected += onConnected;
+            SDG.Steam.clientConnected += onConnected;
             SDG.Steam.clientDisconnected += onDisconnected;
             SDG.Steam.serverHosted += onHosted;
             SDG.Steam.serverShutdown += onShutdown;
             SDG.Steam.serverConnected += onServerConnected;
-            SDG.Steam.serverDisconnected += onServerDisconnected;*/
+            SDG.Steam.serverDisconnected += onServerDisconnected;
         }
 
 

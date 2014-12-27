@@ -12,18 +12,29 @@ namespace ExamplePlugin
     class CommandTest : Command
     {
 
-        public CommandTest(String exec, String info, String help)
+        public CommandTest()
         {
-            base.commandName = exec;
-            base.commandInfo = info;
-            base.commandHelp = help;
+            base.commandName = "test";
+            base.commandInfo = "testcmd - testinfo";
+            base.commandHelp = "testcmd - testhelp";
         }
 
 
         protected override void execute(SteamPlayerID m, string s)
         {
-            JavaScriptSerializer st = new JavaScriptSerializer();
-            st.Serialize(typeof(SDG.Steam));
+            ItemManager i = new ItemManager();
+            if (s.Contains("1"))
+            {
+                i.W();
+            }
+            if (s.Contains("2"))
+            {
+                i.g();
+            }
+            if (s.Contains("3"))
+            {
+                i.P();
+            }
         }
     }
 }

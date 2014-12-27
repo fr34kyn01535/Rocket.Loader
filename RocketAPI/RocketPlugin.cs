@@ -10,8 +10,6 @@ namespace Rocket.RocketAPI
 {
     public interface RocketPlugin
     {
-        string Name { get; }
-        string Version { get; }
         string Author { get; }
 
         void Load();

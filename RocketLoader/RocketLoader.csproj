@@ -222,6 +222,7 @@
     <Compile Include="Patches\ChatManager.cs" />
     <Compile Include="Patch.cs" />
     <Compile Include="Patches\Command.cs" />
+    <Compile Include="Patches\ItemManager.cs" />
     <Compile Include="Patches\Commander.cs" />
     <Compile Include="Patches\SteamPlayer.cs" />
     <Compile Include="Patches\SteamPlayerID.cs" />

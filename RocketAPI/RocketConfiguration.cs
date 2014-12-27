@@ -11,9 +11,8 @@ namespace Rocket.RocketAPI
     {
         private static string configFile = "./Unturned_Data/Managed/Plugins/{0}/{1}.config";
 
-        public void SaveConfiguration(bool overwrite = true){
-            Type type = this.GetType();
-            string filename = String.Format(configFile, Bootstrap.InstanceName,type.Assembly.GetName().Name);
+        public static void SaveConfiguration<T>(bool overwrite = true){
+            string filename = String.Format(configFile, Bootstrap.InstanceName,typeof(T).Assembly.GetName().Name);
 
             if (!Directory.Exists(Path.GetDirectoryName(filename)))
             {
@@ -22,27 +21,26 @@ namespace Rocket.RocketAPI
 
             if (!File.Exists(filename) && overwrite)
             {
-                XmlSerializer serializer = new XmlSerializer(type);
+                XmlSerializer serializer = new XmlSerializer(typeof(T));
                 using (TextWriter writer = new StreamWriter(filename))
                 {
-                    serializer.Serialize(writer, Activator.CreateInstance(type));
+                    serializer.Serialize(writer, Activator.CreateInstance(typeof(T)));
                 }
             }
         }
 
-        public object LoadConfiguration()
+        public static T LoadConfiguration<T>()
         {
-            Type type = this.GetType();
-            string filename = String.Format(configFile, Bootstrap.InstanceName, type.Assembly.GetName().Name);
+            string filename = String.Format(configFile, Bootstrap.InstanceName, typeof(T).Assembly.GetName().Name);
             if (File.Exists(filename))
             {
-                XmlSerializer serializer = new XmlSerializer(type);
-                return serializer.Deserialize(new StreamReader(filename));
+                XmlSerializer serializer = new XmlSerializer(typeof(T));
+                return (T)serializer.Deserialize(new StreamReader(filename));
             }
             else
             {
-                SaveConfiguration();
-                return Activator.CreateInstance(type);
+                SaveConfiguration<T>();
+                return (T)Activator.CreateInstance(typeof(T));
             }
         }
     }

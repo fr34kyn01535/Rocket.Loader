@@ -54,11 +54,11 @@ namespace Rocket.RocketAPI
         {
             foreach (Type pluginType in pluginTypes)
             {
-                Logger.LogWarning("Loading: " + pluginType.Assembly.FullName);
                 try
                 {
                     //Bootstrap.kGameObject.AddComponent(pluginType);
                     RocketPlugin plugin = (RocketPlugin)Activator.CreateInstance(pluginType);
+                    Logger.LogWarning("Loading: " + pluginType.Assembly.FullName);
                     plugin.Load();
                     Plugins.Add(plugin);
                 }
@@ -79,7 +79,7 @@ namespace Rocket.RocketAPI
 
                 foreach (FileInfo library in libraries)
                 {
-                    Assembly assembly = Assembly.LoadFile(library.FullName);
+                    Assembly assembly = Assembly.Load(System.IO.File.ReadAllBytes(library.FullName));
                     Type[] types = assembly.GetTypes();
                     foreach (Type type in types)
                     {

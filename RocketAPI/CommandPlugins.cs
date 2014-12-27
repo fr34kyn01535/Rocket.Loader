@@ -18,7 +18,7 @@ namespace Rocket.RocketAPI
 
         protected override void execute(SteamPlayerID m, string s)
         {
-            string message = "The following plugins are currently loaded: " + string.Join(",", Core.Plugins.Select(x => x.Name).ToArray());
+            string message = "Plugins: " + string.Join(",", Core.Plugins.Select(x => x.GetType().Assembly.FullName).ToArray());
             Logger.Log(message);
             ChatManager.say(m.SteamId, message);
         }

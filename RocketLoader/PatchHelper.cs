@@ -19,6 +19,18 @@ namespace Rocket.Patches
             }
         }
 
+        internal static void Unlock(MethodDefinition m, string name = null)
+        {
+            m.IsPublic = true;
+            m.IsPrivate = false;
+            if (!String.IsNullOrEmpty(name))
+            {
+                m.Name = name;
+            }
+        }
+
+
+
         /// <summary>
         /// Unlocks first occurence of type that matches a specifiy typename 
         /// </summary>
@@ -29,13 +41,14 @@ namespace Rocket.Patches
         {
             FieldDefinition[] fields = t.Fields.Where(f => f.ToString().ToLower().Contains(typeToUnlock.ToLower())).ToArray();
 
-            if (fields.Count() >= index+1 && fields[index] != null)
+            if (fields.Count() >= index + 1 && fields[index] != null)
             {
                 Unlock(fields[index], name);
             }
-            else {
+            else
+            {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Warning: could not find "+name);
+                Console.WriteLine("Warning: could not find " + name);
                 Console.ForegroundColor = ConsoleColor.White;
             }
         }
@@ -51,7 +64,7 @@ namespace Rocket.Patches
             FieldDefinition[] fields = t.Fields.Where(f => f.ToString().ToLower().Contains(typeToUnlock.ToLower())).ToArray();
             if (fields != null)
             {
-                for (int i = 0; i < names.Length;i++ )
+                for (int i = 0; i < names.Length; i++)
                 {
                     Unlock(fields[i], names[i]);
                 }
