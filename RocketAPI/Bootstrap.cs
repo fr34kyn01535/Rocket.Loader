@@ -5,6 +5,8 @@ using System.Text;
 using UnityEngine;
 using System.IO;
 using SDG;
+using Steamworks;
+using System.Collections;
 namespace Rocket.RocketAPI
 {
     public class Bootstrap : MonoBehaviour
@@ -37,14 +39,13 @@ namespace Rocket.RocketAPI
 
             try
             {
-                RocketAPI = new Core();
-
                 ESteamSecurity security;
                 CommandLine.tryGetServer(out security, out InstanceName);
 
                 UnityEngine.Object.Destroy(RocketAPIObject);
                 RocketAPIObject = new GameObject(instance.GetType().FullName);
                 RocketAPIObject.AddComponent(instance.GetType());
+
             }
             catch (Exception e)
             {
@@ -55,7 +56,7 @@ namespace Rocket.RocketAPI
         public void Awake()
         {
             UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
-            RocketAPI.Initialize();
+            RocketAPI = new Core();
         }
     }
 }

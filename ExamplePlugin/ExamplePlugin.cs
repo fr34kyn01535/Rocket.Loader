@@ -24,45 +24,25 @@ namespace ExamplePlugin
             Logger.Log("This is the Testmod load()!" + configuration.bla);
             Commands.RegisterCommand(new CommandTest());
 
-            SDG.Steam.clientConnected += onConnected;
-            SDG.Steam.clientDisconnected += onDisconnected;
-            SDG.Steam.serverHosted += onHosted;
-            SDG.Steam.serverShutdown += onShutdown;
-            SDG.Steam.serverConnected += onServerConnected;
-            SDG.Steam.serverDisconnected += onServerDisconnected;
+            SDG.Steam.serverConnected += onPlayerConnected;
+            SDG.Steam.serverDisconnected += onPlayerDisconnected;
+
         }
 
+        List<string> players = new List<string>();
 
-        public static void onConnected()
+        void onPlayerConnected(CSteamID id)
         {
-            Logger.Log("onConnected!");
+            if (!players.Contains(id.ToString())) {
+                Logger.Log("onPlayerConnected" + id.ToString());
+                players.Add(id.ToString());
+            }
         }
 
-        public static void onDisconnected()
+        void onPlayerDisconnected(CSteamID id)
         {
-            Logger.Log("onDisconnected!");
+            Logger.Log("onPlayerDisconnected");
         }
 
-        public static void onHosted()
-        {
-            Logger.Log("onHosted!");
-        }
-
-        public static void onShutdown()
-        {
-            Logger.Log("onShutdown!");
-        }
-
-        public static void onServerConnected(CSteamID id)
-        {
-            Logger.Log("onServerConnected!");
-
-            ChatManager.say("WARNING: This is an experimental modded server!");
-        }
-
-        public static void onServerDisconnected(CSteamID id)
-        {
-            Logger.Log("onServerDisconnected!");
-        }
     }
 }
