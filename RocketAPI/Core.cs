@@ -18,7 +18,6 @@ namespace Rocket.RocketAPI
 
         public Core()
         {
-            SDG.Commander.init();
             Logger.LogError("".PadLeft(80, '.'));
             Logger.LogError(@"                        ______           _        _ ");
             Logger.LogError(@"                        | ___ \         | |      | |");
@@ -28,20 +27,6 @@ namespace Rocket.RocketAPI
             Logger.LogError(@"                        \_| \_\___/ \___|_|\_\___|\__\ v" + Version + "\n");
 
             Logger.LogError("".PadLeft(80, '.'));
-
-            if (!Directory.Exists("Unturned_Data/Managed/Plugins/")) Directory.CreateDirectory("Unturned_Data/Managed/Plugins/");
-            if (!Directory.Exists("Unturned_Data/Managed/Plugins/" + Bootstrap.InstanceName)) Directory.CreateDirectory("Unturned_Data/Managed/Plugins/" + Bootstrap.InstanceName);
-            
-            FileInfo[] libraries = new DirectoryInfo("Unturned_Data/Managed/Plugins/").GetFiles("*.dll");
-
-            foreach (FileInfo library in libraries)
-            {
-                if (!File.Exists("Unturned_Data/Managed/Plugins/" + Bootstrap.InstanceName+"/"+library.Name))
-                {
-                    File.Copy(library.FullName, "Unturned_Data/Managed/Plugins/" + Bootstrap.InstanceName + "/" + library.Name);
-                }
-                File.Delete(library.FullName);
-            }
 
             LoadPlugins();
         }
@@ -64,7 +49,7 @@ namespace Rocket.RocketAPI
             List<Type> pluginTypes = new List<Type>();
             try
             {
-                FileInfo[] libraries = new DirectoryInfo("Unturned_Data/Managed/Plugins/" + Bootstrap.InstanceName).GetFiles("*.dll");
+                FileInfo[] libraries = new DirectoryInfo("Servers/" + Bootstrap.InstanceName + "/Rocket/Plugins/").GetFiles("*.dll");
 
                 foreach (FileInfo library in libraries)
                 {

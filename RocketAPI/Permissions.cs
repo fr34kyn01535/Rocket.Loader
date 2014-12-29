@@ -11,16 +11,13 @@ namespace Rocket.RocketAPI
 {
     public static class Permissions
     {
-        private static string permissionsFile = "./Unturned_Data/Managed/Permissions/" + Bootstrap.InstanceName + ".config";
+        private static string permissionsFile = "Servers/" + Bootstrap.InstanceName + "/Rocket/Permissions.config";
 
-        private static List<Group> defaultGroups = new List<Group>() { new Group("default", null, new List<string>() { "plugins", "vote","reward"}) };
+        private static List<Group> defaultGroups = new List<Group>() { new Group("default", new List<string>() { "76561198016438091" }, new List<string>() { "plugins", "vote", "reward" }) };
         private static List<Group> Groups = null;
 
         public static void Load()
         {
-            if (!Directory.Exists(Path.GetDirectoryName(permissionsFile))) {
-                Directory.CreateDirectory(Path.GetDirectoryName(permissionsFile));
-            }
             if (File.Exists(permissionsFile))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(List<Group>));
@@ -51,7 +48,7 @@ namespace Rocket.RocketAPI
 
             foreach(Group group in Groups){
                 if (a.Admin || (
-                    (group.Name.ToLower() == "default" || group.Players.Contains(a.ToString().ToLower())) &&
+                    (group.Name.ToLower() == "default" || group.Members.Contains(a.ToString().ToLower())) &&
                     group.Commands.Contains(command.ToLower())))
                 {
                     return true;
@@ -60,19 +57,19 @@ namespace Rocket.RocketAPI
             return false;
         }
     }
-
-
     public class Group
     {
         public Group() { }
-        public Group(string name, List<string> players, List<string> commands)
+        public Group(string name, List<string> members, List<string> commands)
         {
             Name = name;
-            Players = players;
+            Members = members;
             Commands = commands;
         }
         public string Name;
-        public List<string> Players;
+        [XmlArrayItem(ElementName="Member")]
+        public List<string> Members;
+        [XmlArrayItem(ElementName = "Command")]
         public List<string> Commands;
     }
 

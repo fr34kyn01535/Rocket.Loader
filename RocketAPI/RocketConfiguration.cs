@@ -9,7 +9,7 @@ namespace Rocket.RocketAPI
 {
     public class RocketConfiguration
     {
-        private static string configFile = "./Unturned_Data/Managed/Plugins/{0}/{1}.config";
+        private static string configFile = "Servers/{0}/Rocket/Plugins/{1}.config";
 
         public static void SaveConfiguration<T>(bool overwrite = true){
             string filename = String.Format(configFile, Bootstrap.InstanceName,typeof(T).Assembly.GetName().Name);

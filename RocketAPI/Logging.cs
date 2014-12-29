@@ -33,7 +33,7 @@ namespace Rocket.RocketAPI
 
         private static void logToFile(string message)
         {
-            StreamWriter streamWriter = new StreamWriter("Unturned_Data/Managed/Plugins/RocketAPI.log", true);
+            StreamWriter streamWriter = new StreamWriter("Servers/" + Bootstrap.InstanceName + "/Rocket/Rocket.log", true);
             streamWriter.WriteLine(message);
             streamWriter.Close();
         }

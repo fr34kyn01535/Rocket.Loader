@@ -34,14 +34,17 @@ namespace Rocket.RocketAPI
             return b;
         }
 
-        public static void InitializeBootstrap() {
-            if (!Directory.Exists("Unturned_Data/Managed/Plugins/")) Directory.CreateDirectory("Unturned_Data/Managed/Plugins/");
-
+        public static void InitializeBootstrap()
+        {
+          
             try
             {
                 ESteamSecurity security;
                 CommandLine.tryGetServer(out security, out InstanceName);
 
+                if (!Directory.Exists("Servers/" + Bootstrap.InstanceName + "/Rocket/")) Directory.CreateDirectory("Servers/" + Bootstrap.InstanceName + "/Rocket/");
+                if (!Directory.Exists("Servers/" + Bootstrap.InstanceName + "/Rocket/Plugins/")) Directory.CreateDirectory("Servers/" + Bootstrap.InstanceName + "/Rocket/Plugins/");
+            
                 UnityEngine.Object.Destroy(RocketAPIObject);
                 RocketAPIObject = new GameObject(instance.GetType().FullName);
                 RocketAPIObject.AddComponent(instance.GetType());
