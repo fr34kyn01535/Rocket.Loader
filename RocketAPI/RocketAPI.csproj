@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandTeleport.cs" />
     <Compile Include="Managers\EventManager.cs" />
     <Compile Include="Managers\PluginManager.cs" />
     <Compile Include="Managers\PermissionManager.cs" />

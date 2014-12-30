@@ -3,6 +3,7 @@ using SDG;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Rocket.RocketAPI
@@ -28,9 +29,14 @@ namespace Rocket.RocketAPI
         {
             commands.Clear();
 
-            RegisterCommand(new CommandReload());
-            RegisterCommand(new CommandPlugins());
-            RegisterCommand(new CommandCheck());
+            IEnumerable<RocketCommand> commandTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
+                          where t.GetInterfaces().Contains(typeof(RocketCommand)) && t.GetConstructor(Type.EmptyTypes) != null
+                          select Activator.CreateInstance(t) as RocketCommand;
+
+            foreach (RocketCommand command in commandTypes)
+            {
+                RegisterCommand(command);
+            }
         }
     }
 }
