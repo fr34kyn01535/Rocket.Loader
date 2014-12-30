@@ -9,23 +9,29 @@ using System.Xml.Serialization;
 
 namespace Rocket.RocketAPI
 {
-    public static class Permissions
+    public class PermissionManager
     {
-        private static string permissionsFile = "Servers/" + Bootstrap.InstanceName + "/Rocket/Permissions.config";
+        private string permissionsFile = Bootstrap.HomeFolder + "Permissions.config";
 
-        private static List<Group> defaultGroups = new List<Group>() { new Group("default", new List<string>() { "76561198016438091" }, new List<string>() { "plugins", "vote", "reward" }) };
-        private static List<Group> Groups = null;
+        private List<Group> defaultGroups = new List<Group>() { new Group("default", new List<string>() { "76561198016438091" }, new List<string>() { "plugins", "vote", "reward" }) };
+        internal List<Group> groups = null;
 
-        public static void Load()
+        public PermissionManager()
+        {
+            loadPermissions();
+        }
+
+        private void loadPermissions()
         {
             if (File.Exists(permissionsFile))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(List<Group>));
-                Groups = (List<Group>)serializer.Deserialize(new StreamReader(permissionsFile));
+                groups = (List<Group>)serializer.Deserialize(new StreamReader(permissionsFile));
 
-                foreach (Group group in Groups)
-                { 
-                    foreach(string command in group.Commands){
+                foreach (Group group in groups)
+                {
+                    foreach (string command in group.Commands)
+                    {
                         group.Commands[group.Commands.IndexOf(command)] = command.ToLower();
                     }
                 }
@@ -37,17 +43,16 @@ namespace Rocket.RocketAPI
                 {
                     serializer.Serialize(writer, defaultGroups);
                 }
-                Groups = defaultGroups;
+                groups = defaultGroups;
             }
         }
-
 
         public static bool CheckPermissions(SteamPlayer a, string w)
         {
             Regex r = new Regex("^\\/[a-zA-Z]*");
             String commandstring = r.Match(w).Value.ToString().TrimStart('/');
 
-            foreach(Group group in Groups){
+            foreach(Group group in RocketAPI.Permissions.groups){
                 if (
                         a.Admin || 
                         ((group.Name.ToLower() == "default" || group.Members.Contains(a.ToString().ToLower())) && group.Commands.Contains(commandstring.ToLower()))
@@ -55,7 +60,7 @@ namespace Rocket.RocketAPI
                 {
 
                     /*Execute RocketCommand if there is one*/
-                    RocketCommand command = Core.Commands.Where(c =>c.Name.ToLower() == commandstring).FirstOrDefault();
+                    RocketCommand command = RocketAPI.Commands.commands.Where(c => c.Name.ToLower() == commandstring).FirstOrDefault();
                     if (command != null) {
                         command.Execute(a.SteamPlayerId,w);
                         return false;
@@ -65,6 +70,11 @@ namespace Rocket.RocketAPI
                 }
             }
             return false;
+        }
+
+        internal void Reload()
+        {
+            loadPermissions();
         }
     }
     public class Group

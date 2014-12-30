@@ -9,12 +9,8 @@ namespace Rocket.RocketAPI
 {
     public static class Logger
     {
-
         public static void Log(string message)
         {
-            //System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
-            //message = "[" +stackTrace.GetFrame(1).GetMethod().Name + "] " + message;
-
             logToFile(message);
             Debug.Log(message);
         }
@@ -30,10 +26,9 @@ namespace Rocket.RocketAPI
             Debug.LogError(message);
         }
 
-
         private static void logToFile(string message)
         {
-            StreamWriter streamWriter = new StreamWriter("Servers/" + Bootstrap.InstanceName + "/Rocket/Rocket.log", true);
+            StreamWriter streamWriter = new StreamWriter(Bootstrap.HomeFolder + "Rocket.log", true);
             streamWriter.WriteLine(message);
             streamWriter.Close();
         }

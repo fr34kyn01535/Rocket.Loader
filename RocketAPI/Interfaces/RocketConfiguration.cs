@@ -9,10 +9,10 @@ namespace Rocket.RocketAPI
 {
     public class RocketConfiguration
     {
-        private static string configFile = "Servers/{0}/Rocket/Plugins/{1}.config";
+        private static string configFile = "{0}Plugins/{1}.config";
 
         public static void SaveConfiguration<T>(bool overwrite = true){
-            string filename = String.Format(configFile, Bootstrap.InstanceName,typeof(T).Assembly.GetName().Name);
+            string filename = String.Format(configFile, Bootstrap.HomeFolder, typeof(T).Assembly.GetName().Name);
 
             if (!Directory.Exists(Path.GetDirectoryName(filename)))
             {
@@ -31,7 +31,7 @@ namespace Rocket.RocketAPI
 
         public static T LoadConfiguration<T>()
         {
-            string filename = String.Format(configFile, Bootstrap.InstanceName, typeof(T).Assembly.GetName().Name);
+            string filename = String.Format(configFile, Bootstrap.HomeFolder, typeof(T).Assembly.GetName().Name);
             if (File.Exists(filename))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(T));

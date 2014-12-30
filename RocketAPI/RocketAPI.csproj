@@ -92,17 +92,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Permissions.cs" />
-    <Compile Include="Commands.cs" />
-    <Compile Include="Core.cs" />
+    <Compile Include="Managers\EventManager.cs" />
+    <Compile Include="Managers\PluginManager.cs" />
+    <Compile Include="Managers\PermissionManager.cs" />
+    <Compile Include="Managers\CommandManager.cs" />
+    <Compile Include="RocketAPI.cs" />
     <Compile Include="Bootstrap.cs" />
-    <Compile Include="CommandPlugins.cs" />
-    <Compile Include="CommandReload.cs" />
-    <Compile Include="CommandCheck.cs" />
-    <Compile Include="RocketCommand.cs" />
-    <Compile Include="RocketConfiguration.cs" />
-    <Compile Include="RocketPlugin.cs" />
-    <Compile Include="Logging.cs" />
+    <Compile Include="Commands\CommandPlugins.cs" />
+    <Compile Include="Commands\CommandReload.cs" />
+    <Compile Include="Commands\CommandCheck.cs" />
+    <Compile Include="Interfaces\RocketCommand.cs" />
+    <Compile Include="Interfaces\RocketConfiguration.cs" />
+    <Compile Include="Interfaces\RocketPlugin.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

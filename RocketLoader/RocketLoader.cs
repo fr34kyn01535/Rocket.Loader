@@ -41,7 +41,15 @@ namespace Rocket
 
             foreach (var patch in patches)
             {
-                patch.Apply();
+                try
+                {
+                    patch.Apply();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error in "+patch.GetType().Name+":"+ex.ToString());
+                    Console.ReadLine();
+                }
             }
 
             removePlayButton(); 
@@ -52,7 +60,6 @@ namespace Rocket
 
         private static void removePlayButton()
         {
-            Console.WriteLine("Removing Play Button");
             TypeDefinition td = UnturnedAssembly.MainModule.GetType("SDG.MenuPlayUI");
             MethodDefinition ctor = GetMethod(td, ".ctor");
             ctor.Body.Instructions.Clear();
@@ -72,7 +79,6 @@ namespace Rocket
             }
 
             awake.Body.GetILProcessor().InsertBefore(awake.Body.Instructions[0], Instruction.Create(OpCodes.Call, UnturnedAssembly.MainModule.Import(initBootstrap)));
-            Console.WriteLine("Attached Bootstrap");
         }
 
         private static void fixHash()
@@ -106,11 +112,7 @@ namespace Rocket
 
             TypeReference byteType = AssemblyDefinition.ReadAssembly("mscorlib.dll").MainModule.GetType("System.Byte");
 
-            Console.WriteLine("Overriding hash check");
-
             unturnedMethod.Body.Instructions.Clear();
-
-            Console.WriteLine("Cleared hash func, injecting new code");
 
             TypeReference fieldType = UnturnedAssembly.MainModule.Import(byteType);
             bool flag1 = false, flag2 = false;
@@ -142,7 +144,6 @@ namespace Rocket
                     }
                 }
             }
-            Console.WriteLine("Fixed static hash");
         }
 
         public static byte[] combine(params byte[][] r)

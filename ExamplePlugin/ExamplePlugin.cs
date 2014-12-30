@@ -22,11 +22,10 @@ namespace ExamplePlugin
         void RocketPlugin.Load()
         {
             Logger.Log("This is the Testmod load()!" + configuration.bla);
-            Core.Commands.Add(new CommandTest());
+            RocketAPI.Commands.RegisterCommand(new CommandTest());
 
-            SDG.Steam.serverConnected += onPlayerConnected;
-            SDG.Steam.serverDisconnected += onPlayerDisconnected;
-
+            RocketAPI.Events.PlayerConnected += onPlayerConnected;
+            RocketAPI.Events.PlayerDisconnected += onPlayerDisconnected;
         }
 
         static void onPlayerConnected(CSteamID id)
@@ -38,6 +37,5 @@ namespace ExamplePlugin
         {
             Logger.Log("onPlayerDisconnected");
         }
-
     }
 }
