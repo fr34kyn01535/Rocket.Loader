@@ -7,6 +7,7 @@ using System.IO;
 using SDG;
 using Steamworks;
 using System.Collections;
+using System.Timers;
 namespace Rocket.RocketAPI
 {
     public class Bootstrap : MonoBehaviour
@@ -36,7 +37,6 @@ namespace Rocket.RocketAPI
 
         public static void InitializeBootstrap()
         {
-          
             try
             {
                 ESteamSecurity security;
@@ -44,7 +44,7 @@ namespace Rocket.RocketAPI
 
                 if (!Directory.Exists("Servers/" + Bootstrap.InstanceName + "/Rocket/")) Directory.CreateDirectory("Servers/" + Bootstrap.InstanceName + "/Rocket/");
                 if (!Directory.Exists("Servers/" + Bootstrap.InstanceName + "/Rocket/Plugins/")) Directory.CreateDirectory("Servers/" + Bootstrap.InstanceName + "/Rocket/Plugins/");
-            
+
                 UnityEngine.Object.Destroy(RocketAPIObject);
                 RocketAPIObject = new GameObject(instance.GetType().FullName);
                 RocketAPIObject.AddComponent(instance.GetType());

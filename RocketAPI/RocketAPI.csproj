@@ -98,7 +98,8 @@
     <Compile Include="Bootstrap.cs" />
     <Compile Include="CommandPlugins.cs" />
     <Compile Include="CommandReload.cs" />
-    <Compile Include="CommandReloot.cs" />
+    <Compile Include="CommandCheck.cs" />
+    <Compile Include="RocketCommand.cs" />
     <Compile Include="RocketConfiguration.cs" />
     <Compile Include="RocketPlugin.cs" />
     <Compile Include="Logging.cs" />

@@ -41,16 +41,26 @@ namespace Rocket.RocketAPI
             }
         }
 
+
         public static bool CheckPermissions(SteamPlayer a, string w)
         {
             Regex r = new Regex("^\\/[a-zA-Z]*");
-            String command = r.Match(w).Value.ToString().TrimStart('/');
+            String commandstring = r.Match(w).Value.ToString().TrimStart('/');
 
             foreach(Group group in Groups){
-                if (a.Admin || (
-                    (group.Name.ToLower() == "default" || group.Members.Contains(a.ToString().ToLower())) &&
-                    group.Commands.Contains(command.ToLower())))
+                if (
+                        a.Admin || 
+                        ((group.Name.ToLower() == "default" || group.Members.Contains(a.ToString().ToLower())) && group.Commands.Contains(commandstring.ToLower()))
+                    )
                 {
+
+                    /*Execute RocketCommand if there is one*/
+                    RocketCommand command = Core.Commands.Where(c =>c.Name.ToLower() == commandstring).FirstOrDefault();
+                    if (command != null) {
+                        command.Execute(a.SteamPlayerId,w);
+                        return false;
+                    }
+
                     return true;
                 }
             }

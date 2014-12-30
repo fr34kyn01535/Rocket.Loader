@@ -9,32 +9,21 @@ using System.Web.Script.Serialization;
 
 namespace ExamplePlugin
 {
-    class CommandTest : Command
+    class CommandTest : RocketCommand
     {
-
-        public CommandTest()
+        public void Execute(SteamPlayerID caller, string command)
         {
-            base.commandName = "test";
-            base.commandInfo = "testcmd - testinfo";
-            base.commandHelp = "testcmd - testhelp";
+            ChatManager.say("Test");
         }
 
-
-        protected override void execute(SteamPlayerID m, string s)
+        public string Name
         {
-            ItemManager i = new ItemManager();
-            if (s.Contains("1"))
-            {
-                i.W();
-            }
-            if (s.Contains("2"))
-            {
-                i.g();
-            }
-            if (s.Contains("3"))
-            {
-                i.P();
-            }
+            get { return "Test"; }
+        }
+
+        public string Help
+        {
+            get { return "This is a helpmessage"; }
         }
     }
 }

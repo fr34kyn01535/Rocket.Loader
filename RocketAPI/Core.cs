@@ -7,6 +7,8 @@ using System.Reflection;
 using UnityEngine;
 using SDG;
 using System.Collections.Generic;
+using Steamworks;
+using System.Timers;
 
 
 namespace Rocket.RocketAPI
@@ -15,7 +17,7 @@ namespace Rocket.RocketAPI
     {
         public static String Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static List<RocketPlugin> Plugins = new List<RocketPlugin>();
-
+        public static List<RocketCommand> Commands = new List<RocketCommand>();
         public Core()
         {
             Logger.LogError("".PadLeft(80, '.'));
@@ -28,18 +30,18 @@ namespace Rocket.RocketAPI
 
             Logger.LogError("".PadLeft(80, '.'));
 
-            LoadPlugins();
-        }
+            Initialize(); 
+        } 
 
-        public void LoadPlugins()
+        public void Initialize()
         {
             Permissions.Load();
-            Commander.init();
             Plugins.Clear();
+            Commands.Clear();
 
-            Commands.RegisterCommand(new CommandReload());
-            Commands.RegisterCommand(new CommandPlugins());
-            /*Commands.RegisterCommand(new CommandReloot());*/
+            Commands.Add(new CommandReload());
+            Commands.Add(new CommandPlugins());
+            Commands.Add(new CommandCheck());
 
             loadPlugins();
         }
