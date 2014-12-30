@@ -93,7 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CommandTeleport.cs" />
-    <Compile Include="Managers\EventManager.cs" />
+    <Compile Include="Managers\EventManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Managers\PluginManager.cs" />
     <Compile Include="Managers\PermissionManager.cs" />
     <Compile Include="Managers\CommandManager.cs" />
