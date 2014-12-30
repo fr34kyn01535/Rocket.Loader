@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Rocket.RocketAPI.Commands
 {
-    class CommandCheck : RocketCommand
+    class CommandTeleport : RocketCommand
     {
         public void Execute(SteamPlayerID caller, string command)
         {
