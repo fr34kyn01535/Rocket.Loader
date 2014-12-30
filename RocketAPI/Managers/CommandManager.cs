@@ -12,9 +12,7 @@ namespace Rocket.RocketAPI
         internal List<RocketCommand> commands = new List<RocketCommand>();
         public CommandManager()
         {
-            RegisterCommand(new CommandReload());
-            RegisterCommand(new CommandPlugins());
-            RegisterCommand(new CommandCheck());
+            Reload();
         }
 
         public void RegisterCommand(RocketCommand command)
@@ -29,6 +27,10 @@ namespace Rocket.RocketAPI
         internal void Reload()
         {
             commands.Clear();
+
+            RegisterCommand(new CommandReload());
+            RegisterCommand(new CommandPlugins());
+            RegisterCommand(new CommandCheck());
         }
     }
 }

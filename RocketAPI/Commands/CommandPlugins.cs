@@ -10,7 +10,7 @@ namespace Rocket.RocketAPI.Commands
     {
         public void Execute(SteamPlayerID m, string s)
         {
-            string message = "Plugins: " + string.Join(",", RocketAPI.Plugins.plugins.Select(x => x.GetType().Assembly.GetName().Name).ToArray());
+            string message = "Plugins: " + string.Join(", ", RocketAPI.Plugins.plugins.Select(x => x.GetType().Assembly.GetName().Name).ToArray());
             ChatManager.say(m.SteamId, message);
         }
 
