@@ -11,21 +11,26 @@ namespace Rocket.RocketAPI.Commands
     {
         public void Execute(SteamPlayerID caller, string command)
         {
+            SteamPlayer fromPlayer = PlayerTool.getSteamPlayer(caller.CSteamId);
+
+
             SteamPlayerID steamPlayerID = null;
             SteamPlayerlist.tryGetPlayer(command, out steamPlayerID);
-            Logger.Log("y:"+steamPlayerID);
-            if (steamPlayerID != null)
+            if (steamPlayerID == null)
             {
-                Logger.Log("x");
-                SteamPlayer fromPlayer = PlayerTool.getSteamPlayer(caller.SteamId);
-                SteamPlayer toPlayer = PlayerTool.getSteamPlayer(steamPlayerID.SteamId);
-                Logger.Log("ok");
+                return;
+            }
+
+            Logger.Log("ok");
+            SteamPlayer toPlayer = PlayerTool.getSteamPlayer(steamPlayerID.CSteamId);
+
                 Logger.Log("ok2" + toPlayer.Player.name);
                 Vector3 d1 = toPlayer.Player.transform.position;
                 Logger.Log("ok1");
                 Vector3 vector31 = toPlayer.Player.transform.rotation.eulerAngles;
                 fromPlayer.Player.sendTeleport(d1, MeasurementTool.angleToByte(vector31.y));
-            }
+            
+            Logger.Log("xx:");
         }
 
 

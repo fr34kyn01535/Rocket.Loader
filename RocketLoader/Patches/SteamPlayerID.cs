@@ -11,7 +11,7 @@ namespace Rocket.Patches
         public void Apply()
         {
             TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.SteamPlayerID");
-            PatchHelper.UnlockByType(t, "Steamworks.CSteamID", "SteamId", 0);
+            PatchHelper.UnlockByType(t, "Steamworks.CSteamID", "CSteamId", 1);
         }
     }
 }

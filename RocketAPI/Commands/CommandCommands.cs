@@ -10,10 +10,10 @@ namespace Rocket.RocketAPI.Commands
     {
         public void Execute(SteamPlayerID m, string s)
         {
-            ChatManager.say(m.SteamId, "Commands: ");
+            ChatManager.say(m.CSteamId, "Commands: ");
             foreach (RocketCommand cmd in RocketAPI.Commands.commands)
             {
-                ChatManager.say(m.SteamId, cmd.Name+": " +cmd.Help);
+                ChatManager.say(m.CSteamId, cmd.Name+": " +cmd.Help);
             }
         }
 
