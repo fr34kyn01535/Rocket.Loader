@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandCommands.cs" />
     <Compile Include="Commands\CommandTeleport.cs" />
     <Compile Include="Managers\EventManager.cs">
       <SubType>Code</SubType>

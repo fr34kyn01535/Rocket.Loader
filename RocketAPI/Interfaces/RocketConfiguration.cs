@@ -35,7 +35,20 @@ namespace Rocket.RocketAPI
             if (File.Exists(filename))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(T));
-                return (T)serializer.Deserialize(new StreamReader(filename));
+
+                T output = default(T);
+
+                using (StreamReader reader = new StreamReader(filename))
+                {
+                    output = (T)serializer.Deserialize(reader);
+                }
+
+               /* using (TextWriter writer = new StreamWriter(filename))
+                {
+                    serializer.Serialize(writer, output);
+                }
+                */
+                return output;
             }
             else
             {

@@ -6,7 +6,7 @@ using SDG;
 
 namespace Rocket.RocketAPI.Commands
 {
-    class CommandPlugins : RocketCommand
+    class CommandCommands : RocketCommand
     {
         public void Execute(SteamPlayerID m, string s)
         {

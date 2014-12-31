@@ -34,7 +34,15 @@ namespace Rocket.RocketAPI
 
         internal void Reload()
         {
-            throw new NotImplementedException();
+            foreach (Delegate d in PlayerConnected.GetInvocationList())
+            {
+                PlayerConnected -= (Steam.ServerConnected)d;
+            }
+
+            foreach (Delegate d in PlayerDisconnected.GetInvocationList())
+            {
+                PlayerDisconnected -= (Steam.ServerDisconnected)d;
+            }
         }
     }
 }
