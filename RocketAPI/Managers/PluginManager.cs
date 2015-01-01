@@ -31,20 +31,20 @@ namespace Rocket.RocketAPI.Managers
                 try
                 {
                     AssemblyName name = AssemblyName.GetAssemblyName(library.FullName);
-                    libraries.Add(name.FullName, library.FullName);
+                    additionalLibraries.Add(name.FullName, library.FullName);
                     //Logger.Log(library.FullName + " is " + name.FullName);
                 }
                 catch { } 
             }
         }
 
-        private Dictionary<string, string> libraries = new Dictionary<string, string>();
+        private Dictionary<string, string> additionalLibraries = new Dictionary<string, string>();
 
         private Assembly resolveHandler(object sender, ResolveEventArgs args)
         {
             //Logger.Log("Trying to get " + args.Name);
             string file;
-            if (libraries.TryGetValue(args.Name, out file))
+            if (additionalLibraries.TryGetValue(args.Name, out file))
             {
                 return Assembly.LoadFrom(file);
             }
@@ -110,7 +110,7 @@ namespace Rocket.RocketAPI.Managers
 
         internal void Reload()
         {
-            libraries.Clear()
+            additionalLibraries.Clear();
             plugins.Clear();
 
             loadLibraries();
