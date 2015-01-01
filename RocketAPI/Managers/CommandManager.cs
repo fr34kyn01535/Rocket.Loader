@@ -16,6 +16,10 @@ namespace Rocket.RocketAPI
             Reload();
         }
 
+        /// <summary>
+        /// This methods allows you to register a new RocketCommand
+        /// </summary>
+        /// <param name="command">The RocketCommand to register</param>
         public void RegisterCommand(RocketCommand command)
         {
             if (commands.Select(c => c.Name.ToLower()).ToList().Contains(command.Name.ToLower())){

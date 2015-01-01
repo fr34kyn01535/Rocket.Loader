@@ -13,11 +13,26 @@ using System.Timers;
 
 namespace Rocket.RocketAPI
 {
+    /// <summary>
+    /// This is the core class for the RocketAPI
+    /// </summary>
     public class RocketAPI
     {
+        /// <summary>
+        /// CommandManager
+        /// </summary>
         public static CommandManager Commands;
+        /// <summary>
+        /// PermissionManager
+        /// </summary>
         public static PermissionManager Permissions;
+        /// <summary>
+        /// PluginManager
+        /// </summary>
         public static PluginManager Plugins;
+        /// <summary>
+        /// EventManager
+        /// </summary>
         public static EventManager Events;
 
         public RocketAPI()

@@ -8,8 +8,16 @@ using System.Xml.Serialization;
 
 namespace Rocket.RocketAPI
 {
+    /// <summary>
+    /// This is the interface for commands
+    /// </summary>
     public interface RocketCommand
     {
+        /// <summary>
+        /// This is the method that will be run when the command is executed
+        /// </summary>
+        /// <param name="caller">The SteamPlayerID of the caller</param>
+        /// <param name="command">The full commandstring</param>
         void Execute(SteamPlayerID caller, string command);
 
         string Name { get; }

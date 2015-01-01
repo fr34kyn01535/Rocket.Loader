@@ -9,7 +9,13 @@ namespace Rocket.RocketAPI
 {
     public class EventManager
     {
+        /// <summary>
+        /// PlayerConnected Event
+        /// </summary>
         public event Steam.ServerConnected PlayerConnected;
+        /// <summary>
+        /// PlayerDisconnected Event
+        /// </summary>
         public event Steam.ServerDisconnected PlayerDisconnected;
 
         private Dictionary<string,DateTime> players = new Dictionary<string,DateTime>();

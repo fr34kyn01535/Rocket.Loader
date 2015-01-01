@@ -7,10 +7,12 @@ using System.Xml.Serialization;
 
 namespace Rocket.RocketAPI
 {
+    /// <summary>
+    /// This is the inheritable class for configurations
+    /// </summary>
     public class RocketConfiguration
     {
         private static string configFile = "{0}Plugins/{1}.config";
-
         public static void SaveConfiguration<T>(bool overwrite = true){
             string filename = String.Format(configFile, Bootstrap.HomeFolder, typeof(T).Assembly.GetName().Name);
 
@@ -28,7 +30,11 @@ namespace Rocket.RocketAPI
                 }
             }
         }
-
+        /// <summary>
+        /// This method allowes to load the configuration from file
+        /// </summary>
+        /// <typeparam name="T">A type that inherits from RocketConfiguration and has all the custom configuration options members</typeparam>
+        /// <returns>Tha class with the values set either to the values from the config, or if not found set to default</returns>
         public static T LoadConfiguration<T>()
         {
             string filename = String.Format(configFile, Bootstrap.HomeFolder, typeof(T).Assembly.GetName().Name);

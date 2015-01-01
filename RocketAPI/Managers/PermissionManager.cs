@@ -46,23 +46,28 @@ namespace Rocket.RocketAPI
                 groups = defaultGroups;
             }
         }
-
-        public static bool CheckPermissions(SteamPlayer a, string w)
+        /// <summary>
+        /// This method checks if a player has a specific permission
+        /// </summary>
+        /// <param name="player">The player to check on</param>
+        /// <param name="permission">The permission to check</param>
+        /// <returns></returns>
+        public static bool CheckPermissions(SteamPlayer player, string permission)
         {
             Regex r = new Regex("^\\/[a-zA-Z]*");
-            String commandstring = r.Match(w).Value.ToString().TrimStart('/');
+            String commandstring = r.Match(permission).Value.ToString().TrimStart('/');
 
             foreach(Group group in RocketAPI.Permissions.groups){
                 if (
                         a.Admin || 
-                        ((group.Name.ToLower() == "default" || group.Members.Contains(a.ToString().ToLower())) && group.Commands.Contains(commandstring.ToLower()))
+                        ((group.Name.ToLower() == "default" || group.Members.Contains(player.SteamPlayerId.ToString().ToLower())) && group.Commands.Contains(commandstring.ToLower()))
                     )
                 {
 
                     /*Execute RocketCommand if there is one*/
                     RocketCommand command = RocketAPI.Commands.commands.Where(c => c.Name.ToLower() == commandstring).FirstOrDefault();
                     if (command != null) {
-                        command.Execute(a.SteamPlayerId,w);
+                        command.Execute(player.SteamPlayerId, permission);
                         return false;
                     }
 
