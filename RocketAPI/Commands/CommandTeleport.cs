@@ -15,26 +15,56 @@ namespace Rocket.RocketAPI.Commands
 
 
 
-            SteamPlayer fromPlayer = PlayerTool.getSteamPlayer(caller.CSteamId);
-
-
-            SteamPlayerID steamPlayerID = null;
-            SteamPlayerlist.tryGetPlayer(command, out steamPlayerID);
-            if (steamPlayerID == null)
+            SteamPlayer steamPlayer;
+            if (SteamPlayerlist.tryGetSteamPlayer(command, out steamPlayer))
             {
+                ChatManager.say(caller.CSteamId, "test");
+            }
+            else
+            {
+                ChatManager.say(caller.CSteamId, "Failed to find player");
+            }
+
+
+
+
+
+
+
+
+            string[] commandArray = command.Split(' ');
+
+            if (commandArray.Length < 2)
+            {
+                ChatManager.say(caller.CSteamId, "Missing arguments");
                 return;
             }
 
             Logger.Log("ok");
-            SteamPlayer toPlayer = PlayerTool.getSteamPlayer(steamPlayerID.CSteamId);
+            SteamPlayer fromPlayer = PlayerTool.getSteamPlayer(caller.CSteamId);
 
-                Logger.Log("ok2" + toPlayer.Player.name);
-                Vector3 d1 = toPlayer.Player.transform.position;
-                Logger.Log("ok1");
-                Vector3 vector31 = toPlayer.Player.transform.rotation.eulerAngles;
-                fromPlayer.Player.sendTeleport(d1, MeasurementTool.angleToByte(vector31.y));
-            
-            Logger.Log("xx:");
+            Logger.Log("fromthere" + command);
+
+            SteamPlayerID toPlayerID;
+            if (SteamPlayerlist.tryGetPlayer(command.ToLower().Replace(Name.ToLower() + " ", ""), out toPlayerID))
+            {
+                SteamPlayer toPlayer;
+                if (SteamPlayerlist.tryGetSteamPlayer(toPlayerID.CSteamId.ToString(), out toPlayer))
+                {
+                    Vector3 d1 = toPlayer.Player.transform.position;
+                    Logger.Log("ok1");
+                    Vector3 vector31 = toPlayer.Player.transform.rotation.eulerAngles;
+                    fromPlayer.Player.sendTeleport(d1, MeasurementTool.angleToByte(vector31.y));
+
+                    Logger.Log("xx:");
+                }
+            }
+            else
+            {
+                ChatManager.say(caller.CSteamId, "Failed to find player");
+            }
+
+
         }
 
 

@@ -46,7 +46,7 @@ namespace Rocket.RocketAPI.Managers
             string file;
             if (additionalLibraries.TryGetValue(args.Name, out file))
             {
-                return Assembly.LoadFrom(file);
+                return Assembly.Load(File.ReadAllBytes(file));
             }
             return null;
         }
@@ -60,7 +60,7 @@ namespace Rocket.RocketAPI.Managers
 
                 foreach (FileInfo library in pluginsLibraries)
                 {
-                    Assembly assembly = Assembly.LoadFile(library.FullName);
+                    Assembly assembly = Assembly.Load(File.ReadAllBytes(library.FullName));
                     Type[] types;
 
                     try
