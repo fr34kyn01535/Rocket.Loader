@@ -6,6 +6,7 @@ using Steamworks;
 using SDG;
 using Rocket.RocketAPI;
 using System.Reflection;
+using Rocket.RocketAPI.Interfaces;
 
 namespace ExamplePlugin
 {

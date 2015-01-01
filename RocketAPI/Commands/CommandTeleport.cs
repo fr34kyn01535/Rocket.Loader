@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SDG;
 using UnityEngine;
+using Rocket.RocketAPI.Interfaces;
 
 namespace Rocket.RocketAPI.Commands
 {

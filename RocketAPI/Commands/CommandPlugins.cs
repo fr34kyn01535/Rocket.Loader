@@ -3,25 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SDG;
+using Rocket.RocketAPI.Interfaces;
 
 namespace Rocket.RocketAPI.Commands
 {
     class CommandCommands : RocketCommand
     {
-        public void Execute(SteamPlayerID m, string s)
+        void RocketCommand.Execute(SteamPlayerID m, string s)
         {
             string message = "Plugins: " + string.Join(", ", RocketAPI.Plugins.plugins.Select(x => x.GetType().Assembly.GetName().Name).ToArray());
             ChatManager.say(m.CSteamId, message);
         }
 
-        public string Name
+        string RocketCommand.Name
         {
             get { return "Plugins"; }
         }
 
-        public string Help
+        string RocketCommand.Help
         {
             get { return "Shows all plugins"; }
         }
+
     }
 }

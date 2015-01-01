@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Rocket.RocketAPI
+namespace Rocket.RocketAPI.Interfaces
 {
     /// <summary>
     /// This is the inheritable class for configurations

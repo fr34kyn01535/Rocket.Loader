@@ -1,4 +1,5 @@
-﻿using SDG;
+﻿using Rocket.RocketAPI.Interfaces;
+using SDG;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
-namespace Rocket.RocketAPI
+namespace Rocket.RocketAPI.Managers
 {
     public class PermissionManager
     {

@@ -6,6 +6,7 @@ using SDG;
 using UnityEngine;
 using Rocket.RocketAPI;
 using System.Web.Script.Serialization;
+using Rocket.RocketAPI.Interfaces;
 
 namespace ExamplePlugin
 {

@@ -1,4 +1,5 @@
 ﻿using Rocket.RocketAPI.Commands;
+using Rocket.RocketAPI.Interfaces;
 using SDG;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Rocket.RocketAPI
+namespace Rocket.RocketAPI.Managers
 {
     public class CommandManager
     {
