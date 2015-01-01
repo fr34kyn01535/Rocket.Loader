@@ -14,7 +14,7 @@ namespace Rocket.RocketAPI.Managers
         internal List<RocketCommand> commands = new List<RocketCommand>();
         internal CommandManager()
         {
-            Reload();
+            loadCommands();
         }
 
         /// <summary>
@@ -30,10 +30,13 @@ namespace Rocket.RocketAPI.Managers
             commands.Add(command);
         }
 
-        internal void Reload()
-        {
+        internal void Reload() {
             commands.Clear();
+            loadCommands();
+        }
 
+        internal void loadCommands()
+        {
             IEnumerable<RocketCommand> commandTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
                           where t.GetInterfaces().Contains(typeof(RocketCommand)) && t.GetConstructor(Type.EmptyTypes) != null
                           select Activator.CreateInstance(t) as RocketCommand;

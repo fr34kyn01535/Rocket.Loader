@@ -13,8 +13,8 @@ namespace Rocket.RocketAPI.Commands
         void RocketCommand.Execute(SteamPlayerID caller, string command)
         {
             Bootstrap.RocketAPI.Reload();
-            Logger.Log("Reloaded Rocket");
-            ChatManager.say("Reloaded Rocket");
+            Logger.Log("Reloaded Rocket server mod");
+            ChatManager.say("Reloaded Rocket server mod");
         }
 
         string RocketCommand.Name
