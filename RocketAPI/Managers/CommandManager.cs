@@ -8,10 +8,13 @@ using System.Text;
 
 namespace Rocket.RocketAPI
 {
+    /// <summary>
+    /// CommandManager
+    /// </summary>
     public class CommandManager
     {
         internal List<RocketCommand> commands = new List<RocketCommand>();
-        public CommandManager()
+        internal CommandManager()
         {
             Reload();
         }

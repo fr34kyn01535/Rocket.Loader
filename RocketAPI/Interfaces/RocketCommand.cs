@@ -20,8 +20,14 @@ namespace Rocket.RocketAPI
         /// <param name="command">The full commandstring</param>
         void Execute(SteamPlayerID caller, string command);
 
+        /// <summary>
+        /// The actual commandname that triggers this command
+        /// </summary>
         string Name { get; }
 
+        /// <summary>
+        /// The helptext of this command
+        /// </summary>
         string Help { get; }
     }
 }

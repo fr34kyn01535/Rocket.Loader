@@ -9,6 +9,9 @@ using System.Xml.Serialization;
 
 namespace Rocket.RocketAPI
 {
+    /// <summary>
+    /// PermissionManager
+    /// </summary>
     public class PermissionManager
     {
         private string permissionsFile = Bootstrap.HomeFolder + "Permissions.config";
@@ -16,7 +19,7 @@ namespace Rocket.RocketAPI
         private List<Group> defaultGroups = new List<Group>() { new Group("default", new List<string>() { "76561198016438091" }, new List<string>() { "plugins", "vote", "reward" }) };
         internal List<Group> groups = null;
 
-        public PermissionManager()
+        internal PermissionManager()
         {
             loadPermissions();
         }
@@ -59,7 +62,7 @@ namespace Rocket.RocketAPI
 
             foreach(Group group in RocketAPI.Permissions.groups){
                 if (
-                        a.Admin || 
+                        player.Admin || 
                         ((group.Name.ToLower() == "default" || group.Members.Contains(player.SteamPlayerId.ToString().ToLower())) && group.Commands.Contains(commandstring.ToLower()))
                     )
                 {
@@ -82,20 +85,20 @@ namespace Rocket.RocketAPI
             loadPermissions();
         }
     }
-    public class Group
+    internal class Group
     {
-        public Group() { }
-        public Group(string name, List<string> members, List<string> commands)
+        internal Group() { }
+        internal Group(string name, List<string> members, List<string> commands)
         {
             Name = name;
             Members = members;
             Commands = commands;
         }
-        public string Name;
+        internal string Name;
         [XmlArrayItem(ElementName="Member")]
-        public List<string> Members;
+        internal List<string> Members;
         [XmlArrayItem(ElementName = "Command")]
-        public List<string> Commands;
+        internal List<string> Commands;
     }
 
 

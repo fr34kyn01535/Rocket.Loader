@@ -13,6 +13,7 @@ namespace Rocket.RocketAPI
         /// PlayerConnected Event
         /// </summary>
         public event Steam.ServerConnected PlayerConnected;
+
         /// <summary>
         /// PlayerDisconnected Event
         /// </summary>
@@ -20,7 +21,7 @@ namespace Rocket.RocketAPI
 
         private Dictionary<string,DateTime> players = new Dictionary<string,DateTime>();
 
-        public EventManager()
+        internal EventManager()
         {
             SDG.Steam.serverConnected += onPlayerConnected;
             SDG.Steam.serverDisconnected += onPlayerDisconnected;

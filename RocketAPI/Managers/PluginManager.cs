@@ -8,11 +8,14 @@ using System.Text;
 
 namespace Rocket.RocketAPI
 {
+    /// <summary>
+    /// PluginManager
+    /// </summary>
     public class PluginManager
     {
         internal List<RocketPlugin> plugins = new List<RocketPlugin>();
-        
-        public PluginManager()
+
+        internal PluginManager()
         {
             loadPlugins();
         }

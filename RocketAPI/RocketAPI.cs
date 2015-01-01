@@ -35,7 +35,7 @@ namespace Rocket.RocketAPI
         /// </summary>
         public static EventManager Events;
 
-        public RocketAPI()
+        internal RocketAPI()
         {
             Logger.LogError("".PadLeft(80, '.'));
             Logger.LogError(@"                        ______           _        _ ");
@@ -52,7 +52,7 @@ namespace Rocket.RocketAPI
             Events = new EventManager();
         }
 
-        public void Reload()
+        internal void Reload()
         {
             Commands.Reload();
             Permissions.Reload();

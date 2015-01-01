@@ -10,15 +10,14 @@ using System.Collections;
 using System.Timers;
 namespace Rocket.RocketAPI
 {
-    public static class Bootstrap
+    internal static class Bootstrap
     {
-        public static GameObject RocketAPIObject;
-        public static RocketAPI RocketAPI;
+        internal static RocketAPI RocketAPI;
 
-        public static string InstanceName;
-        public static string HomeFolder;
+        internal static string InstanceName;
+        internal static string HomeFolder;
 
-        public static void LaunchRocket()
+        internal static void LaunchRocket()
         {
             try
             {
@@ -37,7 +36,7 @@ namespace Rocket.RocketAPI
         }
 
         /*This method will be injected into Unturned, do not touch!*/
-        public static System.Byte[] getAssemblyHash()
+        static System.Byte[] getAssemblyHash()
         {
             byte[] b = new System.Byte[20];
             return b;

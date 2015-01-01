@@ -7,21 +7,21 @@ using UnityEngine;
 
 namespace Rocket.RocketAPI.Commands
 {
-    public class CommandReload : RocketCommand
+    class CommandReload : RocketCommand
     {
-        public void Execute(SteamPlayerID caller, string command)
+        void RocketCommand.Execute(SteamPlayerID caller, string command)
         {
             Bootstrap.RocketAPI.Reload();
             Logger.Log("Reloaded Rocket");
             ChatManager.say("Reloaded Rocket");
         }
 
-        public string Name
+        string RocketCommand.Name
         {
             get { return "Reload"; }
         }
 
-        public string Help
+        string RocketCommand.Help
         {
             get { return "Re-initializes all plugins"; }
         }
