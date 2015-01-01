@@ -56,7 +56,7 @@ namespace Rocket.RocketAPI.Managers
         public static bool CheckPermissions(SteamPlayer player, string permission)
         {
             Regex r = new Regex("^\\/[a-zA-Z]*");
-            String commandstring = r.Match(permission).Value.ToString().TrimStart('/');
+            String commandstring = r.Match(permission.ToLower()).Value.ToString().TrimStart('/');
 
             foreach(Group group in RocketAPI.Permissions.groups){
                 if (

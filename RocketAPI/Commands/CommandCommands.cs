@@ -20,7 +20,7 @@ namespace Rocket.RocketAPI.Commands
 
         public string Name
         {
-            get { return "Commands"; }
+            get { return "commands"; }
         }
 
         public string Help

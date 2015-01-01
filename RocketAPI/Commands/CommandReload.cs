@@ -19,7 +19,7 @@ namespace Rocket.RocketAPI.Commands
 
         string RocketCommand.Name
         {
-            get { return "Reload"; }
+            get { return "reload"; }
         }
 
         string RocketCommand.Help

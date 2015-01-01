@@ -94,7 +94,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CommandCommands.cs" />
-    <Compile Include="Commands\CommandTeleport.cs" />
+    <Compile Include="Commands\CommandTphere.cs" />
+    <Compile Include="Commands\CommandTp.cs" />
     <Compile Include="Managers\ConfigurationManager.cs" />
     <Compile Include="Managers\EventManager.cs">
       <SubType>Code</SubType>

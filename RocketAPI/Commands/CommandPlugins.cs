@@ -17,7 +17,7 @@ namespace Rocket.RocketAPI.Commands
 
         string RocketCommand.Name
         {
-            get { return "Plugins"; }
+            get { return "plugins"; }
         }
 
         string RocketCommand.Help
