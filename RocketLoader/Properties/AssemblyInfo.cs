@@ -8,29 +8,11 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("RocketLoader")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Rocket")]
 [assembly: AssemblyProduct("RocketLoader")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
-// Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly unsichtbar 
-// für COM-Komponenten.  Wenn Sie auf einen Typ in dieser Assembly von 
-// COM zugreifen müssen, legen Sie das ComVisible-Attribut für diesen Typ auf "true" fest.
 [assembly: ComVisible(false)]
-
-// Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
 [assembly: Guid("024a9e2f-f5d3-4d3c-a0b1-4fd9df56f17f")]
-
-// Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
-//
-//      Hauptversion
-//      Nebenversion 
-//      Buildnummer
-//      Revision
-//
-// Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
-// übernehmen, indem Sie "*" eingeben:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
