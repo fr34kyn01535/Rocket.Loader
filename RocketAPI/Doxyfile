@@ -1,3 +1,4 @@
 ﻿@INCLUDE_PATH = RocketAPI.xml
-PROJECT_NAME = RocketAPI
-PROJECT_BRIEF = Rocket is an extensible Unturned Server Mod that allows server administrators to add custom functionality to their servers.
+PROJECT_NAME = 'RocketAPI'
+HIDE_UNDOC_MEMBERS = YES
+EXTRACT_ALL = YES
