@@ -7,9 +7,6 @@ using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
-    /// <summary>
-    /// Logger
-    /// </summary>
     public static class Logger
     {
         /// <summary>

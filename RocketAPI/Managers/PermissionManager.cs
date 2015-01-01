@@ -9,9 +9,6 @@ using System.Xml.Serialization;
 
 namespace Rocket.RocketAPI
 {
-    /// <summary>
-    /// PermissionManager
-    /// </summary>
     public class PermissionManager
     {
         private string permissionsFile = Bootstrap.HomeFolder + "Permissions.config";
