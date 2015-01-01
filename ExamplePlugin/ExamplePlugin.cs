@@ -7,13 +7,13 @@ using SDG;
 using Rocket.RocketAPI;
 using System.Reflection;
 using Rocket.RocketAPI.Interfaces;
+using Rocket.RocketAPI.Managers;
 
 namespace ExamplePlugin
 {
     public class ExamplePlugin : RocketPlugin
     {
-
-        private ExampleConfiguration configuration = RocketConfiguration.LoadConfiguration<ExampleConfiguration>();
+        private ExampleConfiguration configuration = ConfigurationManager.LoadConfiguration<ExampleConfiguration>();
      
         string RocketPlugin.Author
         {

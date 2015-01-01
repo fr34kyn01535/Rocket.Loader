@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="Commands\CommandCommands.cs" />
     <Compile Include="Commands\CommandTeleport.cs" />
+    <Compile Include="Managers\ConfigurationManager.cs" />
     <Compile Include="Managers\EventManager.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -106,7 +107,6 @@
     <Compile Include="Commands\CommandPlugins.cs" />
     <Compile Include="Commands\CommandReload.cs" />
     <Compile Include="Interfaces\RocketCommand.cs" />
-    <Compile Include="Interfaces\RocketConfiguration.cs" />
     <Compile Include="Interfaces\RocketPlugin.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

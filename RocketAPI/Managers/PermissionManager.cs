@@ -83,20 +83,20 @@ namespace Rocket.RocketAPI.Managers
             loadPermissions();
         }
     }
-    internal class Group
+    public class Group
     {
-        internal Group() { }
-        internal Group(string name, List<string> members, List<string> commands)
+        public Group() { }
+        public Group(string name, List<string> members, List<string> commands)
         {
             Name = name;
             Members = members;
             Commands = commands;
         }
-        internal string Name;
+        public string Name;
         [XmlArrayItem(ElementName="Member")]
-        internal List<string> Members;
+        public List<string> Members;
         [XmlArrayItem(ElementName = "Command")]
-        internal List<string> Commands;
+        public List<string> Commands;
     }
 
 

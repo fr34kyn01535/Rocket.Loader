@@ -17,7 +17,7 @@ namespace Rocket.RocketAPI
         internal static string InstanceName;
         internal static string HomeFolder;
 
-        internal static void LaunchRocket()
+        public static void LaunchRocket()
         {
             try
             {

@@ -12,7 +12,7 @@ namespace Rocket.RocketAPI.Managers
     public class PluginManager
     {
         internal List<RocketPlugin> plugins = new List<RocketPlugin>();
-
+        
         internal PluginManager()
         {
             loadPlugins();

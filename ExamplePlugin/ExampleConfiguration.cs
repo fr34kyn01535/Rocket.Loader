@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ExamplePlugin
 {
-    public class ExampleConfiguration : RocketConfiguration
+    public class ExampleConfiguration
     {
         public string name = "test";
         public int bla = 42;

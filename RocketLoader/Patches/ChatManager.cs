@@ -18,7 +18,7 @@ namespace Rocket.Patches
 
 
 
-            TypeDefinition loaderType = RocketLoader.LoaderAssembly.MainModule.GetType("Rocket.RocketAPI.PermissionManager");
+            TypeDefinition loaderType = RocketLoader.LoaderAssembly.MainModule.GetType("Rocket.RocketAPI.Managers.PermissionManager");
             MethodDefinition checkPermissions = RocketLoader.GetMethod(loaderType, "CheckPermissions");
 
 

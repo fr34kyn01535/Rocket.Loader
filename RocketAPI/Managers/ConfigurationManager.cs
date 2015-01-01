@@ -1,16 +1,17 @@
-﻿using System;
+﻿using Rocket.RocketAPI.Commands;
+using Rocket.RocketAPI.Interfaces;
+using SDG;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Rocket.RocketAPI.Interfaces
+namespace Rocket.RocketAPI.Managers
 {
-    /// <summary>
-    /// This is the inheritable class for configurations
-    /// </summary>
-    public class RocketConfiguration
+    public class ConfigurationManager
     {
         private static string configFile = "{0}Plugins/{1}.config";
         private static void saveConfiguration<T>(bool overwrite = true)
@@ -50,11 +51,11 @@ namespace Rocket.RocketAPI.Interfaces
                     output = (T)serializer.Deserialize(reader);
                 }
 
-               /* using (TextWriter writer = new StreamWriter(filename))
-                {
-                    serializer.Serialize(writer, output);
-                }
-                */
+                /* using (TextWriter writer = new StreamWriter(filename))
+                 {
+                     serializer.Serialize(writer, output);
+                 }
+                 */
                 return output;
             }
             else
