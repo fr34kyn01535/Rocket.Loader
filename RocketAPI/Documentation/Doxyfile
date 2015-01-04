@@ -5,4 +5,4 @@ EXTRACT_ALL = YES
 INPUT = RocketAPI
 RECURSIVE = YES
 GENERATE_LATEX = NO
-HTML_EXTRA_STYLESHEET = RocketAPI/bin/Release/doxygen.css
+HTML_EXTRA_STYLESHEET = RocketAPI/bin/Release/Documentation/doxygen.css

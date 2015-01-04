@@ -14,7 +14,7 @@ namespace Rocket
 {
     public class RocketLoader
     {
-        public static AssemblyDefinition UnturnedAssembly, LoaderAssembly;
+        public static AssemblyDefinition UnturnedAssembly, LoaderAssembly, APIAssembly;
 
         static void Main(string[] args)
         {
@@ -23,7 +23,8 @@ namespace Rocket
             try
             {
                 UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
-                LoaderAssembly = AssemblyDefinition.ReadAssembly("RocketAPI.dll");
+                APIAssembly = AssemblyDefinition.ReadAssembly("RocketAPI.dll");
+                LoaderAssembly = AssemblyDefinition.ReadAssembly(System.Reflection.Assembly.GetExecutingAssembly().Location);
             }
             catch (Exception e)
             {
@@ -31,8 +32,7 @@ namespace Rocket
                 Console.ReadKey();
                 Environment.Exit(1);
             }
-
-            attachBootstrap();
+            attachRocket();
             fixHash();
 
             var patches = from t in Assembly.GetExecutingAssembly().GetTypes()
@@ -65,10 +65,10 @@ namespace Rocket
             ctor.Body.Instructions.Clear();
         }
 
-        private static void attachBootstrap()
+        private static void attachRocket()
         {
-            TypeDefinition loaderType = LoaderAssembly.MainModule.GetType("Rocket.RocketAPI.Bootstrap");
-            MethodDefinition initBootstrap = GetMethod(loaderType, "LaunchRocket");
+            TypeDefinition loaderType = APIAssembly.MainModule.GetType("Rocket.RocketAPI");
+            MethodDefinition launchRocket = GetMethod(loaderType, "LaunchRocket");
 
             TypeDefinition unturnedType = UnturnedAssembly.MainModule.GetType("SDG.Managers");
             MethodDefinition awake = GetMethod(unturnedType, "Awake");
@@ -78,7 +78,13 @@ namespace Rocket
                 Environment.Exit(0);
             }
 
-            awake.Body.GetILProcessor().InsertBefore(awake.Body.Instructions[0], Instruction.Create(OpCodes.Call, UnturnedAssembly.MainModule.Import(initBootstrap)));
+            awake.Body.GetILProcessor().InsertBefore(awake.Body.Instructions[0], Instruction.Create(OpCodes.Call, UnturnedAssembly.MainModule.Import(launchRocket)));
+        }
+
+        static System.Byte[] getAssemblyHash()
+        {
+            byte[] b = new System.Byte[20];
+            return b;
         }
 
         private static void fixHash()
@@ -108,7 +114,7 @@ namespace Rocket
 
 
             MethodDefinition unturnedMethod = GetMethod(UnturnedAssembly.MainModule.GetType("SDG.ReadWrite"), "getAssemblyHash");
-            MethodDefinition overrideMethod = GetMethod(LoaderAssembly.MainModule.GetType("Rocket.RocketAPI.Bootstrap"), "getAssemblyHash");
+            MethodDefinition overrideMethod = GetMethod(LoaderAssembly.MainModule.GetType("Rocket.RocketLoader"), "getAssemblyHash");
 
             TypeReference byteType = AssemblyDefinition.ReadAssembly("mscorlib.dll").MainModule.GetType("System.Byte");
 

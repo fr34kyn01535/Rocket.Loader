@@ -39,7 +39,7 @@ namespace Rocket.Patches
         /// <param name="name"></param>
         public static void UnlockByType(TypeDefinition t, string typeToUnlock, string name = null, int index = 0)
         {
-            FieldDefinition[] fields = t.Fields.Where(f => f.ToString().ToLower().Contains(typeToUnlock.ToLower())).ToArray();
+            FieldDefinition[] fields = t.Fields.Where(f => f.FieldType.Name.ToLower() == (typeToUnlock.ToLower())).ToArray();
 
             if (fields.Count() >= index + 1 && fields[index] != null)
             {
@@ -61,7 +61,7 @@ namespace Rocket.Patches
         /// <param name="name"></param>
         public static void UnlockByType(TypeDefinition t, string typeToUnlock, string[] names)
         {
-            FieldDefinition[] fields = t.Fields.Where(f => f.ToString().ToLower().Contains(typeToUnlock.ToLower())).ToArray();
+            FieldDefinition[] fields = t.Fields.Where(f => f.FieldType.Name.ToLower() == (typeToUnlock.ToLower())).ToArray();
             if (fields != null)
             {
                 for (int i = 0; i < names.Length; i++)

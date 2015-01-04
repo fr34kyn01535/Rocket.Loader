@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
-namespace Rocket.RocketAPI
+namespace Rocket
 {
-    public static class Logger
+    public class Logger : MonoBehaviour
     {
         /// <summary>
         /// Log an message to console
@@ -39,7 +36,7 @@ namespace Rocket.RocketAPI
 
         private static void logToFile(string message)
         {
-            StreamWriter streamWriter = new StreamWriter(Bootstrap.HomeFolder + "Rocket.log", true);
+            StreamWriter streamWriter = new StreamWriter(RocketAPI.HomeFolder + "Rocket.log", true);
             streamWriter.WriteLine(message);
             streamWriter.Close();
         }

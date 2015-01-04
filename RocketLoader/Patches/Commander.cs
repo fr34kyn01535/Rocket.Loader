@@ -11,7 +11,7 @@ namespace Rocket.Patches
         public void Apply()
         {
             TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.Commander");
-            PatchHelper.UnlockByType(t, "sdg.command[]", "commandList");
+            PatchHelper.UnlockByType(t, "command[]", "commandList");
         }
     }
 }

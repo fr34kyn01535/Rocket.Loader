@@ -1,22 +1,16 @@
-﻿using Rocket.RocketAPI.Commands;
-using Rocket.RocketAPI.Interfaces;
-using SDG;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Xml.Serialization;
+using UnityEngine;
 
-namespace Rocket.RocketAPI.Managers
+namespace Rocket
 {
-    public class ConfigurationManager
+    public class Configuration : MonoBehaviour
     {
         private static string configFile = "{0}Plugins/{1}.config";
         private static void saveConfiguration<T>(bool overwrite = true)
         {
-            string filename = String.Format(configFile, Bootstrap.HomeFolder, typeof(T).Assembly.GetName().Name);
+            string filename = String.Format(configFile, RocketAPI.HomeFolder, typeof(T).Assembly.GetName().Name);
 
             if (!Directory.Exists(Path.GetDirectoryName(filename)))
             {
@@ -32,6 +26,7 @@ namespace Rocket.RocketAPI.Managers
                 }
             }
         }
+
         /// <summary>
         /// This method allowes to load the configuration from file
         /// </summary>
@@ -39,7 +34,7 @@ namespace Rocket.RocketAPI.Managers
         /// <returns>Tha class with the values set either to the values from the config, or if not found set to default</returns>
         public static T LoadConfiguration<T>()
         {
-            string filename = String.Format(configFile, Bootstrap.HomeFolder, typeof(T).Assembly.GetName().Name);
+            string filename = String.Format(configFile, RocketAPI.HomeFolder, typeof(T).Assembly.GetName().Name);
             if (File.Exists(filename))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(T));

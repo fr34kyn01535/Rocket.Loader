@@ -1,37 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SDG;
+﻿using SDG;
 using UnityEngine;
-using Rocket.RocketAPI.Interfaces;
 
-namespace Rocket.RocketAPI.Commands
+namespace Rocket
 {
-    class CommandTp : RocketCommand
+    public class CommandTp : Command
     {
-        public void Execute(SteamPlayerID caller, string command)
+        public CommandTp() {
+            base.commandName = "tp";
+            base.commandInfo = base.commandHelp = "Teleports you to another player";
+        }
+
+        public override void execute(SteamPlayerID caller, string command)
         {
-            string[] commandArray = command.Split(' ');
-
-            if (commandArray.Length < 2)
-            {
-                ChatManager.say(caller.CSteamId, "Missing arguments");
-                return;
-            }
-
-            string message = "";
-            if (commandArray.Length > 2)
-            {
-                for (int i = 2; i < commandArray.Length; i++)
-                {
-                    if (i != 2) message += " ";
-                    message += commandArray[i];
-                }
-            }
-
+            if (command.Length < commandName.Length + 2) return;
             SteamPlayer otherPlayer;
-            if (SteamPlayerlist.tryGetSteamPlayer(command.Replace("/" + Name + " ", ""), out otherPlayer))
+            if (SteamPlayerlist.tryGetSteamPlayer(command.Substring(commandName.Length + 2), out otherPlayer) && otherPlayer.SteamPlayerId.CSteamId.ToString() != caller.CSteamId.ToString())
             {
                 SteamPlayer myPlayer = PlayerTool.getSteamPlayer(caller.CSteamId);
 
@@ -39,24 +22,12 @@ namespace Rocket.RocketAPI.Commands
                 Vector3 vector31 = otherPlayer.Player.transform.rotation.eulerAngles;
                 myPlayer.Player.sendTeleport(d1, MeasurementTool.angleToByte(vector31.y));
                 ChatManager.say(caller.CSteamId, "Teleported to " + otherPlayer.SteamPlayerId.IngameName);
-
             }
             else
             {
                 ChatManager.say(caller.CSteamId, "Failed to find player");
             }
 
-        }
-
-
-        public string Name
-        {
-            get { return "Tp"; }
-        }
-
-        public string Help
-        {
-            get { return "Teleports you to another player"; }
         }
     }
 }

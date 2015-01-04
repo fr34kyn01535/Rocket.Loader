@@ -13,16 +13,19 @@ namespace Rocket.Patches
         {
             TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.Player");
 
-            PatchHelper.UnlockByType(t, "sdg.playerinput", "playerInput");
-            PatchHelper.UnlockByType(t, "sdg.playerstance", "playerStance");
-            PatchHelper.UnlockByType(t, "sdg.playerequipment", "playerEquipment");
-            PatchHelper.UnlockByType(t, "sdg.playeranimator", "playerAnimator");
-            PatchHelper.UnlockByType(t, "sdg.playerhitbox", "playerHitbox");
-            PatchHelper.UnlockByType(t, "sdg.playermovement", "playerMovement");
-            PatchHelper.UnlockByType(t, "sdg.playerlook", "playerLook");
-            PatchHelper.UnlockByType(t, "sdg.playerclothing", "playerClothing");
-            PatchHelper.UnlockByType(t, "sdg.playerinventory", "playerInventory");
-            PatchHelper.UnlockByType(t, "sdg.playerlife", "playerLife");
+            PatchHelper.UnlockByType(t, "playerinput", "playerInput");
+            PatchHelper.UnlockByType(t, "playerstance", "playerStance");
+            PatchHelper.UnlockByType(t, "playerequipment", "playerEquipment");
+            PatchHelper.UnlockByType(t, "playeranimator", "playerAnimator");
+            PatchHelper.UnlockByType(t, "playerhitbox", "playerHitbox");
+            PatchHelper.UnlockByType(t, "playermovement", "playerMovement");
+            PatchHelper.UnlockByType(t, "playerlook", "playerLook");
+            PatchHelper.UnlockByType(t, "playerclothing", "playerClothing");
+            PatchHelper.UnlockByType(t, "playerinventory", "playerInventory");
+
+            PatchHelper.UnlockByType(t, "PlayerLife", "PlayerLife");
+            PatchHelper.UnlockByType(t, "Player", "Instance");
+
         }
     }
 }

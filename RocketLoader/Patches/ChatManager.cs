@@ -14,12 +14,12 @@ namespace Rocket.Patches
         {
             TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.ChatManager");
 
-            PatchHelper.UnlockByType(t, "sdg.chat[]", "chatLog");
+            PatchHelper.UnlockByType(t, "Chat[]", "chatLog");
 
 
 
-            TypeDefinition loaderType = RocketLoader.LoaderAssembly.MainModule.GetType("Rocket.RocketAPI.Managers.PermissionManager");
-            MethodDefinition checkPermissions = RocketLoader.GetMethod(loaderType, "CheckPermissions");
+            TypeDefinition loaderType = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketPermissionManager");
+             MethodDefinition checkPermissions = RocketLoader.GetMethod(loaderType, "CheckPermissions");
 
 
             MethodDefinition m = t.Methods.Where(p => p.Name == "process").FirstOrDefault();

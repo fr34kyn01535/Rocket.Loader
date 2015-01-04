@@ -93,36 +93,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CommandCommands.cs" />
     <Compile Include="Commands\CommandTphere.cs" />
     <Compile Include="Commands\CommandTp.cs" />
-    <Compile Include="Managers\ConfigurationManager.cs" />
-    <Compile Include="Managers\EventManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Managers\PluginManager.cs" />
-    <Compile Include="Managers\PermissionManager.cs" />
-    <Compile Include="Managers\CommandManager.cs" />
+    <Compile Include="Components\RocketComponent.cs" />
+    <Compile Include="Components\RocketPlayerComponent.cs" />
+    <Compile Include="Static Helper\Commands.cs" />
+    <Compile Include="Static Helper\Configuration.cs" />
+    <Compile Include="Manager\RocketPluginManager.cs" />
     <Compile Include="RocketAPI.cs" />
-    <Compile Include="Bootstrap.cs" />
-    <Compile Include="Commands\CommandPlugins.cs" />
-    <Compile Include="Commands\CommandReload.cs" />
-    <Compile Include="Interfaces\RocketCommand.cs" />
-    <Compile Include="Interfaces\RocketPlugin.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="Static Helper\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Manager\RocketPermissionManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Doxyfile">
+    <None Include="Documentation\Doxyfile">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="doxygen.css">
+    <Content Include="Documentation\doxygen.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

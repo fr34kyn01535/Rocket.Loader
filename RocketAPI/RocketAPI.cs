@@ -1,65 +1,47 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using System.Text;
+﻿using SDG;
+using System;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
-using SDG;
-using System.Collections.Generic;
-using Steamworks;
-using System.Timers;
-using Rocket.RocketAPI.Managers;
-
-
-namespace Rocket.RocketAPI
+namespace Rocket
 {
-    /// <summary>
-    /// This is the core class for the RocketAPI
-    /// </summary>
-    public class RocketAPI
+    public class RocketAPI : MonoBehaviour
     {
-        /// <summary>
-        /// CommandManager
-        /// </summary>
-        public static CommandManager Commands;
-        /// <summary>
-        /// PermissionManager
-        /// </summary>
-        public static PermissionManager Permissions;
-        /// <summary>
-        /// PluginManager
-        /// </summary>
-        public static PluginManager Plugins;
-        /// <summary>
-        /// EventManager
-        /// </summary>
-        public static EventManager Events;
+        public static string HomeFolder = "";
 
-        internal RocketAPI()
+        public static RocketAPI Instance;
+
+        public static void LaunchRocket()
         {
-            Logger.LogError("".PadLeft(80, '.'));
-            Logger.LogError(@"                        ______           _        _ ");
-            Logger.LogError(@"                        | ___ \         | |      | |");
-            Logger.LogError(@"                        | |_/ /___   ___| | _____| |_");
-            Logger.LogError(@"                        |    // _ \ / __| |/ / _ \ __|");
-            Logger.LogError(@"                        | |\ \ (_) | (__|   <  __/ |_");
-            Logger.LogError(@"                        \_| \_\___/ \___|_|\_\___|\__\ v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "\n");
-            Logger.LogError("".PadLeft(80, '.'));
-
-            Commands = new CommandManager();
-            Permissions = new PermissionManager();
-            Plugins = new PluginManager();
-            Events = new EventManager();
+            Instance = new GameObject().AddComponent<RocketAPI>();
         }
 
-        internal void Reload()
+        private void Awake()
         {
-            Commands.Reload();
-            Permissions.Reload();
-            Plugins.Reload();
-            Events.Reload();
+            try
+            {
+                DontDestroyOnLoad(transform.gameObject);
+                Logger.LogError("".PadLeft(80, '.'));
+                Logger.LogError(@"                        ______           _        _ ");
+                Logger.LogError(@"                        | ___ \         | |      | |");
+                Logger.LogError(@"                        | |_/ /___   ___| | _____| |_");
+                Logger.LogError(@"                        |    // _ \ / __| |/ / _ \ __|");
+                Logger.LogError(@"                        | |\ \ (_) | (__|   <  __/ |_");
+                Logger.LogError(@"                        \_| \_\___/ \___|_|\_\___|\__\ v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "\n");
+                Logger.LogError("".PadLeft(80, '.'));
+                HomeFolder = "Servers/" + Steam.Servername + "/Rocket/";
+               
+                if (!Directory.Exists(HomeFolder)) Directory.CreateDirectory(HomeFolder);
+                if (!Directory.Exists(RocketAPI.HomeFolder + "Plugins/")) Directory.CreateDirectory(RocketAPI.HomeFolder + "Plugins/");
+                if (!Directory.Exists(RocketAPI.HomeFolder + "Plugins/Libraries/")) Directory.CreateDirectory(RocketAPI.HomeFolder + "Plugins/Libraries/");
+
+                gameObject.AddComponent<RocketPluginManager>();
+                gameObject.AddComponent<RocketPermissionManager>();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError("Error while loading Rocket: " + e.ToString());
+            }
         }
     }
-
 }

@@ -1,5 +1,4 @@
-﻿using Rocket.RocketAPI.Interfaces;
-using SDG;
+﻿using SDG;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,18 +6,23 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using UnityEngine;
 
-namespace Rocket.RocketAPI.Managers
+namespace Rocket
 {
-    public class PermissionManager
+    public class RocketPermissionManager : MonoBehaviour
     {
-        private string permissionsFile = Bootstrap.HomeFolder + "Permissions.config";
+        private string permissionsFile;
+        private static List<Group> defaultGroups;
+        private static List<Group> groups;
 
-        private List<Group> defaultGroups = new List<Group>() { new Group("default", new List<string>() { "76561198016438091" }, new List<string>() { "plugins", "vote", "reward" }) };
-        internal List<Group> groups = null;
-
-        internal PermissionManager()
-        {
+        private void Awake()
+        { 
+            permissionsFile = RocketAPI.HomeFolder + "Permissions.config";
+            defaultGroups = new List<Group>() { 
+                new Group("default", null , new List<string>() { "plugins", "vote", "reward" }),
+                new Group("moderator", new List<string>() { "76561198016438091" }, new List<string>() { "tp", "tphere" }) 
+            };
             loadPermissions();
         }
 
@@ -58,7 +62,8 @@ namespace Rocket.RocketAPI.Managers
             Regex r = new Regex("^\\/[a-zA-Z]*");
             String commandstring = r.Match(permission.ToLower()).Value.ToString().TrimStart('/');
 
-            foreach(Group group in RocketAPI.Permissions.groups){
+            foreach (Group group in RocketPermissionManager.groups)
+            {
                 if (
                         player.Admin || 
                         ((group.Name.ToLower() == "default" || group.Members.Contains(player.SteamPlayerId.ToString().ToLower())) && group.Commands.Contains(commandstring.ToLower()))
@@ -66,9 +71,9 @@ namespace Rocket.RocketAPI.Managers
                 {
 
                     /*Execute RocketCommand if there is one*/
-                    RocketCommand command = RocketAPI.Commands.commands.Where(c => c.Name.ToLower() == commandstring).FirstOrDefault();
+                    Command command = Commander.commandList.Where(c => c.commandName.ToLower() == commandstring).FirstOrDefault();
                     if (command != null) {
-                        command.Execute(player.SteamPlayerId, permission);
+                        command.execute(player.SteamPlayerId, permission);
                         return false;
                     }
 
