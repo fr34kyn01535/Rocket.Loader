@@ -14,9 +14,8 @@ namespace Rocket.Patches
         {
             TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.ChatManager");
 
-            PatchHelper.UnlockByType(t, "Chat[]", "chatLog");
-
-
+            PatchHelper.UnlockByType(t, "Chat[]", "ChatLog");
+            PatchHelper.UnlockByType(t, "ChatManager", "Instance");
 
             TypeDefinition loaderType = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketPermissionManager");
              MethodDefinition checkPermissions = RocketLoader.GetMethod(loaderType, "CheckPermissions");

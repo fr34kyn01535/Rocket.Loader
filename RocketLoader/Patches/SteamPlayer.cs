@@ -12,8 +12,8 @@ namespace Rocket.Patches
         {
             TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.SteamPlayer");
             PatchHelper.UnlockByType(t, "Player", "Player");
-            PatchHelper.UnlockByType(t, "Boolean", "Admin", 1);
-            PatchHelper.UnlockByType(t, "SteamPlayerID", "SteamPlayerId");
+            PatchHelper.UnlockByType(t, "Boolean", "IsAdmin", 1);
+            PatchHelper.UnlockByType(t, "SteamPlayerID", "SteamPlayerID");
         }
     }
 }

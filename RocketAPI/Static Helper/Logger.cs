@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Rocket
 {
-    public class Logger : MonoBehaviour
+    public static class Logger
     {
         private static string lastAssembly = "";
         /// <summary>

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Rocket
 {
-    public class Configuration : MonoBehaviour
+    public static class Configuration
     {
         private static string configFile = "{0}Plugins/{1}.config";
         private static void saveConfiguration<T>(bool overwrite = true)

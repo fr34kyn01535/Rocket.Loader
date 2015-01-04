@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Steamworks;
-using SDG;
-using System.Reflection;
-using Rocket;
+﻿using SDG;
+using UnityEngine;
 
-namespace ExamplePlugin
+namespace Rocket
 {
-    public class ExamplePlayerComponent : RocketPlayerComponent
+    internal class RocketPlayerComponentImplementation : RocketPlayerComponent
     {
+
         protected override void onUpdateBleeding(bool J) { }
 
         protected override void onUpdateBroken(bool D) { }
@@ -25,13 +20,7 @@ namespace ExamplePlugin
 
         protected override void onUpdateOxygen(byte t) { }
 
-        //private byte last;
-
-        protected override void onUpdateStamina(byte D) {
-            /*if (((int)last - (int)D) > 5) Chat.Say("Jump, " + player.name + "  JUMP!");
-            last = D;
-            */
-        }
+        protected override void onUpdateStamina(byte D) { }
 
         protected override void onUpdateVirus(byte E) { }
 

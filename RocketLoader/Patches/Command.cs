@@ -14,11 +14,6 @@ namespace Rocket.Patches
             TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.Command");
 
             PatchHelper.UnlockByType(t, "string", new string[] { "commandName", "commandInfo", "commandHelp" });
-
-            foreach (MethodDefinition method in t.Methods)
-            {
-                PatchHelper.Unlock(method);
-            }
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Rocket
             Logger.LogError(@"                        |    // _ \ / __| |/ / _ \ __|");
             Logger.LogError(@"                        | |\ \ (_) | (__|   <  __/ |_");
             Logger.LogError(@"                        \_| \_\___/ \___|_|\_\___|\__\ v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "\n");
-            Logger.LogError("Applying configuration".PadRight(80, '.'));
+            Logger.LogError("Loading Unturned".PadRight(80, '.'));
         }
 
         private void Start()
@@ -41,7 +41,8 @@ namespace Rocket
 
                 gameObject.AddComponent<RocketPluginManager>();
                 gameObject.AddComponent<RocketPermissionManager>();
-                Logger.LogError("\nGame started".PadRight(80, '.'));
+
+                Logger.LogError("\nLaunching Unturned".PadRight(80, '.'));
                 Logger.LogWarning("[Notice] The following error concerning a corrupted file resourcs.assets can be");
                 Logger.LogWarning("ignored while we work on a bugfix".PadRight(79, '.'));
             }

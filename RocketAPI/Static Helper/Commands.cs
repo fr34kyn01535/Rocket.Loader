@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Rocket
 {
-    public class Commands : MonoBehaviour
+    public static class Commands
     {
         internal static void RegisterCommand(Command command)
         {

@@ -35,6 +35,7 @@ namespace Rocket
             Assemblies = loadAssemblies();
 
             List<RocketComponent> rocketComponents = getTypes<RocketComponent>(Assemblies,typeof(RocketComponent));
+            rocketComponents.Add(new RocketComponentImplementation());
 
 
             foreach (RocketComponent component in rocketComponents)
@@ -58,7 +59,10 @@ namespace Rocket
         private void clientConnected(Steamworks.CSteamID cSteamID)
         {
             List<RocketPlayerComponent> rocketPlayerComponent = getTypes<RocketPlayerComponent>(Assemblies, typeof(RocketPlayerComponent));
+            rocketPlayerComponent.Add(new RocketPlayerComponentImplementation());
+
             GameObject gameobject = PlayerTool.getPlayer(cSteamID).transform.gameObject;
+
             foreach (RocketPlayerComponent component in rocketPlayerComponent)
             {
                 gameobject.AddComponent(component.GetType());
@@ -69,7 +73,7 @@ namespace Rocket
         private Dictionary<string, string> additionalLibraries = new Dictionary<string, string>();
         private void loadLibraries()
         {
-            FileInfo[] libraries = new DirectoryInfo(RocketAPI.HomeFolder + "Plugins/Libraries/").GetFiles("*.dll");
+            IEnumerable<FileInfo> libraries = new DirectoryInfo(RocketAPI.HomeFolder + "Plugins/Libraries/").GetFiles("*.dll", SearchOption.AllDirectories).Where(f => f.Extension == ".dll");
             foreach (FileInfo library in libraries)
             {
                 try
@@ -87,7 +91,7 @@ namespace Rocket
             List<Assembly> assemblies = new List<Assembly>();
             try
             {    
-                FileInfo[] pluginsLibraries = new DirectoryInfo(RocketAPI.HomeFolder + "Plugins/").GetFiles("*.dll");
+                IEnumerable<FileInfo> pluginsLibraries = new DirectoryInfo(RocketAPI.HomeFolder + "Plugins/").GetFiles("*.dll",SearchOption.TopDirectoryOnly).Where(f => f.Extension == ".dll");
 
                 foreach (FileInfo library in pluginsLibraries)
                 {

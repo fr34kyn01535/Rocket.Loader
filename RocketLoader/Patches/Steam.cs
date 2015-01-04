@@ -20,6 +20,8 @@ namespace Rocket.Patches
             PatchHelper.UnlockByType(t, "serverdisconnected", "serverDisconnected");
 
             PatchHelper.UnlockByType(t, "string", "Servername", 7);
+
+            PatchHelper.UnlockByType(t, "List`1", "Players");
         }
     }
 }

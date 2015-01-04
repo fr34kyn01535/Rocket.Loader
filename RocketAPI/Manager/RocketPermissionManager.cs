@@ -1,4 +1,5 @@
 ﻿using SDG;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,16 +14,11 @@ namespace Rocket
     public class RocketPermissionManager : MonoBehaviour
     {
         private string permissionsFile;
-        private static List<Group> defaultGroups;
-        private static List<Group> groups;
+        private static Permissions permissions;
 
         private void Awake()
         { 
             permissionsFile = RocketAPI.HomeFolder + "Permissions.config";
-            defaultGroups = new List<Group>() { 
-                new Group("default", null , new List<string>() { "plugins", "vote", "reward" }),
-                new Group("moderator", new List<string>() { "76561198016438091" }, new List<string>() { "tp", "tphere" }) 
-            };
             loadPermissions();
         }
 
@@ -30,10 +26,10 @@ namespace Rocket
         {
             if (File.Exists(permissionsFile))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<Group>));
-                groups = (List<Group>)serializer.Deserialize(new StreamReader(permissionsFile));
+                XmlSerializer serializer = new XmlSerializer(typeof(Permissions));
+                permissions = (Permissions)serializer.Deserialize(new StreamReader(permissionsFile));
 
-                foreach (Group group in groups)
+                foreach (Group group in permissions.Groups)
                 {
                     foreach (string command in group.Commands)
                     {
@@ -43,13 +39,45 @@ namespace Rocket
             }
             else
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<Group>));
+                XmlSerializer serializer = new XmlSerializer(typeof(Permissions));
                 using (TextWriter writer = new StreamWriter(permissionsFile))
                 {
-                    serializer.Serialize(writer, defaultGroups);
+                    permissions = new Permissions();
+                    serializer.Serialize(writer, permissions);
                 }
-                groups = defaultGroups;
             }
+        }
+
+        public static string GetChatPrefix(CSteamID cSteamID)
+        {
+            string prefix = "";
+            try
+            {
+                if (permissions.ShowGroup)
+                {
+                    if (PlayerTool.getSteamPlayer(cSteamID).IsAdmin)
+                    {
+                        return String.Format(permissions.Format, permissions.AdminGroupDisplayName);
+                    }
+                    else {
+                        Group group = permissions.Groups.Where(g => g.Members!= null && g.Members.Contains(cSteamID.ToString())).FirstOrDefault();
+                        if (group == null)
+                        {
+                            Group defaultGroup = permissions.Groups.Where(g => g.Name == permissions.DefaultGroupName).FirstOrDefault();
+                            if (defaultGroup == null) throw new Exception("No group found with the name " + permissions.DefaultGroupName + ", can not get default group");
+                            return String.Format(permissions.Format, defaultGroup.DisplayName);
+                        }
+                        else {
+                            return String.Format(permissions.Format, group.DisplayName);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return prefix;
         }
 
         /// <summary>
@@ -63,38 +91,47 @@ namespace Rocket
             Regex r = new Regex("^\\/[a-zA-Z]*");
             String commandstring = r.Match(permission.ToLower()).Value.ToString().TrimStart('/');
 
-            foreach (Group group in RocketPermissionManager.groups)
+            foreach (Group group in RocketPermissionManager.permissions.Groups)
             {
-                if (
-                        player.Admin || 
-                        ((group.Name.ToLower() == "default" || group.Members.Contains(player.SteamPlayerId.ToString().ToLower())) && group.Commands.Contains(commandstring.ToLower()))
-                    )
+                if (group.Commands.Contains(commandstring.ToLower()))
                 {
-
-                    /*Execute RocketCommand if there is one*/
-                    Command command = Commander.commandList.Where(c => c.commandName.ToLower() == commandstring).FirstOrDefault();
-                    if (command != null) {
-                        command.execute(player.SteamPlayerId, permission);
-                        return false;
-                    }
-
-                    return true;
+                    if(group.Name.ToLower() == permissions.DefaultGroupName) return true;
+                    if (group.Members.Contains(player.SteamPlayerID.CSteamId.ToString().ToLower())) return true;
                 }
             }
-            return false;
+
+            return player.IsAdmin;
         }
     }
 
+    [Serializable]
+    public class Permissions
+    {
+        public Permissions() { }
+        public bool ShowGroup = true;
+        public string DefaultGroupName = "default";
+        public string AdminGroupDisplayName = "Admin";
+        public string Format = "[{0}] ";
+        [XmlArrayItem(ElementName = "Group")]
+        public Group[] Groups = new Group[] { 
+                new Group("default","Guest", null , new List<string>() { "reward","balance","pay" }),
+                new Group("moderator","Moderator", new List<string>() { "76561198016438091" }, new List<string>() { "tp","test", "tphere" }) 
+            };
+    }
+
+    [Serializable]
     public class Group
     {
         public Group() { }
-        public Group(string name, List<string> members, List<string> commands)
+        public Group(string name,string displayName, List<string> members, List<string> commands)
         {
             Name = name;
+            DisplayName = displayName;
             Members = members;
             Commands = commands;
         }
         public string Name;
+        public string DisplayName;
         [XmlArrayItem(ElementName="Member")]
         public List<string> Members;
         [XmlArrayItem(ElementName = "Command")]

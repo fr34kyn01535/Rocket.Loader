@@ -1,4 +1,5 @@
-﻿using SDG;
+﻿using Rocket;
+using SDG;
 
 namespace ExamplePlugin
 {
@@ -10,9 +11,9 @@ namespace ExamplePlugin
             base.commandInfo = base.commandHelp = "This is a testcommand";
         }
 
-        public override void execute(SteamPlayerID caller, string command)
+        protected override void execute(SteamPlayerID caller, string command)
         {
-            ChatManager.say("Test");
+
         }
     }
 }

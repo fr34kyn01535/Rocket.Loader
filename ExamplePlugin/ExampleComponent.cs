@@ -16,7 +16,6 @@ namespace ExamplePlugin
         protected override void Load()
         {
             configuration = Configuration.LoadConfiguration<ExampleConfiguration>();
-            Logger.Log("This is the Testmod load()!" + configuration.Age);
         }
 
         protected override void onPlayerDisconnected(CSteamID D)

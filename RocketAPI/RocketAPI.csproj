@@ -95,8 +95,11 @@
   <ItemGroup>
     <Compile Include="Commands\CommandTphere.cs" />
     <Compile Include="Commands\CommandTp.cs" />
+    <Compile Include="Components\Implementations\RocketComponentImplementation.cs" />
+    <Compile Include="Components\Implementations\RocketPlayerComponentImplementation.cs" />
     <Compile Include="Components\RocketComponent.cs" />
     <Compile Include="Components\RocketPlayerComponent.cs" />
+    <Compile Include="Static Helper\Chat.cs" />
     <Compile Include="Static Helper\Commands.cs" />
     <Compile Include="Static Helper\Configuration.cs" />
     <Compile Include="Manager\RocketPluginManager.cs" />
