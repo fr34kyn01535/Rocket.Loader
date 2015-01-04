@@ -17,20 +17,23 @@ namespace Rocket
             DontDestroyOnLoad(transform.gameObject);
             #region Handling additional assemblies
             AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs args)
-            {   
+            {
                 string file;
                 if (additionalLibraries.TryGetValue(args.Name, out file))
                 {
                     return Assembly.Load(File.ReadAllBytes(file));
+                }
+                else {
+                    Logger.LogError("Could not find additional Library " + file);
                 }
                 return null;
             };
             loadLibraries();
             #endregion
 
+            Logger.LogError("\nLoading Extensions".PadRight(80, '.') + "\n");
             Assemblies = loadAssemblies();
 
-            Logger.Log("Loading Rocket components...");
             List<RocketComponent> rocketComponents = getTypes<RocketComponent>(Assemblies,typeof(RocketComponent));
 
 
@@ -39,7 +42,7 @@ namespace Rocket
                 RocketAPI.Instance.gameObject.AddComponent(component.GetType());
             }
 
-            Logger.Log("Loading commands...");
+            Logger.LogError("\nLoading commands".PadRight(80, '.') + "\n");
             List<Command> commands = getTypes<Command>(Assemblies, typeof(Command));
             List<Command> rocketCommands = getTypes<Command>(new List<Assembly>() { Assembly.GetExecutingAssembly() }, typeof(Command));
             commands.AddRange(rocketCommands);
@@ -89,9 +92,10 @@ namespace Rocket
                 foreach (FileInfo library in pluginsLibraries)
                 {
                     Assembly assembly = Assembly.Load(File.ReadAllBytes(library.FullName));
+                    Logger.Log(assembly.GetName().Name + " Version: " + assembly.GetName().Version);
                     assemblies.Add(assembly);
-
                 }
+                Logger.LogError("\nLaunching extensions".PadRight(80, '.'));
             }
             catch (Exception ex)
             {

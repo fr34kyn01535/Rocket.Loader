@@ -33,6 +33,7 @@ namespace Rocket
                 Environment.Exit(1);
             }
             attachRocket();
+            attachSplash();
             fixHash();
 
             var patches = from t in Assembly.GetExecutingAssembly().GetTypes()
@@ -77,6 +78,16 @@ namespace Rocket
                 Console.WriteLine("Already patched!");
                 Environment.Exit(0);
             }
+
+            awake.Body.GetILProcessor().InsertBefore(awake.Body.Instructions[0], Instruction.Create(OpCodes.Call, UnturnedAssembly.MainModule.Import(launchRocket)));
+        }
+        private static void attachSplash()
+        {
+            TypeDefinition loaderType = APIAssembly.MainModule.GetType("Rocket.RocketAPI");
+            MethodDefinition launchRocket = GetMethod(loaderType, "Splash");
+
+            TypeDefinition unturnedType = UnturnedAssembly.MainModule.GetType("SDG.CommandLine");
+            MethodDefinition awake = GetMethod(unturnedType, "getCommands");
 
             awake.Body.GetILProcessor().InsertBefore(awake.Body.Instructions[0], Instruction.Create(OpCodes.Call, UnturnedAssembly.MainModule.Import(launchRocket)));
         }

@@ -51,6 +51,7 @@ namespace Rocket
                 groups = defaultGroups;
             }
         }
+
         /// <summary>
         /// This method checks if a player has a specific permission
         /// </summary>
@@ -82,12 +83,8 @@ namespace Rocket
             }
             return false;
         }
-
-        internal void Reload()
-        {
-            loadPermissions();
-        }
     }
+
     public class Group
     {
         public Group() { }

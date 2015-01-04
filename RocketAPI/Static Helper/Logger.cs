@@ -6,12 +6,23 @@ namespace Rocket
 {
     public class Logger : MonoBehaviour
     {
+        private static string lastAssembly = "";
         /// <summary>
         /// Log an message to console
         /// </summary>
         /// <param name="message"></param>
         public static void Log(string message)
         {
+            string assembly = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
+            if (assembly == typeof(Logger).Assembly.GetName().Name || assembly == lastAssembly)
+            {
+                assembly = "";
+            }
+            else {
+                assembly ="\n"+ assembly + " >> ";
+            }
+            lastAssembly = assembly;
+            message = assembly + message;
             logToFile(message);
             Debug.Log(message);
         }
@@ -19,7 +30,7 @@ namespace Rocket
         /// Log a warning message to console
         /// </summary>
         /// <param name="message"></param>
-        public static void LogWarning(string message)
+        internal static void LogWarning(string message)
         {
             logToFile(message);
             Debug.LogWarning(message);
@@ -28,7 +39,7 @@ namespace Rocket
         /// Log an error message to console
         /// </summary>
         /// <param name="message"></param>
-        public static void LogError(string message)
+        internal static void LogError(string message)
         {
             logToFile(message);
             Debug.LogError(message);
@@ -36,8 +47,9 @@ namespace Rocket
 
         private static void logToFile(string message)
         {
+            if (String.IsNullOrEmpty(RocketAPI.HomeFolder)) return;
             StreamWriter streamWriter = new StreamWriter(RocketAPI.HomeFolder + "Rocket.log", true);
-            streamWriter.WriteLine(message);
+            streamWriter.WriteLine("[" + DateTime.Now + "] " + message);
             streamWriter.Close();
         }
         /// <summary>
@@ -46,9 +58,19 @@ namespace Rocket
         /// <param name="ex"></param>
         public static void LogException(Exception ex)
         {
+            string assembly = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
+            if (assembly == typeof(Logger).Assembly.GetName().Name || assembly == lastAssembly)
+            {
+                assembly = "";
+            }
+            else
+            {
+                assembly = "\n" + assembly + " >> ";
+            }
+            lastAssembly = assembly;
             logToFile(ex.ToString());
             System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
-            Debug.LogError("Error in " + stackTrace.GetFrame(1).GetMethod().Name+": "+ex);
+            Debug.LogError(assembly + "Error in " + stackTrace.GetFrame(1).GetMethod().Name + ": " + ex);
         }
     }
 }
