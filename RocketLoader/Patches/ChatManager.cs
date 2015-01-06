@@ -6,29 +6,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rocket.Patches
+namespace Rocket.RocketLoader.Patches
 {
     public class ChatManager : Patch
     {
+        PatchHelper h = new PatchHelper("SDG.ChatManager");
+
         public void Apply()
         {
-            TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.ChatManager");
+            h.UnlockFieldByType("Chat[]", "ChatLog");
+            h.UnlockFieldByType("ChatManager", "Instance");
 
-            PatchHelper.UnlockByType(t, "Chat[]", "ChatLog");
-            PatchHelper.UnlockByType(t, "ChatManager", "Instance");
-
-            TypeDefinition loaderType = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketPermissionManager");
-             MethodDefinition checkPermissions = RocketLoader.GetMethod(loaderType, "CheckPermissions");
-
-
-            MethodDefinition m = t.Methods.Where(p => p.Name == "process").FirstOrDefault();
-            if (m != null)
-            {
-                m.Body.Instructions[4] = Instruction.Create(OpCodes.Ldstr,"/");
-                m.Body.Instructions[8] = Instruction.Create(OpCodes.Call, RocketLoader.UnturnedAssembly.MainModule.Import(checkPermissions));
-                m.Body.GetILProcessor().InsertBefore(m.Body.Instructions[8], Instruction.Create(OpCodes.Ldarg_1)); 
-            }
-
+            MethodDefinition checkPermissions = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketPermissionManager").Methods.AsEnumerable().Where(m => m.Name == "CheckPermissions").FirstOrDefault();
+            MethodDefinition process = h.GetMethod("process");
+            if (process != null)
+             {
+                 process.Body.Instructions[4] = Instruction.Create(OpCodes.Ldstr, "/");
+                 process.Body.Instructions[8] = Instruction.Create(OpCodes.Call, RocketLoader.UnturnedAssembly.MainModule.Import(checkPermissions));
+                 process.Body.GetILProcessor().InsertBefore(process.Body.Instructions[8], Instruction.Create(OpCodes.Ldarg_1));
+             }
         }
     }
 }

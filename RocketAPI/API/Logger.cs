@@ -2,7 +2,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace Rocket
+namespace Rocket.RocketAPI
 {
     public static class Logger
     {
@@ -47,8 +47,8 @@ namespace Rocket
 
         private static void logToFile(string message)
         {
-            if (String.IsNullOrEmpty(RocketAPI.HomeFolder)) return;
-            StreamWriter streamWriter = new StreamWriter(RocketAPI.HomeFolder + "Rocket.log", true);
+            if (String.IsNullOrEmpty(RocketSettings.HomeFolder)) return;
+            StreamWriter streamWriter = new StreamWriter(RocketSettings.HomeFolder + "Rocket.log", true);
             streamWriter.WriteLine("[" + DateTime.Now + "] " + message);
             streamWriter.Close();
         }

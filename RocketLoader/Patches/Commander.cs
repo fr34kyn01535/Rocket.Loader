@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace Rocket.Patches
+
+namespace Rocket.RocketLoader.Patches
 {
     public class Commander : Patch
     {
+        PatchHelper h = new PatchHelper("SDG.Commander");
+
         public void Apply()
         {
-            TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.Commander");
-            PatchHelper.UnlockByType(t, "command[]", "commandList");
+            h.UnlockFieldByType("Command[]", "Commands");
         }
     }
 }

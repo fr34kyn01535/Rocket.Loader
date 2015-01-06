@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rocket
+namespace Rocket.RocketLoader
 {
     public interface Patch
     {

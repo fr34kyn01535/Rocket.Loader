@@ -6,26 +6,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rocket.Patches
+namespace Rocket.RocketLoader.Patches
 {
     public class PlayerLife : Patch
     {
+        PatchHelper h = new PatchHelper("SDG.PlayerLife");
+
         public void Apply()
         {
-            TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.PlayerLife");
+            h.UnlockFieldByType("LifeUpdated", "OnUpdateLife");
+            h.UnlockFieldByType("HealthUpdated", "OnUpdateHealth");
+            h.UnlockFieldByType("FoodUpdated", "OnUpdateFoot");
+            h.UnlockFieldByType("WaterUpdated", "OnUpdateWater");
+            h.UnlockFieldByType("VirusUpdated", "OnUpdateVirus");
+            h.UnlockFieldByType("StaminaUpdated", "OnUpdateStamina");
+            h.UnlockFieldByType("VisionUpdated", "OnUpdateVision");
+            h.UnlockFieldByType("OxygenUpdated", "OnUpdateOxygen");
+            h.UnlockFieldByType("BleedingUpdated", "OnUpdateBleeding");
+            h.UnlockFieldByType("BrokenUpdated", "OnUpdateBroken");
+            h.UnlockFieldByType("FreezingUpdated", "OnUpdateFreezing");
+            h.UnlockFieldByType("Damaged", "OnDamaged");
+            h.UnlockFieldByType("CSteamID", "CSteamID");
 
-            PatchHelper.UnlockByType(t, "LifeUpdated", "OnUpdateLife");
-            PatchHelper.UnlockByType(t, "HealthUpdated", "OnUpdateHealth");
-            PatchHelper.UnlockByType(t, "FoodUpdated", "OnUpdateFoot");
-            PatchHelper.UnlockByType(t, "WaterUpdated", "OnUpdateWater");
-            PatchHelper.UnlockByType(t, "VirusUpdated", "OnUpdateVirus");
-            PatchHelper.UnlockByType(t, "StaminaUpdated", "OnUpdateStamina");
-            PatchHelper.UnlockByType(t, "VisionUpdated", "OnUpdateVision");
-            PatchHelper.UnlockByType(t, "OxygenUpdated", "OnUpdateOxygen");
-            PatchHelper.UnlockByType(t, "BleedingUpdated", "OnUpdateBleeding");
-            PatchHelper.UnlockByType(t, "BrokenUpdated", "OnUpdateBroken");
-            PatchHelper.UnlockByType(t, "FreezingUpdated", "OnUpdateFreezing");
-            PatchHelper.UnlockByType(t, "Damaged", "OnDamaged");
+            h.UnlockFieldByType(typeof(byte), "Health", 1);
+            //h.UnlockFieldByType(typeof(byte), "??", 1); //v
+            h.UnlockFieldByType(typeof(byte), "Hunger", 3);
+            h.UnlockFieldByType(typeof(byte), "Thirst", 4); 
+            h.UnlockFieldByType(typeof(byte), "Infection", 5);
+            h.UnlockFieldByType(typeof(byte), "Life", 6); 
+            h.UnlockFieldByType(typeof(byte), "Stamina", 7);
+            h.UnlockFieldByType(typeof(byte), "Breath", 8); 
+
+            h.UnlockFieldByType(typeof(bool), "Dead", 0);
+            h.UnlockFieldByType(typeof(bool), "Bleeding", 1);
+            h.UnlockFieldByType(typeof(bool), "Broken", 2);
+            h.UnlockFieldByType(typeof(bool), "Freezing", 3);
         }
     }
 }

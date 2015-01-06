@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace Rocket.Patches
+namespace Rocket.RocketLoader.Patches
 {
     public class SteamPlayerID : Patch
     {
+        PatchHelper h = new PatchHelper("SDG.SteamPlayerID");
+
         public void Apply()
         {
-            TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.SteamPlayerID");
-            PatchHelper.UnlockByType(t, "CSteamID", "CSteamId", 0);
-
-            PatchHelper.UnlockByType(t, "string", new string[] { "SteamName", "CharacterName" });
+            h.UnlockFieldByType("CSteamID", "CSteamID", 0);
+            h.UnlockFieldByType(typeof(string), "SteamName", 0);
+            h.UnlockFieldByType(typeof(string), "CharacterName", 1);
         }
     }
 }

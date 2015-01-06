@@ -5,14 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketLoader", "RocketLoader\RocketLoader.csproj", "{67CD3888-82BF-4D69-AE86-A9026018765C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unturned", "Unturned", "{C7E03C20-BB35-4342-AEF6-C3376BAE6B7C}"
-	ProjectSection(SolutionItems) = preProject
-		Unturned\Assembly-CSharp-firstpass.dll = Unturned\Assembly-CSharp-firstpass.dll
-		Unturned\Assembly-CSharp.dll = Unturned\Assembly-CSharp.dll
-		Unturned\UnityEngine.dll = Unturned\UnityEngine.dll
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamplePlugin", "ExamplePlugin\ExamplePlugin.csproj", "{602882B6-F16C-4247-9F5D-21846BC4C09A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamplePlugin", "..\ExamplePlugin\ExamplePlugin.csproj", "{602882B6-F16C-4247-9F5D-21846BC4C09A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{67CD3888-82BF-4D69-AE86-A9026018765C} = {67CD3888-82BF-4D69-AE86-A9026018765C}
 	EndProjectSection

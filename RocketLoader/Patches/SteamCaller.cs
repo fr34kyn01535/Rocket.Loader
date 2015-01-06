@@ -6,15 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rocket.Patches
+namespace Rocket.RocketLoader.Patches
 {
     public class SteamCaller : Patch
     {
+        PatchHelper h = new PatchHelper("SDG.SteamCaller");
+
         public void Apply()
         {
-            TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.SteamCaller");
-
-            PatchHelper.UnlockByType(t, "SteamChannel", "SteamChannel");
+            h.UnlockFieldByType("SteamChannel", "SteamChannel");
         }
     }
 }

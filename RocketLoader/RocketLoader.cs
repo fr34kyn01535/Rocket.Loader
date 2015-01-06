@@ -10,7 +10,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Rocket
+namespace Rocket.RocketLoader
 {
     public class RocketLoader
     {
@@ -28,13 +28,37 @@ namespace Rocket
             }
             catch (Exception e)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(e);
+                Console.WriteLine("Press any key to quit");
                 Console.ReadKey();
                 Environment.Exit(1);
             }
-            attachRocket();
-            attachSplash();
-            fixHash();
+
+
+
+            if (isPatched())
+            {
+                if (File.Exists("Assembly-CSharp.dll.bak"))
+                {
+                    File.Copy("Assembly-CSharp.dll.bak", "Assembly-CSharp.dll", true);
+                    UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
+                }
+
+                if (isPatched())
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Unturned is already patched");
+                    Console.WriteLine("Press any key to quit");
+                    Console.ReadKey();
+                    Environment.Exit(1);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Backing up Assembly-CSharp.dll");
+                File.Copy("Assembly-CSharp.dll", "Assembly-CSharp.dll.bak", true);
+            }
 
             var patches = from t in Assembly.GetExecutingAssembly().GetTypes()
                           where t.GetInterfaces().Contains(typeof(Patch)) && t.GetConstructor(Type.EmptyTypes) != null
@@ -53,142 +77,23 @@ namespace Rocket
                 }
             }
 
-            removePlayButton(); 
-
-            Console.WriteLine("Writing to file...");
             UnturnedAssembly.Write("Assembly-CSharp.dll");
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Your game was successfully patched");
+            Console.WriteLine("Press any key to quit");
+            Console.ReadKey();
         }
 
-        private static void removePlayButton()
+        private static bool isPatched()
         {
-            TypeDefinition td = UnturnedAssembly.MainModule.GetType("SDG.MenuPlayUI");
-            MethodDefinition ctor = GetMethod(td, ".ctor");
-            ctor.Body.Instructions.Clear();
-        }
+            MethodDefinition awake = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.Managers").Methods.AsEnumerable().Where(m => m.Name.ToLower() == "awake").FirstOrDefault();
 
-        private static void attachRocket()
-        {
-            TypeDefinition loaderType = APIAssembly.MainModule.GetType("Rocket.RocketAPI");
-            MethodDefinition launchRocket = GetMethod(loaderType, "LaunchRocket");
-
-            TypeDefinition unturnedType = UnturnedAssembly.MainModule.GetType("SDG.Managers");
-            MethodDefinition awake = GetMethod(unturnedType, "Awake");
-
-            if (awake.Body.Instructions[0].ToString().Contains("LaunchRocket")) {
-                Console.WriteLine("Already patched!");
-                Environment.Exit(0);
-            }
-
-            awake.Body.GetILProcessor().InsertBefore(awake.Body.Instructions[0], Instruction.Create(OpCodes.Call, UnturnedAssembly.MainModule.Import(launchRocket)));
-        }
-        private static void attachSplash()
-        {
-            TypeDefinition loaderType = APIAssembly.MainModule.GetType("Rocket.RocketAPI");
-            MethodDefinition launchRocket = GetMethod(loaderType, "Splash");
-
-            TypeDefinition unturnedType = UnturnedAssembly.MainModule.GetType("SDG.CommandLine");
-            MethodDefinition awake = GetMethod(unturnedType, "getCommands");
-
-            awake.Body.GetILProcessor().InsertBefore(awake.Body.Instructions[0], Instruction.Create(OpCodes.Call, UnturnedAssembly.MainModule.Import(launchRocket)));
-        }
-
-        static System.Byte[] getAssemblyHash()
-        {
-            byte[] b = new System.Byte[20];
-            return b;
-        }
-
-        private static void fixHash()
-        {
-            byte[] unturned, unturned_firstpass, other, other_firstpass;
-            using (FileStream filestream = new FileStream("Assembly-CSharp.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
+            if (awake.Body.Instructions[0].ToString().Contains("Launch"))
             {
-                unturned = new byte[filestream.Length];
+                return true;
             }
-
-            using (FileStream filestream = new FileStream("Assembly-CSharp-firstpass.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                unturned_firstpass = new byte[filestream.Length];
-            }
-
-            using (FileStream filestream = new FileStream("Other-Assembly-CSharp.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                other = new byte[filestream.Length];
-            }
-
-            using (FileStream filestream = new FileStream("Other-Assembly-CSharp-firstpass.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                other_firstpass = new byte[filestream.Length];
-            }
-
-            byte[] combined = combine(new byte[][] { SHA1(unturned), SHA1(other), SHA1(unturned_firstpass), SHA1(other_firstpass) });
-
-
-            MethodDefinition unturnedMethod = GetMethod(UnturnedAssembly.MainModule.GetType("SDG.ReadWrite"), "getAssemblyHash");
-            MethodDefinition overrideMethod = GetMethod(LoaderAssembly.MainModule.GetType("Rocket.RocketLoader"), "getAssemblyHash");
-
-            TypeReference byteType = AssemblyDefinition.ReadAssembly("mscorlib.dll").MainModule.GetType("System.Byte");
-
-            unturnedMethod.Body.Instructions.Clear();
-
-            TypeReference fieldType = UnturnedAssembly.MainModule.Import(byteType);
-            bool flag1 = false, flag2 = false;
-            foreach (Instruction i in overrideMethod.Body.Instructions)
-            {
-                if (i.OpCode.Name.ToLower().Equals("stloc.0"))
-                    flag1 = true;
-                else if (!i.OpCode.Name.ToLower().Equals("ldloc.0"))
-                    flag1 = false;
-
-                if (flag1 && i.OpCode.Name.ToLower().Equals("ldloc.0"))
-                    flag2 = true;
-
-                if (!i.OpCode.Name.ToLower().Equals("newarr"))
-                    unturnedMethod.Body.Instructions.Add(i);
-                else
-                    unturnedMethod.Body.Instructions.Add(Instruction.Create(OpCodes.Newarr, fieldType));
-
-                    if (flag1 && flag2)
-                {
-                    for (int i2 = 0; i2 < combined.Length; i2++)
-                    {
-                        unturnedMethod.Body.Instructions.Add(Instruction.Create(OpCodes.Ldloc_0));
-                        Instruction inst1 = Instruction.Create(OpCodes.Ldc_I4, (int)i2);
-                        Instruction inst2 = Instruction.Create(OpCodes.Ldc_I4, (int)combined[i2]);
-                        unturnedMethod.Body.Instructions.Add(inst1);
-                        unturnedMethod.Body.Instructions.Add(inst2);
-                        unturnedMethod.Body.Instructions.Add(Instruction.Create(OpCodes.Stelem_I1));
-                    }
-                }
-            }
+            return false;
         }
-
-        public static byte[] combine(params byte[][] r)
-        {
-            byte[] array = new byte[r.Length * 20];
-
-            for (int i = 0; i < r.Length; i++)
-                r[i].CopyTo(array, (int)(i * 20));
-
-            return SHA1(array);
-        }
-
-        public static byte[] SHA1(byte[] U)
-        {
-            SHA1CryptoServiceProvider sha = new SHA1CryptoServiceProvider();
-            return sha.ComputeHash(U);
-        }
-
-        public static MethodDefinition GetMethod(TypeDefinition td, String method)
-        {
-            MethodDefinition md = null;
-
-            foreach (MethodDefinition m in td.Methods)
-                if (m.Name.ToLower().Equals(method.ToLower()))
-                    md = m;
-
-            return md;
-        }
-
     }
 }

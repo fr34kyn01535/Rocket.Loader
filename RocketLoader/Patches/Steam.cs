@@ -4,24 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace Rocket.Patches
+
+namespace Rocket.RocketLoader.Patches
 {
     public class Steam : Patch
     {
+        PatchHelper h = new PatchHelper("SDG.Steam");
+
         public void Apply()
         {
-            TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.Steam");
+            h.UnlockFieldByType("ClientConnected", "OnClientConnected");
+            h.UnlockFieldByType("ClientDisconnected", "OnClientDisconnected");
+            h.UnlockFieldByType("ServerHosted", "OnServerHosted");
+            h.UnlockFieldByType("ServerShutdown", "OnServerShutdown");
+            h.UnlockFieldByType("ServerConnected", "OnServerConnected");
+            h.UnlockFieldByType("ServerDisconnected", "OnServerDisconnected");
+            h.UnlockFieldByType(typeof(string), "Servername", 7);
 
-            PatchHelper.UnlockByType(t, "clientconnected", "clientConnected");
-            PatchHelper.UnlockByType(t, "clientdisconnected", "clientDisconnected");
-            PatchHelper.UnlockByType(t, "serverhosted", "serverHosted");
-            PatchHelper.UnlockByType(t, "servershutdown", "serverShutdown");
-            PatchHelper.UnlockByType(t, "serverconnected", "serverConnected");
-            PatchHelper.UnlockByType(t, "serverdisconnected", "serverDisconnected");
-
-            PatchHelper.UnlockByType(t, "string", "Servername", 7);
-
-            PatchHelper.UnlockByType(t, "List`1", "Players");
+            h.UnlockFieldByType("List<SDG.SteamPlayer>", "Players");
         }
     }
 }

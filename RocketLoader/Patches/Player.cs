@@ -5,27 +5,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rocket.Patches
+namespace Rocket.RocketLoader.Patches
 {
     public class Player : Patch
     {
+        PatchHelper h = new PatchHelper("SDG.Player");
+
         public void Apply()
         {
-            TypeDefinition t = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.Player");
+            h.UnlockFieldByType("PlayerInput", "Input");
+            h.UnlockFieldByType("PlayerStance", "Stance");
+            h.UnlockFieldByType("PlayerEquipment", "Equipment");
+            h.UnlockFieldByType("PlayerAnimator", "Animator");
+            h.UnlockFieldByType("PlayerHitbox", "Hitbox");
+            h.UnlockFieldByType("PlayerMovement", "Movement");
+            h.UnlockFieldByType("PlayerLook", "Look");
+            h.UnlockFieldByType("PlayerClothing", "Clothing");
+            h.UnlockFieldByType("PlayerInventory", "Inventory");
 
-            PatchHelper.UnlockByType(t, "playerinput", "playerInput");
-            PatchHelper.UnlockByType(t, "playerstance", "playerStance");
-            PatchHelper.UnlockByType(t, "playerequipment", "playerEquipment");
-            PatchHelper.UnlockByType(t, "playeranimator", "playerAnimator");
-            PatchHelper.UnlockByType(t, "playerhitbox", "playerHitbox");
-            PatchHelper.UnlockByType(t, "playermovement", "playerMovement");
-            PatchHelper.UnlockByType(t, "playerlook", "playerLook");
-            PatchHelper.UnlockByType(t, "playerclothing", "playerClothing");
-            PatchHelper.UnlockByType(t, "playerinventory", "playerInventory");
-
-            PatchHelper.UnlockByType(t, "PlayerLife", "PlayerLife");
-            PatchHelper.UnlockByType(t, "Player", "Instance");
-
+            h.UnlockFieldByType("PlayerLife", "PlayerLife");
+            h.UnlockFieldByType("Player", "Instance");
+            h.UnlockFieldByType("SteamChannel", "SteamChannel");
         }
     }
 }

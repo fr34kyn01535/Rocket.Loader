@@ -1,20 +1,23 @@
-﻿using SDG;
+﻿using Rocket.RocketAPI;
+using SDG;
+using Steamworks;
 using System;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
 namespace Rocket
 {
-    public class RocketAPI : MonoBehaviour
+    public class RocketLauncher : MonoBehaviour
     {
         public static string HomeFolder;
 
-        public static RocketAPI Instance;
+        public static RocketLauncher Instance;
 
-        public static void LaunchRocket()
+        public static void Launch()
         {
-            Instance = new GameObject().AddComponent<RocketAPI>();
+            Instance = new GameObject().AddComponent<RocketLauncher>();
         }
+
         public static void Splash()
         {
             Logger.LogError("".PadRight(80, '.'));
@@ -33,11 +36,11 @@ namespace Rocket
             try
             {
                 DontDestroyOnLoad(transform.gameObject);
-                HomeFolder = "Servers/" + Steam.Servername + "/Rocket/";
-               
-                if (!Directory.Exists(HomeFolder)) Directory.CreateDirectory(HomeFolder);
-                if (!Directory.Exists(RocketAPI.HomeFolder + "Plugins/")) Directory.CreateDirectory(RocketAPI.HomeFolder + "Plugins/");
-                if (!Directory.Exists(RocketAPI.HomeFolder + "Plugins/Libraries/")) Directory.CreateDirectory(RocketAPI.HomeFolder + "Plugins/Libraries/");
+                RocketSettings.HomeFolder = "Servers/" + Steam.Servername + "/Rocket/";
+
+                if (!Directory.Exists(RocketSettings.HomeFolder)) Directory.CreateDirectory(RocketSettings.HomeFolder);
+                if (!Directory.Exists(RocketSettings.HomeFolder + "Plugins/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Plugins/");
+                if (!Directory.Exists(RocketSettings.HomeFolder + "Plugins/Libraries/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Plugins/Libraries/");
 
                 gameObject.AddComponent<RocketPluginManager>();
                 gameObject.AddComponent<RocketPermissionManager>();
@@ -52,4 +55,9 @@ namespace Rocket
             }
         }
     }
+}
+
+internal static class RocketSettings
+{
+    public static string HomeFolder;
 }

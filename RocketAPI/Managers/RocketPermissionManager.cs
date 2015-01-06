@@ -1,4 +1,6 @@
-﻿using SDG;
+﻿using Rocket.RocketAPI;
+using Rocket.RocketAPI.Components;
+using SDG;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -11,14 +13,15 @@ using UnityEngine;
 
 namespace Rocket
 {
-    public class RocketPermissionManager : MonoBehaviour
+    public class RocketPermissionManager : RocketManagerComponent
     {
         private string permissionsFile;
         private static Permissions permissions;
 
-        private void Awake()
-        { 
-            permissionsFile = RocketAPI.HomeFolder + "Permissions.config";
+        public new void Awake()
+        {
+            base.Awake();
+            permissionsFile = RocketSettings.HomeFolder + "Permissions.config";
             loadPermissions();
         }
 
@@ -48,19 +51,19 @@ namespace Rocket
             }
         }
 
-        public static string GetChatPrefix(CSteamID cSteamID)
+        public static string GetChatPrefix(CSteamID CSteamID)
         {
             string prefix = "";
             try
             {
                 if (permissions.ShowGroup)
                 {
-                    if (PlayerTool.getSteamPlayer(cSteamID).IsAdmin)
+                    if (PlayerTool.getSteamPlayer(CSteamID).IsAdmin)
                     {
                         return String.Format(permissions.Format, permissions.AdminGroupDisplayName);
                     }
                     else {
-                        Group group = permissions.Groups.Where(g => g.Members!= null && g.Members.Contains(cSteamID.ToString())).FirstOrDefault();
+                        Group group = permissions.Groups.Where(g => g.Members!= null && g.Members.Contains(CSteamID.ToString())).FirstOrDefault();
                         if (group == null)
                         {
                             Group defaultGroup = permissions.Groups.Where(g => g.Name == permissions.DefaultGroupName).FirstOrDefault();
@@ -96,7 +99,7 @@ namespace Rocket
                 if (group.Commands.Contains(commandstring.ToLower()))
                 {
                     if(group.Name.ToLower() == permissions.DefaultGroupName) return true;
-                    if (group.Members.Contains(player.SteamPlayerID.CSteamId.ToString().ToLower())) return true;
+                    if (group.Members.Contains(player.SteamPlayerID.CSteamID.ToString().ToLower())) return true;
                 }
             }
 
