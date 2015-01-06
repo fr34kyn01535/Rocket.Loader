@@ -25,10 +25,12 @@ namespace Rocket.RocketAPI
                     output = (T)serializer.Deserialize(reader);
                 }
 
-                using (TextWriter writer = new StreamWriter(filename))
+                XmlSerializer outserializer = new XmlSerializer(typeof(T));
+
+               /* using (TextWriter writer = new StreamWriter(filename,false))
                 {
-                    serializer.Serialize(writer, output);
-                }
+                    outserializer.Serialize(writer, output);
+                }*/
 
                 return output;
             }
@@ -37,7 +39,8 @@ namespace Rocket.RocketAPI
                 XmlSerializer serializer = new XmlSerializer(typeof(T));
                 using (TextWriter writer = new StreamWriter(filename))
                 {
-                    serializer.Serialize(writer, Activator.CreateInstance(typeof(T)));
+                    object config = Activator.CreateInstance(typeof(T));
+                    serializer.Serialize(writer, config);
                 }
                 return (T)Activator.CreateInstance(typeof(T));
             }
