@@ -16,6 +16,8 @@ namespace Rocket.RocketAPI
             DontDestroyOnLoad(transform.gameObject);
             player = gameObject.transform.GetComponent<Player>();
 
+            Logger.Log("Events bound!");
+
             #region PlayerLife
             player.PlayerLife.OnDamaged += onDamaged;
             player.PlayerLife.OnUpdateBleeding += onUpdateBleeding;
@@ -38,17 +40,19 @@ namespace Rocket.RocketAPI
             player.Inventory.OnInventoryUpdated += onInventoryUpdated;
             #endregion
 
+
+
             #region Steam
             if(!bound){
                 Steam.OnServerShutdown += onServerShutdown;
-                Steam.OnServerConnected += onPlayerConnected;
                 Steam.OnServerDisconnected += onPlayerDisconnected;
                 bound = true;
             }
             #endregion
 
             //player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName = RocketPermissionManager.GetChatPrefix(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID) + player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName;
-         
+
+            if (OnPlayerConnected != null) OnPlayerConnected(player);
 
         }
 
@@ -178,21 +182,17 @@ namespace Rocket.RocketAPI
 
         public delegate void PlayerDisconnected(Player player);
         public static event PlayerDisconnected OnPlayerDisconnected;
-        private void onPlayerDisconnected(CSteamID r)
+        private static void onPlayerDisconnected(CSteamID r)
         {
             if (OnPlayerDisconnected != null) OnPlayerDisconnected(PlayerTool.getPlayer(r));
         }
 
         public delegate void PlayerConnected(Player player);
         public static event PlayerConnected OnPlayerConnected;
-        private void onPlayerConnected(CSteamID r)
-        {
-            if (OnPlayerConnected != null) OnPlayerConnected(PlayerTool.getPlayer(r));
-        }
 
         public delegate void ServerShutdown();
         public static event ServerShutdown OnServerShutdown;
-        private void onServerShutdown()
+        private static void onServerShutdown()
         {
             if (OnServerShutdown != null) OnServerShutdown();
         }
