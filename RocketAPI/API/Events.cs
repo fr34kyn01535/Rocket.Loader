@@ -15,8 +15,6 @@ namespace Rocket.RocketAPI
         {
             DontDestroyOnLoad(transform.gameObject);
             player = gameObject.transform.GetComponent<Player>();
-
-
             #region PlayerLife
             player.PlayerLife.OnDamaged += onDamaged;
             player.PlayerLife.OnUpdateBleeding += onUpdateBleeding;

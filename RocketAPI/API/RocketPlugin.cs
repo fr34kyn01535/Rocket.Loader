@@ -16,7 +16,7 @@ namespace Rocket.RocketAPI
         {
             try
             {
-                Configuration = RocketConfiguration.LoadConfiguration<T>();
+                Configuration = RocketConfigurationHelper.LoadConfiguration<T>();
             }
             catch (Exception ex)
             {

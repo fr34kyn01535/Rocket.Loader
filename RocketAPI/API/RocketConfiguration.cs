@@ -9,41 +9,62 @@ using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
-    public class RocketConfiguration
+    public interface RocketConfiguration
+    {
+        RocketConfiguration DefaultConfiguration { get; }
+    }
+
+    internal static class RocketConfigurationHelper
     {
         public static T LoadConfiguration<T>()
         {
             string filename = String.Format("{0}Plugins/{1}.config",RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
             if (File.Exists(filename))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(T));
-
-                T output = default(T);
-
-                using (StreamReader reader = new StreamReader(filename))
+                try
                 {
-                    output = (T)serializer.Deserialize(reader);
+                    XmlSerializer serializer = new XmlSerializer(typeof(T));
+
+                    T output = default(T);
+
+                    using (StreamReader reader = new StreamReader(filename))
+                    {
+                        output = (T)serializer.Deserialize(reader);
+                    }
+
+                    XmlSerializer outserializer = new XmlSerializer(typeof(T));
+
+                    using (TextWriter writer = new StreamWriter(filename, false))
+                    {
+                        outserializer.Serialize(writer, output);
+                    }
+
+                    return output;
                 }
-
-                XmlSerializer outserializer = new XmlSerializer(typeof(T));
-
-               /* using (TextWriter writer = new StreamWriter(filename,false))
+                catch (Exception ex)
                 {
-                    outserializer.Serialize(writer, output);
-                }*/
-
-                return output;
+                    Logger.LogError("An error occured while loading the configuration. The old version was backuped and a new version was created: " + ex.ToString());
+                    File.Copy(filename, filename + ".bak", true);
+                    return SaveConfiguration<T>(filename);
+                }
             }
             else
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(T));
-                using (TextWriter writer = new StreamWriter(filename))
-                {
-                    object config = Activator.CreateInstance(typeof(T));
-                    serializer.Serialize(writer, config);
-                }
-                return (T)Activator.CreateInstance(typeof(T));
+                return SaveConfiguration<T>(filename);
             }
+        }
+        public static T SaveConfiguration<T>(string filename) {
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            using (TextWriter writer = new StreamWriter(filename))
+            {
+                object config = Activator.CreateInstance(typeof(T));
+                if (typeof(T).GetInterfaces().Contains(typeof(RocketConfiguration)))
+                {
+                    config = ((RocketConfiguration)config).DefaultConfiguration;
+                }
+                serializer.Serialize(writer, config);
+            }
+            return (T)Activator.CreateInstance(typeof(T));
         }
     }
 }
