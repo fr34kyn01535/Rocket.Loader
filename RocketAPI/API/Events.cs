@@ -16,7 +16,6 @@ namespace Rocket.RocketAPI
             DontDestroyOnLoad(transform.gameObject);
             player = gameObject.transform.GetComponent<Player>();
 
-            Logger.Log("Events bound!");
 
             #region PlayerLife
             player.PlayerLife.OnDamaged += onDamaged;
