@@ -1,5 +1,6 @@
 ﻿using Rocket.RocketAPI;
 using SDG;
+using System;
 using UnityEngine;
 
 namespace Rocket
@@ -15,7 +16,7 @@ namespace Rocket
         protected override void execute(SteamPlayerID caller, string command)
         {
             SteamPlayer otherPlayer;
-            if (SteamPlayerlist.tryGetSteamPlayer(command, out otherPlayer) && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
+            if (!String.IsNullOrEmpty(command) &&  SteamPlayerlist.tryGetSteamPlayer(command, out otherPlayer) && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
             {
                 SteamPlayer myPlayer = PlayerTool.getSteamPlayer(caller.CSteamID);
 
