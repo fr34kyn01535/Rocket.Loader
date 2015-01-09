@@ -1,4 +1,5 @@
-﻿using SDG;
+﻿using Rocket.RocketAPI;
+using SDG;
 using UnityEngine;
 
 namespace Rocket
@@ -7,14 +8,14 @@ namespace Rocket
     {
         public CommandTp() {
             base.commandName = "tp";
-            base.commandInfo = base.commandHelp = "Teleports you to another player";
+            base.commandHelp = "Teleports you to another player";
+            base.commandInfo = base.commandName + " - " + base.commandHelp;
         }
 
         protected override void execute(SteamPlayerID caller, string command)
         {
-            if (command.Length < commandName.Length + 2) return;
             SteamPlayer otherPlayer;
-            if (SteamPlayerlist.tryGetSteamPlayer(command.Substring(commandName.Length + 2), out otherPlayer) && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
+            if (SteamPlayerlist.tryGetSteamPlayer(command, out otherPlayer) && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
             {
                 SteamPlayer myPlayer = PlayerTool.getSteamPlayer(caller.CSteamID);
 

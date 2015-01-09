@@ -46,6 +46,17 @@ namespace Rocket
                 using (TextWriter writer = new StreamWriter(permissionsFile))
                 {
                     permissions = new Permissions();
+
+                    permissions.ShowGroup = true;
+                    permissions.DefaultGroupName = "default";
+                    permissions.AdminGroupDisplayName = "Admin";
+                    permissions.Format = "[{0}] ";
+                    permissions.Groups = new Group[] { 
+                            new Group("default","Guest", null , new List<string>() { "reward","balance","pay" }),
+                            new Group("moderator","Moderator", new List<string>() { "76561197960287930" }, new List<string>() { "tp", "tphere","i","test" }) 
+                        };
+
+
                     serializer.Serialize(writer, permissions);
                 }
             }
@@ -111,15 +122,12 @@ namespace Rocket
     public class Permissions
     {
         public Permissions() { }
-        public bool ShowGroup = true;
-        public string DefaultGroupName = "default";
-        public string AdminGroupDisplayName = "Admin";
-        public string Format = "[{0}] ";
+        public bool ShowGroup;
+        public string DefaultGroupName;
+        public string AdminGroupDisplayName;
+        public string Format;
         [XmlArrayItem(ElementName = "Group")]
-        public Group[] Groups = new Group[] { 
-                new Group("default","Guest", null , new List<string>() { "reward","balance","pay" }),
-                new Group("moderator","Moderator", new List<string>() { "76561198016438091" }, new List<string>() { "tp","test", "tphere" }) 
-            };
+        public Group[] Groups;
     }
 
     [Serializable]

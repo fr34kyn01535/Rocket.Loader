@@ -39,8 +39,7 @@ namespace Rocket
             Assemblies = loadAssemblies();
 
             List<Type> rocketManagerComponents = getTypes(Assemblies, typeof(RocketManagerComponent));
-            rocketManagerComponents.Add(typeof(RocketManager));
-            rocketManagerComponents.Add(typeof(RocketPermissionManager));
+            /*The API rocketmanagers are loaded in the RocketLauncher, they dont have to be included here*/
 
             foreach (Type component in rocketManagerComponents)
             {
@@ -48,8 +47,10 @@ namespace Rocket
             }
 
             Logger.LogError("\nLoading commands".PadRight(80, '.') + "\n");
+            /*But now i could also use the API commands & players loaded */
+            Assemblies.Add(Assembly.GetExecutingAssembly());
+            /*so i add the rocketapi to Assemblies*/
             List<Type> commands = getTypes(Assemblies, typeof(Command));
-
             foreach (Type command in commands)
             {
                 registerCommand((Command)Activator.CreateInstance(command));
@@ -91,7 +92,6 @@ namespace Rocket
         {
             Player player = PlayerTool.getPlayer(id);
             List<Type> rocketPlayerComponents = getTypes(Assemblies, typeof(RocketPlayerComponent));
-            rocketPlayerComponents.Add(typeof(Events));
 
             GameObject gameobject = player.transform.gameObject;
             foreach (Type component in rocketPlayerComponents)

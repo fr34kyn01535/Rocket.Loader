@@ -1,5 +1,6 @@
 ﻿using Rocket.RocketAPI;
 using SDG;
+using System;
 using UnityEngine;
 
 namespace Rocket
@@ -8,26 +9,43 @@ namespace Rocket
     {
         public CommandI() {
             base.commandName = "i";
-            base.commandInfo = base.commandHelp = "Gives yourself an item";
+            base.commandHelp = "Gives yourself an item";
+            base.commandInfo = base.commandName + " - " + base.commandHelp;
         }
 
         protected override void execute(SteamPlayerID caller, string command)
         {
-            Logger.Log("cmd:"+command);
-            if (command.Length < commandName.Length + 2) return;
-            SteamPlayer otherPlayer;
-            if (SteamPlayerlist.tryGetSteamPlayer(command.Substring(commandName.Length + 2), out otherPlayer) && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
-            {
-                SteamPlayer myPlayer = PlayerTool.getSteamPlayer(caller.CSteamID);
+            string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
 
-                Vector3 d1 = otherPlayer.Player.transform.position;
-                Vector3 vector31 = otherPlayer.Player.transform.rotation.eulerAngles;
-                myPlayer.Player.sendTeleport(d1, MeasurementTool.angleToByte(vector31.y));
-                ChatManager.say(caller.CSteamID, "Teleported to " + otherPlayer.SteamPlayerID.CharacterName);
+            if (componentsFromSerial.Length == 0 || componentsFromSerial.Length > 2)
+            {
+                ChatManager.say(caller.CSteamID, "Invalid Parameter");
+                return;
+            }
+
+            ushort id = 0;
+            byte amount = 1;
+
+
+            if (!ushort.TryParse(componentsFromSerial[0].ToString(), out id))
+            {
+                ChatManager.say(caller.CSteamID, "Invalid Parameter");
+                return;
+            }
+
+            if (componentsFromSerial.Length == 2 && !byte.TryParse(componentsFromSerial[1].ToString(), out amount)){
+                ChatManager.say(caller.CSteamID, "Invalid Parameter");
+                return;     
+            }
+
+            Player player = PlayerTool.getPlayer(caller.CSteamID);
+            if (ItemTool.tryForceGiveItem(player,id, amount))
+            {
+                ChatManager.say(caller.CSteamID, "Giving you item " + id + ":" + amount);
             }
             else
             {
-                ChatManager.say(caller.CSteamID, "Failed to find player");
+                ChatManager.say(caller.CSteamID, "Failed giving item " + id + ":" + amount);
             }
         }
     }
