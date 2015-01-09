@@ -19,7 +19,7 @@ namespace Rocket
 
             if (componentsFromSerial.Length == 0 || componentsFromSerial.Length > 2)
             {
-                ChatManager.say(caller.CSteamID, "Invalid Parameter");
+                RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
                 return;
             }
 
@@ -29,23 +29,23 @@ namespace Rocket
 
             if (!ushort.TryParse(componentsFromSerial[0].ToString(), out id))
             {
-                ChatManager.say(caller.CSteamID, "Invalid Parameter");
+                RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
                 return;
             }
 
             if (componentsFromSerial.Length == 2 && !byte.TryParse(componentsFromSerial[1].ToString(), out amount)){
-                ChatManager.say(caller.CSteamID, "Invalid Parameter");
+                RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
                 return;     
             }
 
             Player player = PlayerTool.getPlayer(caller.CSteamID);
             if (ItemTool.tryForceGiveItem(player,id, amount))
             {
-                ChatManager.say(caller.CSteamID, "Giving you item " + id + ":" + amount);
+                RocketChatManager.Say(caller.CSteamID, "Giving you item " + id + ":" + amount);
             }
             else
             {
-                ChatManager.say(caller.CSteamID, "Failed giving item " + id + ":" + amount);
+                RocketChatManager.Say(caller.CSteamID, "Failed giving item " + id + ":" + amount);
             }
         }
     }

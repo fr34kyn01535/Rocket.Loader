@@ -43,9 +43,9 @@ namespace Rocket
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Plugins/Libraries/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Plugins/Libraries/");
 
                 gameObject.AddComponent<RocketManager>();
+                gameObject.AddComponent<RocketChatManager>();
                 gameObject.AddComponent<RocketPluginManager>();
                 gameObject.AddComponent<RocketPermissionManager>();
-                gameObject.AddComponent<RocketChatManager>();
 
                 Logger.LogError("\nLaunching Unturned".PadRight(80, '.'));
                 Logger.LogWarning("The error concerning a corrupted file resourcs.assets can be");
