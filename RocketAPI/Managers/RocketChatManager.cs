@@ -12,7 +12,6 @@ namespace Rocket.RocketAPI
         {
             DontDestroyOnLoad(transform.gameObject);
             chatmanager = gameObject.transform.GetComponent<ChatManager>();
-            Logger.Log("say");
         }
 
         public static void Say(string message, EChatMode chatmode = EChatMode.GLOBAL)
