@@ -96,6 +96,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandReloot.cs" />
     <Compile Include="Managers\RocketChatManager.cs" />
     <Compile Include="Commands\CommandTp.cs" />
     <Compile Include="Commands\CommandTphere.cs" />

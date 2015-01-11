@@ -37,8 +37,6 @@ namespace Rocket.RocketAPI
             player.Inventory.OnInventoryUpdated += onInventoryUpdated;
             #endregion
 
-
-
             #region Steam
             if(!bound){
                 Steam.OnServerShutdown += onServerShutdown;
@@ -49,8 +47,13 @@ namespace Rocket.RocketAPI
 
             //player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName = RocketPermissionManager.GetChatPrefix(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID) + player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName;
 
-            if (OnPlayerConnected != null) OnPlayerConnected(player);
-
+            try{
+                if (OnPlayerConnected != null) OnPlayerConnected(player);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
 
@@ -64,7 +67,13 @@ namespace Rocket.RocketAPI
         public static event PlayerUpdateBleeding OnPlayerUpdateBleeding;
         private void onUpdateBleeding(bool J)
         {
-            if (OnPlayerUpdateBleeding != null) OnPlayerUpdateBleeding(player, J);
+            try{
+                if (OnPlayerUpdateBleeding != null) OnPlayerUpdateBleeding(player, J);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -76,7 +85,13 @@ namespace Rocket.RocketAPI
         public static event PlayerUpdateBroken OnPlayerUpdateBroken;
         private void onUpdateBroken(bool D)
         {
-            if (OnPlayerUpdateBroken != null) OnPlayerUpdateBroken(player, D);
+            try {
+                if (OnPlayerUpdateBroken != null) OnPlayerUpdateBroken(player, D);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -88,7 +103,13 @@ namespace Rocket.RocketAPI
         public static event PlayerUpdateFreezing OnPlayerUpdateFreezing;
         private void onUpdateFreezing(bool h)
         {
-            if (OnPlayerUpdateFreezing != null) OnPlayerUpdateFreezing(player, h);
+            try{
+                if (OnPlayerUpdateFreezing != null) OnPlayerUpdateFreezing(player, h);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -100,7 +121,13 @@ namespace Rocket.RocketAPI
         public static event PlayerUpdateLife OnPlayerUpdateLife;
         private void onUpdateLife(bool C)
         {
-            if (OnPlayerUpdateLife != null) OnPlayerUpdateLife(player, C);
+            try {
+                if (OnPlayerUpdateLife != null) OnPlayerUpdateLife(player, C);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -112,7 +139,13 @@ namespace Rocket.RocketAPI
         public static event PlayerUpdateVision OnPlayerUpdateVision;
         private void onUpdateVision(bool o)
         {
-            if (OnPlayerUpdateVision != null) OnPlayerUpdateVision(player, o);
+            try {
+                if (OnPlayerUpdateVision != null) OnPlayerUpdateVision(player, o);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -124,7 +157,13 @@ namespace Rocket.RocketAPI
         public static event PlayerUpdateFoot OnPlayerUpdateFoot;
         private void onUpdateFoot(byte R)
         {
-            if (OnPlayerUpdateFoot != null) OnPlayerUpdateFoot(player, R);
+            try {
+                if (OnPlayerUpdateFoot != null) OnPlayerUpdateFoot(player, R);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -136,7 +175,13 @@ namespace Rocket.RocketAPI
         public static event PlayerUpdateHealth OnPlayerUpdateHealth;
         private void onUpdateHealth(byte Y)
         {
-            if (OnPlayerUpdateHealth != null) OnPlayerUpdateHealth(player, Y);
+            try {
+                if (OnPlayerUpdateHealth != null) OnPlayerUpdateHealth(player, Y);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -148,7 +193,13 @@ namespace Rocket.RocketAPI
         public static event PlayerUpdateOxygen OnPlayerUpdateOxygen;
         private void onUpdateOxygen(byte t)
         {
-            if (OnPlayerUpdateOxygen != null) OnPlayerUpdateOxygen(player, t);
+            try {
+                if (OnPlayerUpdateOxygen != null) OnPlayerUpdateOxygen(player, t);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -160,7 +211,13 @@ namespace Rocket.RocketAPI
         public static event PlayerUpdateStamina OnPlayerUpdateStamina;
         private void onUpdateStamina(byte D)
         {
-            if (OnPlayerUpdateStamina != null) OnPlayerUpdateStamina(player, D);
+            try {
+                if (OnPlayerUpdateStamina != null) OnPlayerUpdateStamina(player, D);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -172,7 +229,13 @@ namespace Rocket.RocketAPI
         public static event PlayerUpdateVirus OnPlayerUpdateVirus;
         private void onUpdateVirus(byte E)
         {
-            if (OnPlayerUpdateVirus != null) OnPlayerUpdateVirus(player, E);
+            try {
+                if (OnPlayerUpdateVirus != null) OnPlayerUpdateVirus(player, E);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -183,7 +246,13 @@ namespace Rocket.RocketAPI
         public delegate void PlayerUpdateWater(Player player, byte water);
         public static event PlayerUpdateWater OnPlayerUpdateWater;
         private void onUpdateWater(byte A) {
-            if (OnPlayerUpdateWater != null) OnPlayerUpdateWater(player, A);
+            try {
+                if (OnPlayerUpdateWater != null) OnPlayerUpdateWater(player, A);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -195,38 +264,70 @@ namespace Rocket.RocketAPI
         public static event PlayerDamaged OnPlayerDamaged;
         private void onDamaged(byte P)
         {
-            if (OnPlayerDamaged != null) OnPlayerDamaged(player, P);
+            try {
+                if (OnPlayerDamaged != null) OnPlayerDamaged(player, P);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
         #endregion
 
         #region PlayerInventory
 
-        public delegate void PlayerInventoryUpdated(Player player, byte inventoryGroup, byte O, ItemJar P);
+        public delegate void PlayerInventoryUpdated(Player player, byte inventoryGroup, byte inventoryIndex, ItemJar P);
         public static event PlayerInventoryUpdated OnPlayerInventoryUpdated;
         private void onInventoryUpdated(byte E, byte O, ItemJar P)
         {
-            if (OnPlayerInventoryUpdated != null) OnPlayerInventoryUpdated(player, E, O, P);
+            try
+            {
+                if (OnPlayerInventoryUpdated != null) OnPlayerInventoryUpdated(player, E, O, P);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         public delegate void PlayerInventoryResized(Player player, byte I, byte O, byte U);
         public static event PlayerInventoryResized OnPlayerInventoryResized;
         private void onInventoryResized(byte I, byte M, byte U)
         {
-            if (OnPlayerInventoryResized != null) OnPlayerInventoryResized(player, I, M, U);
+            try {
+                if (OnPlayerInventoryResized != null) OnPlayerInventoryResized(player, I, M, U);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
-        public delegate void PlayerInventoryRemoved(Player player, byte inventoryGroup, byte O, ItemJar P);
+        public delegate void PlayerInventoryRemoved(Player player, byte inventoryGroup, byte inventoryIndex, ItemJar P);
         public static event PlayerInventoryRemoved OnPlayerInventoryRemoved;
         private void onInventoryRemoved(byte V, byte y, ItemJar f)
         {
-            if (OnPlayerInventoryRemoved != null) OnPlayerInventoryRemoved(player, V, y, f);
+            try {
+                if (OnPlayerInventoryRemoved != null) OnPlayerInventoryRemoved(player, V, y, f);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
-        public delegate void PlayerInventoryAdded(Player player, byte inventoryGroup, byte O, ItemJar P);
+        public delegate void PlayerInventoryAdded(Player player, byte inventoryGroup, byte inventoryIndex, ItemJar P);
         public static event PlayerInventoryAdded OnPlayerInventoryAdded;
         private void onInventoryAdded(byte Q, byte u, ItemJar J)
         {
-            if (OnPlayerInventoryAdded != null) OnPlayerInventoryAdded(player, Q, u, J);
+            try
+            {
+                if (OnPlayerInventoryAdded != null) OnPlayerInventoryAdded(player, Q, u, J);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         #endregion
@@ -242,7 +343,13 @@ namespace Rocket.RocketAPI
         public static event PlayerDisconnected OnPlayerDisconnected;
         private static void onPlayerDisconnected(CSteamID r)
         {
-            if (OnPlayerDisconnected != null) OnPlayerDisconnected(PlayerTool.getPlayer(r));
+            try {
+                if (OnPlayerDisconnected != null) OnPlayerDisconnected(PlayerTool.getPlayer(r));
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -256,9 +363,17 @@ namespace Rocket.RocketAPI
         public static event ServerShutdown OnServerShutdown;
         private static void onServerShutdown()
         {
-            if (OnServerShutdown != null) OnServerShutdown();
+            try
+            {
+                if (OnServerShutdown != null) OnServerShutdown();
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
             
         #endregion
+
     }
 }
