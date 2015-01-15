@@ -22,14 +22,20 @@ namespace Rocket.RocketAPI
             {
                 Logger.LogError("Failed to load configuration: "+ex.ToString());
             }
+            Loaded = true;
         }
     }
 
     public class RocketPlugin : RocketManagerComponent
     {
+        public static bool Loaded = false;
         public void Start()
         {
             Load();
+        }
+        private new void Awake()
+        {
+            Loaded = true;
         }
         protected virtual void Load() { }
     }

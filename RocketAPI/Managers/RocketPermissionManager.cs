@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
@@ -18,6 +19,8 @@ namespace Rocket
         private string permissionsFile;
         private static Permissions permissions;
 
+        public static DateTime lastUpdate = DateTime.MinValue;
+
         public new void Awake()
         {
             base.Awake();
@@ -25,20 +28,76 @@ namespace Rocket
             loadPermissions();
         }
 
+        private static void getWebPermissions()
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(permissions.WebPermissionsUrl) && (DateTime.Now - lastUpdate) > TimeSpan.FromSeconds(permissions.WebCacheTimeout))
+                {
+                    WebClient wc = new WebClient();
+                    wc.DownloadStringCompleted += wc_DownloadStringCompleted;
+                    wc.DownloadStringAsync(new Uri(permissions.WebPermissionsUrl));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Failed getting WebPermissions: " + ex.ToString());
+            }
+        }
+
+        private static string wc_DownloadStringCompletedDone = null;
+        private static void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            string r;
+            try
+            {
+                var serializer = new XmlSerializer(typeof(Permissions));
+                Permissions result;
+
+                using (TextReader reader = new StringReader(e.Result))
+                {
+                    result = (Permissions)serializer.Deserialize(reader);
+                }
+                permissions.Groups = result.Groups;
+                r = "Updated WebPermissions...";
+            }
+            catch (Exception ex)
+            {
+                r = "Failed downloading WebPermissions: "+ex.ToString();
+            }
+
+            wc_DownloadStringCompletedDone = r;
+        }
+
+        void Update()
+        {
+            if (wc_DownloadStringCompletedDone != null)
+            {
+                Logger.LogWarning(wc_DownloadStringCompletedDone);
+                wc_DownloadStringCompletedDone = null;
+            }
+        }
+
         private void loadPermissions()
         {
             if (File.Exists(permissionsFile))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(Permissions));
-                permissions = (Permissions)serializer.Deserialize(new StreamReader(permissionsFile));
-
-                foreach (Group group in permissions.Groups)
+                using (StreamReader reader = new StreamReader(permissionsFile))
                 {
-                    foreach (string command in group.Commands)
+                    permissions = (Permissions)serializer.Deserialize(reader);
+
+                    foreach (Group group in permissions.Groups)
                     {
-                        group.Commands[group.Commands.IndexOf(command)] = command.ToLower();
+                        foreach (string command in group.Commands)
+                        {
+                            group.Commands[group.Commands.IndexOf(command)] = command.ToLower();
+                        }
                     }
                 }
+                serializer.Serialize(new StreamWriter(permissionsFile), permissions);
+
+                getWebPermissions();
             }
             else
             {
@@ -55,7 +114,8 @@ namespace Rocket
                             new Group("default","Guest", null , new List<string>() { "reward","balance","pay" }),
                             new Group("moderator","Moderator", new List<string>() { "76561197960287930" }, new List<string>() { "tp", "tphere","i","test" }) 
                         };
-
+                    permissions.WebPermissionsUrl = " ";
+                    permissions.WebCacheTimeout = 60;
 
                     serializer.Serialize(writer, permissions);
                 }
@@ -94,6 +154,22 @@ namespace Rocket
             return prefix;
         }
 
+        public static string[] GetGroups(CSteamID CSteamID)
+        {
+            return permissions.Groups.Where(g => g.Members.Contains(CSteamID.ToString())).Select(g => g.DisplayName + " (" + g.Name + ")").ToArray();
+        }
+        public static string[] GetPermissions(CSteamID CSteamID)
+        {
+            List<string> p = new List<string>();
+            foreach (Group g in permissions.Groups) {
+                if (g.Members.Contains(CSteamID.ToString()) || g.Name == permissions.DefaultGroupName)
+                {
+                    p.AddRange(g.Commands);
+                }
+            }
+            return p.Distinct().ToArray();
+        }
+
         /// <summary>
         /// This method checks if a player has a specific permission
         /// </summary>
@@ -102,16 +178,18 @@ namespace Rocket
         /// <returns></returns>
         public static bool CheckPermissions(SteamPlayer player, string permission)
         {
+            getWebPermissions();
             Regex r = new Regex("^\\/[a-zA-Z]*");
             String commandstring = r.Match(permission.ToLower()).Value.ToString().TrimStart('/');
 
             foreach (Group group in RocketPermissionManager.permissions.Groups)
             {
-                if (group.Commands.Contains(commandstring.ToLower()))
+                if (group.Commands.Contains(commandstring.ToLower()) || group.Commands.Contains("*"))
                 {
                     if(group.Name.ToLower() == permissions.DefaultGroupName) return true;
                     if (group.Members.Contains(player.SteamPlayerID.CSteamID.ToString().ToLower())) return true;
                 }
+
             }
 
             return player.IsAdmin;
@@ -126,6 +204,8 @@ namespace Rocket
         public string DefaultGroupName;
         public string AdminGroupDisplayName;
         public string Format;
+        public string WebPermissionsUrl;
+        public int WebCacheTimeout;
         [XmlArrayItem(ElementName = "Group")]
         public Group[] Groups;
     }
