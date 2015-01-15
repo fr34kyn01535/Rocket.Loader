@@ -87,6 +87,8 @@ namespace Rocket
                 {
                     permissions = (Permissions)serializer.Deserialize(reader);
 
+                    if (permissions.Groups == null) permissions.Groups = new Group[0];
+
                     foreach (Group group in permissions.Groups)
                     {
                         foreach (string command in group.Commands)
