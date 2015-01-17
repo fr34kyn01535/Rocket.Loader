@@ -34,6 +34,7 @@ namespace Rocket
             {
                 if (!String.IsNullOrEmpty(permissions.WebPermissionsUrl) && (DateTime.Now - lastUpdate) > TimeSpan.FromSeconds(permissions.WebCacheTimeout))
                 {
+                    lastUpdate = DateTime.Now;
                     WebClient wc = new WebClient();
                     wc.DownloadStringCompleted += wc_DownloadStringCompleted;
                     wc.DownloadStringAsync(new Uri(permissions.WebPermissionsUrl));
