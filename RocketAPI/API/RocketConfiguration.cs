@@ -43,9 +43,10 @@ namespace Rocket.RocketAPI
                             target += "?";
                         }
 
-                        target += "configuration=" + typeof(T).Assembly.GetName().Name + "&instance=" + Steam.Servername;
-
+                        target += "configuration=" + typeof(T).Assembly.GetName().Name + "&instance=" + Steam.Servername+"&request="+Guid.NewGuid();
+                        Logger.Log("Webconfig from: " + target);
                         filecontent = new WebClient().DownloadString(target);
+                        Logger.Log("config:"+filecontent);
                     }
 
                     XmlSerializer serializer = new XmlSerializer(typeof(T));
