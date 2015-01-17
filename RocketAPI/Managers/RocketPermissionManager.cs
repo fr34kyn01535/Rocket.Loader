@@ -76,6 +76,10 @@ namespace Rocket
                 Logger.LogWarning(wc_DownloadStringCompletedDone);
                 wc_DownloadStringCompletedDone = null;
             }
+            else
+            {
+                getWebPermissions();
+            }
         }
 
         private void loadPermissions()
@@ -180,7 +184,6 @@ namespace Rocket
         /// <returns></returns>
         public static bool CheckPermissions(SteamPlayer player, string permission)
         {
-            getWebPermissions();
             Regex r = new Regex("^\\/[a-zA-Z]*");
             String commandstring = r.Match(permission.ToLower()).Value.ToString().TrimStart('/');
 
