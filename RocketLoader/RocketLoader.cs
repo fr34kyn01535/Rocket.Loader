@@ -79,10 +79,14 @@ namespace Rocket.RocketLoader
 
             UnturnedAssembly.Write("Assembly-CSharp.dll");
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Your game was successfully patched");
-            Console.WriteLine("Press any key to quit");
-            Console.ReadKey();
+
+            if (!(args.Count() == 1 && args[0] == "silent"))
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Your game was successfully patched");
+                Console.WriteLine("Press any key to quit");
+                Console.ReadKey();
+            }
         }
 
         private static bool isPatched()
