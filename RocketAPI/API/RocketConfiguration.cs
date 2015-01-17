@@ -27,7 +27,7 @@ namespace Rocket.RocketAPI
                 {
                     string filecontent = "";
                     using (StreamReader reader = new StreamReader(filename)) { 
-                        filecontent = reader.ReadToEnd();
+                        filecontent = reader.ReadToEnd().Trim();
                     }
                     Uri uriOut = null;
                     if (Uri.TryCreate(filecontent, UriKind.Absolute, out uriOut) && (uriOut.Scheme == Uri.UriSchemeHttp || uriOut.Scheme == Uri.UriSchemeHttps)) {
@@ -44,9 +44,7 @@ namespace Rocket.RocketAPI
                         }
 
                         target += "configuration=" + typeof(T).Assembly.GetName().Name + "&instance=" + Steam.Servername+"&request="+Guid.NewGuid();
-                        Logger.Log("Webconfig from: " + target);
                         filecontent = new WebClient().DownloadString(target);
-                        Logger.Log("config:"+filecontent);
                     }
 
                     XmlSerializer serializer = new XmlSerializer(typeof(T));
