@@ -60,7 +60,7 @@ namespace Rocket
                     result = (Permissions)serializer.Deserialize(reader);
                 }
                 permissions.Groups = result.Groups;
-                r = "Updated WebPermissions...";
+                r = "done";
             }
             catch (Exception ex)
             {
@@ -74,7 +74,7 @@ namespace Rocket
         {
             if (wc_DownloadStringCompletedDone != null)
             {
-                Logger.LogWarning(wc_DownloadStringCompletedDone);
+                if(wc_DownloadStringCompletedDone != "done") Logger.LogWarning(wc_DownloadStringCompletedDone);
                 wc_DownloadStringCompletedDone = null;
             }
             else

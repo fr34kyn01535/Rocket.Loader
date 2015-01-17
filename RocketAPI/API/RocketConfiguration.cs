@@ -1,7 +1,9 @@
-﻿using System;
+﻿using SDG;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
@@ -23,20 +25,43 @@ namespace Rocket.RocketAPI
             {
                 try
                 {
+                    string filecontent = "";
+                    using (StreamReader reader = new StreamReader(filename)) { 
+                        filecontent = reader.ReadToEnd();
+                    }
+                    Uri uriOut = null;
+                    if (Uri.TryCreate(filecontent, UriKind.Absolute, out uriOut) && (uriOut.Scheme == Uri.UriSchemeHttp || uriOut.Scheme == Uri.UriSchemeHttps)) {
+
+                        string target = uriOut.ToString();
+
+                        if (target.Contains("?"))
+                        {
+                            target += "&";
+                        }
+                        else
+                        {
+                            target += "?";
+                        }
+
+                        target += "configuration=" + typeof(T).Assembly.GetName().Name + "&instance=" + Steam.Servername;
+
+                        filecontent = new WebClient().DownloadString(target);
+                    }
+
                     XmlSerializer serializer = new XmlSerializer(typeof(T));
 
                     T output = default(T);
 
-                    using (StreamReader reader = new StreamReader(filename))
-                    {
-                        output = (T)serializer.Deserialize(reader);
-                    }
+                    output = (T)serializer.Deserialize(new StringReader(filecontent));
 
-                    XmlSerializer outserializer = new XmlSerializer(typeof(T));
-
-                    using (TextWriter writer = new StreamWriter(filename, false))
+                    if (uriOut == null)
                     {
-                        outserializer.Serialize(writer, output);
+                        XmlSerializer outserializer = new XmlSerializer(typeof(T));
+
+                        using (TextWriter writer = new StreamWriter(filename, false))
+                        {
+                            outserializer.Serialize(writer, output);
+                        }
                     }
 
                     return output;
