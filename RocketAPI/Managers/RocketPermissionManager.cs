@@ -55,16 +55,28 @@ namespace Rocket
                 var serializer = new XmlSerializer(typeof(Permissions));
                 Permissions result;
 
-                using (StringReader reader = new StringReader(e.Result))
+                if (String.IsNullOrEmpty(e.Result))
                 {
-                    result = (Permissions)serializer.Deserialize(reader);
+                    r = "Failed downloading WebPermissions: Empty result";
                 }
-                permissions.Groups = result.Groups;
-                r = "done";
+                else
+                {
+
+                    using (StringReader reader = new StringReader(e.Result))
+                    {
+                        result = (Permissions)serializer.Deserialize(reader);
+                    }
+                    permissions.Groups = result.Groups;
+                    r = "done";
+                }
             }
             catch (Exception ex)
             {
                 r = "Failed downloading WebPermissions: "+ex.ToString();
+                if (!String.IsNullOrEmpty(e.Result))
+                {
+                    r+= " Result:"+e.Result;
+                }
             }
 
             wc_DownloadStringCompletedDone = r;
@@ -74,7 +86,7 @@ namespace Rocket
         {
             if (wc_DownloadStringCompletedDone != null)
             {
-                if(wc_DownloadStringCompletedDone != "done") Logger.LogWarning(wc_DownloadStringCompletedDone);
+                if(wc_DownloadStringCompletedDone != "done") Logger.LogError(wc_DownloadStringCompletedDone);
                 wc_DownloadStringCompletedDone = null;
             }
             else
