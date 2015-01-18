@@ -32,10 +32,10 @@ namespace Rocket
         {
             try
             {
-                if (!String.IsNullOrEmpty(permissions.WebPermissionsUrl) && (DateTime.Now - lastUpdate) > TimeSpan.FromSeconds(permissions.WebCacheTimeout))
+                if (!String.IsNullOrEmpty(permissions.WebPermissionsUrl) && (DateTime.Now - lastUpdate) > TimeSpan.FromSeconds(permissions.WebCacheTimeout) && wc_DownloadStringCompletedDone == null)
                 {
                     lastUpdate = DateTime.Now;
-                    WebClient wc = new WebClient();
+                    RocketWebClient wc = new RocketWebClient();
                     wc.DownloadStringCompleted += wc_DownloadStringCompleted;
                     wc.DownloadStringAsync(new Uri(permissions.WebPermissionsUrl));
                 }
