@@ -112,6 +112,7 @@
     <Compile Include="API\RocketConfiguration.cs" />
     <Compile Include="Components\RocketPlayerComponent.cs" />
     <Compile Include="Managers\RocketPluginManager.cs" />
+    <Compile Include="Managers\RocketThreadManager.cs" />
     <Compile Include="RocketLauncher.cs" />
     <Compile Include="API\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

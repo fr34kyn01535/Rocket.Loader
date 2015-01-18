@@ -1,4 +1,5 @@
 ﻿using Rocket.RocketAPI;
+using Rocket.RocketAPI.Managers;
 using SDG;
 using Steamworks;
 using System;
@@ -43,6 +44,7 @@ namespace Rocket
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Plugins/Libraries/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Plugins/Libraries/");
 
                 gameObject.AddComponent<RocketManager>();
+                gameObject.AddComponent<RocketThreadManager>();
                 gameObject.AddComponent<RocketChatManager>();
                 gameObject.AddComponent<RocketPluginManager>();
                 gameObject.AddComponent<RocketPermissionManager>();
