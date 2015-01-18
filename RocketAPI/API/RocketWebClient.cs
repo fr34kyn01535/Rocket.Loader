@@ -1,28 +1,30 @@
 ﻿using System;
 using System.Net;
 
-public class RocketWebClient : WebClient
+namespace Rocket.RocketAPI
 {
-    /// <summary>
-    /// Time in milliseconds
-    /// </summary>
-    public int Timeout { get; set; }
-
-    public RocketWebClient() : this(60000) { }
-
-    public RocketWebClient(int timeout)
+    public class RocketWebClient : WebClient
     {
-        this.Timeout = timeout;
-    }
+        /// <summary>
+        /// Time in milliseconds
+        /// </summary>
+        public int Timeout { get; set; }
 
-    protected override WebRequest GetWebRequest(Uri address)
-    {
-        var request = base.GetWebRequest(address);
-        if (request != null)
+        public RocketWebClient() : this(60000) { }
+
+        public RocketWebClient(int timeout)
         {
-            request.Timeout = this.Timeout;
+            this.Timeout = timeout;
         }
-        return request;
+
+        protected override WebRequest GetWebRequest(Uri address)
+        {
+            var request = base.GetWebRequest(address);
+            if (request != null)
+            {
+                request.Timeout = this.Timeout;
+            }
+            return request;
+        }
     }
-}
 }
