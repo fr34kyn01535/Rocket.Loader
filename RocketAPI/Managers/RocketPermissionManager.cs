@@ -1,5 +1,6 @@
 ﻿using Rocket.RocketAPI;
 using Rocket.RocketAPI.Components;
+using Rocket.RocketAPI.Managers;
 using SDG;
 using Steamworks;
 using System;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Timers;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -18,8 +20,6 @@ namespace Rocket
     {
         private string permissionsFile;
         private static Permissions permissions;
-
-        public static DateTime lastUpdate = DateTime.MinValue;
 
         public new void Awake()
         {
@@ -32,13 +32,9 @@ namespace Rocket
         {
             try
             {
-                if (!String.IsNullOrEmpty(permissions.WebPermissionsUrl) && (DateTime.Now - lastUpdate) > TimeSpan.FromSeconds(permissions.WebCacheTimeout) && wc_DownloadStringCompletedDone == null)
-                {
-                    lastUpdate = DateTime.Now;
-                    RocketWebClient wc = new RocketWebClient();
-                    wc.DownloadStringCompleted += wc_DownloadStringCompleted;
-                    wc.DownloadStringAsync(new Uri(permissions.WebPermissionsUrl));
-                }
+                RocketWebClient wc = new RocketWebClient();
+                wc.DownloadStringCompleted += wc_DownloadStringCompleted;
+                wc.DownloadStringAsync(new Uri(permissions.WebPermissionsUrl));
             }
             catch (Exception ex)
             {
@@ -46,10 +42,20 @@ namespace Rocket
             }
         }
 
-        private static string wc_DownloadStringCompletedDone = null;
+        private static bool updated = true;
+        private static DateTime lastUpdated = DateTime.MinValue;
+        public void Update()
+        {
+            if (updated && (DateTime.Now - lastUpdated) > TimeSpan.FromSeconds(permissions.WebCacheTimeout))
+            {
+                updated = false;
+                getWebPermissions();
+            }
+        }
+
         private static void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
-            string r;
+            string r = null;
             try
             {
                 var serializer = new XmlSerializer(typeof(Permissions));
@@ -67,7 +73,6 @@ namespace Rocket
                         result = (Permissions)serializer.Deserialize(reader);
                     }
                     permissions.Groups = result.Groups;
-                    r = "done";
                 }
             }
             catch (Exception ex)
@@ -79,20 +84,12 @@ namespace Rocket
                 }
             }
 
-            wc_DownloadStringCompletedDone = r;
-        }
-
-        void Update()
-        {
-            if (wc_DownloadStringCompletedDone != null)
+            RocketThreadManager.Enqueue(() =>
             {
-                if(wc_DownloadStringCompletedDone != "done") Logger.LogError(wc_DownloadStringCompletedDone);
-                wc_DownloadStringCompletedDone = null;
-            }
-            else
-            {
-                getWebPermissions();
-            }
+                if(!String.IsNullOrEmpty(r)) Logger.LogError(r);
+            });
+            lastUpdated = DateTime.Now;
+            updated = true;
         }
 
         private void loadPermissions()
@@ -116,7 +113,10 @@ namespace Rocket
                 }
                 serializer.Serialize(new StreamWriter(permissionsFile), permissions);
 
-                getWebPermissions();
+                if (String.IsNullOrEmpty(permissions.WebPermissionsUrl))
+                {
+                    getWebPermissions();
+                }
             }
             else
             {
