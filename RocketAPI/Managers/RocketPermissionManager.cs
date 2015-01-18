@@ -55,7 +55,7 @@ namespace Rocket
                 var serializer = new XmlSerializer(typeof(Permissions));
                 Permissions result;
 
-                using (TextReader reader = new StringReader(e.Result))
+                using (StringReader reader = new StringReader(e.Result))
                 {
                     result = (Permissions)serializer.Deserialize(reader);
                 }
