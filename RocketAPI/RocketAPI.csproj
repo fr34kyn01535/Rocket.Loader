@@ -99,6 +99,7 @@
     <Compile Include="API\RocketWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Commands\CommandRocket.cs" />
     <Compile Include="Commands\CommandP.cs" />
     <Compile Include="Commands\CommandReloot.cs" />
     <Compile Include="Managers\RocketChatManager.cs" />

@@ -30,15 +30,18 @@ namespace Rocket
 
         private static void getWebPermissions()
         {
-            try
+            if (!String.IsNullOrEmpty(permissions.WebPermissionsUrl))
             {
-                RocketWebClient wc = new RocketWebClient();
-                wc.DownloadStringCompleted += wc_DownloadStringCompleted;
-                wc.DownloadStringAsync(new Uri(permissions.WebPermissionsUrl));
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError("Failed getting WebPermissions: " + ex.ToString());
+                try
+                {
+                    RocketWebClient wc = new RocketWebClient();
+                    wc.DownloadStringCompleted += wc_DownloadStringCompleted;
+                    wc.DownloadStringAsync(new Uri(permissions.WebPermissionsUrl.Trim()));
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError("Failed getting WebPermissions: " + ex.ToString());
+                }
             }
         }
 
@@ -112,10 +115,8 @@ namespace Rocket
                 }
                 serializer.Serialize(new StreamWriter(permissionsFile), permissions);
 
-                if (String.IsNullOrEmpty(permissions.WebPermissionsUrl))
-                {
-                    getWebPermissions();
-                }
+                
+               getWebPermissions();
             }
             else
             {
@@ -132,9 +133,10 @@ namespace Rocket
                             new Group("default","Guest", null , new List<string>() { "reward","balance","pay" }),
                             new Group("moderator","Moderator", new List<string>() { "76561197960287930" }, new List<string>() { "tp", "tphere","i","test" }) 
                         };
-                    permissions.WebPermissionsUrl = " ";
+                    permissions.WebPermissionsUrl = "";
                     permissions.WebCacheTimeout = 60;
-                    permissions.WhitelistedGroups = null;
+                    permissions.WhitelistedGroups = new string[0];
+                    permissions.NotWhitelistedMessage = "you are not whitelisted.";
                     serializer.Serialize(writer, permissions);
                 }
             }
@@ -212,9 +214,9 @@ namespace Rocket
             return player.IsAdmin;
         }
 
-        internal static bool IsWhitelisted(CSteamID cSteamID)
+        internal static bool CheckWhitelisted(CSteamID cSteamID)
         {
-            if (permissions.WhitelistedGroups != null)
+            if (permissions.WhitelistedGroups != null && permissions.WhitelistedGroups.Count() != 0)
             {
                 string[] myGroups = permissions.Groups.Where(g => g.Members.Contains(cSteamID.ToString())).Select(g => g.Id).ToArray();
                 foreach (string g in GetDisplayGroups(cSteamID))
@@ -228,6 +230,7 @@ namespace Rocket
             else {
                 return true;
             }
+            Steam.kick(cSteamID, permissions.NotWhitelistedMessage);
             return false;
         }
     }
@@ -246,6 +249,7 @@ namespace Rocket
         public Group[] Groups;
         [XmlArrayItem(ElementName = "WhitelistedGroup")]
         public string[] WhitelistedGroups;
+        public string NotWhitelistedMessage;
     }
 
     [Serializable]
