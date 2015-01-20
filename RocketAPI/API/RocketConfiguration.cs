@@ -29,6 +29,7 @@ namespace Rocket.RocketAPI
                     using (StreamReader reader = new StreamReader(filename)) { 
                         filecontent = reader.ReadToEnd().Trim();
                     }
+
                     Uri uriOut = null;
                     if (Uri.TryCreate(filecontent, UriKind.Absolute, out uriOut) && (uriOut.Scheme == Uri.UriSchemeHttp || uriOut.Scheme == Uri.UriSchemeHttps)) {
 

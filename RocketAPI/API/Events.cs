@@ -15,6 +15,16 @@ namespace Rocket.RocketAPI
         {
             DontDestroyOnLoad(transform.gameObject);
             player = gameObject.transform.GetComponent<Player>();
+
+
+            if (!RocketPermissionManager.IsWhitelisted(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID)) {
+                Steam.kick(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID,"You are not whitelisted");
+            }
+
+
+
+
+
             #region PlayerLife
             player.PlayerLife.OnDamaged += onDamaged;
             player.PlayerLife.OnUpdateBleeding += onUpdateBleeding;

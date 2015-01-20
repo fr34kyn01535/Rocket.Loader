@@ -38,7 +38,7 @@ namespace Rocket
                 name = player.CharacterName + "s";
             }
 
-            RocketChatManager.Say(caller.CSteamID,name + " groups are: " + String.Join(", ", RocketPermissionManager.GetGroups(player.CSteamID)));
+            RocketChatManager.Say(caller.CSteamID,name + " groups are: " + String.Join(", ", RocketPermissionManager.GetDisplayGroups(player.CSteamID)));
             RocketChatManager.Say(caller.CSteamID,name + " permissions are: " + String.Join(", ", RocketPermissionManager.GetPermissions(player.CSteamID)));
 
         }

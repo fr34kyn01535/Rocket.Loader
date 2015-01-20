@@ -56,19 +56,18 @@ namespace Rocket
         private static void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
             string r = null;
+            string re = e.Result;
             try
             {
                 var serializer = new XmlSerializer(typeof(Permissions));
                 Permissions result;
-
-                if (String.IsNullOrEmpty(e.Result))
+                if (String.IsNullOrEmpty(re))
                 {
                     r = "Failed downloading WebPermissions: Empty result";
                 }
                 else
                 {
-
-                    using (StringReader reader = new StringReader(e.Result))
+                    using (StringReader reader = new StringReader(re))
                     {
                         result = (Permissions)serializer.Deserialize(reader);
                     }
@@ -78,9 +77,9 @@ namespace Rocket
             catch (Exception ex)
             {
                 r = "Failed downloading WebPermissions: "+ex.ToString();
-                if (!String.IsNullOrEmpty(e.Result))
+                if (!String.IsNullOrEmpty(r))
                 {
-                    r+= " Result:"+e.Result;
+                    r+= " Result:"+r;
                 }
             }
 
@@ -135,7 +134,7 @@ namespace Rocket
                         };
                     permissions.WebPermissionsUrl = " ";
                     permissions.WebCacheTimeout = 60;
-
+                    permissions.WhitelistedGroups = null;
                     serializer.Serialize(writer, permissions);
                 }
             }
@@ -156,7 +155,7 @@ namespace Rocket
                         Group group = permissions.Groups.Where(g => g.Members!= null && g.Members.Contains(CSteamID.ToString())).FirstOrDefault();
                         if (group == null)
                         {
-                            Group defaultGroup = permissions.Groups.Where(g => g.Name == permissions.DefaultGroupName).FirstOrDefault();
+                            Group defaultGroup = permissions.Groups.Where(g => g.Id == permissions.DefaultGroupName).FirstOrDefault();
                             if (defaultGroup == null) throw new Exception("No group found with the name " + permissions.DefaultGroupName + ", can not get default group");
                             return String.Format(permissions.Format, defaultGroup.DisplayName);
                         }
@@ -173,15 +172,15 @@ namespace Rocket
             return prefix;
         }
 
-        public static string[] GetGroups(CSteamID CSteamID)
+        public static string[] GetDisplayGroups(CSteamID CSteamID)
         {
-            return permissions.Groups.Where(g => g.Members.Contains(CSteamID.ToString())).Select(g => g.DisplayName + " (" + g.Name + ")").ToArray();
+            return permissions.Groups.Where(g => g.Members.Contains(CSteamID.ToString())).Select(g => g.DisplayName + " (" + g.Id + ")").ToArray();
         }
         public static string[] GetPermissions(CSteamID CSteamID)
         {
             List<string> p = new List<string>();
             foreach (Group g in permissions.Groups) {
-                if (g.Members.Contains(CSteamID.ToString()) || g.Name == permissions.DefaultGroupName)
+                if (g.Members.Contains(CSteamID.ToString()) || g.Id == permissions.DefaultGroupName)
                 {
                     p.AddRange(g.Commands);
                 }
@@ -204,13 +203,32 @@ namespace Rocket
             {
                 if (group.Commands.Contains(commandstring.ToLower()) || group.Commands.Contains("*"))
                 {
-                    if(group.Name.ToLower() == permissions.DefaultGroupName) return true;
+                    if (group.Id.ToLower() == permissions.DefaultGroupName) return true;
                     if (group.Members.Contains(player.SteamPlayerID.CSteamID.ToString().ToLower())) return true;
                 }
 
             }
 
             return player.IsAdmin;
+        }
+
+        internal static bool IsWhitelisted(CSteamID cSteamID)
+        {
+            if (permissions.WhitelistedGroups != null)
+            {
+                string[] myGroups = permissions.Groups.Where(g => g.Members.Contains(cSteamID.ToString())).Select(g => g.Id).ToArray();
+                foreach (string g in GetDisplayGroups(cSteamID))
+                {
+                    if (permissions.WhitelistedGroups.Contains(g))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else {
+                return true;
+            }
+            return false;
         }
     }
 
@@ -226,6 +244,8 @@ namespace Rocket
         public int WebCacheTimeout;
         [XmlArrayItem(ElementName = "Group")]
         public Group[] Groups;
+        [XmlArrayItem(ElementName = "WhitelistedGroup")]
+        public string[] WhitelistedGroups;
     }
 
     [Serializable]
@@ -234,12 +254,12 @@ namespace Rocket
         public Group() { }
         public Group(string name,string displayName, List<string> members, List<string> commands)
         {
-            Name = name;
+            Id = name;
             DisplayName = displayName;
             Members = members;
             Commands = commands;
         }
-        public string Name;
+        public string Id;
         public string DisplayName;
         [XmlArrayItem(ElementName="Member")]
         public List<string> Members;
