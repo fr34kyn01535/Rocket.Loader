@@ -130,7 +130,7 @@ namespace Rocket
                     permissions.AdminGroupDisplayName = "Admin";
                     permissions.Format = "[{0}] ";
                     permissions.Groups = new Group[] { 
-                            new Group("default","Guest", null , new List<string>() { "reward","balance","pay" }),
+                            new Group("default","Guest", null , new List<string>() { "reward","balance","pay","rocket" }),
                             new Group("moderator","Moderator", new List<string>() { "76561197960287930" }, new List<string>() { "tp", "tphere","i","test" }) 
                         };
                     permissions.WebPermissionsUrl = "";
