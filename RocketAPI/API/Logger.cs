@@ -37,7 +37,7 @@ namespace Rocket.RocketAPI
             Debug.LogWarning(message);
         }
 
-        public static string var_dump(object obj, int recursion = 0)
+        internal static string var_dump(object obj, int recursion = 0)
         {
             StringBuilder result = new StringBuilder();
 
