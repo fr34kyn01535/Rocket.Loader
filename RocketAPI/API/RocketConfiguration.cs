@@ -20,7 +20,7 @@ namespace Rocket.RocketAPI
     {
         public static T LoadConfiguration<T>()
         {
-            string filename = String.Format("{0}Plugins/{1}.config",RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
+            string filename = String.Format("{0}Plugins/{1}/{1}.config", RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
             if (File.Exists(filename))
             {
                 try

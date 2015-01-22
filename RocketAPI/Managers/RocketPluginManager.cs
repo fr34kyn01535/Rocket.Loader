@@ -104,7 +104,7 @@ namespace Rocket
         private Dictionary<string, string> additionalLibraries = new Dictionary<string, string>();
         private void loadLibraries()
         {
-            IEnumerable<FileInfo> libraries = new DirectoryInfo(RocketSettings.HomeFolder + "Plugins/Libraries/").GetFiles("*.dll", SearchOption.AllDirectories).Where(f => f.Extension == ".dll");
+            IEnumerable<FileInfo> libraries = new DirectoryInfo(RocketSettings.HomeFolder + "Libraries/").GetFiles("*.dll", SearchOption.AllDirectories).Where(f => f.Extension == ".dll");
             foreach (FileInfo library in libraries)
             {
                 try

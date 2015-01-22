@@ -41,7 +41,7 @@ namespace Rocket
 
                 if (!Directory.Exists(RocketSettings.HomeFolder)) Directory.CreateDirectory(RocketSettings.HomeFolder);
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Plugins/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Plugins/");
-                if (!Directory.Exists(RocketSettings.HomeFolder + "Plugins/Libraries/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Plugins/Libraries/");
+                if (!Directory.Exists(RocketSettings.HomeFolder + "Libraries/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Libraries/");
 
                 gameObject.AddComponent<RocketManager>();
                 gameObject.AddComponent<RocketThreadManager>();
