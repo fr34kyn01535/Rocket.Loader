@@ -68,9 +68,9 @@ namespace Rocket.RocketAPI
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError("An error occured while loading the configuration. The old version was backuped and a new version was created: " + ex.ToString());
-                    File.Copy(filename, filename + ".bak", true);
-                    return SaveConfiguration<T>(filename);
+                    Logger.LogError("An error occured while loading the configuration: " + ex.ToString());// The old version was backuped and a new version was created: " + ex.ToString());
+                    //File.Copy(filename, filename + ".bak", true);
+                    //return SaveConfiguration<T>(filename);
                 }
             }
             else
