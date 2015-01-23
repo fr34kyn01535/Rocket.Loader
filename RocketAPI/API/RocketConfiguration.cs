@@ -71,6 +71,7 @@ namespace Rocket.RocketAPI
                     Logger.LogError("An error occured while loading the configuration: " + ex.ToString());// The old version was backuped and a new version was created: " + ex.ToString());
                     //File.Copy(filename, filename + ".bak", true);
                     //return SaveConfiguration<T>(filename);
+                    return (T)Activator.CreateInstance(typeof(T));
                 }
             }
             else
