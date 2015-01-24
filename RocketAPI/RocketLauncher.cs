@@ -49,6 +49,8 @@ namespace Rocket
                 gameObject.AddComponent<RocketPluginManager>();
                 gameObject.AddComponent<RocketPermissionManager>();
 
+                gameObject.AddComponent<RocketServer>();
+
                 Logger.LogError("\nLaunching Unturned".PadRight(80, '.'));
                 Logger.LogWarning("The error concerning a corrupted file resourcs.assets can be");
                 Logger.LogWarning("ignored while we work on a bugfix".PadRight(79, '.'));

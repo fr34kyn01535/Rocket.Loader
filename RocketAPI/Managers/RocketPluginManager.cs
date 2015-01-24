@@ -90,13 +90,12 @@ namespace Rocket
 
         void onPlayerConnected(CSteamID id)
         {
-            Player player = PlayerTool.getPlayer(id);
+            SDG.Player player = PlayerTool.getPlayer(id);
             List<Type> rocketPlayerComponents = getTypes(Assemblies, typeof(RocketPlayerComponent));
 
-            GameObject gameobject = player.transform.gameObject;
             foreach (Type component in rocketPlayerComponents)
             {
-                gameobject.AddComponent(component);
+                player.gameObject.AddComponent(component);
             }
         }
 

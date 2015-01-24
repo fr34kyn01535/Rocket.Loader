@@ -17,6 +17,7 @@ namespace Rocket.RocketLoader.Patches
             h.UnlockFieldByType(typeof(Boolean), "IsPro", 0);
             h.UnlockFieldByType(typeof(Boolean), "IsAdmin", 1);
             h.UnlockFieldByType("SteamPlayerID", "SteamPlayerID");
+            h.UnlockFieldByType("Color", "Color");
         }
     }
 }

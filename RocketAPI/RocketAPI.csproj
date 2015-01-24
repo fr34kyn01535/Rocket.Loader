@@ -99,6 +99,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Components\RocketPlayerEvents.cs" />
+    <Compile Include="API\Components\RocketPlayer.cs" />
     <Compile Include="API\RocketWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -110,7 +112,7 @@
     <Compile Include="Commands\CommandTphere.cs" />
     <Compile Include="Commands\CommandI.cs" />
     <Compile Include="Managers\RocketManager.cs" />
-    <Compile Include="API\Events.cs" />
+    <Compile Include="API\Components\RocketServer.cs" />
     <Compile Include="API\RocketPlugin.cs" />
     <Compile Include="Components\RocketManagerComponent.cs" />
     <Compile Include="API\RocketConfiguration.cs" />
