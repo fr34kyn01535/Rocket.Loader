@@ -21,6 +21,7 @@ namespace Rocket.RocketAPI
 
         public static void Say(CSteamID CSteamID, string message, EChatMode chatmode = EChatMode.SAY)
         {
+            if (CSteamID != null) 
             ChatManager.Instance.SteamChannel.send("tellChat", CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode, message });
         }
     }
