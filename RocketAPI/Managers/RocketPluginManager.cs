@@ -28,7 +28,7 @@ namespace Rocket
                     return Assembly.Load(File.ReadAllBytes(file));
                 }
                 else {
-                    Logger.LogError("Could not find additional Library " + args.Name);
+                    Logger.LogError("Could not find dependency: " + args.Name);
                 }
                 return null;
             };
