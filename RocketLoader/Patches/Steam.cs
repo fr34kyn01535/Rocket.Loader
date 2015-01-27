@@ -19,7 +19,8 @@ namespace Rocket.RocketLoader.Patches
             h.UnlockFieldByType("ServerShutdown", "OnServerShutdown");
             h.UnlockFieldByType("ServerConnected", "OnServerConnected");
             h.UnlockFieldByType("ServerDisconnected", "OnServerDisconnected");
-            h.UnlockFieldByType(typeof(string), "Servername", 7);
+            h.UnlockFieldByType(typeof(string), "InstanceName", 7);
+            h.UnlockFieldByType(typeof(uint), "ServerPort", 1);
 
             h.UnlockFieldByType("List<SDG.SteamPlayer>", "Players");
         }

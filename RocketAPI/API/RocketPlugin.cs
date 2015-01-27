@@ -40,6 +40,7 @@ namespace Rocket.RocketAPI
         }
         private new void Awake()
         {
+            DontDestroyOnLoad(transform.gameObject);
             Loaded = true;
         }
         protected virtual void Load() { }

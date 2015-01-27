@@ -14,6 +14,8 @@ namespace Rocket
 
         public static RocketLauncher Instance;
 
+        public static RocketSettings Settings;
+
         public static void Launch()
         {
             Instance = new GameObject().AddComponent<RocketLauncher>();
@@ -21,39 +23,28 @@ namespace Rocket
 
         public static void Splash()
         {
-            Logger.LogError("".PadRight(80, '.'));
-            Logger.LogError(@"                        ______           _        _ ");
-            Logger.LogError(@"                        | ___ \         | |      | |");
-            Logger.LogError(@"                        | |_/ /___   ___| | _____| |_");
-            Logger.LogError(@"                        |    // _ \ / __| |/ / _ \ __|");
-            Logger.LogError(@"                        | |\ \ (_) | (__|   <  __/ |_");
-            Logger.LogError(@"                        \_| \_\___/ \___|_|\_\___|\__\ v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "\n");
-            Logger.LogError("Loading Unturned".PadRight(80, '.'));
+            RocketLoadingAnimation.Load();
         }
 
         private void Start()
         {
-            if (String.IsNullOrEmpty(Steam.Servername)) return;
+            if (String.IsNullOrEmpty(Steam.InstanceName)) return;
             try
             {
                 DontDestroyOnLoad(transform.gameObject);
-                RocketSettings.HomeFolder = "Servers/" + Steam.Servername + "/Rocket/";
+                RocketSettings.HomeFolder = "Servers/" + Steam.InstanceName + "/Rocket/";
 
                 if (!Directory.Exists(RocketSettings.HomeFolder)) Directory.CreateDirectory(RocketSettings.HomeFolder);
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Plugins/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Plugins/");
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Libraries/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Libraries/");
 
-                gameObject.AddComponent<RocketManager>();
-                gameObject.AddComponent<RocketThreadManager>();
+                new RocketSettings().Load();
+
+                gameObject.AddComponent<RocketTaskManager>();
                 gameObject.AddComponent<RocketChatManager>();
                 gameObject.AddComponent<RocketPluginManager>();
                 gameObject.AddComponent<RocketPermissionManager>();
-
-                gameObject.AddComponent<RocketServer>();
-
-                Logger.LogError("\nLaunching Unturned".PadRight(80, '.'));
-                Logger.LogWarning("The error concerning a corrupted file resourcs.assets can be");
-                Logger.LogWarning("ignored while we work on a bugfix".PadRight(79, '.'));
+                gameObject.AddComponent<RocketRconManager>();
             }
             catch (Exception e)
             {
@@ -61,9 +52,4 @@ namespace Rocket
             }
         }
     }
-}
-
-internal static class RocketSettings
-{
-    public static string HomeFolder;
 }

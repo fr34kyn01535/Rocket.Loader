@@ -16,7 +16,7 @@ namespace Rocket.RocketLoader.Patches
         {
             h.UnlockFieldByType("LifeUpdated", "OnUpdateLife");
             h.UnlockFieldByType("HealthUpdated", "OnUpdateHealth");
-            h.UnlockFieldByType("FoodUpdated", "OnUpdateFoot");
+            h.UnlockFieldByType("FoodUpdated", "OnUpdateFood");
             h.UnlockFieldByType("WaterUpdated", "OnUpdateWater");
             h.UnlockFieldByType("VirusUpdated", "OnUpdateVirus");
             h.UnlockFieldByType("StaminaUpdated", "OnUpdateStamina");

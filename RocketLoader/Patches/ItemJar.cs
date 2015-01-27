@@ -17,7 +17,6 @@ namespace Rocket.RocketLoader.Patches
             h.UnlockFieldByType("Item", "Item");
             h.UnlockFieldByType(typeof(byte), "PositionX", 0);
             h.UnlockFieldByType(typeof(byte), "PositionY", 1);
-            
         }
     }
 }

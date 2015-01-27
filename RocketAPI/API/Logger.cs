@@ -22,7 +22,7 @@ namespace Rocket.RocketAPI
                 assembly = "";
             }
             else {
-                assembly ="\n"+ assembly + " >> ";
+                assembly = assembly + " >> ";
             }
             lastAssembly = assembly;
             message = assembly + message;

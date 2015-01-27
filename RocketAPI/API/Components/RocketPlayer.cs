@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
-    public partial class RocketPlayer : RocketPlayerComponent
+    public class RocketPlayer : RocketPlayerComponent
     {
         public void Damage(byte amount,Vector3 direction,EDeathCause cause,ELimb limb,CSteamID damager){
             PlayerInstance.PlayerLife.askDamage(amount,direction,cause,limb,damager);
@@ -21,12 +21,10 @@ namespace Rocket.RocketAPI
             get{
                 return PlayerInstance.PlayerLife.Health;
             }
-           // set
-            //{
-                //Decrease life is probably only possible with damage, having more then 20 life after damage will make u bleed tho
-               // PlayerInstance.PlayerLife.askDamage((byte)(PlayerInstance.PlayerLife.Health-15), Vector3.down, EDeathCause.KILL, ELimb.SKULL, new CSteamID(0));
-                //PlayerInstance.PlayerLife.askHeal((byte)(value - 15), PlayerInstance.PlayerLife.Bleeding, PlayerInstance.PlayerLife.Broken);
-           // }
+        }
+
+        public void Heal(byte health) {
+            PlayerInstance.PlayerLife.askHeal(health, PlayerInstance.PlayerLife.Bleeding, PlayerInstance.PlayerLife.Broken);
         }
 
         public byte Hunger
@@ -61,14 +59,11 @@ namespace Rocket.RocketAPI
             {
                 return PlayerInstance.PlayerLife.Bleeding;
             }
-            /*set
+            set
             {
-                //TODO: Make visible
-                //PlayerInstance.PlayerLife.askHeal(PlayerInstance.PlayerLife.Health, value, PlayerInstance.PlayerLife.Broken);
-                //Player.Instance.PlayerLife.askDamage(1)
-
-                PlayerInstance.PlayerLife.SteamChannel.send("tellBleeding", ESteamCall.SERVER, ESteamPacket.UPDATE_TCP_BUFFER, new object[] { value });
-            }*/
+                PlayerInstance.PlayerLife.Bleeding = value;
+                PlayerInstance.PlayerLife.SteamChannel.send("tellBleeding", ESteamCall.OWNER, ESteamPacket.UPDATE_TCP_BUFFER, new object[] { value });
+            }
         }
 
         public bool Broken
@@ -77,10 +72,11 @@ namespace Rocket.RocketAPI
             {
                 return PlayerInstance.PlayerLife.Broken;
             }
-            /*set
-            { TODO: FIX
-                PlayerInstance.PlayerLife.SteamChannel.send("tellBroken", ESteamCall.SERVER, ESteamPacket.UPDATE_TCP_BUFFER, new object[] { value });
-            }*/
+            set
+            {
+               // PlayerInstance.PlayerLife.Broken = value;
+                PlayerInstance.PlayerLife.SteamChannel.send("tellBroken", ESteamCall.OWNER, ESteamPacket.UPDATE_TCP_BUFFER, new object[] { value });
+            }
         }
 
         /* TODO: Implement
@@ -117,7 +113,7 @@ namespace Rocket.RocketAPI
                 return PlayerInstance.PlayerLife.Stamina;
             }
             /*set{
-               TODO: REST
+               TODO: REST & TIRE
             }*/
         }
 

@@ -8,9 +8,9 @@ namespace Rocket.RocketAPI
     public class RocketChatManager : RocketManagerComponent
     {
         static ChatManager chatmanager;
-        public new void Awake()
+        private new void Awake()
         {
-            DontDestroyOnLoad(transform.gameObject);
+            base.Awake();
             chatmanager = gameObject.transform.GetComponent<ChatManager>();
         }
 

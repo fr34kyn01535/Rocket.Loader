@@ -9,16 +9,17 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace Rocket
+namespace Rocket.RocketAPI
 {
     public class RocketPluginManager : RocketManagerComponent
     {
         public List<Assembly> Assemblies;
 
-        private new void Awake()
+        private void Start()
         {
+            RocketLoadingAnimation.Stop();
+            Console.Clear();
             base.Awake();
-            DontDestroyOnLoad(transform.gameObject);
             #region Handling additional assemblies
             AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs args)
             {
@@ -34,8 +35,18 @@ namespace Rocket
             };
             loadLibraries();
             #endregion
+            
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("The rocket has launched | v"+Assembly.GetExecutingAssembly().GetName().Version.ToString() + "\n");
 
-            Logger.LogError("\nLoading Extensions".PadRight(80, '.') + "\n");
+            if (RocketSettings.EnableRcon)
+            {
+                Console.WriteLine("Loading RocketRcon".PadRight(80, '.'));
+                RocketRconManager.Listen();
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("Loading Extensions".PadRight(80, '.'));
             Assemblies = loadAssemblies();
 
             List<Type> rocketManagerComponents = getTypes(Assemblies, typeof(RocketManagerComponent));
@@ -45,8 +56,8 @@ namespace Rocket
             {
                 RocketLauncher.Instance.gameObject.AddComponent(component);
             }
-
-            Logger.LogError("\nLoading commands".PadRight(80, '.') + "\n");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\nLoading commands".PadRight(80, '.') + "\n");
             /*But now i could also use the API commands & players loaded */
             Assemblies.Add(Assembly.GetExecutingAssembly());
             /*so i add the rocketapi to Assemblies*/
@@ -56,6 +67,11 @@ namespace Rocket
                 registerCommand((Command)Activator.CreateInstance(command));
             }
             SDG.Steam.OnServerConnected += onPlayerConnected;
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\nLaunching Unturned".PadRight(80, '.'));
+            Logger.LogWarning("\nThe error concerning a corrupted file resourcs.assets can be");
+            Logger.LogWarning("ignored while we work on a bugfix".PadRight(79, '.') + "\n");
         }
 
         internal static void registerCommand(Command command)

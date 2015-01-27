@@ -14,7 +14,7 @@ using System.Timers;
 using System.Xml.Serialization;
 using UnityEngine;
 
-namespace Rocket
+namespace Rocket.RocketAPI
 {
     public class RocketPermissionManager : RocketManagerComponent
     {
@@ -86,7 +86,7 @@ namespace Rocket
                 }
             }
 
-            RocketThreadManager.Enqueue(() =>
+            RocketTaskManager.Enqueue(() =>
             {
                 if(!String.IsNullOrEmpty(r)) Logger.LogError(r);
             });

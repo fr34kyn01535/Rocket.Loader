@@ -64,7 +64,6 @@ namespace Rocket.RocketLoader.Patches
 
             TypeReference byteType = AssemblyDefinition.ReadAssembly("mscorlib.dll").MainModule.GetType("System.Byte");
 
-
             TypeReference fieldType = RocketLoader.UnturnedAssembly.MainModule.Import(byteType);
             bool flag1 = false, flag2 = false;
 

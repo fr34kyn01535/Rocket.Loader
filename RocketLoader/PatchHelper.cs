@@ -11,9 +11,9 @@ namespace Rocket.RocketLoader
 {
     public class PatchHelper
     {
-        private TypeDefinition type;
+        public TypeDefinition Type;
         public PatchHelper(string unturnedTypeName) {
-            type = RocketLoader.UnturnedAssembly.MainModule.GetType(unturnedTypeName);
+            Type = RocketLoader.UnturnedAssembly.MainModule.GetType(unturnedTypeName);
         }
 
         private static void unlock(FieldDefinition f, string name = null)
@@ -29,21 +29,21 @@ namespace Rocket.RocketLoader
 
         public MethodDefinition GetMethod(string name)
         {
-            return type.Methods.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefault();
+            return Type.Methods.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefault();
         }
 
         public FieldDefinition GetField(string name)
         {
-            return type.Fields.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefault();
+            return Type.Fields.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefault();
         }
         public FieldDefinition[] GetFieldsByType(Type typeToUnlock)
         {
-            return type.Fields.Where(p => p.FieldType.FullName.Replace('/', '+') == typeToUnlock.FullName).ToArray();
+            return Type.Fields.Where(p => p.FieldType.FullName.Replace('/', '+') == typeToUnlock.FullName).ToArray();
         }
 
         public FieldDefinition[] GetFieldsByType(string typeToUnlock)
         {
-            List<FieldDefinition> fields = type.Fields.ToList();
+            List<FieldDefinition> fields = Type.Fields.ToList();
             List<FieldDefinition> outFields = new List<FieldDefinition>();
 
             foreach (FieldDefinition field in fields) {

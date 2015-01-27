@@ -35,8 +35,6 @@ namespace Rocket.RocketLoader
                 Environment.Exit(1);
             }
 
-
-
             if (isPatched())
             {
                 if (File.Exists("Assembly-CSharp.dll.bak"))

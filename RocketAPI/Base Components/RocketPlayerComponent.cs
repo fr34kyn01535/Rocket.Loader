@@ -12,6 +12,7 @@ namespace Rocket.RocketAPI.Components
         public void Awake()
         {
             PlayerInstance = gameObject.transform.GetComponent<Player>();
+            DontDestroyOnLoad(transform.gameObject);
         }
     }
 }

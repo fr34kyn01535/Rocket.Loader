@@ -44,7 +44,7 @@ namespace Rocket.RocketAPI
                             target += "?";
                         }
 
-                        target += "configuration=" + typeof(T).Assembly.GetName().Name + "&instance=" + Steam.Servername+"&request="+Guid.NewGuid();
+                        target += "configuration=" + typeof(T).Assembly.GetName().Name + "&instance=" + Steam.InstanceName + "&request=" + Guid.NewGuid();
                         filecontent = new RocketWebClient().DownloadString(target);
                     }
 

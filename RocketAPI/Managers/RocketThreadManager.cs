@@ -3,17 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using UnityEngine;
 
 namespace Rocket.RocketAPI.Managers
 {
-    public class RocketThreadManager : RocketManagerComponent
+    public class RocketTaskManager : RocketManagerComponent
     {
 
         private Queue<Action> work;
-        public static RocketThreadManager Instance;
+        public static RocketTaskManager Instance;
 
-        public RocketThreadManager()
+        public RocketTaskManager()
         {
             work = new Queue<Action>();
             Instance = this;
@@ -21,7 +22,7 @@ namespace Rocket.RocketAPI.Managers
 
         public static void Enqueue(Action a)
         {
-            RocketThreadManager.Instance.enqueue(a);
+            if(a!=null)RocketTaskManager.Instance.enqueue(a);
         }
 
         private void enqueue(Action a)
@@ -40,7 +41,14 @@ namespace Rocket.RocketAPI.Managers
                 {
                     foreach (var a in work)
                     {
-                        a();
+                        try
+                        {
+                            a();
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Logger.Log(ex);
+                        }
                     }
                     work.Clear();
                 }
