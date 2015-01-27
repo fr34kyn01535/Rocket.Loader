@@ -99,9 +99,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\Components\RocketPlayerFeatures.cs" />
     <Compile Include="API\Components\RocketEvents.cs" />
     <Compile Include="API\Components\RocketPlayer.cs" />
+    <Compile Include="API\Components\RocketPlayerFeatures.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="API\RocketWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -124,7 +126,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Managers\RocketPermissionManager.cs" />
     <Compile Include="RocketLoadingAnimation.cs" />
-    <Compile Include="RocketSettings.cs" />
+    <Compile Include="RocketSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Documentation\Doxyfile">
