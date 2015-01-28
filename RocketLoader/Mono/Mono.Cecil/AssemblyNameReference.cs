@@ -31,239 +31,272 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Mono.Cecil {
+namespace Mono.Cecil
+{
+    public class AssemblyNameReference : IMetadataScope
+    {
+        private string name;
+        private string culture;
+        private Version version;
+        private uint attributes;
+        private byte[] public_key;
+        private byte[] public_key_token;
+        private AssemblyHashAlgorithm hash_algorithm;
+        private byte[] hash;
 
-	public class AssemblyNameReference : IMetadataScope {
+        internal MetadataToken token;
 
-		string name;
-		string culture;
-		Version version;
-		uint attributes;
-		byte [] public_key;
-		byte [] public_key_token;
-		AssemblyHashAlgorithm hash_algorithm;
-		byte [] hash;
+        private string full_name;
 
-		internal MetadataToken token;
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                name = value;
+                full_name = null;
+            }
+        }
 
-		string full_name;
+        public string Culture
+        {
+            get { return culture; }
+            set
+            {
+                culture = value;
+                full_name = null;
+            }
+        }
 
-		public string Name {
-			get { return name; }
-			set {
-				name = value;
-				full_name = null;
-			}
-		}
+        public Version Version
+        {
+            get { return version; }
+            set
+            {
+                version = value;
+                full_name = null;
+            }
+        }
 
-		public string Culture {
-			get { return culture; }
-			set {
-				culture = value;
-				full_name = null;
-			}
-		}
+        public AssemblyAttributes Attributes
+        {
+            get { return (AssemblyAttributes)attributes; }
+            set { attributes = (uint)value; }
+        }
 
-		public Version Version {
-			get { return version; }
-			set {
-				 version = value;
-				 full_name = null;
-			}
-		}
+        public bool HasPublicKey
+        {
+            get { return attributes.GetAttributes((uint)AssemblyAttributes.PublicKey); }
+            set { attributes = attributes.SetAttributes((uint)AssemblyAttributes.PublicKey, value); }
+        }
 
-		public AssemblyAttributes Attributes {
-			get { return (AssemblyAttributes) attributes; }
-			set { attributes = (uint) value; }
-		}
+        public bool IsSideBySideCompatible
+        {
+            get { return attributes.GetAttributes((uint)AssemblyAttributes.SideBySideCompatible); }
+            set { attributes = attributes.SetAttributes((uint)AssemblyAttributes.SideBySideCompatible, value); }
+        }
 
-		public bool HasPublicKey {
-			get { return attributes.GetAttributes ((uint) AssemblyAttributes.PublicKey); }
-			set { attributes = attributes.SetAttributes ((uint) AssemblyAttributes.PublicKey, value); }
-		}
+        public bool IsRetargetable
+        {
+            get { return attributes.GetAttributes((uint)AssemblyAttributes.Retargetable); }
+            set { attributes = attributes.SetAttributes((uint)AssemblyAttributes.Retargetable, value); }
+        }
 
-		public bool IsSideBySideCompatible {
-			get { return attributes.GetAttributes ((uint) AssemblyAttributes.SideBySideCompatible); }
-			set { attributes = attributes.SetAttributes ((uint) AssemblyAttributes.SideBySideCompatible, value); }
-		}
+        public bool IsWindowsRuntime
+        {
+            get { return attributes.GetAttributes((uint)AssemblyAttributes.WindowsRuntime); }
+            set { attributes = attributes.SetAttributes((uint)AssemblyAttributes.WindowsRuntime, value); }
+        }
 
-		public bool IsRetargetable {
-			get { return attributes.GetAttributes ((uint) AssemblyAttributes.Retargetable); }
-			set { attributes = attributes.SetAttributes ((uint) AssemblyAttributes.Retargetable, value); }
-		}
+        public byte[] PublicKey
+        {
+            get { return public_key ?? Empty<byte>.Array; }
+            set
+            {
+                public_key = value;
+                HasPublicKey = !public_key.IsNullOrEmpty();
+                public_key_token = Empty<byte>.Array;
+                full_name = null;
+            }
+        }
 
-		public bool IsWindowsRuntime {
-			get { return attributes.GetAttributes ((uint) AssemblyAttributes.WindowsRuntime); }
-			set { attributes = attributes.SetAttributes ((uint) AssemblyAttributes.WindowsRuntime, value); }
-		}
+        public byte[] PublicKeyToken
+        {
+            get
+            {
+                if (public_key_token.IsNullOrEmpty() && !public_key.IsNullOrEmpty())
+                {
+                    var hash = HashPublicKey();
+                    // we need the last 8 bytes in reverse order
+                    public_key_token = new byte[8];
+                    Array.Copy(hash, (hash.Length - 8), public_key_token, 0, 8);
+                    Array.Reverse(public_key_token, 0, 8);
+                }
+                return public_key_token ?? Empty<byte>.Array;
+            }
+            set
+            {
+                public_key_token = value;
+                full_name = null;
+            }
+        }
 
-		public byte [] PublicKey {
-			get { return public_key ?? Empty<byte>.Array; }
-			set {
-				public_key = value;
-				HasPublicKey = !public_key.IsNullOrEmpty ();
-				public_key_token = Empty<byte>.Array;
-				full_name = null;
-			}
-		}
+        private byte[] HashPublicKey()
+        {
+            HashAlgorithm algorithm;
 
-		public byte [] PublicKeyToken {
-			get {
-				if (public_key_token.IsNullOrEmpty () && !public_key.IsNullOrEmpty ()) {
-					var hash = HashPublicKey ();
-					// we need the last 8 bytes in reverse order
-					public_key_token = new byte [8];
-					Array.Copy (hash, (hash.Length - 8), public_key_token, 0, 8);
-					Array.Reverse (public_key_token, 0, 8);
-				}
-				return public_key_token ?? Empty<byte>.Array;
-			}
-			set {
-				public_key_token = value;
-				full_name = null;
-			}
-		}
-
-		byte [] HashPublicKey ()
-		{
-			HashAlgorithm algorithm;
-
-			switch (hash_algorithm) {
-			case AssemblyHashAlgorithm.Reserved:
+            switch (hash_algorithm)
+            {
+                case AssemblyHashAlgorithm.Reserved:
 #if SILVERLIGHT
 				throw new NotSupportedException ();
 #else
-				algorithm = MD5.Create ();
-				break;
+                    algorithm = MD5.Create();
+                    break;
 #endif
-			default:
-				// None default to SHA1
+                default:
+                    // None default to SHA1
 #if SILVERLIGHT
 				algorithm = new SHA1Managed ();
 				break;
 #else
-				algorithm = SHA1.Create ();
-				break;
+                    algorithm = SHA1.Create();
+                    break;
 #endif
-			}
+            }
 
-			using (algorithm)
-				return algorithm.ComputeHash (public_key);
-		}
+            using (algorithm)
+                return algorithm.ComputeHash(public_key);
+        }
 
-		public virtual MetadataScopeType MetadataScopeType {
-			get { return MetadataScopeType.AssemblyNameReference; }
-		}
+        public virtual MetadataScopeType MetadataScopeType
+        {
+            get { return MetadataScopeType.AssemblyNameReference; }
+        }
 
-		public string FullName {
-			get {
-				if (full_name != null)
-					return full_name;
+        public string FullName
+        {
+            get
+            {
+                if (full_name != null)
+                    return full_name;
 
-				const string sep = ", ";
+                const string sep = ", ";
 
-				var builder = new StringBuilder ();
-				builder.Append (name);
-				if (version != null) {
-					builder.Append (sep);
-					builder.Append ("Version=");
-					builder.Append (version.ToString ());
-				}
-				builder.Append (sep);
-				builder.Append ("Culture=");
-				builder.Append (string.IsNullOrEmpty (culture) ? "neutral" : culture);
-				builder.Append (sep);
-				builder.Append ("PublicKeyToken=");
+                var builder = new StringBuilder();
+                builder.Append(name);
+                if (version != null)
+                {
+                    builder.Append(sep);
+                    builder.Append("Version=");
+                    builder.Append(version.ToString());
+                }
+                builder.Append(sep);
+                builder.Append("Culture=");
+                builder.Append(string.IsNullOrEmpty(culture) ? "neutral" : culture);
+                builder.Append(sep);
+                builder.Append("PublicKeyToken=");
 
-				var pk_token = PublicKeyToken;
-				if (!pk_token.IsNullOrEmpty () && pk_token.Length > 0) {
-					for (int i = 0 ; i < pk_token.Length ; i++) {
-						builder.Append (pk_token [i].ToString ("x2"));
-					}
-				} else
-					builder.Append ("null");
+                var pk_token = PublicKeyToken;
+                if (!pk_token.IsNullOrEmpty() && pk_token.Length > 0)
+                {
+                    for (int i = 0; i < pk_token.Length; i++)
+                    {
+                        builder.Append(pk_token[i].ToString("x2"));
+                    }
+                }
+                else
+                    builder.Append("null");
 
-				return full_name = builder.ToString ();
-			}
-		}
+                return full_name = builder.ToString();
+            }
+        }
 
-		public static AssemblyNameReference Parse (string fullName)
-		{
-			if (fullName == null)
-				throw new ArgumentNullException ("fullName");
-			if (fullName.Length == 0)
-				throw new ArgumentException ("Name can not be empty");
+        public static AssemblyNameReference Parse(string fullName)
+        {
+            if (fullName == null)
+                throw new ArgumentNullException("fullName");
+            if (fullName.Length == 0)
+                throw new ArgumentException("Name can not be empty");
 
-			var name = new AssemblyNameReference ();
-			var tokens = fullName.Split (',');
-			for (int i = 0; i < tokens.Length; i++) {
-				var token = tokens [i].Trim ();
+            var name = new AssemblyNameReference();
+            var tokens = fullName.Split(',');
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                var token = tokens[i].Trim();
 
-				if (i == 0) {
-					name.Name = token;
-					continue;
-				}
+                if (i == 0)
+                {
+                    name.Name = token;
+                    continue;
+                }
 
-				var parts = token.Split ('=');
-				if (parts.Length != 2)
-					throw new ArgumentException ("Malformed name");
+                var parts = token.Split('=');
+                if (parts.Length != 2)
+                    throw new ArgumentException("Malformed name");
 
-				switch (parts [0].ToLowerInvariant ()) {
-				case "version":
-					name.Version = new Version (parts [1]);
-					break;
-				case "culture":
-					name.Culture = parts [1];
-					break;
-				case "publickeytoken":
-					var pk_token = parts [1];
-					if (pk_token == "null")
-						break;
+                switch (parts[0].ToLowerInvariant())
+                {
+                    case "version":
+                        name.Version = new Version(parts[1]);
+                        break;
 
-					name.PublicKeyToken = new byte [pk_token.Length / 2];
-					for (int j = 0; j < name.PublicKeyToken.Length; j++)
-						name.PublicKeyToken [j] = Byte.Parse (pk_token.Substring (j * 2, 2), NumberStyles.HexNumber);
+                    case "culture":
+                        name.Culture = parts[1];
+                        break;
 
-					break;
-				}
-			}
+                    case "publickeytoken":
+                        var pk_token = parts[1];
+                        if (pk_token == "null")
+                            break;
 
-			return name;
-		}
+                        name.PublicKeyToken = new byte[pk_token.Length / 2];
+                        for (int j = 0; j < name.PublicKeyToken.Length; j++)
+                            name.PublicKeyToken[j] = Byte.Parse(pk_token.Substring(j * 2, 2), NumberStyles.HexNumber);
 
-		public AssemblyHashAlgorithm HashAlgorithm {
-			get { return hash_algorithm; }
-			set { hash_algorithm = value; }
-		}
+                        break;
+                }
+            }
 
-		public virtual byte [] Hash {
-			get { return hash; }
-			set { hash = value; }
-		}
+            return name;
+        }
 
-		public MetadataToken MetadataToken {
-			get { return token; }
-			set { token = value; }
-		}
+        public AssemblyHashAlgorithm HashAlgorithm
+        {
+            get { return hash_algorithm; }
+            set { hash_algorithm = value; }
+        }
 
-		internal AssemblyNameReference ()
-		{
-		}
+        public virtual byte[] Hash
+        {
+            get { return hash; }
+            set { hash = value; }
+        }
 
-		public AssemblyNameReference (string name, Version version)
-		{
-			if (name == null)
-				throw new ArgumentNullException ("name");
+        public MetadataToken MetadataToken
+        {
+            get { return token; }
+            set { token = value; }
+        }
 
-			this.name = name;
-			this.version = version;
-			this.hash_algorithm = AssemblyHashAlgorithm.None;
-			this.token = new MetadataToken (TokenType.AssemblyRef);
-		}
+        internal AssemblyNameReference()
+        {
+        }
 
-		public override string ToString ()
-		{
-			return this.FullName;
-		}
-	}
+        public AssemblyNameReference(string name, Version version)
+        {
+            if (name == null)
+                throw new ArgumentNullException("name");
+
+            this.name = name;
+            this.version = version;
+            this.hash_algorithm = AssemblyHashAlgorithm.None;
+            this.token = new MetadataToken(TokenType.AssemblyRef);
+        }
+
+        public override string ToString()
+        {
+            return this.FullName;
+        }
+    }
 }

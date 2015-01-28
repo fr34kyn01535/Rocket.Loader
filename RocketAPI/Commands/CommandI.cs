@@ -1,13 +1,12 @@
 ﻿using Rocket.RocketAPI;
 using SDG;
-using System;
-using UnityEngine;
 
 namespace Rocket
 {
     public class CommandI : Command
     {
-        public CommandI() {
+        public CommandI()
+        {
             base.commandName = "i";
             base.commandHelp = "Gives yourself an item";
             base.commandInfo = base.commandName + " - " + base.commandHelp;
@@ -26,20 +25,20 @@ namespace Rocket
             ushort id = 0;
             byte amount = 1;
 
-
             if (!ushort.TryParse(componentsFromSerial[0].ToString(), out id))
             {
                 RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
                 return;
             }
 
-            if (componentsFromSerial.Length == 2 && !byte.TryParse(componentsFromSerial[1].ToString(), out amount)){
+            if (componentsFromSerial.Length == 2 && !byte.TryParse(componentsFromSerial[1].ToString(), out amount))
+            {
                 RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
-                return;     
+                return;
             }
 
             SDG.Player player = PlayerTool.getPlayer(caller.CSteamID);
-            if (ItemTool.tryForceGiveItem(player,id, amount))
+            if (ItemTool.tryForceGiveItem(player, id, amount))
             {
                 RocketChatManager.Say(caller.CSteamID, "Giving you item " + id + ":" + amount);
             }

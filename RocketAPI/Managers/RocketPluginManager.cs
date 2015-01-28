@@ -1,5 +1,4 @@
-﻿using Rocket.RocketAPI;
-using Rocket.RocketAPI.Components;
+﻿using Rocket.RocketAPI.Components;
 using SDG;
 using Steamworks;
 using System;
@@ -7,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
@@ -20,7 +18,9 @@ namespace Rocket.RocketAPI
             RocketLoadingAnimation.Stop();
             Console.Clear();
             base.Awake();
+
             #region Handling additional assemblies
+
             AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs args)
             {
                 string file;
@@ -28,16 +28,18 @@ namespace Rocket.RocketAPI
                 {
                     return Assembly.Load(File.ReadAllBytes(file));
                 }
-                else {
+                else
+                {
                     Logger.LogError("Could not find dependency: " + args.Name);
                 }
                 return null;
             };
             loadLibraries();
-            #endregion
-            
+
+            #endregion Handling additional assemblies
+
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("The rocket has launched | v"+Assembly.GetExecutingAssembly().GetName().Version.ToString() + "\n");
+            Console.WriteLine("The rocket has launched | v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "\n");
 
             if (RocketSettings.EnableRcon)
             {
@@ -104,7 +106,7 @@ namespace Rocket.RocketAPI
             Commander.Commands = commandList.ToArray();
         }
 
-        void onPlayerConnected(CSteamID id)
+        private void onPlayerConnected(CSteamID id)
         {
             SDG.Player player = PlayerTool.getPlayer(id);
             List<Type> rocketPlayerComponents = getTypes(Assemblies, typeof(RocketPlayerComponent));
@@ -116,7 +118,9 @@ namespace Rocket.RocketAPI
         }
 
         #region Handling additional assemblies
+
         private Dictionary<string, string> additionalLibraries = new Dictionary<string, string>();
+
         private void loadLibraries()
         {
             IEnumerable<FileInfo> libraries = new DirectoryInfo(RocketSettings.HomeFolder + "Libraries/").GetFiles("*.dll", SearchOption.AllDirectories).Where(f => f.Extension == ".dll");
@@ -127,10 +131,11 @@ namespace Rocket.RocketAPI
                     AssemblyName name = AssemblyName.GetAssemblyName(library.FullName);
                     additionalLibraries.Add(name.FullName, library.FullName);
                 }
-                catch { } 
+                catch { }
             }
         }
-        #endregion
+
+        #endregion Handling additional assemblies
 
         private static List<Assembly> loadAssemblies()
         {
@@ -157,7 +162,8 @@ namespace Rocket.RocketAPI
         internal static List<Type> getTypes(List<Assembly> assemblies)
         {
             List<Type> allTypes = new List<Type>();
-            foreach (Assembly assembly in assemblies) {
+            foreach (Assembly assembly in assemblies)
+            {
                 Type[] types;
                 try
                 {
@@ -171,7 +177,8 @@ namespace Rocket.RocketAPI
             }
             return allTypes;
         }
-        internal static List<Type> getTypes(List<Assembly> assemblies,Type parentClass)
+
+        internal static List<Type> getTypes(List<Assembly> assemblies, Type parentClass)
         {
             List<Type> allTypes = new List<Type>();
             foreach (Assembly assembly in assemblies)

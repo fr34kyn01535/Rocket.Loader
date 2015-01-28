@@ -1,7 +1,6 @@
 ﻿using Rocket.RocketAPI;
 using SDG;
 using System;
-using UnityEngine;
 
 namespace Rocket
 {
@@ -27,7 +26,8 @@ namespace Rocket
             SteamPlayerID player = caller;
 
             string name = "Your";
-            if (componentsFromSerial.Length != 0) { 
+            if (componentsFromSerial.Length != 0)
+            {
                 ushort id = 0;
                 if (!ushort.TryParse(componentsFromSerial[0].ToString(), out id))
                 {
@@ -38,9 +38,8 @@ namespace Rocket
                 name = player.CharacterName + "s";
             }
 
-            RocketChatManager.Say(caller.CSteamID,name + " groups are: " + String.Join(", ", RocketPermissionManager.GetDisplayGroups(player.CSteamID)));
-            RocketChatManager.Say(caller.CSteamID,name + " permissions are: " + String.Join(", ", RocketPermissionManager.GetPermissions(player.CSteamID)));
-
+            RocketChatManager.Say(caller.CSteamID, name + " groups are: " + String.Join(", ", RocketPermissionManager.GetDisplayGroups(player.CSteamID)));
+            RocketChatManager.Say(caller.CSteamID, name + " permissions are: " + String.Join(", ", RocketPermissionManager.GetPermissions(player.CSteamID)));
         }
     }
 }

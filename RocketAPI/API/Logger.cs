@@ -10,6 +10,7 @@ namespace Rocket.RocketAPI
     public static class Logger
     {
         private static string lastAssembly = "";
+
         /// <summary>
         /// Log an message to console
         /// </summary>
@@ -21,7 +22,8 @@ namespace Rocket.RocketAPI
             {
                 assembly = "";
             }
-            else {
+            else
+            {
                 assembly = assembly + " >> ";
             }
             lastAssembly = assembly;
@@ -114,6 +116,7 @@ namespace Rocket.RocketAPI
             logToFile(message);
             Debug.LogWarning(message);
         }
+
         /// <summary>
         /// Log an error message to console
         /// </summary>
@@ -131,6 +134,7 @@ namespace Rocket.RocketAPI
             streamWriter.WriteLine("[" + DateTime.Now + "] " + message);
             streamWriter.Close();
         }
+
         /// <summary>
         /// Log Exception object stracktrace to console
         /// </summary>

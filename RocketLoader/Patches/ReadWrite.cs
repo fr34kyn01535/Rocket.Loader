@@ -1,18 +1,14 @@
 ﻿using Mono.Cecil;
 using Mono.Cecil.Cil;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rocket.RocketLoader.Patches
 {
     public class ReadWrite : Patch
     {
-        PatchHelper h = new PatchHelper("SDG.ReadWrite");
+        private PatchHelper h = new PatchHelper("SDG.ReadWrite");
 
         public static byte[] combine(params byte[][] r)
         {
@@ -32,7 +28,6 @@ namespace Rocket.RocketLoader.Patches
 
         public void Apply()
         {
-
             byte[] unturned, unturned_firstpass, other, other_firstpass;
             using (FileStream filestream = new FileStream("Assembly-CSharp.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -55,7 +50,6 @@ namespace Rocket.RocketLoader.Patches
             }
 
             byte[] combined = combine(new byte[][] { SHA1(unturned), SHA1(other), SHA1(unturned_firstpass), SHA1(other_firstpass) });
-
 
             MethodDefinition getAssemblyHash = h.GetMethod("getAssemblyHash");
             getAssemblyHash.Body.Instructions.Clear();
@@ -97,12 +91,9 @@ namespace Rocket.RocketLoader.Patches
                     }
                 }
             }
-
         }
-     
 
-
-        static System.Byte[] getAssemblyHash()
+        private static System.Byte[] getAssemblyHash()
         {
             byte[] b = new System.Byte[20];
             return b;

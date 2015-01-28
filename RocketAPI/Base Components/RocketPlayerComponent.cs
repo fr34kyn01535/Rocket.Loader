@@ -1,6 +1,4 @@
 ﻿using SDG;
-using Steamworks;
-using System;
 using UnityEngine;
 
 namespace Rocket.RocketAPI.Components

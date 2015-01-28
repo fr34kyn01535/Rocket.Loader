@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Mono.Cecil;
+using System;
 using System.IO;
-using System.Security.Cryptography;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
-using System.Threading;
-using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 
 namespace Rocket.RocketLoader
@@ -16,10 +10,10 @@ namespace Rocket.RocketLoader
     {
         public static AssemblyDefinition UnturnedAssembly, LoaderAssembly, APIAssembly;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("RocketLoader Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
-           
+
             try
             {
                 UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
@@ -70,13 +64,12 @@ namespace Rocket.RocketLoader
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error in "+patch.GetType().Name+":"+ex.ToString());
+                    Console.WriteLine("Error in " + patch.GetType().Name + ":" + ex.ToString());
                     Console.ReadLine();
                 }
             }
 
             UnturnedAssembly.Write("Assembly-CSharp.dll");
-
 
             if (!(args.Count() == 1 && args[0] == "silent"))
             {

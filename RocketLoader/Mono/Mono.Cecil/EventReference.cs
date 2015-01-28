@@ -28,30 +28,32 @@
 
 using System;
 
-namespace Mono.Cecil {
+namespace Mono.Cecil
+{
+    public abstract class EventReference : MemberReference
+    {
+        private TypeReference event_type;
 
-	public abstract class EventReference : MemberReference {
+        public TypeReference EventType
+        {
+            get { return event_type; }
+            set { event_type = value; }
+        }
 
-		TypeReference event_type;
+        public override string FullName
+        {
+            get { return event_type.FullName + " " + MemberFullName(); }
+        }
 
-		public TypeReference EventType {
-			get { return event_type; }
-			set { event_type = value; }
-		}
+        protected EventReference(string name, TypeReference eventType)
+            : base(name)
+        {
+            if (eventType == null)
+                throw new ArgumentNullException("eventType");
 
-		public override string FullName {
-			get { return event_type.FullName + " " + MemberFullName (); }
-		}
+            event_type = eventType;
+        }
 
-		protected EventReference (string name, TypeReference eventType)
-			: base (name)
-		{
-			if (eventType == null)
-				throw new ArgumentNullException ("eventType");
-
-			event_type = eventType;
-		}
-
-		public abstract EventDefinition Resolve ();
-	}
+        public abstract EventDefinition Resolve();
+    }
 }

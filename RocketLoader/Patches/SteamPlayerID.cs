@@ -1,14 +1,8 @@
-﻿using Mono.Cecil;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-namespace Rocket.RocketLoader.Patches
+﻿namespace Rocket.RocketLoader.Patches
 {
     public class SteamPlayerID : Patch
     {
-        PatchHelper h = new PatchHelper("SDG.SteamPlayerID");
+        private PatchHelper h = new PatchHelper("SDG.SteamPlayerID");
 
         public void Apply()
         {

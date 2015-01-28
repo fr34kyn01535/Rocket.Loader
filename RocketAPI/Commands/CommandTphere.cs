@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Rocket
 {
-    class CommandTphere : Command
+    internal class CommandTphere : Command
     {
         public CommandTphere()
         {

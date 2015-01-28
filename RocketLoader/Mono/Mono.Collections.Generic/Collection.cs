@@ -30,391 +30,432 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Mono.Collections.Generic {
+namespace Mono.Collections.Generic
+{
+    public class Collection<T> : IList<T>, IList
+    {
+        internal T[] items;
+        internal int size;
+        private int version;
 
-	public class Collection<T> : IList<T>, IList {
+        public int Count
+        {
+            get { return size; }
+        }
 
-		internal T [] items;
-		internal int size;
-		int version;
+        public T this[int index]
+        {
+            get
+            {
+                if (index >= size)
+                    throw new ArgumentOutOfRangeException();
 
-		public int Count {
-			get { return size; }
-		}
+                return items[index];
+            }
+            set
+            {
+                CheckIndex(index);
+                if (index == size)
+                    throw new ArgumentOutOfRangeException();
 
-		public T this [int index] {
-			get {
-				if (index >= size)
-					throw new ArgumentOutOfRangeException ();
+                OnSet(value, index);
 
-				return items [index];
-			}
-			set {
-				CheckIndex (index);
-				if (index == size)
-					throw new ArgumentOutOfRangeException ();
+                items[index] = value;
+            }
+        }
 
-				OnSet (value, index);
+        bool ICollection<T>.IsReadOnly
+        {
+            get { return false; }
+        }
 
-				items [index] = value;
-			}
-		}
+        bool IList.IsFixedSize
+        {
+            get { return false; }
+        }
 
-		bool ICollection<T>.IsReadOnly {
-			get { return false; }
-		}
+        bool IList.IsReadOnly
+        {
+            get { return false; }
+        }
 
-		bool IList.IsFixedSize {
-			get { return false; }
-		}
+        object IList.this[int index]
+        {
+            get { return this[index]; }
+            set
+            {
+                CheckIndex(index);
 
-		bool IList.IsReadOnly {
-			get { return false; }
-		}
+                try
+                {
+                    this[index] = (T)value;
+                    return;
+                }
+                catch (InvalidCastException)
+                {
+                }
+                catch (NullReferenceException)
+                {
+                }
 
-		object IList.this [int index] {
-			get { return this [index]; }
-			set {
-				CheckIndex (index);
+                throw new ArgumentException();
+            }
+        }
 
-				try {
-					this [index] = (T) value;
-					return;
-				} catch (InvalidCastException) {
-				} catch (NullReferenceException) {
-				}
+        int ICollection.Count
+        {
+            get { return Count; }
+        }
 
-				throw new ArgumentException ();
-			}
-		}
+        bool ICollection.IsSynchronized
+        {
+            get { return false; }
+        }
 
-		int ICollection.Count {
-			get { return Count; }
-		}
+        object ICollection.SyncRoot
+        {
+            get { return this; }
+        }
 
-		bool ICollection.IsSynchronized {
-			get { return false; }
-		}
+        public Collection()
+        {
+            items = Empty<T>.Array;
+        }
 
-		object ICollection.SyncRoot {
-			get { return this; }
-		}
+        public Collection(int capacity)
+        {
+            if (capacity < 0)
+                throw new ArgumentOutOfRangeException();
 
-		public Collection ()
-		{
-			items = Empty<T>.Array;
-		}
+            items = new T[capacity];
+        }
 
-		public Collection (int capacity)
-		{
-			if (capacity < 0)
-				throw new ArgumentOutOfRangeException ();
+        public Collection(ICollection<T> items)
+        {
+            if (items == null)
+                throw new ArgumentNullException("items");
 
-			items = new T [capacity];
-		}
+            this.items = new T[items.Count];
+            items.CopyTo(this.items, 0);
+            this.size = this.items.Length;
+        }
 
-		public Collection (ICollection<T> items)
-		{
-			if (items == null)
-				throw new ArgumentNullException ("items");
+        public void Add(T item)
+        {
+            if (size == items.Length)
+                Grow(1);
 
-			this.items = new T [items.Count];
-			items.CopyTo (this.items, 0);
-			this.size = this.items.Length;
-		}
+            OnAdd(item, size);
 
-		public void Add (T item)
-		{
-			if (size == items.Length)
-				Grow (1);
+            items[size++] = item;
+            version++;
+        }
 
-			OnAdd (item, size);
+        public bool Contains(T item)
+        {
+            return IndexOf(item) != -1;
+        }
 
-			items [size++] = item;
-			version++;
-		}
+        public int IndexOf(T item)
+        {
+            return Array.IndexOf(items, item, 0, size);
+        }
 
-		public bool Contains (T item)
-		{
-			return IndexOf (item) != -1;
-		}
+        public void Insert(int index, T item)
+        {
+            CheckIndex(index);
+            if (size == items.Length)
+                Grow(1);
 
-		public int IndexOf (T item)
-		{
-			return Array.IndexOf (items, item, 0, size);
-		}
+            OnInsert(item, index);
 
-		public void Insert (int index, T item)
-		{
-			CheckIndex (index);
-			if (size == items.Length)
-				Grow (1);
+            Shift(index, 1);
+            items[index] = item;
+            version++;
+        }
 
-			OnInsert (item, index);
+        public void RemoveAt(int index)
+        {
+            if (index < 0 || index >= size)
+                throw new ArgumentOutOfRangeException();
 
-			Shift (index, 1);
-			items [index] = item;
-			version++;
-		}
+            var item = items[index];
 
-		public void RemoveAt (int index)
-		{
-			if (index < 0 || index >= size)
-				throw new ArgumentOutOfRangeException ();
+            OnRemove(item, index);
 
-			var item = items [index];
+            Shift(index, -1);
+            Array.Clear(items, size, 1);
+            version++;
+        }
 
-			OnRemove (item, index);
+        public bool Remove(T item)
+        {
+            var index = IndexOf(item);
+            if (index == -1)
+                return false;
 
-			Shift (index, -1);
-			Array.Clear (items, size, 1);
-			version++;
-		}
+            OnRemove(item, index);
 
-		public bool Remove (T item)
-		{
-			var index = IndexOf (item);
-			if (index == -1)
-				return false;
+            Shift(index, -1);
+            Array.Clear(items, size, 1);
+            version++;
 
-			OnRemove (item, index);
+            return true;
+        }
 
-			Shift (index, -1);
-			Array.Clear (items, size, 1);
-			version++;
+        public void Clear()
+        {
+            OnClear();
 
-			return true;
-		}
+            Array.Clear(items, 0, size);
+            size = 0;
+            version++;
+        }
 
-		public void Clear ()
-		{
-			OnClear ();
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            Array.Copy(items, 0, array, arrayIndex, size);
+        }
 
-			Array.Clear (items, 0, size);
-			size = 0;
-			version++;
-		}
+        public T[] ToArray()
+        {
+            var array = new T[size];
+            Array.Copy(items, 0, array, 0, size);
+            return array;
+        }
 
-		public void CopyTo (T [] array, int arrayIndex)
-		{
-			Array.Copy (items, 0, array, arrayIndex, size);
-		}
+        private void CheckIndex(int index)
+        {
+            if (index < 0 || index > size)
+                throw new ArgumentOutOfRangeException();
+        }
 
-		public T [] ToArray ()
-		{
-			var array = new T [size];
-			Array.Copy (items, 0, array, 0, size);
-			return array;
-		}
+        private void Shift(int start, int delta)
+        {
+            if (delta < 0)
+                start -= delta;
 
-		void CheckIndex (int index)
-		{
-			if (index < 0 || index > size)
-				throw new ArgumentOutOfRangeException ();
-		}
+            if (start < size)
+                Array.Copy(items, start, items, start + delta, size - start);
 
-		void Shift (int start, int delta)
-		{
-			if (delta < 0)
-				start -= delta;
+            size += delta;
 
-			if (start < size)
-				Array.Copy (items, start, items, start + delta, size - start);
+            if (delta < 0)
+                Array.Clear(items, size, -delta);
+        }
 
-			size += delta;
+        protected virtual void OnAdd(T item, int index)
+        {
+        }
 
-			if (delta < 0)
-				Array.Clear (items, size, -delta);
-		}
+        protected virtual void OnInsert(T item, int index)
+        {
+        }
 
-		protected virtual void OnAdd (T item, int index)
-		{
-		}
+        protected virtual void OnSet(T item, int index)
+        {
+        }
 
-		protected virtual void OnInsert (T item, int index)
-		{
-		}
+        protected virtual void OnRemove(T item, int index)
+        {
+        }
 
-		protected virtual void OnSet (T item, int index)
-		{
-		}
+        protected virtual void OnClear()
+        {
+        }
 
-		protected virtual void OnRemove (T item, int index)
-		{
-		}
+        internal virtual void Grow(int desired)
+        {
+            int new_size = size + desired;
+            if (new_size <= items.Length)
+                return;
 
-		protected virtual void OnClear ()
-		{
-		}
+            const int default_capacity = 4;
 
-		internal virtual void Grow (int desired)
-		{
-			int new_size = size + desired;
-			if (new_size <= items.Length)
-				return;
-
-			const int default_capacity = 4;
-
-			new_size = System.Math.Max (
-				System.Math.Max (items.Length * 2, default_capacity),
-				new_size);
+            new_size = System.Math.Max(
+                System.Math.Max(items.Length * 2, default_capacity),
+                new_size);
 
 #if !CF
-			Array.Resize (ref items, new_size);
+            Array.Resize(ref items, new_size);
 #else
 			var array = new T [new_size];
 			Array.Copy (items, array, size);
 			items = array;
 #endif
-		}
+        }
 
-		int IList.Add (object value)
-		{
-			try {
-				Add ((T) value);
-				return size - 1;
-			} catch (InvalidCastException) {
-			} catch (NullReferenceException) {
-			}
+        int IList.Add(object value)
+        {
+            try
+            {
+                Add((T)value);
+                return size - 1;
+            }
+            catch (InvalidCastException)
+            {
+            }
+            catch (NullReferenceException)
+            {
+            }
 
-			throw new ArgumentException ();
-		}
+            throw new ArgumentException();
+        }
 
-		void IList.Clear ()
-		{
-			Clear ();
-		}
+        void IList.Clear()
+        {
+            Clear();
+        }
 
-		bool IList.Contains (object value)
-		{
-			return ((IList) this).IndexOf (value) > -1;
-		}
+        bool IList.Contains(object value)
+        {
+            return ((IList)this).IndexOf(value) > -1;
+        }
 
-		int IList.IndexOf (object value)
-		{
-			try {
-				return IndexOf ((T) value);
-			} catch (InvalidCastException) {
-			} catch (NullReferenceException) {
-			}
+        int IList.IndexOf(object value)
+        {
+            try
+            {
+                return IndexOf((T)value);
+            }
+            catch (InvalidCastException)
+            {
+            }
+            catch (NullReferenceException)
+            {
+            }
 
-			return -1;
-		}
+            return -1;
+        }
 
-		void IList.Insert (int index, object value)
-		{
-			CheckIndex (index);
+        void IList.Insert(int index, object value)
+        {
+            CheckIndex(index);
 
-			try {
-				Insert (index, (T) value);
-				return;
-			} catch (InvalidCastException) {
-			} catch (NullReferenceException) {
-			}
+            try
+            {
+                Insert(index, (T)value);
+                return;
+            }
+            catch (InvalidCastException)
+            {
+            }
+            catch (NullReferenceException)
+            {
+            }
 
-			throw new ArgumentException ();
-		}
+            throw new ArgumentException();
+        }
 
-		void IList.Remove (object value)
-		{
-			try {
-				Remove ((T) value);
-			} catch (InvalidCastException) {
-			} catch (NullReferenceException) {
-			}
-		}
+        void IList.Remove(object value)
+        {
+            try
+            {
+                Remove((T)value);
+            }
+            catch (InvalidCastException)
+            {
+            }
+            catch (NullReferenceException)
+            {
+            }
+        }
 
-		void IList.RemoveAt (int index)
-		{
-			RemoveAt (index);
-		}
+        void IList.RemoveAt(int index)
+        {
+            RemoveAt(index);
+        }
 
-		void ICollection.CopyTo (Array array, int index)
-		{
-			Array.Copy (items, 0, array, index, size);
-		}
+        void ICollection.CopyTo(Array array, int index)
+        {
+            Array.Copy(items, 0, array, index, size);
+        }
 
-		public Enumerator GetEnumerator ()
-		{
-			return new Enumerator (this);
-		}
+        public Enumerator GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
 
-		IEnumerator IEnumerable.GetEnumerator ()
-		{
-			return new Enumerator (this);
-		}
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
 
-		IEnumerator<T> IEnumerable<T>.GetEnumerator ()
-		{
-			return new Enumerator (this);
-		}
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
 
-		public struct Enumerator : IEnumerator<T>, IDisposable {
+        public struct Enumerator : IEnumerator<T>, IDisposable
+        {
+            private Collection<T> collection;
+            private T current;
 
-			Collection<T> collection;
-			T current;
+            private int next;
+            private readonly int version;
 
-			int next;
-			readonly int version;
+            public T Current
+            {
+                get { return current; }
+            }
 
-			public T Current {
-				get { return current; }
-			}
+            object IEnumerator.Current
+            {
+                get
+                {
+                    CheckState();
 
-			object IEnumerator.Current {
-				get {
-					CheckState ();
+                    if (next <= 0)
+                        throw new InvalidOperationException();
 
-					if (next <= 0)
-						throw new InvalidOperationException ();
+                    return current;
+                }
+            }
 
-					return current;
-				}
-			}
+            internal Enumerator(Collection<T> collection)
+                : this()
+            {
+                this.collection = collection;
+                this.version = collection.version;
+            }
 
-			internal Enumerator (Collection<T> collection)
-				: this ()
-			{
-				this.collection = collection;
-				this.version = collection.version;
-			}
+            public bool MoveNext()
+            {
+                CheckState();
 
-			public bool MoveNext ()
-			{
-				CheckState ();
+                if (next < 0)
+                    return false;
 
-				if (next < 0)
-					return false;
+                if (next < collection.size)
+                {
+                    current = collection.items[next++];
+                    return true;
+                }
 
-				if (next < collection.size) {
-					current = collection.items [next++];
-					return true;
-				}
+                next = -1;
+                return false;
+            }
 
-				next = -1;
-				return false;
-			}
+            public void Reset()
+            {
+                CheckState();
 
-			public void Reset ()
-			{
-				CheckState ();
+                next = 0;
+            }
 
-				next = 0;
-			}
+            private void CheckState()
+            {
+                if (collection == null)
+                    throw new ObjectDisposedException(GetType().FullName);
 
-			void CheckState ()
-			{
-				if (collection == null)
-					throw new ObjectDisposedException (GetType ().FullName);
+                if (version != collection.version)
+                    throw new InvalidOperationException();
+            }
 
-				if (version != collection.version)
-					throw new InvalidOperationException ();
-			}
-
-			public void Dispose ()
-			{
-				collection = null;
-			}
-		}
-	}
+            public void Dispose()
+            {
+                collection = null;
+            }
+        }
+    }
 }

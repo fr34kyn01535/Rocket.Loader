@@ -26,141 +26,142 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-
-using Mono;
 using Mono.Cecil.Cil;
 using Mono.Cecil.Metadata;
-
+using System;
 using RVA = System.UInt32;
 
-namespace Mono.Cecil.PE {
+namespace Mono.Cecil.PE
+{
+    internal sealed class Image
+    {
+        public ModuleKind Kind;
+        public TargetRuntime Runtime;
+        public TargetArchitecture Architecture;
+        public ModuleCharacteristics Characteristics;
+        public string FileName;
 
-	sealed class Image {
+        public Section[] Sections;
 
-		public ModuleKind Kind;
-		public TargetRuntime Runtime;
-		public TargetArchitecture Architecture;
-		public ModuleCharacteristics Characteristics;
-		public string FileName;
+        public Section MetadataSection;
 
-		public Section [] Sections;
+        public uint EntryPointToken;
+        public ModuleAttributes Attributes;
 
-		public Section MetadataSection;
+        public DataDirectory Debug;
+        public DataDirectory Resources;
+        public DataDirectory StrongName;
 
-		public uint EntryPointToken;
-		public ModuleAttributes Attributes;
+        public StringHeap StringHeap;
+        public BlobHeap BlobHeap;
+        public UserStringHeap UserStringHeap;
+        public GuidHeap GuidHeap;
+        public TableHeap TableHeap;
 
-		public DataDirectory Debug;
-		public DataDirectory Resources;
-		public DataDirectory StrongName;
+        private readonly int[] coded_index_sizes = new int[13];
 
-		public StringHeap StringHeap;
-		public BlobHeap BlobHeap;
-		public UserStringHeap UserStringHeap;
-		public GuidHeap GuidHeap;
-		public TableHeap TableHeap;
+        private readonly Func<Table, int> counter;
 
-		readonly int [] coded_index_sizes = new int [13];
+        public Image()
+        {
+            counter = GetTableLength;
+        }
 
-		readonly Func<Table, int> counter;
+        public bool HasTable(Table table)
+        {
+            return GetTableLength(table) > 0;
+        }
 
-		public Image ()
-		{
-			counter = GetTableLength;
-		}
+        public int GetTableLength(Table table)
+        {
+            return (int)TableHeap[table].Length;
+        }
 
-		public bool HasTable (Table table)
-		{
-			return GetTableLength (table) > 0;
-		}
+        public int GetTableIndexSize(Table table)
+        {
+            return GetTableLength(table) < 65536 ? 2 : 4;
+        }
 
-		public int GetTableLength (Table table)
-		{
-			return (int) TableHeap [table].Length;
-		}
+        public int GetCodedIndexSize(CodedIndex coded_index)
+        {
+            var index = (int)coded_index;
+            var size = coded_index_sizes[index];
+            if (size != 0)
+                return size;
 
-		public int GetTableIndexSize (Table table)
-		{
-			return GetTableLength (table) < 65536 ? 2 : 4;
-		}
+            return coded_index_sizes[index] = coded_index.GetSize(counter);
+        }
 
-		public int GetCodedIndexSize (CodedIndex coded_index)
-		{
-			var index = (int) coded_index;
-			var size = coded_index_sizes [index];
-			if (size != 0)
-				return size;
+        public uint ResolveVirtualAddress(RVA rva)
+        {
+            var section = GetSectionAtVirtualAddress(rva);
+            if (section == null)
+                throw new ArgumentOutOfRangeException();
 
-			return coded_index_sizes [index] = coded_index.GetSize (counter);
-		}
+            return ResolveVirtualAddressInSection(rva, section);
+        }
 
-		public uint ResolveVirtualAddress (RVA rva)
-		{
-			var section = GetSectionAtVirtualAddress (rva);
-			if (section == null)
-				throw new ArgumentOutOfRangeException ();
+        public uint ResolveVirtualAddressInSection(RVA rva, Section section)
+        {
+            return rva + section.PointerToRawData - section.VirtualAddress;
+        }
 
-			return ResolveVirtualAddressInSection (rva, section);
-		}
+        public Section GetSection(string name)
+        {
+            var sections = this.Sections;
+            for (int i = 0; i < sections.Length; i++)
+            {
+                var section = sections[i];
+                if (section.Name == name)
+                    return section;
+            }
 
-		public uint ResolveVirtualAddressInSection (RVA rva, Section section)
-		{
-			return rva + section.PointerToRawData - section.VirtualAddress;
-		}
+            return null;
+        }
 
-		public Section GetSection (string name)
-		{
-			var sections = this.Sections;
-			for (int i = 0; i < sections.Length; i++) {
-				var section = sections [i];
-				if (section.Name == name)
-					return section;
-			}
+        public Section GetSectionAtVirtualAddress(RVA rva)
+        {
+            var sections = this.Sections;
+            for (int i = 0; i < sections.Length; i++)
+            {
+                var section = sections[i];
+                if (rva >= section.VirtualAddress && rva < section.VirtualAddress + section.SizeOfRawData)
+                    return section;
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		public Section GetSectionAtVirtualAddress (RVA rva)
-		{
-			var sections = this.Sections;
-			for (int i = 0; i < sections.Length; i++) {
-				var section = sections [i];
-				if (rva >= section.VirtualAddress && rva < section.VirtualAddress + section.SizeOfRawData)
-					return section;
-			}
+        public ImageDebugDirectory GetDebugHeader(out byte[] header)
+        {
+            var section = GetSectionAtVirtualAddress(Debug.VirtualAddress);
+            var buffer = new ByteBuffer(section.Data);
+            buffer.position = (int)(Debug.VirtualAddress - section.VirtualAddress);
 
-			return null;
-		}
+            var directory = new ImageDebugDirectory
+            {
+                Characteristics = buffer.ReadInt32(),
+                TimeDateStamp = buffer.ReadInt32(),
+                MajorVersion = buffer.ReadInt16(),
+                MinorVersion = buffer.ReadInt16(),
+                Type = buffer.ReadInt32(),
+                SizeOfData = buffer.ReadInt32(),
+                AddressOfRawData = buffer.ReadInt32(),
+                PointerToRawData = buffer.ReadInt32(),
+            };
 
-		public ImageDebugDirectory GetDebugHeader (out byte [] header)
-		{
-			var section = GetSectionAtVirtualAddress (Debug.VirtualAddress);
-			var buffer = new ByteBuffer (section.Data);
-			buffer.position = (int) (Debug.VirtualAddress - section.VirtualAddress);
+            if (directory.SizeOfData == 0 || directory.PointerToRawData == 0)
+            {
+                header = Empty<byte>.Array;
+                return directory;
+            }
 
-			var directory = new ImageDebugDirectory {
-				Characteristics = buffer.ReadInt32 (),
-				TimeDateStamp = buffer.ReadInt32 (),
-				MajorVersion = buffer.ReadInt16 (),
-				MinorVersion = buffer.ReadInt16 (),
-				Type = buffer.ReadInt32 (),
-				SizeOfData = buffer.ReadInt32 (),
-				AddressOfRawData = buffer.ReadInt32 (),
-				PointerToRawData = buffer.ReadInt32 (),
-			};
+            buffer.position = (int)(directory.PointerToRawData - section.PointerToRawData);
 
-			if (directory.SizeOfData == 0 || directory.PointerToRawData == 0) {
-				header = Empty<byte>.Array;
-				return directory;
-			}
+            header = new byte[directory.SizeOfData];
+            Buffer.BlockCopy(buffer.buffer, buffer.position, header, 0, header.Length);
 
-			buffer.position = (int) (directory.PointerToRawData - section.PointerToRawData);
-
-			header = new byte [directory.SizeOfData];
-			Buffer.BlockCopy (buffer.buffer, buffer.position, header, 0, header.Length);
-
-			return directory;
-		}
-	}
+            return directory;
+        }
+    }
 }

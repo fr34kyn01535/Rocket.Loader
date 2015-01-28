@@ -7,7 +7,8 @@ namespace Rocket
 {
     public class CommandTp : Command
     {
-        public CommandTp() {
+        public CommandTp()
+        {
             base.commandName = "tp";
             base.commandHelp = "Teleports you to another player";
             base.commandInfo = base.commandName + " - " + base.commandHelp;
@@ -16,7 +17,7 @@ namespace Rocket
         protected override void execute(SteamPlayerID caller, string command)
         {
             SteamPlayer otherPlayer;
-            if (!String.IsNullOrEmpty(command) &&  SteamPlayerlist.tryGetSteamPlayer(command, out otherPlayer) && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
+            if (!String.IsNullOrEmpty(command) && SteamPlayerlist.tryGetSteamPlayer(command, out otherPlayer) && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
             {
                 SteamPlayer myPlayer = PlayerTool.getSteamPlayer(caller.CSteamID);
 

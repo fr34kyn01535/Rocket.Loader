@@ -26,34 +26,35 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Mono.Collections.Generic;
 using System;
 
-using Mono.Collections.Generic;
+namespace Mono.Cecil
+{
+    public abstract class PropertyReference : MemberReference
+    {
+        private TypeReference property_type;
 
-namespace Mono.Cecil {
+        public TypeReference PropertyType
+        {
+            get { return property_type; }
+            set { property_type = value; }
+        }
 
-	public abstract class PropertyReference : MemberReference {
+        public abstract Collection<ParameterDefinition> Parameters
+        {
+            get;
+        }
 
-		TypeReference property_type;
+        internal PropertyReference(string name, TypeReference propertyType)
+            : base(name)
+        {
+            if (propertyType == null)
+                throw new ArgumentNullException("propertyType");
 
-		public TypeReference PropertyType {
-			get { return property_type; }
-			set { property_type = value; }
-		}
+            property_type = propertyType;
+        }
 
-		public abstract Collection<ParameterDefinition> Parameters {
-			get;
-		}
-
-		internal PropertyReference (string name, TypeReference propertyType)
-			: base (name)
-		{
-			if (propertyType == null)
-				throw new ArgumentNullException ("propertyType");
-
-			property_type = propertyType;
-		}
-
-		public abstract PropertyDefinition Resolve ();
-	}
+        public abstract PropertyDefinition Resolve();
+    }
 }

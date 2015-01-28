@@ -1,16 +1,11 @@
 ﻿using Rocket.RocketAPI.Components;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using UnityEngine;
 
 namespace Rocket.RocketAPI.Managers
 {
     public class RocketTaskManager : RocketManagerComponent
     {
-
         private Queue<Action> work;
         public static RocketTaskManager Instance;
 
@@ -22,7 +17,7 @@ namespace Rocket.RocketAPI.Managers
 
         public static void Enqueue(Action a)
         {
-            if(a!=null)RocketTaskManager.Instance.enqueue(a);
+            if (a != null) RocketTaskManager.Instance.enqueue(a);
         }
 
         private void enqueue(Action a)
@@ -33,7 +28,7 @@ namespace Rocket.RocketAPI.Managers
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (work.Count > 0)
             {

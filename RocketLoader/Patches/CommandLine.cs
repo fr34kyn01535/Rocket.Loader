@@ -1,16 +1,12 @@
 ﻿using Mono.Cecil;
 using Mono.Cecil.Cil;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rocket.RocketLoader.Patches
 {
-    class CommandLine : Patch
+    internal class CommandLine : Patch
     {
-        PatchHelper h = new PatchHelper("SDG.CommandLine");
+        private PatchHelper h = new PatchHelper("SDG.CommandLine");
 
         public void Apply()
         {

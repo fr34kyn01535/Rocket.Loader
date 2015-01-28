@@ -26,48 +26,54 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 using Mono.Collections.Generic;
 
-namespace Mono.Cecil {
+namespace Mono.Cecil
+{
+    public interface IGenericParameterProvider : IMetadataTokenProvider
+    {
+        bool HasGenericParameters { get; }
 
-	public interface IGenericParameterProvider : IMetadataTokenProvider {
+        bool IsDefinition { get; }
 
-		bool HasGenericParameters { get; }
-		bool IsDefinition { get; }
-		ModuleDefinition Module { get; }
-		Collection<GenericParameter> GenericParameters { get; }
-		GenericParameterType GenericParameterType { get; }
-	}
+        ModuleDefinition Module { get; }
 
-	public enum GenericParameterType {
-		Type,
-		Method
-	}
+        Collection<GenericParameter> GenericParameters { get; }
 
-	interface IGenericContext {
+        GenericParameterType GenericParameterType { get; }
+    }
 
-		bool IsDefinition { get; }
-		IGenericParameterProvider Type { get; }
-		IGenericParameterProvider Method { get; }
-	}
+    public enum GenericParameterType
+    {
+        Type,
+        Method
+    }
 
-	static partial class Mixin {
+    internal interface IGenericContext
+    {
+        bool IsDefinition { get; }
 
-		public static bool GetHasGenericParameters (
-			this IGenericParameterProvider self,
-			ModuleDefinition module)
-		{
-			return module.HasImage () && module.Read (self, (provider, reader) => reader.HasGenericParameters (provider));
-		}
+        IGenericParameterProvider Type { get; }
 
-		public static Collection<GenericParameter> GetGenericParameters (
-			this IGenericParameterProvider self,
-			ModuleDefinition module)
-		{
-			return module.HasImage ()
-				? module.Read (self, (provider, reader) => reader.ReadGenericParameters (provider))
-				: new GenericParameterCollection (self);
-		}
-	}
+        IGenericParameterProvider Method { get; }
+    }
+
+    static partial class Mixin
+    {
+        public static bool GetHasGenericParameters(
+            this IGenericParameterProvider self,
+            ModuleDefinition module)
+        {
+            return module.HasImage() && module.Read(self, (provider, reader) => reader.HasGenericParameters(provider));
+        }
+
+        public static Collection<GenericParameter> GetGenericParameters(
+            this IGenericParameterProvider self,
+            ModuleDefinition module)
+        {
+            return module.HasImage()
+                ? module.Read(self, (provider, reader) => reader.ReadGenericParameters(provider))
+                : new GenericParameterCollection(self);
+        }
+    }
 }

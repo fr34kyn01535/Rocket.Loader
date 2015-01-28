@@ -1,5 +1,4 @@
-﻿using Rocket.RocketAPI;
-using Rocket.RocketAPI.Components;
+﻿using Rocket.RocketAPI.Components;
 using Rocket.RocketAPI.Managers;
 using SDG;
 using Steamworks;
@@ -8,11 +7,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Timers;
 using System.Xml.Serialization;
-using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
@@ -47,6 +43,7 @@ namespace Rocket.RocketAPI
 
         private static bool updated = true;
         private static DateTime lastUpdated = DateTime.MinValue;
+
         public void Update()
         {
             if (updated && (DateTime.Now - lastUpdated) > TimeSpan.FromSeconds(permissions.WebCacheTimeout))
@@ -79,16 +76,16 @@ namespace Rocket.RocketAPI
             }
             catch (Exception ex)
             {
-                r = "Failed downloading WebPermissions: "+ex.ToString();
+                r = "Failed downloading WebPermissions: " + ex.ToString();
                 if (!String.IsNullOrEmpty(r))
                 {
-                    r+= " Result:"+r;
+                    r += " Result:" + r;
                 }
             }
 
             RocketTaskManager.Enqueue(() =>
             {
-                if(!String.IsNullOrEmpty(r)) Logger.LogError(r);
+                if (!String.IsNullOrEmpty(r)) Logger.LogError(r);
             });
             lastUpdated = DateTime.Now;
             updated = true;
@@ -115,8 +112,7 @@ namespace Rocket.RocketAPI
                 }
                 serializer.Serialize(new StreamWriter(permissionsFile), permissions);
 
-                
-               getWebPermissions();
+                getWebPermissions();
             }
             else
             {
@@ -129,9 +125,9 @@ namespace Rocket.RocketAPI
                     permissions.DefaultGroupName = "default";
                     permissions.AdminGroupDisplayName = "Admin";
                     permissions.Format = "[{0}] ";
-                    permissions.Groups = new Group[] { 
+                    permissions.Groups = new Group[] {
                             new Group("default","Guest", null , new List<string>() { "reward","balance","pay","rocket" }),
-                            new Group("moderator","Moderator", new List<string>() { "76561197960287930" }, new List<string>() { "tp", "tphere","i","test" }) 
+                            new Group("moderator","Moderator", new List<string>() { "76561197960287930" }, new List<string>() { "tp", "tphere","i","test" })
                         };
                     permissions.WebPermissionsUrl = "";
                     permissions.WebCacheTimeout = 60;
@@ -153,15 +149,17 @@ namespace Rocket.RocketAPI
                     {
                         return String.Format(permissions.Format, permissions.AdminGroupDisplayName);
                     }
-                    else {
-                        Group group = permissions.Groups.Where(g => g.Members!= null && g.Members.Contains(CSteamID.ToString())).FirstOrDefault();
+                    else
+                    {
+                        Group group = permissions.Groups.Where(g => g.Members != null && g.Members.Contains(CSteamID.ToString())).FirstOrDefault();
                         if (group == null)
                         {
                             Group defaultGroup = permissions.Groups.Where(g => g.Id == permissions.DefaultGroupName).FirstOrDefault();
                             if (defaultGroup == null) throw new Exception("No group found with the name " + permissions.DefaultGroupName + ", can not get default group");
                             return String.Format(permissions.Format, defaultGroup.DisplayName);
                         }
-                        else {
+                        else
+                        {
                             return String.Format(permissions.Format, group.DisplayName);
                         }
                     }
@@ -178,10 +176,12 @@ namespace Rocket.RocketAPI
         {
             return permissions.Groups.Where(g => g.Members.Contains(CSteamID.ToString())).Select(g => g.DisplayName + " (" + g.Id + ")").ToArray();
         }
+
         public static string[] GetPermissions(CSteamID CSteamID)
         {
             List<string> p = new List<string>();
-            foreach (Group g in permissions.Groups) {
+            foreach (Group g in permissions.Groups)
+            {
                 if (g.Members.Contains(CSteamID.ToString()) || g.Id == permissions.DefaultGroupName)
                 {
                     p.AddRange(g.Commands);
@@ -208,7 +208,6 @@ namespace Rocket.RocketAPI
                     if (group.Id.ToLower() == permissions.DefaultGroupName) return true;
                     if (group.Members.Contains(player.SteamPlayerID.CSteamID.ToString().ToLower())) return true;
                 }
-
             }
 
             return player.IsAdmin;
@@ -227,7 +226,8 @@ namespace Rocket.RocketAPI
                     }
                 }
             }
-            else {
+            else
+            {
                 return true;
             }
             Steam.kick(cSteamID, permissions.NotWhitelistedMessage);
@@ -238,38 +238,48 @@ namespace Rocket.RocketAPI
     [Serializable]
     public class Permissions
     {
-        public Permissions() { }
+        public Permissions()
+        {
+        }
+
         public bool ShowGroup;
         public string DefaultGroupName;
         public string AdminGroupDisplayName;
         public string Format;
         public string WebPermissionsUrl;
         public int WebCacheTimeout;
+
         [XmlArrayItem(ElementName = "Group")]
         public Group[] Groups;
+
         [XmlArrayItem(ElementName = "WhitelistedGroup")]
         public string[] WhitelistedGroups;
+
         public string NotWhitelistedMessage;
     }
 
     [Serializable]
     public class Group
     {
-        public Group() { }
-        public Group(string name,string displayName, List<string> members, List<string> commands)
+        public Group()
+        {
+        }
+
+        public Group(string name, string displayName, List<string> members, List<string> commands)
         {
             Id = name;
             DisplayName = displayName;
             Members = members;
             Commands = commands;
         }
+
         public string Id;
         public string DisplayName;
-        [XmlArrayItem(ElementName="Member")]
+
+        [XmlArrayItem(ElementName = "Member")]
         public List<string> Members;
+
         [XmlArrayItem(ElementName = "Command")]
         public List<string> Commands;
     }
-
-
 }

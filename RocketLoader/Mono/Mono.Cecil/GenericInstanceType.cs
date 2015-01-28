@@ -26,58 +26,64 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Mono.Collections.Generic;
 using System;
 using System.Text;
-
-using Mono.Collections.Generic;
-
 using MD = Mono.Cecil.Metadata;
 
-namespace Mono.Cecil {
+namespace Mono.Cecil
+{
+    public sealed class GenericInstanceType : TypeSpecification, IGenericInstance, IGenericContext
+    {
+        private Collection<TypeReference> arguments;
 
-	public sealed class GenericInstanceType : TypeSpecification, IGenericInstance, IGenericContext {
+        public bool HasGenericArguments
+        {
+            get { return !arguments.IsNullOrEmpty(); }
+        }
 
-		Collection<TypeReference> arguments;
+        public Collection<TypeReference> GenericArguments
+        {
+            get { return arguments ?? (arguments = new Collection<TypeReference>()); }
+        }
 
-		public bool HasGenericArguments {
-			get { return !arguments.IsNullOrEmpty (); }
-		}
+        public override TypeReference DeclaringType
+        {
+            get { return ElementType.DeclaringType; }
+            set { throw new NotSupportedException(); }
+        }
 
-		public Collection<TypeReference> GenericArguments {
-			get { return arguments ?? (arguments = new Collection<TypeReference> ()); }
-		}
+        public override string FullName
+        {
+            get
+            {
+                var name = new StringBuilder();
+                name.Append(base.FullName);
+                this.GenericInstanceFullName(name);
+                return name.ToString();
+            }
+        }
 
-		public override TypeReference DeclaringType {
-			get { return ElementType.DeclaringType; }
-			set { throw new NotSupportedException (); }
-		}
+        public override bool IsGenericInstance
+        {
+            get { return true; }
+        }
 
-		public override string FullName {
-			get {
-				var name = new StringBuilder ();
-				name.Append (base.FullName);
-				this.GenericInstanceFullName (name);
-				return name.ToString ();
-			}
-		}
+        internal override bool ContainsGenericParameter
+        {
+            get { return this.ContainsGenericParameter() || base.ContainsGenericParameter; }
+        }
 
-		public override bool IsGenericInstance {
-			get { return true; }
-		}
+        IGenericParameterProvider IGenericContext.Type
+        {
+            get { return ElementType; }
+        }
 
-		internal override bool ContainsGenericParameter {
-			get { return this.ContainsGenericParameter () || base.ContainsGenericParameter; }
-		}
-
-		IGenericParameterProvider IGenericContext.Type {
-			get { return ElementType; }
-		}
-
-		public GenericInstanceType (TypeReference type)
-			: base (type)
-		{
-			base.IsValueType = type.IsValueType;
-			this.etype = MD.ElementType.GenericInst;
-		}
-	}
+        public GenericInstanceType(TypeReference type)
+            : base(type)
+        {
+            base.IsValueType = type.IsValueType;
+            this.etype = MD.ElementType.GenericInst;
+        }
+    }
 }

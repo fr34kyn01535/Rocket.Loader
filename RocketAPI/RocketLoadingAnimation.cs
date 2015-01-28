@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 
 namespace Rocket
 {
     internal class RocketLoadingAnimation
     {
-        static Random rand = new Random();
-        static bool running = false;
+        private static Random rand = new Random();
+        private static bool running = false;
         private static Thread t;
 
-
-        static char AsciiCharacter
+        private static char AsciiCharacter
         {
             get
             {
@@ -60,9 +56,9 @@ namespace Rocket
         internal static void Stop()
         {
             running = false;
-            t.Join(5000);
+            t.Join();
         }
-        
+
         private static void UpdateAllColumns(int width, int height, int[] y)
         {
             int x;
@@ -80,8 +76,6 @@ namespace Rocket
                 Console.Write(' ');
                 y[x] = inScreenYPosition(y[x] + 1, height);
 
-                
-
                 Console.ForegroundColor = ConsoleColor.Cyan;
 
                 Console.SetCursorPosition(0, 0); Console.WriteLine(@"Loading Rocket version " + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "...");
@@ -92,6 +86,7 @@ namespace Rocket
                 Console.SetCursorPosition(16, 13); Console.WriteLine(@"                                                 ");
             }
         }
+
         public static int inScreenYPosition(int yPosition, int height)
         {
             if (yPosition < 0)

@@ -2,12 +2,11 @@
 using SDG;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
-using System.Threading;
-using System.Linq;
 
 namespace Rocket.RocketAPI
 {
@@ -42,6 +41,7 @@ namespace Rocket.RocketAPI
         private static Dictionary<Socket, Client> clientList = new Dictionary<Socket, Client>();
 
         private static Dictionary<IntPtr, List<String>> logList = new Dictionary<IntPtr, List<String>>();
+
         public new void Awake()
         {
             DontDestroyOnLoad(transform.gameObject);
@@ -59,18 +59,17 @@ namespace Rocket.RocketAPI
                 serverSocket.Listen(0);
                 serverSocket.BeginAccept(new AsyncCallback(AcceptConnection), serverSocket);
                 log("Server started successfully at 0.0.0.0:" + port);
-
             }
             catch (Exception ex)
             {
-                log("Error: "+ex.ToString());
+                log("Error: " + ex.ToString());
             }
         }
 
         private static void log(string m)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("RocketRcon >> "+m);
+            Console.WriteLine("RocketRcon >> " + m);
         }
 
         private static void AcceptConnection(IAsyncResult result)
@@ -80,7 +79,7 @@ namespace Rocket.RocketAPI
             Socket newSocket = oldSocket.EndAccept(result);
             Client client = new Client((IPEndPoint)newSocket.RemoteEndPoint, DateTime.Now, EClientState.NotLogged);
             clientList.Add(newSocket, client);
-            logList.Add(newSocket.Handle,new List<string>());
+            logList.Add(newSocket.Handle, new List<string>());
             log("Client connected. (From: " + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
             string output = "";
             output += "  ______  _____  _______ _     _ _______ _______  ______ _______  _____  __   _\n\r";
@@ -132,7 +131,6 @@ namespace Rocket.RocketAPI
                     byte[] message = Encoding.ASCII.GetBytes("\u001B[1J\u001B[H" + HandleCommand(clientSocket, currentCommand));
                     clientSocket.BeginSend(message, 0, message.Length, SocketFlags.None, new AsyncCallback(SendData), clientSocket);
                 }
-
                 else if (data[0] == 0x0D && data[1] == 0x0A)
                 {
                     string currentCommand = client.commandIssued;
@@ -141,7 +139,6 @@ namespace Rocket.RocketAPI
                     byte[] message = Encoding.ASCII.GetBytes("\u001B[1J\u001B[H" + HandleCommand(clientSocket, currentCommand));
                     clientSocket.BeginSend(message, 0, message.Length, SocketFlags.None, new AsyncCallback(SendData), clientSocket);
                 }
-
                 else
                 {
                     // 0x08 => remove character
@@ -171,7 +168,8 @@ namespace Rocket.RocketAPI
                     }
                 }
             }
-            catch(Exception ex) {
+            catch (Exception ex)
+            {
                 Logger.LogException(ex);
             }
         }
@@ -179,9 +177,11 @@ namespace Rocket.RocketAPI
         private static string HandleCommand(Socket clientSocket, string Input)
         {
             List<string> h = logList[clientSocket.Handle];
-            if(h.Count > 20){
-               int l = h.Count - 20;
-                for(int i = 0;i<l;i++){
+            if (h.Count > 20)
+            {
+                int l = h.Count - 20;
+                for (int i = 0; i < l; i++)
+                {
                     h.RemoveAt(0);
                 }
             }
@@ -192,7 +192,7 @@ namespace Rocket.RocketAPI
             Output += " |_____/ |     | |       |____/  |______    |    |_____/ |       |     | | \\  |\n\r";
             Output += " |    \\_ |_____| |_____  |    \\_ |______    |    |    \\_ |_____  |_____| |  \\_|\n\r";
             Output += "                                                                       v" + Assembly.GetExecutingAssembly().GetName().Version + "\n\r";
-            Output+="\n\r\n\r";
+            Output += "\n\r\n\r";
             byte[] dataInput = Encoding.ASCII.GetBytes(Input);
             Client client;
             clientList.TryGetValue(clientSocket, out client);
@@ -208,14 +208,13 @@ namespace Rocket.RocketAPI
                     {
                         try
                         {
-                            command.check(null, cmd, Input); 
+                            command.check(null, cmd, Input);
                             h.Add("Done\n\r");
                         }
                         catch (Exception ex)
                         {
-                            h.Add("An exception was thrown on the server: "+ex.Message+"\n\r");
+                            h.Add("An exception was thrown on the server: " + ex.Message + "\n\r");
                         }
-                        
                     }
                     else if (Input == "exit")
                     {
@@ -223,12 +222,14 @@ namespace Rocket.RocketAPI
                         clientSocket.Close();
                         clientList.Remove(clientSocket);
                     }
-                    else {
+                    else
+                    {
                         h.Add("Command unknown\n\r");
                     }
-                    
-                    foreach (string entry in h){
-                        Output += entry ;
+
+                    foreach (string entry in h)
+                    {
+                        Output += entry;
                     }
 
                     Output += "rcon@" + Steam.InstanceName + ": ";

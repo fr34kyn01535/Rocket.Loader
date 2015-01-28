@@ -1,15 +1,15 @@
 ﻿using Rocket.RocketAPI.Components;
 using SDG;
 using Steamworks;
-using System;
 using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
     public class RocketPlayer : RocketPlayerComponent
     {
-        public void Damage(byte amount,Vector3 direction,EDeathCause cause,ELimb limb,CSteamID damager){
-            PlayerInstance.PlayerLife.askDamage(amount,direction,cause,limb,damager);
+        public void Damage(byte amount, Vector3 direction, EDeathCause cause, ELimb limb, CSteamID damager)
+        {
+            PlayerInstance.PlayerLife.askDamage(amount, direction, cause, limb, damager);
         }
 
         public void Suicide()
@@ -17,13 +17,16 @@ namespace Rocket.RocketAPI
             PlayerInstance.PlayerLife.askSuicide(PlayerInstance.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID);
         }
 
-        public byte Health { 
-            get{
+        public byte Health
+        {
+            get
+            {
                 return PlayerInstance.PlayerLife.Health;
             }
         }
 
-        public void Heal(byte health) {
+        public void Heal(byte health)
+        {
             PlayerInstance.PlayerLife.askHeal(health, PlayerInstance.PlayerLife.Bleeding, PlayerInstance.PlayerLife.Broken);
         }
 
@@ -74,7 +77,7 @@ namespace Rocket.RocketAPI
             }
             set
             {
-               // PlayerInstance.PlayerLife.Broken = value;
+                // PlayerInstance.PlayerLife.Broken = value;
                 PlayerInstance.PlayerLife.SteamChannel.send("tellBroken", ESteamCall.OWNER, ESteamPacket.UPDATE_TCP_BUFFER, new object[] { value });
             }
         }
@@ -132,6 +135,5 @@ namespace Rocket.RocketAPI
                 return PlayerInstance.PlayerLife.Freezing;
             }
         }
-    
     }
 }

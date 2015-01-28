@@ -28,12 +28,16 @@
 
 #if !NET_3_5 && !NET_4_0
 
-namespace Mono {
-	delegate TResult Func<TResult> ();
-	delegate TResult Func<T, TResult> (T arg1);
-	delegate TResult Func<T1, T2, TResult> (T1 arg1, T2 arg2);
-	//delegate TResult Func<T1, T2, T3, TResult> (T1 arg1, T2 arg2, T3 arg3);
-	//delegate TResult Func<T1, T2, T3, T4, TResult> (T1 arg1, T2 arg2, T3 arg3, T4 arg4);
+namespace Mono
+{
+    internal delegate TResult Func<TResult>();
+
+    internal delegate TResult Func<T, TResult>(T arg1);
+
+    internal delegate TResult Func<T1, T2, TResult>(T1 arg1, T2 arg2);
+
+    //delegate TResult Func<T1, T2, T3, TResult> (T1 arg1, T2 arg2, T3 arg3);
+    //delegate TResult Func<T1, T2, T3, T4, TResult> (T1 arg1, T2 arg2, T3 arg3, T4 arg4);
 }
 
 #endif

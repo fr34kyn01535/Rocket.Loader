@@ -10,7 +10,10 @@ namespace Rocket.RocketAPI
         /// </summary>
         public int Timeout { get; set; }
 
-        public RocketWebClient() : this(60000) { }
+        public RocketWebClient()
+            : this(60000)
+        {
+        }
 
         public RocketWebClient(int timeout)
         {

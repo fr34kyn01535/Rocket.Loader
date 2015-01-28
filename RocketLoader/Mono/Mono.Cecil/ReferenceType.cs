@@ -30,32 +30,36 @@ using System;
 
 using MD = Mono.Cecil.Metadata;
 
-namespace Mono.Cecil {
+namespace Mono.Cecil
+{
+    public sealed class ByReferenceType : TypeSpecification
+    {
+        public override string Name
+        {
+            get { return base.Name + "&"; }
+        }
 
-	public sealed class ByReferenceType : TypeSpecification {
+        public override string FullName
+        {
+            get { return base.FullName + "&"; }
+        }
 
-		public override string Name {
-			get { return base.Name + "&"; }
-		}
+        public override bool IsValueType
+        {
+            get { return false; }
+            set { throw new InvalidOperationException(); }
+        }
 
-		public override string FullName {
-			get { return base.FullName + "&"; }
-		}
+        public override bool IsByReference
+        {
+            get { return true; }
+        }
 
-		public override bool IsValueType {
-			get { return false; }
-			set { throw new InvalidOperationException (); }
-		}
-
-		public override bool IsByReference {
-			get { return true; }
-		}
-
-		public ByReferenceType (TypeReference type)
-			: base (type)
-		{
-			Mixin.CheckType (type);
-			this.etype = MD.ElementType.ByRef;
-		}
-	}
+        public ByReferenceType(TypeReference type)
+            : base(type)
+        {
+            Mixin.CheckType(type);
+            this.etype = MD.ElementType.ByRef;
+        }
+    }
 }

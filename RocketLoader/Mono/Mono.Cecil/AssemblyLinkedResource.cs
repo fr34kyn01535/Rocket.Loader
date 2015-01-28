@@ -26,32 +26,32 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
+namespace Mono.Cecil
+{
+    public sealed class AssemblyLinkedResource : Resource
+    {
+        private AssemblyNameReference reference;
 
-namespace Mono.Cecil {
+        public AssemblyNameReference Assembly
+        {
+            get { return reference; }
+            set { reference = value; }
+        }
 
-	public sealed class AssemblyLinkedResource : Resource {
+        public override ResourceType ResourceType
+        {
+            get { return ResourceType.AssemblyLinked; }
+        }
 
-		AssemblyNameReference reference;
+        public AssemblyLinkedResource(string name, ManifestResourceAttributes flags)
+            : base(name, flags)
+        {
+        }
 
-		public AssemblyNameReference Assembly {
-			get { return reference; }
-			set { reference = value; }
-		}
-
-		public override ResourceType ResourceType {
-			get { return ResourceType.AssemblyLinked; }
-		}
-
-		public AssemblyLinkedResource (string name, ManifestResourceAttributes flags)
-			: base (name, flags)
-		{
-		}
-
-		public AssemblyLinkedResource (string name, ManifestResourceAttributes flags, AssemblyNameReference reference)
-			: base (name, flags)
-		{
-			this.reference = reference;
-		}
-	}
+        public AssemblyLinkedResource(string name, ManifestResourceAttributes flags, AssemblyNameReference reference)
+            : base(name, flags)
+        {
+            this.reference = reference;
+        }
+    }
 }

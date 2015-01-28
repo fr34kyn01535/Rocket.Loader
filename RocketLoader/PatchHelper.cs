@@ -3,16 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rocket.RocketLoader
 {
     public class PatchHelper
     {
         public TypeDefinition Type;
-        public PatchHelper(string unturnedTypeName) {
+
+        public PatchHelper(string unturnedTypeName)
+        {
             Type = RocketLoader.UnturnedAssembly.MainModule.GetType(unturnedTypeName);
         }
 
@@ -26,7 +25,6 @@ namespace Rocket.RocketLoader
             }
         }
 
-
         public MethodDefinition GetMethod(string name)
         {
             return Type.Methods.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefault();
@@ -36,6 +34,7 @@ namespace Rocket.RocketLoader
         {
             return Type.Fields.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefault();
         }
+
         public FieldDefinition[] GetFieldsByType(Type typeToUnlock)
         {
             return Type.Fields.Where(p => p.FieldType.FullName.Replace('/', '+') == typeToUnlock.FullName).ToArray();
@@ -46,13 +45,15 @@ namespace Rocket.RocketLoader
             List<FieldDefinition> fields = Type.Fields.ToList();
             List<FieldDefinition> outFields = new List<FieldDefinition>();
 
-            foreach (FieldDefinition field in fields) {
+            foreach (FieldDefinition field in fields)
+            {
                 string fieldname = field.FieldType.Name;
 
-                if (field.FieldType.FullName.Contains("System.Collections.Generic.List")) {
+                if (field.FieldType.FullName.Contains("System.Collections.Generic.List"))
+                {
                     fieldname = field.FieldType.FullName.Replace("System.Collections.Generic.List`1", "List");
                 }
-                
+
                 if (fieldname.ToLower() == typeToUnlock.ToLower())
                 {
                     outFields.Add(field);
@@ -90,15 +91,15 @@ namespace Rocket.RocketLoader
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Warning: could not find " + name);
-                #if DEBUG
+#if DEBUG
                 Debugger.Break();
-                #endif
+#endif
                 Console.ForegroundColor = ConsoleColor.White;
             }
         }
 
         /// <summary>
-        /// Unlocks field with a type that matches a specifiy typename 
+        /// Unlocks field with a type that matches a specifiy typename
         /// </summary>
         /// <param name="t"></param>
         /// <param name="typeToUnlock"></param>
@@ -123,7 +124,7 @@ namespace Rocket.RocketLoader
         }
 
         /// <summary>
-        /// Unlocks field that matches a specifiy name 
+        /// Unlocks field that matches a specifiy name
         /// </summary>
         /// <param name="t"></param>
         /// <param name="typeToUnlock"></param>
@@ -132,7 +133,7 @@ namespace Rocket.RocketLoader
         {
             FieldDefinition field = GetField(nameToUnlock);
 
-            if (field!= null)
+            if (field != null)
             {
                 unlock(field, name);
             }
@@ -148,7 +149,7 @@ namespace Rocket.RocketLoader
         }
 
         /// <summary>
-        /// Unlocks method that matches a specifiy name 
+        /// Unlocks method that matches a specifiy name
         /// </summary>
         /// <param name="t"></param>
         /// <param name="typeToUnlock"></param>

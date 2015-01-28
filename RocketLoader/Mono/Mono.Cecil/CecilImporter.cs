@@ -1,7 +1,5 @@
 ﻿using Mono.Cecil;
 using Mono.Cecil.Cil;
-using System;
-using System.Runtime.CompilerServices;
 using Mono.Collections.Generic;
 
 namespace Mono
@@ -9,6 +7,7 @@ namespace Mono
     public class CecilImporter
     {
         public delegate TResult Func<TIn, TResult>(TIn param);
+
         public CecilImporter(ModuleDefinition targetModule)
         {
             this.TargetModule = targetModule;

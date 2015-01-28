@@ -26,27 +26,28 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace Mono.Cecil.Cil {
+namespace Mono.Cecil.Cil
+{
+    public sealed class VariableDefinition : VariableReference
+    {
+        public bool IsPinned
+        {
+            get { return variable_type.IsPinned; }
+        }
 
-	public sealed class VariableDefinition : VariableReference {
+        public VariableDefinition(TypeReference variableType)
+            : base(variableType)
+        {
+        }
 
-		public bool IsPinned {
-			get { return variable_type.IsPinned; }
-		}
+        public VariableDefinition(string name, TypeReference variableType)
+            : base(name, variableType)
+        {
+        }
 
-		public VariableDefinition (TypeReference variableType)
-			: base (variableType)
-		{
-		}
-
-		public VariableDefinition (string name, TypeReference variableType)
-			: base (name, variableType)
-		{
-		}
-
-		public override VariableDefinition Resolve ()
-		{
-			return this;
-		}
-	}
+        public override VariableDefinition Resolve()
+        {
+            return this;
+        }
+    }
 }

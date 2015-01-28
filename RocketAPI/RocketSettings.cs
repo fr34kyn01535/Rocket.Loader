@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Xml.Serialization;
 
 namespace Rocket
@@ -14,12 +10,15 @@ namespace Rocket
         public static string RconPassword = "changeme";
         public static int RconPort = 0;
 
-        [XmlElement(ElementName="EnableRcon")]
-        public bool enableRcon {
-            get {
+        [XmlElement(ElementName = "EnableRcon")]
+        public bool enableRcon
+        {
+            get
+            {
                 return EnableRcon;
             }
-            set {
+            set
+            {
                 EnableRcon = value; ;
             }
         }
@@ -50,16 +49,19 @@ namespace Rocket
             }
         }
 
-        internal void Load() { 
-            
+        internal void Load()
+        {
             XmlSerializer serializer = new XmlSerializer(typeof(RocketSettings));
-            string configFile = Path.Combine(HomeFolder,"Rocket.config");
-            if(File.Exists(configFile)){
+            string configFile = Path.Combine(HomeFolder, "Rocket.config");
+            if (File.Exists(configFile))
+            {
                 RocketSettings s = (RocketSettings)serializer.Deserialize(new StreamReader(configFile));
                 enableRcon = s.enableRcon;
-                if(s.rconPassword !=null) rconPassword = s.rconPassword;
+                if (s.rconPassword != null) rconPassword = s.rconPassword;
                 rconPort = s.rconPort;
-            }else{
+            }
+            else
+            {
                 serializer.Serialize(new StreamWriter(configFile), new RocketSettings());
             }
         }

@@ -28,56 +28,59 @@
 
 using System;
 
-namespace Mono.Cecil {
+namespace Mono.Cecil
+{
+    public class FieldReference : MemberReference
+    {
+        private TypeReference field_type;
 
-	public class FieldReference : MemberReference {
+        public TypeReference FieldType
+        {
+            get { return field_type; }
+            set { field_type = value; }
+        }
 
-		TypeReference field_type;
+        public override string FullName
+        {
+            get { return field_type.FullName + " " + MemberFullName(); }
+        }
 
-		public TypeReference FieldType {
-			get { return field_type; }
-			set { field_type = value; }
-		}
+        internal override bool ContainsGenericParameter
+        {
+            get { return field_type.ContainsGenericParameter || base.ContainsGenericParameter; }
+        }
 
-		public override string FullName {
-			get { return field_type.FullName + " " + MemberFullName (); }
-		}
+        internal FieldReference()
+        {
+            this.token = new MetadataToken(TokenType.MemberRef);
+        }
 
-		internal override bool ContainsGenericParameter {
-			get { return field_type.ContainsGenericParameter || base.ContainsGenericParameter; }
-		}
+        public FieldReference(string name, TypeReference fieldType)
+            : base(name)
+        {
+            if (fieldType == null)
+                throw new ArgumentNullException("fieldType");
 
-		internal FieldReference ()
-		{
-			this.token = new MetadataToken (TokenType.MemberRef);
-		}
+            this.field_type = fieldType;
+            this.token = new MetadataToken(TokenType.MemberRef);
+        }
 
-		public FieldReference (string name, TypeReference fieldType)
-			: base (name)
-		{
-			if (fieldType == null)
-				throw new ArgumentNullException ("fieldType");
+        public FieldReference(string name, TypeReference fieldType, TypeReference declaringType)
+            : this(name, fieldType)
+        {
+            if (declaringType == null)
+                throw new ArgumentNullException("declaringType");
 
-			this.field_type = fieldType;
-			this.token = new MetadataToken (TokenType.MemberRef);
-		}
+            this.DeclaringType = declaringType;
+        }
 
-		public FieldReference (string name, TypeReference fieldType, TypeReference declaringType)
-			: this (name, fieldType)
-		{
-			if (declaringType == null)
-				throw new ArgumentNullException("declaringType");
+        public virtual FieldDefinition Resolve()
+        {
+            var module = this.Module;
+            if (module == null)
+                throw new NotSupportedException();
 
-			this.DeclaringType = declaringType;
-		}
-
-		public virtual FieldDefinition Resolve ()
-		{
-			var module = this.Module;
-			if (module == null)
-				throw new NotSupportedException ();
-
-			return module.Resolve (this);
-		}
-	}
+            return module.Resolve(this);
+        }
+    }
 }

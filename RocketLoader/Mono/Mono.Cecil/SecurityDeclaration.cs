@@ -26,166 +26,179 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Mono.Collections.Generic;
 using System;
 
-using Mono.Collections.Generic;
+namespace Mono.Cecil
+{
+    public enum SecurityAction : ushort
+    {
+        Request = 1,
+        Demand = 2,
+        Assert = 3,
+        Deny = 4,
+        PermitOnly = 5,
+        LinkDemand = 6,
+        InheritDemand = 7,
+        RequestMinimum = 8,
+        RequestOptional = 9,
+        RequestRefuse = 10,
+        PreJitGrant = 11,
+        PreJitDeny = 12,
+        NonCasDemand = 13,
+        NonCasLinkDemand = 14,
+        NonCasInheritance = 15
+    }
 
-namespace Mono.Cecil {
+    public interface ISecurityDeclarationProvider : IMetadataTokenProvider
+    {
+        bool HasSecurityDeclarations { get; }
 
-	public enum SecurityAction : ushort {
-		Request = 1,
-		Demand = 2,
-		Assert = 3,
-		Deny = 4,
-		PermitOnly = 5,
-		LinkDemand = 6,
-		InheritDemand = 7,
-		RequestMinimum = 8,
-		RequestOptional = 9,
-		RequestRefuse = 10,
-		PreJitGrant = 11,
-		PreJitDeny = 12,
-		NonCasDemand = 13,
-		NonCasLinkDemand = 14,
-		NonCasInheritance = 15
-	}
+        Collection<SecurityDeclaration> SecurityDeclarations { get; }
+    }
 
-	public interface ISecurityDeclarationProvider : IMetadataTokenProvider {
+    public sealed class SecurityAttribute : ICustomAttribute
+    {
+        private TypeReference attribute_type;
 
-		bool HasSecurityDeclarations { get; }
-		Collection<SecurityDeclaration> SecurityDeclarations { get; }
-	}
+        internal Collection<CustomAttributeNamedArgument> fields;
+        internal Collection<CustomAttributeNamedArgument> properties;
 
-	public sealed class SecurityAttribute : ICustomAttribute {
+        public TypeReference AttributeType
+        {
+            get { return attribute_type; }
+            set { attribute_type = value; }
+        }
 
-		TypeReference attribute_type;
+        public bool HasFields
+        {
+            get { return !fields.IsNullOrEmpty(); }
+        }
 
-		internal Collection<CustomAttributeNamedArgument> fields;
-		internal Collection<CustomAttributeNamedArgument> properties;
+        public Collection<CustomAttributeNamedArgument> Fields
+        {
+            get { return fields ?? (fields = new Collection<CustomAttributeNamedArgument>()); }
+        }
 
-		public TypeReference AttributeType {
-			get { return attribute_type; }
-			set { attribute_type = value; }
-		}
+        public bool HasProperties
+        {
+            get { return !properties.IsNullOrEmpty(); }
+        }
 
-		public bool HasFields {
-			get { return !fields.IsNullOrEmpty (); }
-		}
+        public Collection<CustomAttributeNamedArgument> Properties
+        {
+            get { return properties ?? (properties = new Collection<CustomAttributeNamedArgument>()); }
+        }
 
-		public Collection<CustomAttributeNamedArgument> Fields {
-			get { return fields ?? (fields = new Collection<CustomAttributeNamedArgument> ()); }
-		}
+        public SecurityAttribute(TypeReference attributeType)
+        {
+            this.attribute_type = attributeType;
+        }
+    }
 
-		public bool HasProperties {
-			get { return !properties.IsNullOrEmpty (); }
-		}
+    public sealed class SecurityDeclaration
+    {
+        readonly internal uint signature;
+        private byte[] blob;
+        private readonly ModuleDefinition module;
 
-		public Collection<CustomAttributeNamedArgument> Properties {
-			get { return properties ?? (properties = new Collection<CustomAttributeNamedArgument> ()); }
-		}
+        internal bool resolved;
+        private SecurityAction action;
+        internal Collection<SecurityAttribute> security_attributes;
 
-		public SecurityAttribute (TypeReference attributeType)
-		{
-			this.attribute_type = attributeType;
-		}
-	}
+        public SecurityAction Action
+        {
+            get { return action; }
+            set { action = value; }
+        }
 
-	public sealed class SecurityDeclaration {
+        public bool HasSecurityAttributes
+        {
+            get
+            {
+                Resolve();
 
-		readonly internal uint signature;
-		byte [] blob;
-		readonly ModuleDefinition module;
+                return !security_attributes.IsNullOrEmpty();
+            }
+        }
 
-		internal bool resolved;
-		SecurityAction action;
-		internal Collection<SecurityAttribute> security_attributes;
+        public Collection<SecurityAttribute> SecurityAttributes
+        {
+            get
+            {
+                Resolve();
 
-		public SecurityAction Action {
-			get { return action; }
-			set { action = value; }
-		}
+                return security_attributes ?? (security_attributes = new Collection<SecurityAttribute>());
+            }
+        }
 
-		public bool HasSecurityAttributes {
-			get {
-				Resolve ();
+        internal bool HasImage
+        {
+            get { return module != null && module.HasImage; }
+        }
 
-				return !security_attributes.IsNullOrEmpty ();
-			}
-		}
+        internal SecurityDeclaration(SecurityAction action, uint signature, ModuleDefinition module)
+        {
+            this.action = action;
+            this.signature = signature;
+            this.module = module;
+        }
 
-		public Collection<SecurityAttribute> SecurityAttributes {
-			get {
-				Resolve ();
+        public SecurityDeclaration(SecurityAction action)
+        {
+            this.action = action;
+            this.resolved = true;
+        }
 
-				return security_attributes ?? (security_attributes = new Collection<SecurityAttribute> ());
-			}
-		}
+        public SecurityDeclaration(SecurityAction action, byte[] blob)
+        {
+            this.action = action;
+            this.resolved = false;
+            this.blob = blob;
+        }
 
-		internal bool HasImage {
-			get { return module != null && module.HasImage; }
-		}
+        public byte[] GetBlob()
+        {
+            if (blob != null)
+                return blob;
 
-		internal SecurityDeclaration (SecurityAction action, uint signature, ModuleDefinition module)
-		{
-			this.action = action;
-			this.signature = signature;
-			this.module = module;
-		}
+            if (!HasImage || signature == 0)
+                throw new NotSupportedException();
 
-		public SecurityDeclaration (SecurityAction action)
-		{
-			this.action = action;
-			this.resolved = true;
-		}
+            return blob = module.Read(this, (declaration, reader) => reader.ReadSecurityDeclarationBlob(declaration.signature));
+        }
 
-		public SecurityDeclaration (SecurityAction action, byte [] blob)
-		{
-			this.action = action;
-			this.resolved = false;
-			this.blob = blob;
-		}
+        private void Resolve()
+        {
+            if (resolved || !HasImage)
+                return;
 
-		public byte [] GetBlob ()
-		{
-			if (blob != null)
-				return blob;
+            module.Read(this, (declaration, reader) =>
+            {
+                reader.ReadSecurityDeclarationSignature(declaration);
+                return this;
+            });
 
-			if (!HasImage || signature == 0)
-				throw new NotSupportedException ();
+            resolved = true;
+        }
+    }
 
-			return blob = module.Read (this, (declaration, reader) => reader.ReadSecurityDeclarationBlob (declaration.signature));
-		}
+    static partial class Mixin
+    {
+        public static bool GetHasSecurityDeclarations(
+            this ISecurityDeclarationProvider self,
+            ModuleDefinition module)
+        {
+            return module.HasImage() && module.Read(self, (provider, reader) => reader.HasSecurityDeclarations(provider));
+        }
 
-		void Resolve ()
-		{
-			if (resolved || !HasImage)
-				return;
-
-			module.Read (this, (declaration, reader) => {
-				reader.ReadSecurityDeclarationSignature (declaration);
-				return this;
-			});
-
-			resolved = true;
-		}
-	}
-
-	static partial class Mixin {
-
-		public static bool GetHasSecurityDeclarations (
-			this ISecurityDeclarationProvider self,
-			ModuleDefinition module)
-		{
-			return module.HasImage () && module.Read (self, (provider, reader) => reader.HasSecurityDeclarations (provider));
-		}
-
-		public static Collection<SecurityDeclaration> GetSecurityDeclarations (
-			this ISecurityDeclarationProvider self,
-			ModuleDefinition module)
-		{
-			return module.HasImage ()
-				? module.Read (self, (provider, reader) => reader.ReadSecurityDeclarations (provider))
-				: new Collection<SecurityDeclaration> ();
-		}
-	}
+        public static Collection<SecurityDeclaration> GetSecurityDeclarations(
+            this ISecurityDeclarationProvider self,
+            ModuleDefinition module)
+        {
+            return module.HasImage()
+                ? module.Read(self, (provider, reader) => reader.ReadSecurityDeclarations(provider))
+                : new Collection<SecurityDeclaration>();
+        }
+    }
 }

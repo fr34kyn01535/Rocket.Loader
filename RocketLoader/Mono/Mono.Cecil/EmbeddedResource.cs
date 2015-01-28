@@ -29,77 +29,78 @@
 using System;
 using System.IO;
 
-namespace Mono.Cecil {
+namespace Mono.Cecil
+{
+    public sealed class EmbeddedResource : Resource
+    {
+        private readonly MetadataReader reader;
 
-	public sealed class EmbeddedResource : Resource {
+        private uint? offset;
+        private byte[] data;
+        private Stream stream;
 
-		readonly MetadataReader reader;
+        public override ResourceType ResourceType
+        {
+            get { return ResourceType.Embedded; }
+        }
 
-		uint? offset;
-		byte [] data;
-		Stream stream;
+        public EmbeddedResource(string name, ManifestResourceAttributes attributes, byte[] data) :
+            base(name, attributes)
+        {
+            this.data = data;
+        }
 
-		public override ResourceType ResourceType {
-			get { return ResourceType.Embedded; }
-		}
+        public EmbeddedResource(string name, ManifestResourceAttributes attributes, Stream stream) :
+            base(name, attributes)
+        {
+            this.stream = stream;
+        }
 
-		public EmbeddedResource (string name, ManifestResourceAttributes attributes, byte [] data) :
-			base (name, attributes)
-		{
-			this.data = data;
-		}
+        internal EmbeddedResource(string name, ManifestResourceAttributes attributes, uint offset, MetadataReader reader)
+            : base(name, attributes)
+        {
+            this.offset = offset;
+            this.reader = reader;
+        }
 
-		public EmbeddedResource (string name, ManifestResourceAttributes attributes, Stream stream) :
-			base (name, attributes)
-		{
-			this.stream = stream;
-		}
+        public Stream GetResourceStream()
+        {
+            if (stream != null)
+                return stream;
 
-		internal EmbeddedResource (string name, ManifestResourceAttributes attributes, uint offset, MetadataReader reader)
-			: base (name, attributes)
-		{
-			this.offset = offset;
-			this.reader = reader;
-		}
+            if (data != null)
+                return new MemoryStream(data);
 
-		public Stream GetResourceStream ()
-		{
-			if (stream != null)
-				return stream;
+            if (offset.HasValue)
+                return reader.GetManagedResourceStream(offset.Value);
 
-			if (data != null)
-				return new MemoryStream (data);
+            throw new InvalidOperationException();
+        }
 
-			if (offset.HasValue)
-				return reader.GetManagedResourceStream (offset.Value);
+        public byte[] GetResourceData()
+        {
+            if (stream != null)
+                return ReadStream(stream);
 
-			throw new InvalidOperationException ();
-		}
+            if (data != null)
+                return data;
 
-		public byte [] GetResourceData ()
-		{
-			if (stream != null)
-				return ReadStream (stream);
+            if (offset.HasValue)
+                return reader.GetManagedResourceStream(offset.Value).ToArray();
 
-			if (data != null)
-				return data;
+            throw new InvalidOperationException();
+        }
 
-			if (offset.HasValue)
-				return reader.GetManagedResourceStream (offset.Value).ToArray ();
+        private static byte[] ReadStream(Stream stream)
+        {
+            var length = (int)stream.Length;
+            var data = new byte[length];
+            int offset = 0, read;
 
-			throw new InvalidOperationException ();
-		}
+            while ((read = stream.Read(data, offset, length - offset)) > 0)
+                offset += read;
 
-		static byte [] ReadStream (Stream stream)
-		{
-			var length = (int) stream.Length;
-			var data = new byte [length];
-			int offset = 0, read;
-
-			while ((read = stream.Read (data, offset, length - offset)) > 0)
-				offset += read;
-
-			return data;
-		}
-	}
+            return data;
+        }
+    }
 }

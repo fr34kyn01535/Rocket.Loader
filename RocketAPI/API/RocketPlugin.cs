@@ -1,11 +1,6 @@
 ﻿using Rocket.RocketAPI.Components;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
@@ -25,7 +20,7 @@ namespace Rocket.RocketAPI
             }
             catch (Exception ex)
             {
-                Logger.LogError("Failed to load configuration: "+ex.ToString());
+                Logger.LogError("Failed to load configuration: " + ex.ToString());
             }
             Loaded = true;
         }
@@ -34,15 +29,20 @@ namespace Rocket.RocketAPI
     public class RocketPlugin : RocketManagerComponent
     {
         public static bool Loaded = false;
+
         public void Start()
         {
             Load();
         }
+
         private new void Awake()
         {
             DontDestroyOnLoad(transform.gameObject);
             Loaded = true;
         }
-        protected virtual void Load() { }
+
+        protected virtual void Load()
+        {
+        }
     }
 }

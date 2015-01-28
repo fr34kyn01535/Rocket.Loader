@@ -26,34 +26,32 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Mono.Cecil.PE;
 using System;
 
-using Mono.Cecil.PE;
+namespace Mono.Cecil.Metadata
+{
+    internal sealed class GuidHeap : Heap
+    {
+        public GuidHeap(Section section, uint start, uint size)
+            : base(section, start, size)
+        {
+        }
 
-namespace Mono.Cecil.Metadata {
+        public Guid Read(uint index)
+        {
+            if (index == 0)
+                return new Guid();
 
-	sealed class GuidHeap : Heap {
+            const int guid_size = 16;
 
-		public GuidHeap (Section section, uint start, uint size)
-			: base (section, start, size)
-		{
-		}
+            var buffer = new byte[guid_size];
 
-		public Guid Read (uint index)
-		{
-			if (index == 0)
-				return new Guid ();
+            index--;
 
-			const int guid_size = 16;
+            Buffer.BlockCopy(Section.Data, (int)(Offset + index), buffer, 0, guid_size);
 
-			var buffer = new byte [guid_size];
-
-			index--;
-
-			Buffer.BlockCopy (Section.Data, (int) (Offset + index), buffer, 0, guid_size);
-
-			return new Guid (buffer);
-
-		}
-	}
+            return new Guid(buffer);
+        }
+    }
 }

@@ -26,25 +26,24 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-
 using RVA = System.UInt32;
 
-namespace Mono.Cecil.PE {
+namespace Mono.Cecil.PE
+{
+    internal struct DataDirectory
+    {
+        public readonly RVA VirtualAddress;
+        public readonly uint Size;
 
-	struct DataDirectory {
+        public bool IsZero
+        {
+            get { return VirtualAddress == 0 && Size == 0; }
+        }
 
-		public readonly RVA VirtualAddress;
-		public readonly uint Size;
-
-		public bool IsZero {
-			get { return VirtualAddress == 0 && Size == 0; }
-		}
-
-		public DataDirectory (RVA rva, uint size)
-		{
-			this.VirtualAddress = rva;
-			this.Size = size;
-		}
-	}
+        public DataDirectory(RVA rva, uint size)
+        {
+            this.VirtualAddress = rva;
+            this.Size = size;
+        }
+    }
 }

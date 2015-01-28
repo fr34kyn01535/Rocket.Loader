@@ -26,78 +26,88 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Mono.Collections.Generic;
 using System;
 
-using Mono.Collections.Generic;
+namespace Mono.Cecil
+{
+    public abstract class MethodSpecification : MethodReference
+    {
+        private readonly MethodReference method;
 
-namespace Mono.Cecil {
+        public MethodReference ElementMethod
+        {
+            get { return method; }
+        }
 
-	public abstract class MethodSpecification : MethodReference {
+        public override string Name
+        {
+            get { return method.Name; }
+            set { throw new InvalidOperationException(); }
+        }
 
-		readonly MethodReference method;
+        public override MethodCallingConvention CallingConvention
+        {
+            get { return method.CallingConvention; }
+            set { throw new InvalidOperationException(); }
+        }
 
-		public MethodReference ElementMethod {
-			get { return method; }
-		}
+        public override bool HasThis
+        {
+            get { return method.HasThis; }
+            set { throw new InvalidOperationException(); }
+        }
 
-		public override string Name {
-			get { return method.Name; }
-			set { throw new InvalidOperationException (); }
-		}
+        public override bool ExplicitThis
+        {
+            get { return method.ExplicitThis; }
+            set { throw new InvalidOperationException(); }
+        }
 
-		public override MethodCallingConvention CallingConvention {
-			get { return method.CallingConvention; }
-			set { throw new InvalidOperationException (); }
-		}
+        public override MethodReturnType MethodReturnType
+        {
+            get { return method.MethodReturnType; }
+            set { throw new InvalidOperationException(); }
+        }
 
-		public override bool HasThis {
-			get { return method.HasThis; }
-			set { throw new InvalidOperationException (); }
-		}
+        public override TypeReference DeclaringType
+        {
+            get { return method.DeclaringType; }
+            set { throw new InvalidOperationException(); }
+        }
 
-		public override bool ExplicitThis {
-			get { return method.ExplicitThis; }
-			set { throw new InvalidOperationException (); }
-		}
+        public override ModuleDefinition Module
+        {
+            get { return method.Module; }
+        }
 
-		public override MethodReturnType MethodReturnType {
-			get { return method.MethodReturnType; }
-			set { throw new InvalidOperationException (); }
-		}
+        public override bool HasParameters
+        {
+            get { return method.HasParameters; }
+        }
 
-		public override TypeReference DeclaringType {
-			get { return method.DeclaringType; }
-			set { throw new InvalidOperationException (); }
-		}
+        public override Collection<ParameterDefinition> Parameters
+        {
+            get { return method.Parameters; }
+        }
 
-		public override ModuleDefinition Module {
-			get { return method.Module; }
-		}
+        internal override bool ContainsGenericParameter
+        {
+            get { return method.ContainsGenericParameter; }
+        }
 
-		public override bool HasParameters {
-			get { return method.HasParameters; }
-		}
+        internal MethodSpecification(MethodReference method)
+        {
+            if (method == null)
+                throw new ArgumentNullException("method");
 
-		public override Collection<ParameterDefinition> Parameters {
-			get { return method.Parameters; }
-		}
+            this.method = method;
+            this.token = new MetadataToken(TokenType.MethodSpec);
+        }
 
-		internal override bool ContainsGenericParameter {
-			get { return method.ContainsGenericParameter; }
-		}
-
-		internal MethodSpecification (MethodReference method)
-		{
-			if (method == null)
-				throw new ArgumentNullException ("method");
-
-			this.method = method;
-			this.token = new MetadataToken (TokenType.MethodSpec);
-		}
-
-		public sealed override MethodReference GetElementMethod ()
-		{
-			return method.GetElementMethod ();
-		}
-	}
+        public sealed override MethodReference GetElementMethod()
+        {
+            return method.GetElementMethod();
+        }
+    }
 }

@@ -28,85 +28,89 @@
 
 using System;
 using System.Collections;
-using System .Collections.Generic;
+using System.Collections.Generic;
 
-namespace Mono.Collections.Generic {
+namespace Mono.Collections.Generic
+{
+    public sealed class ReadOnlyCollection<T> : Collection<T>, ICollection<T>, IList
+    {
+        private static ReadOnlyCollection<T> empty;
 
-	public sealed class ReadOnlyCollection<T> : Collection<T>, ICollection<T>, IList {
+        public static ReadOnlyCollection<T> Empty
+        {
+            get { return empty ?? (empty = new ReadOnlyCollection<T>()); }
+        }
 
-		static ReadOnlyCollection<T> empty;
+        bool ICollection<T>.IsReadOnly
+        {
+            get { return true; }
+        }
 
-		public static ReadOnlyCollection<T> Empty {
-			get { return empty ?? (empty = new ReadOnlyCollection<T> ()); }
-		}
+        bool IList.IsFixedSize
+        {
+            get { return true; }
+        }
 
-		bool ICollection<T>.IsReadOnly {
-			get { return true; }
-		}
+        bool IList.IsReadOnly
+        {
+            get { return true; }
+        }
 
-		bool IList.IsFixedSize {
-			get { return true; }
-		}
+        private ReadOnlyCollection()
+        {
+        }
 
-		bool IList.IsReadOnly {
-			get { return true; }
-		}
+        public ReadOnlyCollection(T[] array)
+        {
+            if (array == null)
+                throw new ArgumentNullException();
 
-		private ReadOnlyCollection ()
-		{
-		}
+            Initialize(array, array.Length);
+        }
 
-		public ReadOnlyCollection (T [] array)
-		{
-			if (array == null)
-				throw new ArgumentNullException ();
+        public ReadOnlyCollection(Collection<T> collection)
+        {
+            if (collection == null)
+                throw new ArgumentNullException();
 
-			Initialize (array, array.Length);
-		}
+            Initialize(collection.items, collection.size);
+        }
 
-		public ReadOnlyCollection (Collection<T> collection)
-		{
-			if (collection == null)
-				throw new ArgumentNullException ();
+        private void Initialize(T[] items, int size)
+        {
+            this.items = new T[size];
+            Array.Copy(items, 0, this.items, 0, size);
+            this.size = size;
+        }
 
-			Initialize (collection.items, collection.size);
-		}
+        internal override void Grow(int desired)
+        {
+            throw new InvalidOperationException();
+        }
 
-		void Initialize (T [] items, int size)
-		{
-			this.items = new T [size];
-			Array.Copy (items, 0, this.items, 0, size);
-			this.size = size;
-		}
+        protected override void OnAdd(T item, int index)
+        {
+            throw new InvalidOperationException();
+        }
 
-		internal override void Grow (int desired)
-		{
-			throw new InvalidOperationException ();
-		}
+        protected override void OnClear()
+        {
+            throw new InvalidOperationException();
+        }
 
-		protected override void OnAdd (T item, int index)
-		{
-			throw new InvalidOperationException ();
-		}
+        protected override void OnInsert(T item, int index)
+        {
+            throw new InvalidOperationException();
+        }
 
-		protected override void OnClear ()
-		{
-			throw new InvalidOperationException ();
-		}
+        protected override void OnRemove(T item, int index)
+        {
+            throw new InvalidOperationException();
+        }
 
-		protected override void OnInsert (T item, int index)
-		{
-			throw new InvalidOperationException ();
-		}
-
-		protected override void OnRemove (T item, int index)
-		{
-			throw new InvalidOperationException ();
-		}
-
-		protected override void OnSet (T item, int index)
-		{
-			throw new InvalidOperationException ();
-		}
-	}
+        protected override void OnSet(T item, int index)
+        {
+            throw new InvalidOperationException();
+        }
+    }
 }

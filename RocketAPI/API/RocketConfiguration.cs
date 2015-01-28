@@ -1,13 +1,8 @@
 ﻿using SDG;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Text;
 using System.Xml.Serialization;
-using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
@@ -26,13 +21,14 @@ namespace Rocket.RocketAPI
                 try
                 {
                     string filecontent = "";
-                    using (StreamReader reader = new StreamReader(filename)) { 
+                    using (StreamReader reader = new StreamReader(filename))
+                    {
                         filecontent = reader.ReadToEnd().Trim();
                     }
 
                     Uri uriOut = null;
-                    if (Uri.TryCreate(filecontent, UriKind.Absolute, out uriOut) && (uriOut.Scheme == Uri.UriSchemeHttp || uriOut.Scheme == Uri.UriSchemeHttps)) {
-
+                    if (Uri.TryCreate(filecontent, UriKind.Absolute, out uriOut) && (uriOut.Scheme == Uri.UriSchemeHttp || uriOut.Scheme == Uri.UriSchemeHttps))
+                    {
                         string target = uriOut.ToString();
 
                         if (target.Contains("?"))
@@ -79,7 +75,9 @@ namespace Rocket.RocketAPI
                 return SaveConfiguration<T>(filename);
             }
         }
-        public static T SaveConfiguration<T>(string filename) {
+
+        public static T SaveConfiguration<T>(string filename)
+        {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             using (TextWriter writer = new StreamWriter(filename))
             {

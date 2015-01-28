@@ -28,77 +28,90 @@
 
 using Mono.Collections.Generic;
 
-namespace Mono.Cecil {
+namespace Mono.Cecil
+{
+    public sealed class MethodReturnType : IConstantProvider, ICustomAttributeProvider, IMarshalInfoProvider
+    {
+        internal IMethodSignature method;
+        internal ParameterDefinition parameter;
+        private TypeReference return_type;
 
-	public sealed class MethodReturnType : IConstantProvider, ICustomAttributeProvider, IMarshalInfoProvider {
+        public IMethodSignature Method
+        {
+            get { return method; }
+        }
 
-		internal IMethodSignature method;
-		internal ParameterDefinition parameter;
-		TypeReference return_type;
+        public TypeReference ReturnType
+        {
+            get { return return_type; }
+            set { return_type = value; }
+        }
 
-		public IMethodSignature Method {
-			get { return method; }
-		}
+        internal ParameterDefinition Parameter
+        {
+            get { return parameter ?? (parameter = new ParameterDefinition(return_type, method)); }
+        }
 
-		public TypeReference ReturnType {
-			get { return return_type; }
-			set { return_type = value; }
-		}
+        public MetadataToken MetadataToken
+        {
+            get { return Parameter.MetadataToken; }
+            set { Parameter.MetadataToken = value; }
+        }
 
-		internal ParameterDefinition Parameter {
-			get { return parameter ?? (parameter = new ParameterDefinition (return_type, method)); }
-		}
+        public ParameterAttributes Attributes
+        {
+            get { return Parameter.Attributes; }
+            set { Parameter.Attributes = value; }
+        }
 
-		public MetadataToken MetadataToken {
-			get { return Parameter.MetadataToken; }
-			set { Parameter.MetadataToken = value; }
-		}
+        public bool HasCustomAttributes
+        {
+            get { return parameter != null && parameter.HasCustomAttributes; }
+        }
 
-		public ParameterAttributes Attributes {
-			get { return Parameter.Attributes; }
-			set { Parameter.Attributes = value; }
-		}
+        public Collection<CustomAttribute> CustomAttributes
+        {
+            get { return Parameter.CustomAttributes; }
+        }
 
-		public bool HasCustomAttributes {
-			get { return parameter != null && parameter.HasCustomAttributes; }
-		}
+        public bool HasDefault
+        {
+            get { return parameter != null && parameter.HasDefault; }
+            set { Parameter.HasDefault = value; }
+        }
 
-		public Collection<CustomAttribute> CustomAttributes {
-			get { return Parameter.CustomAttributes; }
-		}
+        public bool HasConstant
+        {
+            get { return parameter != null && parameter.HasConstant; }
+            set { Parameter.HasConstant = value; }
+        }
 
-		public bool HasDefault {
-			get { return parameter != null && parameter.HasDefault; }
-			set { Parameter.HasDefault = value; }
-		}
+        public object Constant
+        {
+            get { return Parameter.Constant; }
+            set { Parameter.Constant = value; }
+        }
 
-		public bool HasConstant {
-			get { return parameter != null && parameter.HasConstant; }
-			set { Parameter.HasConstant = value; }
-		}
+        public bool HasFieldMarshal
+        {
+            get { return parameter != null && parameter.HasFieldMarshal; }
+            set { Parameter.HasFieldMarshal = value; }
+        }
 
-		public object Constant {
-			get { return Parameter.Constant; }
-			set { Parameter.Constant = value; }
-		}
+        public bool HasMarshalInfo
+        {
+            get { return parameter != null && parameter.HasMarshalInfo; }
+        }
 
-		public bool HasFieldMarshal {
-			get { return parameter != null && parameter.HasFieldMarshal; }
-			set { Parameter.HasFieldMarshal = value; }
-		}
+        public MarshalInfo MarshalInfo
+        {
+            get { return Parameter.MarshalInfo; }
+            set { Parameter.MarshalInfo = value; }
+        }
 
-		public bool HasMarshalInfo {
-			get { return parameter != null && parameter.HasMarshalInfo; }
-		}
-
-		public MarshalInfo MarshalInfo {
-			get { return Parameter.MarshalInfo; }
-			set { Parameter.MarshalInfo = value; }
-		}
-
-		public MethodReturnType (IMethodSignature method)
-		{
-			this.method = method;
-		}
-	}
+        public MethodReturnType(IMethodSignature method)
+        {
+            this.method = method;
+        }
+    }
 }

@@ -1,16 +1,12 @@
 ﻿using Mono.Cecil;
 using Mono.Cecil.Cil;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rocket.RocketLoader.Patches
 {
     public class ChatManager : Patch
     {
-        PatchHelper h = new PatchHelper("SDG.ChatManager");
+        private PatchHelper h = new PatchHelper("SDG.ChatManager");
 
         public void Apply()
         {
@@ -20,11 +16,11 @@ namespace Rocket.RocketLoader.Patches
             MethodDefinition checkPermissions = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketAPI.RocketPermissionManager").Methods.AsEnumerable().Where(m => m.Name == "CheckPermissions").FirstOrDefault();
             MethodDefinition process = h.GetMethod("process");
             if (process != null)
-             {
-                 process.Body.Instructions[4] = Instruction.Create(OpCodes.Ldstr, "/");
-                 process.Body.Instructions[8] = Instruction.Create(OpCodes.Call, RocketLoader.UnturnedAssembly.MainModule.Import(checkPermissions));
-                 process.Body.GetILProcessor().InsertBefore(process.Body.Instructions[8], Instruction.Create(OpCodes.Ldarg_1));
-             }
+            {
+                process.Body.Instructions[4] = Instruction.Create(OpCodes.Ldstr, "/");
+                process.Body.Instructions[8] = Instruction.Create(OpCodes.Call, RocketLoader.UnturnedAssembly.MainModule.Import(checkPermissions));
+                process.Body.GetILProcessor().InsertBefore(process.Body.Instructions[8], Instruction.Create(OpCodes.Ldarg_1));
+            }
         }
     }
 }
