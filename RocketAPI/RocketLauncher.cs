@@ -37,7 +37,8 @@ namespace Rocket
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Plugins/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Plugins/");
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Libraries/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Libraries/");
 
-                new RocketSettings().Load();
+                RocketSettings.LoadSettings();
+                RocketEvents.BindEvents();
 
                 gameObject.AddComponent<RocketTaskManager>();
                 gameObject.AddComponent<RocketChatManager>();

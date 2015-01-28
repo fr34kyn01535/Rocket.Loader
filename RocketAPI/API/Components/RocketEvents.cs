@@ -8,8 +8,6 @@ namespace Rocket.RocketAPI
 {
     public class RocketEvents : RocketPlayerComponent
     {
-        private static bool initialized = false;
-
         private new void Awake()
         {
             base.Awake();
@@ -28,19 +26,13 @@ namespace Rocket.RocketAPI
             PlayerInstance.Inventory.OnInventoryUpdated += onInventoryUpdated;
 
             #endregion PlayerInventory
+        }
 
-            if (!initialized)
-            {
-                initialized = true;
-
-                #region Steam
-
-                Steam.OnServerShutdown += onServerShutdown;
-                Steam.OnServerDisconnected += onPlayerDisconnected;
-                Steam.OnServerConnected += onPlayerConnected;
-
-                #endregion Steam
-            }
+        public static void BindEvents()
+        {
+            Steam.OnServerShutdown += onServerShutdown;
+            Steam.OnServerDisconnected += onPlayerDisconnected;
+            Steam.OnServerConnected += onPlayerConnected;
         }
 
         public static void send(SteamPlayer s, string W, ESteamCall X, ESteamPacket l, params object[] R)

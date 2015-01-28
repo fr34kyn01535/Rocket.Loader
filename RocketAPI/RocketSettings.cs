@@ -5,6 +5,7 @@ namespace Rocket
 {
     public class RocketSettings
     {
+        private static RocketSettings instance;
         public static string HomeFolder;
         public static bool EnableRcon = false;
         public static string RconPassword = "changeme";
@@ -49,16 +50,17 @@ namespace Rocket
             }
         }
 
-        internal void Load()
+        internal static void LoadSettings()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(RocketSettings));
             string configFile = Path.Combine(HomeFolder, "Rocket.config");
             if (File.Exists(configFile))
             {
+                instance = new RocketSettings();
                 RocketSettings s = (RocketSettings)serializer.Deserialize(new StreamReader(configFile));
-                enableRcon = s.enableRcon;
-                if (s.rconPassword != null) rconPassword = s.rconPassword;
-                rconPort = s.rconPort;
+                instance.enableRcon = s.enableRcon;
+                if (s.rconPassword != null) instance.rconPassword = s.rconPassword;
+                instance.rconPort = s.rconPort;
             }
             else
             {
