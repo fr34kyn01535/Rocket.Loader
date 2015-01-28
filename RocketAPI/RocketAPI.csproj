@@ -99,11 +99,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Components\Events\RocketEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="API\Components\Events\RocketPlayerInventoryEvents.cs" />
     <Compile Include="API\Components\Events\RocketPlayerLifeEvents.cs" />
     <Compile Include="API\Components\Events\RocketPlayerEvents.cs" />
-    <Compile Include="API\Components\Events\RocketSteamEvents.cs" />
-    <Compile Include="API\Components\Events\RocketEvents.cs" />
+    <Compile Include="API\Components\Events\RocketSteamEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="API\Components\RocketPlayer.cs" />
     <Compile Include="API\Components\RocketPlayerFeatures.cs">
       <SubType>Code</SubType>
