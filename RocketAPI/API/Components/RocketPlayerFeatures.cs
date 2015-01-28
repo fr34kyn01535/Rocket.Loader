@@ -1,5 +1,6 @@
 ﻿using Rocket.RocketAPI.Components;
 using SDG;
+using System;
 using System.Collections.Generic;
 
 namespace Rocket.RocketAPI
@@ -17,17 +18,17 @@ namespace Rocket.RocketAPI
             {
                 if (value)
                 {
-                    e.OnUpdateHealth += events_OnPlayerUpdateHealth;
-                    e.OnUpdateWater += events_OnPlayerUpdateWater;
-                    e.OnUpdateFood += events_OnPlayerUpdateFood;
-                    e.OnUpdateVirus += events_OnPlayerUpdateVirus;
+                    e.OnUpdateHealth += e_OnPlayerUpdateHealth;
+                    e.OnUpdateWater += e_OnPlayerUpdateWater;
+                    e.OnUpdateFood += e_OnPlayerUpdateFood;
+                    e.OnUpdateVirus += e_OnPlayerUpdateVirus;
                 }
                 else
                 {
-                    e.OnUpdateHealth -= events_OnPlayerUpdateHealth;
-                    e.OnUpdateWater -= events_OnPlayerUpdateWater;
-                    e.OnUpdateFood -= events_OnPlayerUpdateFood;
-                    e.OnUpdateVirus -= events_OnPlayerUpdateVirus;
+                    e.OnUpdateHealth -= e_OnPlayerUpdateHealth;
+                    e.OnUpdateWater -= e_OnPlayerUpdateWater;
+                    e.OnUpdateFood -= e_OnPlayerUpdateFood;
+                    e.OnUpdateVirus -= e_OnPlayerUpdateVirus;
                 }
                 godMode = value;
             }
@@ -35,22 +36,6 @@ namespace Rocket.RocketAPI
             {
                 return godMode;
             }
-        }
-
-        List<float> lastY = new List<float>();
-
-        void RocketEvents_OnPlayerUpdatePosition(Player player, UnityEngine.Vector3 position)
-        {
-            if (lastY.Count >= 6) lastY.RemoveAt(0);
-            lastY.Add(position.y);
-
-            float distance = lastY[lastY.Count - 1] - lastY[0];
-
-            if (distance > 5)
-            {
-                Logger.Log(player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName + " changed his height by " + distance);
-            }
-
         }
 
         private void Start()
@@ -61,14 +46,12 @@ namespace Rocket.RocketAPI
             p = gameObject.transform.GetComponent<RocketPlayer>();
             e = gameObject.transform.GetComponent<RocketEvents>();
 
-            e.OnUpdatePosition += RocketEvents_OnPlayerUpdatePosition;
-
             if (godMode)
             {
-                e.OnUpdateHealth += events_OnPlayerUpdateHealth;
-                e.OnUpdateWater += events_OnPlayerUpdateWater;
-                e.OnUpdateFood += events_OnPlayerUpdateFood;
-                e.OnUpdateVirus += events_OnPlayerUpdateVirus;
+                e.OnUpdateHealth += e_OnPlayerUpdateHealth;
+                e.OnUpdateWater += e_OnPlayerUpdateWater;
+                e.OnUpdateFood += e_OnPlayerUpdateFood;
+                e.OnUpdateVirus += e_OnPlayerUpdateVirus;
                 p.Heal(100);
                 p.Infection = 0;
                 p.Hunger = 0;
@@ -76,22 +59,22 @@ namespace Rocket.RocketAPI
             }
         }
 
-        private void events_OnPlayerUpdateVirus(Player player, byte virus)
+        private void e_OnPlayerUpdateVirus(Player player, byte virus)
         {
             if (virus < 95) p.Infection = 0;
         }
 
-        private void events_OnPlayerUpdateFood(Player player, byte food)
+        private void e_OnPlayerUpdateFood(Player player, byte food)
         {
             if (food < 95 ) p.Hunger = 0;
         }
 
-        private void events_OnPlayerUpdateWater(Player player, byte water)
+        private void e_OnPlayerUpdateWater(Player player, byte water)
         {
             if (water < 95) p.Thirst = 0;
         }
 
-        private void events_OnPlayerUpdateHealth(Player player, byte health)
+        private void e_OnPlayerUpdateHealth(Player player, byte health)
         {
             if (health < 95) p.Heal(100);
         }
