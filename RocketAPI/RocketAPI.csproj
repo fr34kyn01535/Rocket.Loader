@@ -99,7 +99,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\Components\RocketEvents.cs" />
+    <Compile Include="API\Components\Events\RocketPlayerInventoryEvents.cs" />
+    <Compile Include="API\Components\Events\RocketPlayerLifeEvents.cs" />
+    <Compile Include="API\Components\Events\RocketPlayerEvents.cs" />
+    <Compile Include="API\Components\Events\RocketSteamEvents.cs" />
+    <Compile Include="API\Components\Events\RocketEvents.cs" />
     <Compile Include="API\Components\RocketPlayer.cs" />
     <Compile Include="API\Components\RocketPlayerFeatures.cs">
       <SubType>Code</SubType>
@@ -108,6 +112,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Commands\CommandGod.cs" />
+    <Compile Include="Commands\CommandLag.cs" />
     <Compile Include="Commands\CommandRocket.cs" />
     <Compile Include="Commands\CommandP.cs" />
     <Compile Include="Managers\RocketChatManager.cs" />
