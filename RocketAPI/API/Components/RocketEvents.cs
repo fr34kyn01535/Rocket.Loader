@@ -8,7 +8,7 @@ namespace Rocket.RocketAPI
 {
     public class RocketEvents : RocketPlayerComponent
     {
-        private bool initialized = false;
+        private static bool initialized = false;
 
         private new void Awake()
         {
