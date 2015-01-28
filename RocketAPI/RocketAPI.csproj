@@ -129,7 +129,7 @@
     <Compile Include="Base Components\RocketPlayerComponent.cs" />
     <Compile Include="Managers\RocketPluginManager.cs" />
     <Compile Include="Managers\RocketRconManager.cs" />
-    <Compile Include="Managers\RocketThreadManager.cs" />
+    <Compile Include="Managers\RocketTaskManager.cs" />
     <Compile Include="RocketLauncher.cs" />
     <Compile Include="API\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
