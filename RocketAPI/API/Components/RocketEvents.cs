@@ -176,7 +176,7 @@ namespace Rocket.RocketAPI
         {
             try
             {
-                if (OnPlayerUpdateStamina != null) RocketTaskManager.Enqueue(() => OnPlayerUpdateStamina(PlayerInstance, stamina));
+                if (OnPlayerUpdateStamina != null) OnPlayerUpdateStamina(PlayerInstance, stamina);
             }
             catch (System.Exception ex)
             {
@@ -196,7 +196,7 @@ namespace Rocket.RocketAPI
         {
             try
             {
-                if (OnPlayerInventoryUpdated != null) RocketTaskManager.Enqueue(() => OnPlayerInventoryUpdated(PlayerInstance, E, O, P));
+                if (OnPlayerInventoryUpdated != null) OnPlayerInventoryUpdated(PlayerInstance, E, O, P);
             }
             catch (System.Exception ex)
             {
@@ -212,7 +212,7 @@ namespace Rocket.RocketAPI
         {
             try
             {
-                if (OnPlayerInventoryResized != null) RocketTaskManager.Enqueue(() => OnPlayerInventoryResized(PlayerInstance, I, M, U));
+                if (OnPlayerInventoryResized != null) OnPlayerInventoryResized(PlayerInstance, I, M, U);
             }
             catch (System.Exception ex)
             {
@@ -228,7 +228,7 @@ namespace Rocket.RocketAPI
         {
             try
             {
-                if (OnPlayerInventoryRemoved != null) RocketTaskManager.Enqueue(() => OnPlayerInventoryRemoved(PlayerInstance, V, y, f));
+                if (OnPlayerInventoryRemoved != null) OnPlayerInventoryRemoved(PlayerInstance, V, y, f);
             }
             catch (System.Exception ex)
             {
@@ -244,7 +244,7 @@ namespace Rocket.RocketAPI
         {
             try
             {
-                if (OnPlayerInventoryAdded != null) RocketTaskManager.Enqueue(() => OnPlayerInventoryAdded(PlayerInstance, Q, u, J));
+                if (OnPlayerInventoryAdded != null) OnPlayerInventoryAdded(PlayerInstance, Q, u, J);
             }
             catch (System.Exception ex)
             {
@@ -268,7 +268,7 @@ namespace Rocket.RocketAPI
         {
             try
             {
-                if (OnPlayerDisconnected != null) RocketTaskManager.Enqueue(() => OnPlayerDisconnected(PlayerTool.getPlayer(r)));
+                if (OnPlayerDisconnected != null) OnPlayerDisconnected(PlayerTool.getPlayer(r));
             }
             catch (System.Exception ex)
             {
@@ -288,7 +288,7 @@ namespace Rocket.RocketAPI
         {
             try
             {
-                if (OnPlayerConnected != null) RocketTaskManager.Enqueue(() => OnPlayerConnected(PlayerTool.getPlayer(r)));
+                if (OnPlayerConnected != null) OnPlayerConnected(PlayerTool.getPlayer(r));
             }
             catch (System.Exception ex)
             {
@@ -304,7 +304,7 @@ namespace Rocket.RocketAPI
         {
             try
             {
-                if (OnServerShutdown != null) RocketTaskManager.Enqueue(() => OnServerShutdown());
+                if (OnServerShutdown != null) OnServerShutdown();
             }
             catch (System.Exception ex)
             {
