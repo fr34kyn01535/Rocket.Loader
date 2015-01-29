@@ -218,7 +218,7 @@ namespace Rocket.RocketAPI
             if (permissions.WhitelistedGroups != null && permissions.WhitelistedGroups.Count() != 0)
             {
                 string[] myGroups = permissions.Groups.Where(g => g.Members.Contains(cSteamID.ToString())).Select(g => g.Id).ToArray();
-                foreach (string g in GetDisplayGroups(cSteamID))
+                foreach (string g in myGroups)
                 {
                     if (permissions.WhitelistedGroups.Contains(g))
                     {
