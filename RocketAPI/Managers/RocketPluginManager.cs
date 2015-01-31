@@ -79,8 +79,10 @@ namespace Rocket.RocketAPI
             Logger.LogWarning("ignored while we work on a bugfix".PadRight(79, '.') + "\n");
 
             SteamGameServer.SetModDir("Rocket");
-            SteamGameServer.SetBotPlayerCount(1337);
-            SteamGameServer.SetGameTags("Rocket "+Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            SteamGameServer.SetBotPlayerCount(0);
+            string v = "Rocket "+Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            SteamGameServer.SetGameDescription(v);
+            SteamGameServer.SetGameTags(v);
         }
 
         internal static void registerCommand(Command command)

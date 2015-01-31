@@ -14,6 +14,7 @@
             h.UnlockFieldByType("ServerDisconnected", "OnServerDisconnected");
             h.UnlockFieldByType(typeof(string), "InstanceName", 7);
             h.UnlockFieldByType(typeof(uint), "ServerPort", 1);
+            h.UnlockFieldByType(typeof(byte), "MaxPlayers");
 
             h.UnlockFieldByType("List<SDG.SteamPlayer>", "Players");
         }
