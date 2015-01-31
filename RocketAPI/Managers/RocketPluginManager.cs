@@ -15,9 +15,12 @@ namespace Rocket.RocketAPI
 
         private void Start()
         {
+#if !DEBUG
             RocketLoadingAnimation.Stop();
             Console.Clear();
-            base.Awake();
+#else
+            Logger.Log("Start RocketPluginManager");
+#endif
 
             #region Handling additional assemblies
 
@@ -74,6 +77,10 @@ namespace Rocket.RocketAPI
             Console.WriteLine("\nLaunching Unturned".PadRight(80, '.'));
             Logger.LogWarning("\nThe error concerning a corrupted file resourcs.assets can be");
             Logger.LogWarning("ignored while we work on a bugfix".PadRight(79, '.') + "\n");
+
+            SteamGameServer.SetModDir("Rocket");
+            SteamGameServer.SetBotPlayerCount(1337);
+            SteamGameServer.SetGameTags("Rocket "+Assembly.GetExecutingAssembly().GetName().Version.ToString());
         }
 
         internal static void registerCommand(Command command)
@@ -110,9 +117,14 @@ namespace Rocket.RocketAPI
         {
             SDG.Player player = PlayerTool.getPlayer(id);
             List<Type> rocketPlayerComponents = getTypes(Assemblies, typeof(RocketPlayerComponent));
-
+#if DEBUG
+            Logger.Log("Adding PlayerComponents");
+#endif
             foreach (Type component in rocketPlayerComponents)
             {
+#if DEBUG
+                Logger.Log(component.Name);
+#endif
                 player.gameObject.AddComponent(component);
             }
         }

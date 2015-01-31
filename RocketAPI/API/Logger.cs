@@ -130,7 +130,7 @@ namespace Rocket.RocketAPI
         private static void logToFile(string message)
         {
             if (String.IsNullOrEmpty(RocketSettings.HomeFolder)) return;
-            StreamWriter streamWriter = new StreamWriter(RocketSettings.HomeFolder + "Rocket.log", true);
+            StreamWriter streamWriter = File.AppendText(RocketSettings.HomeFolder + "Rocket.log");
             streamWriter.WriteLine("[" + DateTime.Now + "] " + message);
             streamWriter.Close();
         }

@@ -12,6 +12,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamplePlugin", "..\Example
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketAPI", "RocketAPI\RocketAPI.csproj", "{C362DF2F-1336-4932-AADC-4F2074FEDB64}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", "{D120B1B0-C874-48D2-AD21-E278CFF5D9D8}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Desktop\Unturned\Unturned_Data\Managed\Assembly-CSharp-firstpass.dll = ..\..\..\Desktop\Unturned\Unturned_Data\Managed\Assembly-CSharp-firstpass.dll
+		..\..\..\Desktop\Unturned\Unturned_Data\Managed\Assembly-CSharp.dll = ..\..\..\Desktop\Unturned\Unturned_Data\Managed\Assembly-CSharp.dll
+		..\..\..\Desktop\Unturned\Unturned_Data\Managed\UnityEngine.dll = ..\..\..\Desktop\Unturned\Unturned_Data\Managed\UnityEngine.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

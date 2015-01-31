@@ -44,6 +44,9 @@ namespace Rocket.RocketAPI
 
         public new void Awake()
         {
+#if DEBUG
+            Logger.Log("Awake RocketRconManager");
+#endif
             DontDestroyOnLoad(transform.gameObject);
         }
 

@@ -19,6 +19,7 @@ namespace Rocket.RocketLoader
         {
             f.IsPublic = true;
             f.IsPrivate = false;
+            f.IsInitOnly = false;
             if (!String.IsNullOrEmpty(name))
             {
                 f.Name = name;

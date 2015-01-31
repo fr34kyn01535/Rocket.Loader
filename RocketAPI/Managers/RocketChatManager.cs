@@ -10,6 +10,9 @@ namespace Rocket.RocketAPI
 
         private new void Awake()
         {
+#if DEBUG
+            Logger.Log("Awake RocketChatManager");
+#endif
             base.Awake();
             chatmanager = gameObject.transform.GetComponent<ChatManager>();
         }
@@ -23,7 +26,12 @@ namespace Rocket.RocketAPI
         public static void Say(CSteamID CSteamID, string message, EChatMode chatmode = EChatMode.SAY)
         {
             if (CSteamID.ToString() != "0")
+            {
                 ChatManager.Instance.SteamChannel.send("tellChat", CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode, message });
+            }
+            else {
+                Logger.Log(message);
+            }
         }
     }
 }

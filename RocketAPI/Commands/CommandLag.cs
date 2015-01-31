@@ -14,8 +14,8 @@ namespace Rocket
 
         protected override void execute(SteamPlayerID caller, string command)
         {
-            RocketChatManager.Say(caller.CSteamID, "TPS: "+RocketLauncher.TPS);
-            RocketChatManager.Say(caller.CSteamID, "Running since: "+RocketLauncher.Started.ToString()+" UTC");
+            RocketChatManager.Say(caller.CSteamID, "TPS: " + RocketLauncher.TPS);
+            RocketChatManager.Say(caller.CSteamID, "Running since: " + RocketLauncher.Started.ToString() + " UTC");
         }
     }
 }

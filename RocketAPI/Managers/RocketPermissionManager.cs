@@ -19,6 +19,9 @@ namespace Rocket.RocketAPI
 
         public new void Awake()
         {
+#if DEBUG
+            Logger.Log("Awake RocketPermissionManager");
+#endif
             base.Awake();
             permissionsFile = RocketSettings.HomeFolder + "Permissions.config";
             loadPermissions();

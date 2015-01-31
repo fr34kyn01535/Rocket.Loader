@@ -9,8 +9,12 @@ namespace Rocket.RocketAPI.Managers
         private Queue<Action> work;
         public static RocketTaskManager Instance;
 
-        public RocketTaskManager()
+        private new void Awake()
         {
+#if DEBUG
+            Logger.Log("Awake RocketTaskManager");
+#endif
+            base.Awake();
             work = new Queue<Action>();
             Instance = this;
         }
