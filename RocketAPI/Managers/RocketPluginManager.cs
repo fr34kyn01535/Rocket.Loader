@@ -88,11 +88,6 @@ namespace Rocket.RocketAPI
             Console.WriteLine("\nLaunching Unturned".PadRight(80, '.'));
             Logger.LogWarning("\nThe error concerning a corrupted file resourcs.assets can be");
             Logger.LogWarning("ignored while we work on a bugfix".PadRight(79, '.') + "\n");
-
-            SteamGameServer.SetBotPlayerCount(0);
-            string v = "Unturned Rocket " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            SteamGameServer.SetModDir(v);
-            SteamGameServer.SetGameTags(v);
         }
 
         internal static void registerCommand(Command command)
