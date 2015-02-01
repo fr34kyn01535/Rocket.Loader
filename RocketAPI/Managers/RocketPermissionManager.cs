@@ -47,7 +47,7 @@ namespace Rocket.RocketAPI
         private static bool updated = true;
         private static DateTime lastUpdated = DateTime.MinValue;
 
-        public void Update()
+        public void FixedUpdate()
         {
             if (updated && (DateTime.Now - lastUpdated) > TimeSpan.FromSeconds(permissions.WebCacheTimeout))
             {
