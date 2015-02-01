@@ -222,26 +222,21 @@ namespace Rocket.RocketAPI
 
         internal static bool CheckWhitelisted(CSteamID cSteamID)
         {
-            Logger.Log("Check");
-            if (permissions.WhitelistedGroups != null && permissions.WhitelistedGroups.Count() != 0)
+            if (permissions.WhitelistedGroups != null && permissions.WhitelistedGroups.Count() != 0 && permissions.Groups!=null && permissions.Groups.Count()!=0)
             {
                 string[] myGroups = permissions.Groups.Where(g => g.Members.Contains(cSteamID.ToString())).Select(g => g.Id).ToArray();
                 foreach (string g in myGroups)
                 {
-                    Logger.Log("is in " + g);
                     if (permissions.WhitelistedGroups.Contains(g))
                     {
-                        Logger.Log("ye");
                         return true;
                     }
                 }
             }
             else
             {
-                Logger.Log("ye+");
                 return true;
             }
-            Logger.Log("noe");
             Steam.kick(cSteamID, permissions.NotWhitelistedMessage);
             return false;
         }
