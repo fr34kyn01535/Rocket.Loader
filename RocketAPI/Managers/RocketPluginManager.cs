@@ -78,10 +78,9 @@ namespace Rocket.RocketAPI
             Logger.LogWarning("\nThe error concerning a corrupted file resourcs.assets can be");
             Logger.LogWarning("ignored while we work on a bugfix".PadRight(79, '.') + "\n");
 
-            SteamGameServer.SetModDir("Rocket");
             SteamGameServer.SetBotPlayerCount(0);
-            string v = "Rocket "+Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            SteamGameServer.SetGameDescription(v);
+            string v = "Unturned Rocket " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            SteamGameServer.SetModDir(v);
             SteamGameServer.SetGameTags(v);
         }
 

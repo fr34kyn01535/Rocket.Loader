@@ -68,6 +68,17 @@ namespace Rocket.RocketAPI
                 log("Error: " + ex.ToString());
             }
         }
+        internal static void processLog(string output)
+        {
+            foreach (List<string> h in logList.Values)
+            {
+                h.Add(output.Trim() + "\n\r");
+            }
+             foreach (Socket currentSocket in clientList.Keys.ToArray())
+             {
+                 currentSocket.BeginSend(new byte[1]{1}, 0, 1, SocketFlags.None, new AsyncCallback(ReceiveData), currentSocket);
+             }
+        }
 
         private static void log(string m)
         {
@@ -137,7 +148,8 @@ namespace Rocket.RocketAPI
                 else if (data[0] == 0x0D && data[1] == 0x0A)
                 {
                     string currentCommand = client.commandIssued;
-                    log(string.Format("Received '{0}' (From: {1}:{2}", currentCommand, client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
+                    if (!String.IsNullOrEmpty(currentCommand))
+                        log(string.Format("Received '{0}' (From: {1}:{2}", currentCommand, client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
                     client.commandIssued = "";
                     byte[] message = Encoding.ASCII.GetBytes("\u001B[1J\u001B[H" + HandleCommand(clientSocket, currentCommand));
                     clientSocket.BeginSend(message, 0, message.Length, SocketFlags.None, new AsyncCallback(SendData), clientSocket);
@@ -204,7 +216,7 @@ namespace Rocket.RocketAPI
             {
                 try
                 {
-                    h.Add("rcon@" + Steam.InstanceName + ": " + Input + "\n\r");
+                    //h.Add(Input + "\n\r");
                     string cmd = Input.Split(' ')[0].ToLower();
                     Command command = Commander.Commands.AsEnumerable().Where(x => x.commandName.ToLower() == cmd).FirstOrDefault();
                     if (command != null)
@@ -212,7 +224,7 @@ namespace Rocket.RocketAPI
                         try
                         {
                             command.check(null, cmd, Input);
-                            h.Add("Done\n\r");
+                            //h.Add("Done\n\r");
                         }
                         catch (Exception ex)
                         {
@@ -225,17 +237,19 @@ namespace Rocket.RocketAPI
                         clientSocket.Close();
                         clientList.Remove(clientSocket);
                     }
+                    else if (Input == "cls")
+                    {
+                        h.Clear();
+                    }
                     else
                     {
-                        h.Add("Command unknown\n\r");
+                       // h.Add("Command unknown\n\r");
                     }
 
                     foreach (string entry in h)
                     {
                         Output += entry;
                     }
-
-                    Output += "rcon@" + Steam.InstanceName + ": ";
                 }
                 catch (Exception ex)
                 {
@@ -249,7 +263,6 @@ namespace Rocket.RocketAPI
                 {
                     log("Client has logged in");
                     client.clientState = EClientState.LoggedIn;
-                    Output += "rcon@" + Steam.InstanceName + ": ";
                 }
                 else
                 {

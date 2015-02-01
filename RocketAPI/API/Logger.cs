@@ -28,14 +28,14 @@ namespace Rocket.RocketAPI
             }
             lastAssembly = assembly;
             message = assembly + message;
-            logToFile(message);
+            processLog(message);
             Debug.Log(message);
         }
 
         public static void Log(object o)
         {
             string message = var_dump(o);
-            logToFile(message);
+            processLog(message);
             Debug.LogWarning(message);
         }
 
@@ -113,7 +113,7 @@ namespace Rocket.RocketAPI
         /// <param name="message"></param>
         internal static void LogWarning(string message)
         {
-            logToFile(message);
+            processLog(message);
             Debug.LogWarning(message);
         }
 
@@ -123,13 +123,14 @@ namespace Rocket.RocketAPI
         /// <param name="message"></param>
         internal static void LogError(string message)
         {
-            logToFile(message);
+            processLog(message);
             Debug.LogError(message);
         }
 
-        private static void logToFile(string message)
+        private static void processLog(string message)
         {
             if (String.IsNullOrEmpty(RocketSettings.HomeFolder)) return;
+            RocketRconManager.processLog(message);
             StreamWriter streamWriter = File.AppendText(RocketSettings.HomeFolder + "Rocket.log");
             streamWriter.WriteLine("[" + DateTime.Now + "] " + message);
             streamWriter.Close();
@@ -151,7 +152,7 @@ namespace Rocket.RocketAPI
                 assembly = "\n" + assembly + " >> ";
             }
             lastAssembly = assembly;
-            logToFile(ex.ToString());
+            processLog(ex.ToString());
             System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
             Debug.LogError(assembly + "Error in " + stackTrace.GetFrame(1).GetMethod().Name + ": " + ex);
         }

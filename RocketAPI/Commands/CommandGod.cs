@@ -18,11 +18,13 @@ namespace Rocket
             RocketPlayerFeatures pf = p.gameObject.transform.GetComponent<RocketPlayerFeatures>();
             if (pf.GodMode)
             {
+                Logger.Log(caller.CharacterName + " disabled Godmode");
                 RocketChatManager.Say(caller.CSteamID, "The godly powers left you...");
                 pf.GodMode = false;
             }
             else
             {
+                Logger.Log(caller.CharacterName + " enabled Godmode");
                 RocketChatManager.Say(caller.CSteamID, "You can feel the strength now...");
                 pf.GodMode = true;
             }

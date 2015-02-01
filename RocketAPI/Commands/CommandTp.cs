@@ -24,6 +24,7 @@ namespace Rocket
                 Vector3 d1 = otherPlayer.Player.transform.position;
                 Vector3 vector31 = otherPlayer.Player.transform.rotation.eulerAngles;
                 myPlayer.Player.sendTeleport(d1, MeasurementTool.angleToByte(vector31.y));
+                Logger.Log(caller.CharacterName + " teleported to " + otherPlayer.SteamPlayerID.CharacterName);
                 RocketChatManager.Say(caller.CSteamID, "Teleported to " + otherPlayer.SteamPlayerID.CharacterName);
             }
             else

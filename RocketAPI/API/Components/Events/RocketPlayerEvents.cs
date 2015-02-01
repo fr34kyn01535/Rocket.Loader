@@ -19,12 +19,10 @@ namespace Rocket.RocketAPI
                     if (OnPlayerUpdateBleeding != null) OnPlayerUpdateBleeding(s.Player, (bool)R[0]);
                     if (instance.OnUpdateBleeding != null) instance.OnUpdateBleeding(s.Player, (bool)R[0]);
                     break;
-
                 case "tellBroken":
                     if (OnPlayerUpdateBroken != null) OnPlayerUpdateBroken(s.Player, (bool)R[0]);
                     if (instance.OnUpdateBroken != null) instance.OnUpdateBroken(s.Player, (bool)R[0]);
                     break;
-
                 case "tellPosition":
                     if (OnPlayerUpdatePosition != null) OnPlayerUpdatePosition(s.Player, (Vector3)R[0]);
                     if (instance.OnUpdatePosition != null) instance.OnUpdatePosition(s.Player, (Vector3)R[0]);
@@ -57,7 +55,6 @@ namespace Rocket.RocketAPI
                     if (OnPlayerUpdateStance != null) OnPlayerUpdateStance(s.Player, (byte)R[0]);
                     if (instance.OnUpdateStance != null) instance.OnUpdateStance(s.Player, (byte)R[0]);
                     break;
-
                 case "tellRevive":
                     if (OnPlayerRevive != null) OnPlayerRevive(s.Player, (Vector3)R[0], (byte)R[1]);
                     if (instance.OnRevive != null) instance.OnRevive(s.Player, (Vector3)R[0], (byte)R[1]);
@@ -65,12 +62,12 @@ namespace Rocket.RocketAPI
 
                 default:
 #if DEBUG
-                   /* string o = "";
+                   string o = "";
                     foreach (object r in R)
                     {
                         o += r.ToString();
                     }
-                    Logger.Log(s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);*/
+                    Logger.Log(s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
 #endif
                     break;
             }

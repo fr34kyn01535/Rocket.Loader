@@ -18,12 +18,17 @@ namespace Rocket
 
         public float updateInterval = 0.5F;
 
-        public static float TPS = 0; 
         public static DateTime Started = DateTime.UtcNow;
 
+        public static float TPS = 0; 
         private float accum = 0;
-        private int frames = 0; 
-        private float timeleft; 
+        private int frames = 0;
+        private float timeleft;
+
+        public static float FTPS = 0; 
+        private float faccum = 0;
+        private int fframes = 0;
+        private float ftimeleft; 
         
         public static void Launch()
         {
@@ -61,7 +66,8 @@ namespace Rocket
             {
                 Logger.LogError("Error while loading Rocket: " + e.ToString());
             }
-            timeleft = updateInterval;  
+            timeleft = updateInterval;
+            ftimeleft = updateInterval;  
         }
         void Update()
         {
@@ -78,6 +84,24 @@ namespace Rocket
                 timeleft = updateInterval;
                 accum = 0.0F;
                 frames = 0;
+            }
+        }
+
+        void FixedUpdate()
+        {
+            ftimeleft -= Time.deltaTime;
+            faccum += Time.timeScale / Time.deltaTime;
+            ++fframes;
+
+            if (ftimeleft <= 0.0)
+            {
+                TPS = faccum / fframes;
+
+                int left = Console.CursorLeft;
+                int top = Console.CursorTop;
+                ftimeleft = updateInterval;
+                faccum = 0.0F;
+                fframes = 0;
             }
         }
     }

@@ -40,6 +40,7 @@ namespace Rocket
             SDG.Player player = PlayerTool.getPlayer(caller.CSteamID);
             if (ItemTool.tryForceGiveItem(player, id, amount))
             {
+                Logger.Log("Giving " + caller.CharacterName +" item " + id + ":" + amount);
                 RocketChatManager.Say(caller.CSteamID, "Giving you item " + id + ":" + amount);
             }
             else
