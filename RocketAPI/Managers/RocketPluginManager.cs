@@ -51,6 +51,17 @@ namespace Rocket.RocketAPI
                 Console.WriteLine();
             }
 
+            string[] whitelist = RocketPermissionManager.GetWhitelistedGroups();
+            if (whitelist != null && whitelist.Count() != 0)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Whitelist following groups".PadRight(80, '.'));
+                foreach (string s in whitelist) {
+                    Console.WriteLine(s);
+                }
+                Console.WriteLine();
+            }
+
             Console.WriteLine("Loading Extensions".PadRight(80, '.'));
             Assemblies = loadAssemblies();
 
