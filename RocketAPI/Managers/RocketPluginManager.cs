@@ -88,6 +88,8 @@ namespace Rocket.RocketAPI
             Console.WriteLine("\nLaunching Unturned".PadRight(80, '.'));
             Logger.LogWarning("\nThe error concerning a corrupted file resourcs.assets can be");
             Logger.LogWarning("ignored while we work on a bugfix".PadRight(79, '.') + "\n");
+
+            SteamGameServer.SetKeyValue("rocket", Assembly.GetExecutingAssembly().GetName().Version.ToString());
         }
 
         internal static void registerCommand(Command command)
