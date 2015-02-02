@@ -115,6 +115,7 @@
     <Compile Include="API\Components\RocketPlayerFeatures.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="API\ExternalLogger.cs" />
     <Compile Include="API\RocketWebClient.cs">
       <SubType>Component</SubType>
     </Compile>

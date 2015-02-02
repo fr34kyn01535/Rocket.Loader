@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\Desktop\Unturned\Unturned_Data\Managed\</OutputPath>
+    <OutputPath>E:\Steam\SteamApps\common\Unturned - Server\Unturned_Data\Managed\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -246,6 +246,7 @@
     <Compile Include="Patches\Commander.cs" />
     <Compile Include="Patches\SteamPlayer.cs" />
     <Compile Include="Patches\SteamPlayerID.cs" />
+    <Compile Include="Patches\UnityLog.cs" />
     <Compile Include="PatchHelper.cs" />
     <Compile Include="Patches\Steam.cs" />
     <Compile Include="Patches\Player.cs" />

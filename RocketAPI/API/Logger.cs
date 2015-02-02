@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
-    public static class Logger
+    public static partial class Logger
     {
         private static string lastAssembly = "";
 
@@ -156,5 +156,6 @@ namespace Rocket.RocketAPI
             System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
             Debug.LogError(assembly + "Error in " + stackTrace.GetFrame(1).GetMethod().Name + ": " + ex);
         }
+
     }
 }
