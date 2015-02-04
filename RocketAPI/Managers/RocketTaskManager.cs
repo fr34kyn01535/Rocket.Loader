@@ -6,7 +6,7 @@ namespace Rocket.RocketAPI.Managers
 {
     public class RocketTaskManager : RocketManagerComponent
     {
-        private Queue<Action> work;
+        private Queue<Action> work = new Queue<Action>();
         public static RocketTaskManager Instance;
 
         private new void Awake()
@@ -15,7 +15,6 @@ namespace Rocket.RocketAPI.Managers
             Logger.Log("Awake RocketTaskManager");
 #endif
             base.Awake();
-            work = new Queue<Action>();
             Instance = this;
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rocket.RocketAPI.Interprocess;
+using System;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -28,15 +29,8 @@ namespace Rocket.RocketAPI
             }
             lastAssembly = assembly;
             message = assembly + message;
-            processLog(message);
+            ProcessLog(ELogType.Info, message);
             Debug.Log(message);
-        }
-
-        public static void Log(object o)
-        {
-            string message = var_dump(o);
-            processLog(message);
-            Debug.LogWarning(message);
         }
 
         internal static string var_dump(object obj, int recursion = 0)
@@ -113,7 +107,7 @@ namespace Rocket.RocketAPI
         /// <param name="message"></param>
         internal static void LogWarning(string message)
         {
-            processLog(message);
+            ProcessLog(ELogType.Warning, message);
             Debug.LogWarning(message);
         }
 
@@ -123,17 +117,13 @@ namespace Rocket.RocketAPI
         /// <param name="message"></param>
         internal static void LogError(string message)
         {
-            processLog(message);
+            ProcessLog(ELogType.Error, message);
             Debug.LogError(message);
         }
 
-        private static void processLog(string message)
+        public static void Log(Exception ex)
         {
-            if (String.IsNullOrEmpty(RocketSettings.HomeFolder)) return;
-            RocketRconManager.processLog(message);
-            StreamWriter streamWriter = File.AppendText(RocketSettings.HomeFolder + "Rocket.log");
-            streamWriter.WriteLine("[" + DateTime.Now + "] " + message);
-            streamWriter.Close();
+            LogException(ex);
         }
 
         /// <summary>
@@ -152,7 +142,7 @@ namespace Rocket.RocketAPI
                 assembly = "\n" + assembly + " >> ";
             }
             lastAssembly = assembly;
-            processLog(ex.ToString());
+            ProcessLog(ELogType.Exception, ex.ToString());
             System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
             Debug.LogError(assembly + "Error in " + stackTrace.GetFrame(1).GetMethod().Name + ": " + ex);
         }

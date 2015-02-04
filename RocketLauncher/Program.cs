@@ -1,43 +1,50 @@
-﻿using System;
+﻿using Rocket.RocketAPI.Interprocess;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
-using System.Reflection;
 using System.Text;
+using System.Threading;
 
-namespace Rocket.RocketLauncher
+namespace RocketLauncher
 {
-    public class RocketLauncher
+    class Program
     {
+        static string InstanceName;
+        public static Process RocketProcess;
+
+
         static void Main(string[] args)
         {
-            var process = new Process
+            InstanceName = (args.Length >= 1) ? args[0] : "Rocket";
+            /*
+            RocketProcess = new Process();
+            RocketProcess.StartInfo.FileName = "Unturned.exe";
+            RocketProcess.StartInfo.Arguments = "/nographics -batchmode +secureserver/" + InstanceName;
+
+            RocketProcess.StartInfo.UseShellExecute = true;
+            RocketProcess.StartInfo.ErrorDialog = false;
+
+            RocketProcess.StartInfo.RedirectStandardError = false;
+            RocketProcess.StartInfo.RedirectStandardInput = false;
+            RocketProcess.StartInfo.RedirectStandardOutput = false;
+            RocketProcess.StartInfo.CreateNoWindow = true;
+            RocketProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+            if (!RocketProcess.Start())
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "Unturned.exe",
-                    Arguments = "/nographics -batchmode +secureserver/test",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true,
-                    WorkingDirectory = Directory.GetCurrentDirectory(),
-                }
-            };
+                Console.WriteLine("Error");
+            }*/
 
-
-            process.OutputDataReceived += process_OutputDataReceived;
-            process.Start();
-
-            process.BeginOutputReadLine();
-            System.Threading.Thread.Sleep(5000);
-
-            process.WaitForExit();
-        }
-
-        static void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            Console.WriteLine(e.Data);
+            string cmd;
+            bool exit = false;
+            while (!exit)
+            {
+                cmd = Console.ReadLine();
+                Console.WriteLine(">>" + cmd);
+            }
         }
     }
 }

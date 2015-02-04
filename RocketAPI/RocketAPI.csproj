@@ -115,6 +115,7 @@
     <Compile Include="API\Components\RocketPlayerFeatures.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="API\ELogType.cs" />
     <Compile Include="API\ExternalLogger.cs" />
     <Compile Include="API\RocketWebClient.cs">
       <SubType>Component</SubType>
@@ -132,7 +133,7 @@
     <Compile Include="API\RocketConfiguration.cs" />
     <Compile Include="Base Components\RocketPlayerComponent.cs" />
     <Compile Include="Managers\RocketPluginManager.cs" />
-    <Compile Include="Managers\RocketRconManager.cs" />
+    <Compile Include="Managers\RocketRconServer.cs" />
     <Compile Include="Managers\RocketTaskManager.cs" />
     <Compile Include="RocketLauncher.cs" />
     <Compile Include="API\Logger.cs" />

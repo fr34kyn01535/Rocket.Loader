@@ -1,4 +1,5 @@
 ﻿using Rocket.RocketAPI;
+using Rocket.RocketAPI.Interprocess;
 using Rocket.RocketAPI.Managers;
 using SDG;
 using Steamworks;
@@ -33,6 +34,19 @@ namespace Rocket
 
         public static void Splash()
         {
+          /*  try
+            {
+               // Pipe = new RocketNamedPipe(Steam.InstanceName,"GAME", "LAUNCHER");
+               // Pipe.OnMessage += PipeHandler.Handle;
+            }
+            catch (TypeLoadException ex)
+            {
+                Console.WriteLine("dafq");
+                Console.WriteLine(ex.TypeName);
+                Console.WriteLine(ex.Source);
+                //Console.WriteLine(ex.Data);
+                Console.WriteLine(ex.ToString());
+            }*/
 #if !DEBUG
             RocketLoadingAnimation.Load();
 #endif
@@ -56,7 +70,7 @@ namespace Rocket
                 gameObject.AddComponent<RocketChatManager>();
                 gameObject.AddComponent<RocketPluginManager>();
                 gameObject.AddComponent<RocketPermissionManager>();
-                gameObject.AddComponent<RocketRconManager>();
+                gameObject.AddComponent<RocketRconServer>();
             }
             catch (Exception e)
             {

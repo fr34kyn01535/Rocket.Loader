@@ -32,7 +32,7 @@ namespace Rocket.RocketAPI
         }
     }
 
-    public class RocketRconManager : RocketManagerComponent
+    public class RocketRconServer : RocketManagerComponent
     {
         private static Socket serverSocket;
         private static byte[] data = new byte[dataSize];
@@ -45,7 +45,7 @@ namespace Rocket.RocketAPI
         public new void Awake()
         {
 #if DEBUG
-            Logger.Log("Awake RocketRconManager");
+            Logger.Log("Awake RocketRconServer");
 #endif
             DontDestroyOnLoad(transform.gameObject);
         }
@@ -74,10 +74,10 @@ namespace Rocket.RocketAPI
             {
                 h.Add(output.Trim() + "\n\r");
             }
-             foreach (Socket currentSocket in clientList.Keys.ToArray())
-             {
-                 currentSocket.BeginSend(new byte[1]{1}, 0, 1, SocketFlags.None, new AsyncCallback(ReceiveData), currentSocket);
-             }
+            foreach (Socket currentSocket in clientList.Keys.ToArray())
+            {
+                currentSocket.BeginSend(new byte[1] { 1 }, 0, 1, SocketFlags.None, new AsyncCallback(ReceiveData), currentSocket);
+            }
         }
 
         private static void log(string m)
@@ -243,7 +243,7 @@ namespace Rocket.RocketAPI
                     }
                     else
                     {
-                       // h.Add("Command unknown\n\r");
+                        // h.Add("Command unknown\n\r");
                     }
 
                     foreach (string entry in h)
