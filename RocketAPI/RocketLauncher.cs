@@ -71,7 +71,6 @@ namespace Rocket
                 gameObject.AddComponent<RocketChatManager>();
                 gameObject.AddComponent<RocketPluginManager>();
                 gameObject.AddComponent<RocketPermissionManager>();
-                gameObject.AddComponent<RocketRconServer>();
             }
             catch (Exception e)
             {

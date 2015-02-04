@@ -12,7 +12,7 @@ namespace Rocket.RocketLoader.Patches
         {
             h.UnlockFieldByType("SteamPlayer", "SteamPlayer");
 
-            MethodDefinition sendInstructions = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketAPI.RocketEvents").Methods.AsEnumerable().Where(m => m.Name == "send").FirstOrDefault();
+            MethodDefinition sendInstructions = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketAPI.Events.RocketPlayerEvents").Methods.AsEnumerable().Where(m => m.Name == "Send").FirstOrDefault();
 
             MethodDefinition send = h.Type.Methods.AsEnumerable().Where(m => m.Parameters.Count == 4 &&
                  m.Parameters[0].ParameterType.Name == "String" &&

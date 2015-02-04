@@ -15,9 +15,8 @@ namespace Rocket.RocketLoader.Patches
         {
             try
             {
-                
                 IEnumerable<MethodDefinition> methods = RocketLoader.UnityAssembly.MainModule.GetType("UnityEngine.Debug").Methods.AsEnumerable();
-                IEnumerable<MethodDefinition> hookMethods = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketAPI.Logger").Methods.AsEnumerable();
+                IEnumerable<MethodDefinition> hookMethods = RocketLoader.APIAssembly.MainModule.GetType("Rocket.Logging.Logger").Methods.AsEnumerable();
 
                 MethodDefinition log = methods.Where(m => m.Name == "Log").ToArray()[0];
                 MethodDefinition log2 = methods.Where(m => m.Name == "Log").ToArray()[1];

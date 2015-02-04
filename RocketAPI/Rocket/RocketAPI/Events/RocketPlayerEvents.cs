@@ -24,7 +24,7 @@ namespace Rocket.RocketAPI.Events
             #endregion RocketPlayerEvents
         }
     
-        public static void send(SteamPlayer s, string W, ESteamCall X, ESteamPacket l, params object[] R)
+        public static void Send(SteamPlayer s, string W, ESteamCall X, ESteamPacket l, params object[] R)
         {
             if (s == null || R == null) return;
             RocketPlayerEvents instance = s.Player.transform.GetComponent<RocketPlayerEvents>();

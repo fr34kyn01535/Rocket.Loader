@@ -33,7 +33,7 @@ namespace Rocket.Rcon
         }
     }
 
-    public class RocketRconServer : RocketManagerComponent
+    public class RocketRconServer
     {
         private static Socket serverSocket;
         private static byte[] data = new byte[dataSize];
@@ -42,11 +42,6 @@ namespace Rocket.Rcon
         private static Dictionary<Socket, Client> clientList = new Dictionary<Socket, Client>();
 
         private static Dictionary<IntPtr, List<String>> logList = new Dictionary<IntPtr, List<String>>();
-
-        private new void Awake(){
-            base.Awake();
-            Listen();
-        }
 
         public static void Listen()
         {
