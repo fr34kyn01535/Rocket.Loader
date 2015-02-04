@@ -102,56 +102,53 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\Components\Events\RocketEvents.cs">
+    <Compile Include="Rocket\RocketAPI\Events\RocketPlayerInventoryEvents.cs" />
+    <Compile Include="Rocket\RocketAPI\Events\RocketPlayerLifeEvents.cs" />
+    <Compile Include="Rocket\RocketAPI\Events\RocketPlayerEvents.cs" />
+    <Compile Include="Rocket\RocketAPI\Events\RocketServerEvents.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="API\Components\Events\RocketPlayerInventoryEvents.cs" />
-    <Compile Include="API\Components\Events\RocketPlayerLifeEvents.cs" />
-    <Compile Include="API\Components\Events\RocketPlayerEvents.cs" />
-    <Compile Include="API\Components\Events\RocketSteamEvents.cs">
+    <Compile Include="Rocket\RocketAPI\RocketPlayer.cs" />
+    <Compile Include="Rocket\RocketAPI\RocketPlayerFeatures.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="API\Components\RocketPlayer.cs" />
-    <Compile Include="API\Components\RocketPlayerFeatures.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="API\ELogType.cs" />
-    <Compile Include="API\ExternalLogger.cs" />
-    <Compile Include="API\RocketWebClient.cs">
+    <Compile Include="Rocket\Logging\ELogType.cs" />
+    <Compile Include="Rocket\Logging\ExternalLogger.cs" />
+    <Compile Include="Rocket\RocketAPI\RocketWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Commands\CommandGod.cs" />
-    <Compile Include="Commands\CommandLag.cs" />
-    <Compile Include="Commands\CommandRocket.cs" />
-    <Compile Include="Commands\CommandP.cs" />
-    <Compile Include="Managers\RocketChatManager.cs" />
-    <Compile Include="Commands\CommandTp.cs" />
-    <Compile Include="Commands\CommandTphere.cs" />
-    <Compile Include="Commands\CommandI.cs" />
-    <Compile Include="API\RocketPlugin.cs" />
-    <Compile Include="Base Components\RocketManagerComponent.cs" />
-    <Compile Include="API\RocketConfiguration.cs" />
-    <Compile Include="Base Components\RocketPlayerComponent.cs" />
-    <Compile Include="Managers\RocketPluginManager.cs" />
-    <Compile Include="Managers\RocketRconServer.cs" />
-    <Compile Include="Managers\RocketTaskManager.cs" />
+    <Compile Include="Rocket\Commands\CommandGod.cs" />
+    <Compile Include="Rocket\Commands\CommandLag.cs" />
+    <Compile Include="Rocket\Commands\CommandRocket.cs" />
+    <Compile Include="Rocket\Commands\CommandP.cs" />
+    <Compile Include="Rocket\RocketAPI\RocketChatManager.cs" />
+    <Compile Include="Rocket\Commands\CommandTp.cs" />
+    <Compile Include="Rocket\Commands\CommandTphere.cs" />
+    <Compile Include="Rocket\Commands\CommandI.cs" />
+    <Compile Include="Rocket\RocketAPI\RocketPlugin.cs" />
+    <Compile Include="Rocket\Components\RocketManagerComponent.cs" />
+    <Compile Include="Rocket\RocketAPI\RocketConfiguration.cs" />
+    <Compile Include="Rocket\Components\RocketPlayerComponent.cs" />
+    <Compile Include="Rocket\RocketAPI\RocketPluginManager.cs" />
+    <Compile Include="Rocket\Rcon\RocketRconServer.cs" />
+    <Compile Include="Rocket\RocketAPI\RocketTaskManager.cs" />
     <Compile Include="RocketLauncher.cs" />
-    <Compile Include="API\Logger.cs" />
+    <Compile Include="Rocket\Logging\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Managers\RocketPermissionManager.cs" />
+    <Compile Include="Rocket\RocketAPI\RocketPermissionManager.cs" />
     <Compile Include="RocketLoadingAnimation.cs" />
     <Compile Include="RocketSettings.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Documentation\Doxyfile">
+    <None Include="doc\Doxyfile">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Documentation\doxygen.css">
+    <Content Include="doc\doxygen.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="lib\Assembly-CSharp-firstpass.dll" />

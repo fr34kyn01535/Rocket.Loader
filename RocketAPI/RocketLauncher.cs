@@ -1,6 +1,7 @@
-﻿using Rocket.RocketAPI;
-using Rocket.RocketAPI.Interprocess;
-using Rocket.RocketAPI.Managers;
+﻿using Rocket.Logging;
+using Rocket.Rcon;
+using Rocket.RocketAPI;
+using Rocket.RocketAPI.Events;
 using SDG;
 using Steamworks;
 using System;
@@ -64,7 +65,7 @@ namespace Rocket
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Libraries/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Libraries/");
 
                 RocketSettings.LoadSettings();
-                RocketEvents.BindSteamEvents();
+                RocketServerEvents.BindEvents();
 
                 gameObject.AddComponent<RocketTaskManager>();
                 gameObject.AddComponent<RocketChatManager>();
