@@ -47,12 +47,10 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RocketAPI\RocketAPI.csproj">
-      <Project>{c362df2f-1336-4932-aadc-4f2074fedb64}</Project>
-      <Name>RocketAPI</Name>
-    </ProjectReference>
+    <Compile Include="Packages.cs" />
+    <Compile Include="RocketWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
