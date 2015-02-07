@@ -49,7 +49,7 @@ namespace Rocket.RocketAPI
 
         public void FixedUpdate()
         {
-            if (updated && (DateTime.Now - lastUpdated) > TimeSpan.FromSeconds(permissions.WebCacheTimeout))
+            if (updated && (DateTime.Now - lastUpdated) > TimeSpan.FromSeconds(permissions.WebPermissionsTimeout))
             {
                 updated = false;
                 getWebPermissions();
@@ -133,7 +133,7 @@ namespace Rocket.RocketAPI
                             new Group("moderator","Moderator", new List<string>() { "76561197960287930" }, new List<string>() { "tp", "tphere","i","test" })
                         };
                     permissions.WebPermissionsUrl = "";
-                    permissions.WebCacheTimeout = 60;
+                    permissions.WebPermissionsTimeout = 60;
                     permissions.WhitelistedGroups = new string[0];
                     permissions.NotWhitelistedMessage = "you are not whitelisted";
                     serializer.Serialize(writer, permissions);
@@ -254,7 +254,7 @@ namespace Rocket.RocketAPI
         public string AdminGroupDisplayName;
         public string Format;
         public string WebPermissionsUrl;
-        public int WebCacheTimeout;
+        public int WebPermissionsTimeout;
 
         [XmlArrayItem(ElementName = "Group")]
         public Group[] Groups;
