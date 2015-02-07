@@ -26,6 +26,7 @@ namespace Rocket.RocketLoader
                 catch (Exception e)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error finding assemblies: " + e.ToString());
                     Environment.Exit(1);
                 }
 
