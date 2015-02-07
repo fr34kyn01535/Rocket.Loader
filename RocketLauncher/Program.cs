@@ -6,41 +6,44 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace RocketLauncher
 {
     class Program
     {
-        static string InstanceName;
-        static string BuildType;
-        public static Process RocketProcess;
+        private static string InstanceName;
+        private static Process RocketProcess;
 
+        private static string betaUrl = "https://ci.rocket.foundation/job/Rocket%20Beta/rssAll";
+        private static string releaseUrl = "https://ci.rocket.foundation/job/Rocket%20Release/rssAll";
+        private static string xmlUrl;
+
+        private static XNamespace atomNamespace = "http://www.w3.org/2005/Atom";
+
+        private static string zipFile = "artifact/RocketLoader/bin/Release/Rocket.zip";
 
         static void Main(string[] args)
         {
-
-            string site = Encoding.UTF8.GetString(new Rocket.RocketAPI.RocketWebClient().DownloadData("http://api.rocket.foundation/"));
-
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Build>));
-
-            List<Build> builds = (List<Build>)serializer.Deserialize(new StringReader(site));
-
-
-           /* List<Build> p = new List<Build>();
-            Build example = new Build() {Type = VersionType.Beta,Url ="http://test.de",Version = "1.0.0.0" };
-            p.Add(example);
-
-            serializer.Serialize(new StreamWriter("test.xml"),p);
-            */
-
-
-
             InstanceName = (args.Length >= 1 && args[0] != null) ? args[0] : "Rocket";
-            BuildType = (args.Length >= 2 && args[1] != null) ? (args[1].ToLower() == "release" || args[1].ToLower() == "beta" ? args[1] : "release") : "release";
+
+            xmlUrl = (args.Length >= 2 && args[1] != null) ? (args[1].ToLower() == "beta" ? betaUrl : releaseUrl) : releaseUrl;
+
+            XDocument xmlDoc = XDocument.Load(xmlUrl);
+            XElement first = xmlDoc.Element(atomNamespace + "feed").Elements(atomNamespace + "entry").First();
+
+            string latestTitle = first.Element(atomNamespace + "title").Value.Split('(')[0].Trim();
+            string latestUrl = first.Element(atomNamespace + "link").Attribute("href").Value;
+
+
+            Console.ReadLine();
+
+            return;
+
 
             Console.WriteLine("Instance name: " + InstanceName);
-            Console.WriteLine("Build type: " + BuildType);
 
             RocketProcess = new Process();
             RocketProcess.StartInfo.FileName = "Unturned.exe";
