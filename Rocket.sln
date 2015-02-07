@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketAPI", "RocketAPI\Rock
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketLauncher", "RocketLauncher\RocketLauncher.csproj", "{CA37F416-CCB8-44D6-AB12-EB184D875E91}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{CF9F786C-F78B-4537-B2CB-9A64DAB05A31}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{DCEF829D-B6D5-4491-9D2C-FA6ACFE4862E}"
 	ProjectSection(SolutionItems) = preProject
 		Build.proj = Build.proj
 		.build\MSBuild.Community.Tasks.dll = .build\MSBuild.Community.Tasks.dll
