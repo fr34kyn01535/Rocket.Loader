@@ -12,84 +12,86 @@ namespace Rocket.RocketLoader
 
         private static void Main(string[] args)
         {
-            Console.WriteLine("RocketLoader Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
-
             try
             {
-                UnityAssembly = AssemblyDefinition.ReadAssembly("UnityEngine.dll");
-                UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
-                APIAssembly = AssemblyDefinition.ReadAssembly("RocketAPI.dll");
-                LoaderAssembly = AssemblyDefinition.ReadAssembly(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            }
-            catch (Exception e)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(e);
-                Console.WriteLine("Press any key to quit");
-                Console.ReadKey();
-                Environment.Exit(1);
-            }
+                Console.WriteLine("RocketLoader Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
-            if (isPatched())
-            {
-                if (File.Exists("Assembly-CSharp.dll.bak"))
+                try
                 {
-                    File.Copy("Assembly-CSharp.dll.bak", "Assembly-CSharp.dll", true);
-                    UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
-                }
-
-                if (File.Exists("UnityEngine.dll.bak"))
-                {
-                    File.Copy("UnityEngine.dll.bak", "UnityEngine.dll", true);
                     UnityAssembly = AssemblyDefinition.ReadAssembly("UnityEngine.dll");
+                    UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
+                    APIAssembly = AssemblyDefinition.ReadAssembly("RocketAPI.dll");
+                    LoaderAssembly = AssemblyDefinition.ReadAssembly(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                }
+                catch (Exception e)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Environment.Exit(1);
                 }
 
                 if (isPatched())
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Unturned is already patched");
-                    Console.WriteLine("Press any key to quit");
-                    Console.ReadKey();
-                    Environment.Exit(1);
+                    if (File.Exists("Assembly-CSharp.dll.bak"))
+                    {
+                        File.Copy("Assembly-CSharp.dll.bak", "Assembly-CSharp.dll", true);
+                        UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
+                    }
+
+                    if (File.Exists("UnityEngine.dll.bak"))
+                    {
+                        File.Copy("UnityEngine.dll.bak", "UnityEngine.dll", true);
+                        UnityAssembly = AssemblyDefinition.ReadAssembly("UnityEngine.dll");
+                    }
+
+                    if (isPatched())
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Unturned is already patched");
+                        Environment.Exit(1);
+                    }
                 }
-            }
-            else
-            {
-
-                Console.WriteLine("Backing up Assembly-CSharp.dll");
-                File.Copy("Assembly-CSharp.dll", "Assembly-CSharp.dll.bak", true);
-
-                Console.WriteLine("Backing up UnityEngine.dll");
-                File.Copy("UnityEngine.dll", "UnityEngine.dll.bak", true);
-
-            }
-
-            var patches = from t in Assembly.GetExecutingAssembly().GetTypes()
-                          where t.GetInterfaces().Contains(typeof(Patch)) && t.GetConstructor(Type.EmptyTypes) != null
-                          select Activator.CreateInstance(t) as Patch;
-
-            foreach (var patch in patches)
-            {
-                try
+                else
                 {
-                    patch.Apply();
+
+                    Console.WriteLine("Backing up Assembly-CSharp.dll");
+                    File.Copy("Assembly-CSharp.dll", "Assembly-CSharp.dll.bak", true);
+
+                    Console.WriteLine("Backing up UnityEngine.dll");
+                    File.Copy("UnityEngine.dll", "UnityEngine.dll.bak", true);
+
                 }
-                catch (Exception ex)
+
+                var patches = from t in Assembly.GetExecutingAssembly().GetTypes()
+                              where t.GetInterfaces().Contains(typeof(Patch)) && t.GetConstructor(Type.EmptyTypes) != null
+                              select Activator.CreateInstance(t) as Patch;
+
+                foreach (var patch in patches)
                 {
-                    Console.WriteLine("Error in " + patch.GetType().Name + ":" + ex.ToString());
-                    Console.ReadLine();
+                    try
+                    {
+                        patch.Apply();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error in " + patch.GetType().Name + ":" + ex.ToString());
+                        Environment.Exit(1);
+                    }
+                }
+
+                UnturnedAssembly.Write("Assembly-CSharp.dll");
+                UnityAssembly.Write("UnityEngine.dll");
+
+                if (!(args.Count() == 1 && args[0] == "silent"))
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Your game was successfully patched");
+                    Environment.Exit(0);
                 }
             }
-
-            UnturnedAssembly.Write("Assembly-CSharp.dll");
-            UnityAssembly.Write("UnityEngine.dll");
-
-            if (!(args.Count() == 1 && args[0] == "silent"))
+            catch (Exception ex)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Your game was successfully patched");
-                Console.WriteLine("Press any key to quit");
-                Console.ReadKey();
+                Console.WriteLine("Error: "+ ex.ToString());
+                Environment.Exit(1);
             }
         }
 
