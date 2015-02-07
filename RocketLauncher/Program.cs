@@ -17,13 +17,13 @@ namespace RocketLauncher
         private static string InstanceName;
         private static Process RocketProcess;
 
-        private static string betaUrl = "https://ci.rocket.foundation/job/Rocket%20Beta/rssAll";
-        private static string releaseUrl = "https://ci.rocket.foundation/job/Rocket%20Release/rssAll";
+		private static readonly string betaUrl = "https://ci.rocket.foundation/job/Rocket%20Beta/rssAll";
+		private static readonly string releaseUrl = "https://ci.rocket.foundation/job/Rocket%20Release/rssAll";
+		private static readonly string zipFile = "artifact/RocketLoader/bin/Release/Rocket.zip";
+		private static readonly XNamespace atomNamespace = "http://www.w3.org/2005/Atom";
+
         private static string xmlUrl;
 
-        private static XNamespace atomNamespace = "http://www.w3.org/2005/Atom";
-
-        private static string zipFile = "artifact/RocketLoader/bin/Release/Rocket.zip";
 
         static void Main(string[] args)
         {
@@ -40,7 +40,8 @@ namespace RocketLauncher
 
             Console.ReadLine();
 
-            return;
+			//check if latest local version is latestTitle
+			// download xmlUrl+zipFile for latest version
 
 
             Console.WriteLine("Instance name: " + InstanceName);
