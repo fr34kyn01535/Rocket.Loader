@@ -60,11 +60,20 @@ namespace Rocket
             {
                 DontDestroyOnLoad(transform.gameObject);
                 RocketSettings.HomeFolder = "Servers/" + Steam.InstanceName + "/Rocket/";
+#if DEBUG
+                Console.WriteLine("Create directories");
+#endif
                 if (!Directory.Exists(RocketSettings.HomeFolder)) Directory.CreateDirectory(RocketSettings.HomeFolder);
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Plugins/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Plugins/");
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Libraries/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Libraries/");
 
+#if DEBUG
+                Console.WriteLine("LoadSettings");
+#endif
                 RocketSettings.LoadSettings();
+#if DEBUG
+                Console.WriteLine("BindEvents");
+#endif
                 RocketServerEvents.BindEvents();
 
                 gameObject.AddComponent<RocketTaskManager>();
