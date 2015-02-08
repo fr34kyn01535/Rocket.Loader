@@ -12,11 +12,12 @@ namespace Rocket.RocketAPI
         RocketConfiguration DefaultConfiguration { get; }
     }
 
-    internal static class RocketConfigurationHelper
+    public static class RocketConfigurationHelper
     {
+        private static string pluginFolder = "{0}Plugins/{1}/{1}.config";
         public static T LoadConfiguration<T>()
         {
-            string filename = String.Format("{0}Plugins/{1}/{1}.config", RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
+            string filename = String.Format(pluginFolder, RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
             if (File.Exists(filename))
             {
                 try
@@ -73,12 +74,13 @@ namespace Rocket.RocketAPI
             }
             else
             {
-                return SaveConfiguration<T>(filename);
+                return SaveConfiguration<T>();
             }
         }
 
-        public static T SaveConfiguration<T>(string filename)
+        public static T SaveConfiguration<T>()
         {
+            string filename = String.Format(pluginFolder, RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             using (TextWriter writer = new StreamWriter(filename))
             {
