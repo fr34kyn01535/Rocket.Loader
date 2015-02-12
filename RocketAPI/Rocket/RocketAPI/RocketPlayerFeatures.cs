@@ -46,7 +46,11 @@ namespace Rocket.RocketAPI
 
             p = gameObject.transform.GetComponent<RocketPlayer>();
             e = gameObject.transform.GetComponent<RocketPlayerEvents>();
+        /*
 
+            pl.Inventory.updateItems(PlayerInventory.A, storage.items);
+            player.inventory.sendStorage();
+            */
             if (godMode)
             {
                 e.OnUpdateHealth += e_OnPlayerUpdateHealth;
