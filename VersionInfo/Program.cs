@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 
@@ -12,19 +13,9 @@ namespace VersionInfo
     {
         static void Main(string[] args)
         {
-            if (args.Length == 1)
-            {
-                switch (args[0]) { 
-                    case "rocket":
-                        Console.Write(getRocketVersion());
-                        Environment.Exit(0);
-                        break;
-                    case "unturned":
-                        Console.Write(getUnturnedVersion());
-                        Environment.Exit(0);
-                        break;
-                }
-            }
+            if (args.Length != 3) Environment.Exit(1);
+            WebClient wc = new WebClient();
+            wc.DownloadData(String.Format("http://api.rocket.foundation/jenkins/version.php?build={0}&buildid={1}&rocketversion={2}&unturnedversion={3}", args[1], args[2], getRocketVersion(), getUnturnedVersion()));
         }
 
         private static string getRocketVersion()
