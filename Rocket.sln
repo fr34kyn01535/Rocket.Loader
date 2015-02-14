@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketAPI", "RocketAPI\Rock
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketLauncher", "RocketLauncher\RocketLauncher.csproj", "{CA37F416-CCB8-44D6-AB12-EB184D875E91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionInfo", "VersionInfo\VersionInfo.csproj", "{622A21A1-B699-4D06-B2F2-2D01A02755E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,18 @@ Global
 		{CA37F416-CCB8-44D6-AB12-EB184D875E91}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA37F416-CCB8-44D6-AB12-EB184D875E91}.Release|x64.ActiveCfg = Release|Any CPU
 		{CA37F416-CCB8-44D6-AB12-EB184D875E91}.Release|x86.ActiveCfg = Release|Any CPU
+		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Lokal|Any CPU.ActiveCfg = Release|Any CPU
+		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Lokal|Any CPU.Build.0 = Release|Any CPU
+		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Lokal|x64.ActiveCfg = Release|Any CPU
+		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Lokal|x86.ActiveCfg = Release|Any CPU
+		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Release|x64.ActiveCfg = Release|Any CPU
+		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

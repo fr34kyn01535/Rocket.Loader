@@ -35,19 +35,6 @@ namespace Rocket
 
         public static void Splash()
         {
-          /*  try
-            {
-               // Pipe = new RocketNamedPipe(Steam.InstanceName,"GAME", "LAUNCHER");
-               // Pipe.OnMessage += PipeHandler.Handle;
-            }
-            catch (TypeLoadException ex)
-            {
-                Console.WriteLine("dafq");
-                Console.WriteLine(ex.TypeName);
-                Console.WriteLine(ex.Source);
-                //Console.WriteLine(ex.Data);
-                Console.WriteLine(ex.ToString());
-            }*/
 #if !DEBUG
             RocketLoadingAnimation.Load();
 #endif
