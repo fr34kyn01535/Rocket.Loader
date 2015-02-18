@@ -27,7 +27,7 @@ namespace Rocket
         private float accum = 0;
         private int frames = 0;
         private float timeleft;
-        
+
         public static void Launch()
         {
             Instance = new GameObject().AddComponent<RocketLauncher>();

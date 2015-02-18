@@ -2,6 +2,7 @@
 using Rocket.Logging;
 using SDG;
 using Steamworks;
+using System;
 using UnityEngine;
 
 namespace Rocket.RocketAPI.Events
@@ -71,6 +72,10 @@ namespace Rocket.RocketAPI.Events
                     if (OnPlayerUpdateStance != null) OnPlayerUpdateStance(s.Player, (byte)R[0]);
                     if (instance.OnUpdateStance != null) instance.OnUpdateStance(s.Player, (byte)R[0]);
                     break;
+                case "tellGesture":
+                    if (OnPlayerUpdateGesture != null) OnPlayerUpdateGesture(s.Player, (PlayerGesture)Enum.Parse(typeof(PlayerGesture),R[0].ToString()));
+                    if (instance.OnUpdateGesture != null) instance.OnUpdateGesture(s.Player, (PlayerGesture)Enum.Parse(typeof(PlayerGesture), R[0].ToString()));
+                    break;
                 case "tellRevive":
                     if (OnPlayerRevive != null) OnPlayerRevive(s.Player, (Vector3)R[0], (byte)R[1]);
                     if (instance.OnRevive != null) instance.OnRevive(s.Player, (Vector3)R[0], (byte)R[1]);
@@ -124,6 +129,11 @@ namespace Rocket.RocketAPI.Events
         public delegate void PlayerUpdateWater(SDG.Player player, byte water);
         public static event PlayerUpdateWater OnPlayerUpdateWater;
         public event PlayerUpdateWater OnUpdateWater;
+
+        public enum PlayerGesture { None = 0, InventoryOpen = 1, InventoryClose = 2, Pickup = 3, PunchLeft = 4, PunchRight = 5, SurrenderStart = 6, SurrenderStop = 7, Point = 8, Wave = 9 };
+        public delegate void PlayerUpdateGesture(SDG.Player player, PlayerGesture gesture);
+        public static event PlayerUpdateGesture OnPlayerUpdateGesture;
+        public event PlayerUpdateGesture OnUpdateGesture;
 
         public delegate void PlayerUpdateStance(SDG.Player player, byte stance);
         public static event PlayerUpdateStance OnPlayerUpdateStance;
