@@ -28,6 +28,34 @@ namespace Rocket
         private int frames = 0;
         private float timeleft;
 
+        //public void Awake(){
+        //    try
+        //    {
+        //        Directory.CreateDirectory("images");
+        //        Asset[] assets = Assets.find(EAssetType.Item);
+        //        foreach (ItemAsset asset in assets)
+        //        {
+        //            try
+        //            {
+        //                ushort id = ((Asset)asset).Id;
+        //                Console.WriteLine(id);
+        //                Texture2D t = ItemTool.getIcon(id,new byte[0], asset);
+        //                byte[] bytes = t.EncodeToPNG();
+        //                string filename = "images/" + asset.Name + ".png";
+        //                System.IO.File.WriteAllBytes(filename, bytes);
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Console.WriteLine(ex.ToString());
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.ToString());
+        //    }
+        //}
+
         public static void Launch()
         {
             Instance = new GameObject().AddComponent<RocketLauncher>();

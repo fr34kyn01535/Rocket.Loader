@@ -227,6 +227,7 @@
     <Compile Include="Mono\Funcs.cs" />
     <Compile Include="Patches\Character.cs" />
     <Compile Include="Patches\CommandLine.cs" />
+    <Compile Include="Patches\Asset.cs" />
     <Compile Include="Patches\Item.cs" />
     <Compile Include="Patches\ItemAsset.cs" />
     <Compile Include="Patches\Managers.cs" />

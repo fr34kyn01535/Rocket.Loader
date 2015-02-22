@@ -136,6 +136,8 @@ namespace Rocket.RocketAPI
                     permissions.WebPermissionsTimeout = 60;
                     permissions.WhitelistedGroups = new string[0];
                     permissions.NotWhitelistedMessage = "you are not whitelisted";
+                    permissions.AllSlotsReservedMessage = "all slots are in use";
+                    permissions.ReservedSlotsGroups = new string[0];
                     serializer.Serialize(writer, permissions);
                 }
             }
@@ -220,9 +222,43 @@ namespace Rocket.RocketAPI
             return player.IsAdmin;
         }
 
+        public static int GetProtectedSlots() {
+            return permissions.ReservedSlots;
+        }
+
+        internal static bool CheckReservedSlotSpace(CSteamID cSteamID)
+        {
+            if (permissions.ReservedSlotsGroups != null && permissions.ReservedSlotsGroups.Count() != 0 && permissions.Groups != null && permissions.Groups.Count() != 0) //If setup
+            {
+                int maxPlayers = Steam.MaxPlayers;
+                int currentPlayers = Steam.Players.Count();
+                int reservedSlots = permissions.ReservedSlots;
+
+                if (currentPlayers + reservedSlots >= maxPlayers) // If not enought slots
+                {
+
+                    string[] myGroups = permissions.Groups.Where(g => g.Members.Contains(cSteamID.ToString())).Select(g => g.Id).ToArray();
+                    foreach (string g in myGroups)
+                    {
+                        if (permissions.ReservedSlotsGroups.Contains(g))
+                        {
+                            return true;
+                        }
+                    }
+                    Steam.kick(cSteamID, permissions.AllSlotsReservedMessage);
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         internal static bool CheckWhitelisted(CSteamID cSteamID)
         {
-            if (permissions.WhitelistedGroups != null && permissions.WhitelistedGroups.Count() != 0 && permissions.Groups!=null && permissions.Groups.Count()!=0)
+            if (permissions.WhitelistedGroups != null && permissions.WhitelistedGroups.Count() != 0 && permissions.Groups != null && permissions.Groups.Count() != 0) //If setup
             {
                 string[] myGroups = permissions.Groups.Where(g => g.Members.Contains(cSteamID.ToString())).Select(g => g.Id).ToArray();
                 foreach (string g in myGroups)
@@ -255,15 +291,21 @@ namespace Rocket.RocketAPI
         public string Format;
         public string WebPermissionsUrl;
         public int WebPermissionsTimeout;
-
+        
         [XmlArrayItem(ElementName = "Group")]
         public Group[] Groups;
 
         [XmlArrayItem(ElementName = "WhitelistedGroup")]
         public string[] WhitelistedGroups;
 
+        [XmlArrayItem(ElementName = "ReservedSlotsGroup")]
+        public string[] ReservedSlotsGroups;
+        public int ReservedSlots = 0;
+        
         public string NotWhitelistedMessage;
+        public string AllSlotsReservedMessage;
     }
+    
 
     [Serializable]
     public class Group

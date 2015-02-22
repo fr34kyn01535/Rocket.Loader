@@ -43,6 +43,8 @@ namespace Rocket.RocketAPI
         private void Start()
         {
             pl = gameObject.transform.GetComponent<Player>();
+
+            if (!RocketPermissionManager.CheckReservedSlotSpace(pl.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID)) return;
             if (!RocketPermissionManager.CheckWhitelisted(pl.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID)) return;
 
             p = gameObject.transform.GetComponent<RocketPlayer>();
