@@ -17,6 +17,8 @@ namespace Rocket.RocketAPI
         private string permissionsFile;
         private static Permissions permissions;
 
+        private static string webPermissionsUrl;
+
         public new void Awake()
         {
 #if DEBUG
@@ -25,6 +27,8 @@ namespace Rocket.RocketAPI
             base.Awake();
             permissionsFile = RocketSettings.HomeFolder + "Permissions.config";
             loadPermissions();
+            webPermissionsUrl = String.IsNullOrEmpty(permissions.WebPermissionsUrl) ? "" : permissions.WebPermissionsUrl.Trim() + "&instance=" + Steam.InstanceName;
+            updated = true;
         }
 
         private static void getWebPermissions()
@@ -35,16 +39,16 @@ namespace Rocket.RocketAPI
                 {
                     RocketWebClient wc = new RocketWebClient();
                     wc.DownloadStringCompleted += wc_DownloadStringCompleted;
-                    wc.DownloadStringAsync(new Uri(permissions.WebPermissionsUrl.Trim() + "&instance=" + Steam.InstanceName + "&request=" + Guid.NewGuid()));
+                    wc.DownloadStringAsync(new Uri(webPermissionsUrl + "&request=" + Guid.NewGuid()));
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError("Failed getting WebPermissions: " + ex.ToString());
+                    Logger.LogError("Failed getting WebPermissions from " + webPermissionsUrl + ": " + ex.ToString());
                 }
             }
         }
 
-        private static bool updated = true;
+        private static bool updated = false;
         private static DateTime lastUpdated = DateTime.MinValue;
 
         public void FixedUpdate()
@@ -66,7 +70,7 @@ namespace Rocket.RocketAPI
                 Permissions result;
                 if (String.IsNullOrEmpty(re))
                 {
-                    r = "Failed downloading WebPermissions: Empty result";
+                    Logger.LogError("Failed getting WebPermissions from " + webPermissionsUrl + ": Empty result");
                 }
                 else
                 {
@@ -79,7 +83,7 @@ namespace Rocket.RocketAPI
             }
             catch (Exception ex)
             {
-                r = "Failed downloading WebPermissions: " + ex.ToString();
+                r = "Failed getting WebPermissions from " + webPermissionsUrl + ": "+ ex.ToString();
                 if (!String.IsNullOrEmpty(r))
                 {
                     r += " Result:" + r;
@@ -114,8 +118,6 @@ namespace Rocket.RocketAPI
                     }
                 }
                 serializer.Serialize(new StreamWriter(permissionsFile), permissions);
-
-                getWebPermissions();
             }
             else
             {
