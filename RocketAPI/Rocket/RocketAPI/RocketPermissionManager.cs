@@ -27,7 +27,7 @@ namespace Rocket.RocketAPI
             base.Awake();
             permissionsFile = RocketSettings.HomeFolder + "Permissions.config";
             loadPermissions();
-            webPermissionsUrl = String.IsNullOrEmpty(permissions.WebPermissionsUrl) ? "" : permissions.WebPermissionsUrl.Trim() + "&instance=" + Steam.InstanceName;
+            webPermissionsUrl = String.IsNullOrEmpty(permissions.WebPermissionsUrl) ? "" : permissions.WebPermissionsUrl.Trim() + "?instance=" + Steam.InstanceName;
             updated = true;
         }
 
@@ -70,7 +70,10 @@ namespace Rocket.RocketAPI
                 Permissions result;
                 if (String.IsNullOrEmpty(re))
                 {
-                    Logger.LogError("Failed getting WebPermissions from " + webPermissionsUrl + ": Empty result");
+                    RocketTaskManager.Enqueue(() =>
+                    {
+                        Logger.LogError("Failed getting WebPermissions from " + webPermissionsUrl + ": Empty result");
+                    });
                 }
                 else
                 {
