@@ -75,6 +75,9 @@ namespace Rocket.RocketLoader
                     catch (Exception ex)
                     {
                         Console.WriteLine("Error in " + patch.GetType().Name + ":" + ex.ToString());
+#if DEBUG
+                        Console.ReadLine();
+#endif
                         Environment.Exit(1);
                     }
                 }
@@ -92,6 +95,9 @@ namespace Rocket.RocketLoader
             catch (Exception ex)
             {
                 Console.WriteLine("Error: "+ ex.ToString());
+#if DEBUG
+                Console.ReadLine();
+#endif
                 Environment.Exit(1);
             }
         }

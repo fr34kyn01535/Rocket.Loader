@@ -5,62 +5,31 @@ using Rocket.RocketAPI.Events;
 using SDG;
 using Steamworks;
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
 
 namespace Rocket
 {
-    public class RocketLauncher : MonoBehaviour
+    public class Bootstrap : MonoBehaviour
     {
-        public static string HomeFolder;
+        internal static Bootstrap Instance;
 
-        public static RocketLauncher Instance;
-
-        public static RocketSettings Settings;
-
-        public float updateInterval = 0.005F;
-
-        public static DateTime Started = DateTime.UtcNow;
-
-        public static float TPS = 0; 
+        private float updateInterval = 0.005F;
+        internal static DateTime Started = DateTime.UtcNow;
+        internal static float TPS = 0; 
         private float accum = 0;
         private int frames = 0;
         private float timeleft;
 
-        //public void Awake(){
-        //    try
-        //    {
-        //        Directory.CreateDirectory("images");
-        //        Asset[] assets = Assets.find(EAssetType.Item);
-        //        foreach (ItemAsset asset in assets)
-        //        {
-        //            try
-        //            {
-        //                ushort id = ((Asset)asset).Id;
-        //                Console.WriteLine(id);
-        //                Texture2D t = ItemTool.getIcon(id,new byte[0], asset);
-        //                byte[] bytes = t.EncodeToPNG();
-        //                string filename = "images/" + asset.Name + ".png";
-        //                System.IO.File.WriteAllBytes(filename, bytes);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Console.WriteLine(ex.ToString());
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.ToString());
-        //    }
-        //}
-
+        [Browsable(false)]
         public static void Launch()
         {
-            Instance = new GameObject().AddComponent<RocketLauncher>();
+            Instance = new GameObject().AddComponent<Bootstrap>();
         }
 
+        [Browsable(false)]
         public static void Splash()
         {
 #if !DEBUG
@@ -102,7 +71,7 @@ namespace Rocket
             }
             timeleft = updateInterval;
         }
-        void Update()
+        private void Update()
         {
             timeleft -= Time.deltaTime;
             accum += Time.timeScale / Time.deltaTime;

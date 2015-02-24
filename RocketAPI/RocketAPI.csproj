@@ -134,7 +134,7 @@
     <Compile Include="Rocket\RocketAPI\RocketPluginManager.cs" />
     <Compile Include="Rocket\Rcon\RocketRconServer.cs" />
     <Compile Include="Rocket\RocketAPI\RocketTaskManager.cs" />
-    <Compile Include="RocketLauncher.cs" />
+    <Compile Include="Bootstrap.cs" />
     <Compile Include="Rocket\Logging\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rocket\RocketAPI\RocketPermissionManager.cs" />

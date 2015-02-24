@@ -72,7 +72,7 @@ namespace Rocket.RocketAPI
 
             foreach (Type component in rocketManagerComponents)
             {
-                RocketLauncher.Instance.gameObject.AddComponent(component);
+                Bootstrap.Instance.gameObject.AddComponent(component);
             }
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\nLoading commands".PadRight(80, '.') + "\n");
