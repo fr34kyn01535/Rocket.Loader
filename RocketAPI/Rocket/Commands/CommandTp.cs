@@ -17,6 +17,8 @@ namespace Rocket.Commands
 
         protected override void execute(SteamPlayerID caller, string command)
         {
+            if (!RocketCommand.IsPlayer(caller)) return;
+
             SteamPlayer otherPlayer;
             if (!String.IsNullOrEmpty(command) && SteamPlayerlist.tryGetSteamPlayer(command, out otherPlayer) && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
             {

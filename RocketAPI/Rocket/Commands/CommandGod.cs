@@ -1,6 +1,7 @@
 ﻿using Rocket.Logging;
 using Rocket.RocketAPI;
 using SDG;
+using System;
 
 namespace Rocket.Commands
 {
@@ -15,6 +16,8 @@ namespace Rocket.Commands
 
         protected override void execute(SteamPlayerID caller, string command)
         {
+            if (!RocketCommand.IsPlayer(caller)) return;
+
             Player p = PlayerTool.getPlayer(caller.CSteamID);
             RocketPlayerFeatures pf = p.gameObject.transform.GetComponent<RocketPlayerFeatures>();
             if (pf.GodMode)

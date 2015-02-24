@@ -102,12 +102,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Rocket\Commands\CommandV.cs" />
     <Compile Include="Rocket\RocketAPI\Events\RocketPlayerInventoryEvents.cs" />
     <Compile Include="Rocket\RocketAPI\Events\RocketPlayerLifeEvents.cs" />
     <Compile Include="Rocket\RocketAPI\Events\RocketPlayerEvents.cs" />
     <Compile Include="Rocket\RocketAPI\Events\RocketServerEvents.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Rocket\RocketAPI\RocketCommand.cs" />
     <Compile Include="Rocket\RocketAPI\RocketPlayer.cs" />
     <Compile Include="Rocket\RocketAPI\RocketPlayerFeatures.cs">
       <SubType>Code</SubType>

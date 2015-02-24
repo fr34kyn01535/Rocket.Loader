@@ -15,6 +15,8 @@ namespace Rocket.Commands
 
         protected override void execute(SteamPlayerID caller, string command)
         {
+            if (!RocketCommand.IsPlayer(caller)) return;
+
             string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
 
             if (componentsFromSerial.Length > 1)

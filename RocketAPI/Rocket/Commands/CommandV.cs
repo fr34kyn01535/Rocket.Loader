@@ -5,29 +5,28 @@ using System;
 
 namespace Rocket.Commands
 {
-    public class CommandI : Command
+    public class CommandV : Command
     {
-        public CommandI()
+        public CommandV()
         {
-            base.commandName = "i";
-            base.commandHelp = "Gives yourself an item";
+            base.commandName = "v";
+            base.commandHelp = "Gives yourself an vehicle";
             base.commandInfo = base.commandName + " - " + base.commandHelp;
         }
 
         protected override void execute(SteamPlayerID caller, string command)
         {
             if (!RocketCommand.IsPlayer(caller)) return;
-            
+
             string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
 
-            if (componentsFromSerial.Length == 0 || componentsFromSerial.Length > 2)
+            if (componentsFromSerial.Length == 0 || componentsFromSerial.Length > 1)
             {
                 RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
                 return;
             }
 
             ushort id = 0;
-            byte amount = 1;
 
             if (!ushort.TryParse(componentsFromSerial[0].ToString(), out id))
             {
@@ -35,21 +34,15 @@ namespace Rocket.Commands
                 return;
             }
 
-            if (componentsFromSerial.Length == 2 && !byte.TryParse(componentsFromSerial[1].ToString(), out amount))
-            {
-                RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
-                return;
-            }
-
             SDG.Player player = PlayerTool.getPlayer(caller.CSteamID);
-            if (ItemTool.tryForceGiveItem(player, id, amount))
+            if (VehicleTool.giveVehicle(player, id))
             {
-                Logger.Log("Giving " + caller.CharacterName +" item " + id + ":" + amount);
-                RocketChatManager.Say(caller.CSteamID, "Giving you item " + id + ":" + amount);
+                Logger.Log("Giving " + caller.CharacterName + " vehicle " + id);
+               RocketChatManager.Say(caller.CSteamID, "Giving you vehicle " + id);
             }
             else
             {
-                RocketChatManager.Say(caller.CSteamID, "Failed giving item " + id + ":" + amount);
+               RocketChatManager.Say(caller.CSteamID, "Failed giving vehicle " + id);
             }
         }
     }
