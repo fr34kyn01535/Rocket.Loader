@@ -11,6 +11,50 @@ namespace Rocket
         public static string RconPassword = "changeme";
         public static int RconPort = 0;
 
+        public static bool EnableJoinLeaveMessages = false;
+        public static string JoinMessage = "{0} connected to the server";
+        public static string LeaveMessage = "{0} disconnected from the server";
+
+
+        [XmlElement(ElementName = "EnableJoinLeaveMessages")]
+        public bool enableJoinLeaveMessages
+        {
+            get
+            {
+                return EnableJoinLeaveMessages;
+            }
+            set
+            {
+                EnableJoinLeaveMessages = value; ;
+            }
+        }
+
+        [XmlElement(ElementName = "JoinMessage")]
+        public string joinMessage
+        {
+            get
+            {
+                return JoinMessage;
+            }
+            set
+            {
+                JoinMessage = value; ;
+            }
+        }
+
+        [XmlElement(ElementName = "LeaveMessage")]
+        public string leaveMessage
+        {
+            get
+            {
+                return LeaveMessage;
+            }
+            set
+            {
+                LeaveMessage = value; ;
+            }
+        }
+
         [XmlElement(ElementName = "EnableRcon")]
         public bool enableRcon
         {
@@ -61,6 +105,9 @@ namespace Rocket
                 instance.enableRcon = s.enableRcon;
                 if (s.rconPassword != null) instance.rconPassword = s.rconPassword;
                 instance.rconPort = s.rconPort;
+                instance.joinMessage = s.joinMessage;
+                instance.leaveMessage = s.leaveMessage;
+                instance.enableJoinLeaveMessages = s.enableJoinLeaveMessages;
             }
             else
             {

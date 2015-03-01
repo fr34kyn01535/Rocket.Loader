@@ -90,6 +90,7 @@ namespace Rocket.RocketAPI
                 registerCommand((Command)Activator.CreateInstance(command));
             }
             SDG.Steam.OnServerConnected += onPlayerConnected;
+            SDG.Steam.OnServerDisconnected += onPlayerDisconnected;
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\nLaunching Unturned".PadRight(80, '.'));
@@ -141,6 +142,19 @@ namespace Rocket.RocketAPI
                 Logger.Log(component.Name);
 #endif
                 player.gameObject.AddComponent(component);
+            }
+
+            if (RocketSettings.EnableJoinLeaveMessages && !String.IsNullOrEmpty(RocketSettings.JoinMessage))
+            {
+                RocketChatManager.Say(String.Format(RocketSettings.JoinMessage, player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+            }
+        }
+
+        private void onPlayerDisconnected(CSteamID id)
+        {
+            if(RocketSettings.EnableJoinLeaveMessages && !String.IsNullOrEmpty(RocketSettings.LeaveMessage)){
+                SDG.Player player = PlayerTool.getPlayer(id);
+                RocketChatManager.Say(String.Format(RocketSettings.LeaveMessage, player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
             }
         }
 
