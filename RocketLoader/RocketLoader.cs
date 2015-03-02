@@ -102,6 +102,7 @@ namespace Rocket.RocketLoader
             }
         }
 
+
         private static bool isPatched()
         {
             MethodDefinition awake = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.Managers").Methods.AsEnumerable().Where(m => m.Name.ToLower() == "awake").FirstOrDefault();
