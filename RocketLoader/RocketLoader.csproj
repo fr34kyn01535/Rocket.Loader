@@ -231,7 +231,6 @@
     <Compile Include="Patches\Item.cs" />
     <Compile Include="Patches\ItemAsset.cs" />
     <Compile Include="Patches\Managers.cs" />
-    <Compile Include="Patches\LoadingUI.cs" />
     <Compile Include="Patches\MenuUI.cs" />
     <Compile Include="Patches\Player.Clothing.cs" />
     <Compile Include="Patches\InventorySearch.cs" />
