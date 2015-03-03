@@ -29,11 +29,27 @@ namespace Rocket.Commands
             ushort id = 0;
             byte amount = 1;
 
-            if (!ushort.TryParse(componentsFromSerial[0].ToString(), out id))
+            string itemString = componentsFromSerial[0].ToString();
+
+            if (!ushort.TryParse(itemString, out id))
             {
-                RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
-                return;
+                Asset[] assets = SDG.Assets.find(EAssetType.Item);
+                foreach (ItemAsset ia in assets)
+                {
+                    if(ia != null && ia.Name != null && ia.Name.ToLower().Contains(itemString.ToLower())){
+                        id = ia.Id;
+                        break;
+                    }
+                }
+                if (String.IsNullOrEmpty(itemString.Trim()) || id == 0)
+                {
+                    RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
+                    return;
+                }
             }
+
+            Asset a = SDG.Assets.find(EAssetType.Item,id);
+            string assetName = ((ItemAsset)a).Name;
 
             if (componentsFromSerial.Length == 2 && !byte.TryParse(componentsFromSerial[1].ToString(), out amount))
             {
@@ -45,11 +61,11 @@ namespace Rocket.Commands
             if (ItemTool.tryForceGiveItem(player, id, amount))
             {
                 Logger.Log("Giving " + caller.CharacterName +" item " + id + ":" + amount);
-                RocketChatManager.Say(caller.CSteamID, "Giving you item " + id + ":" + amount);
+                RocketChatManager.Say(caller.CSteamID, "Giving you " + amount + "x " + assetName + " ("+id+")");
             }
             else
             {
-                RocketChatManager.Say(caller.CSteamID, "Failed giving item " + id + ":" + amount);
+                RocketChatManager.Say(caller.CSteamID, "Failed giving you " + amount + "x " + assetName + " (" + id + ")");
             }
         }
     }

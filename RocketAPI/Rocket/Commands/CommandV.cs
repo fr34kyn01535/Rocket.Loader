@@ -28,21 +28,39 @@ namespace Rocket.Commands
 
             ushort id = 0;
 
-            if (!ushort.TryParse(componentsFromSerial[0].ToString(), out id))
+            string itemString = componentsFromSerial[0].ToString();
+
+            if (!ushort.TryParse(itemString, out id))
             {
-                RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
-                return;
+                Asset[] assets = SDG.Assets.find(EAssetType.Vehicle);
+                foreach (VehicleAsset ia in assets)
+                {
+                    if (ia != null && ia.Name != null && ia.Name.ToLower().Contains(itemString.ToLower()))
+                    {
+                        id = ia.Id;
+                        break;
+                    }
+                }
+                if (String.IsNullOrEmpty(itemString.Trim()) || id == 0)
+                {
+                    RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
+                    return;
+                }
             }
+
+            Asset a = SDG.Assets.find(EAssetType.Vehicle, id);
+            string assetName = ((VehicleAsset)a).Name;
+
 
             SDG.Player player = PlayerTool.getPlayer(caller.CSteamID);
             if (VehicleTool.giveVehicle(player, id))
             {
                 Logger.Log("Giving " + caller.CharacterName + " vehicle " + id);
-               RocketChatManager.Say(caller.CSteamID, "Giving you vehicle " + id);
+                RocketChatManager.Say(caller.CSteamID, "Giving you a " + assetName + " (" + id + ")");
             }
             else
             {
-               RocketChatManager.Say(caller.CSteamID, "Failed giving vehicle " + id);
+                RocketChatManager.Say(caller.CSteamID, "Failed giving you a " + assetName + " (" + id + ")");
             }
         }
     }

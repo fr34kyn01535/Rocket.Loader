@@ -229,11 +229,13 @@
     <Compile Include="Patches\CommandLine.cs" />
     <Compile Include="Patches\Asset.cs" />
     <Compile Include="Patches\Item.cs" />
+    <Compile Include="Patches\VehicleAsset.cs" />
     <Compile Include="Patches\ItemAsset.cs" />
     <Compile Include="Patches\Managers.cs" />
     <Compile Include="Patches\MenuPlayUI.cs" />
     <Compile Include="Patches\Player.Clothing.cs" />
     <Compile Include="Patches\InventorySearch.cs" />
+    <Compile Include="Patches\PlayerStance.cs" />
     <Compile Include="Patches\PlayerInventory.cs" />
     <Compile Include="Patches\ItemJar.cs" />
     <Compile Include="Patches\ReadWrite.cs" />

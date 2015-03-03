@@ -88,7 +88,7 @@ namespace Rocket.RocketAPI.Events
                     {
                         o += r.ToString();
                     }
-                    Logger.Log(s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
+                    //Logger.Log(s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
 #endif
                     break;
             }
