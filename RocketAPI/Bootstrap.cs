@@ -33,7 +33,7 @@ namespace Rocket
         public static void Splash()
         {
 #if !DEBUG
-            RocketLoadingAnimation.Load();
+            //RocketLoadingAnimation.Load();
 #endif
         }
 

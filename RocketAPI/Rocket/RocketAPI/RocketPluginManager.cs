@@ -18,8 +18,8 @@ namespace Rocket.RocketAPI
         private void Start()
         {
 #if !DEBUG
-            RocketLoadingAnimation.Stop();
-            Console.Clear();
+            //RocketLoadingAnimation.Stop();
+            //Console.Clear();
 #else
             Logger.Log("Start RocketPluginManager");
 #endif
