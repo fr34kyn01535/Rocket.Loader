@@ -44,7 +44,8 @@ namespace Rocket.RocketAPI
             #endregion Handling additional assemblies
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("The rocket has launched | v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "\n");
+
+            Console.WriteLine();
 
             if (RocketSettings.EnableRcon)
             {
@@ -64,7 +65,7 @@ namespace Rocket.RocketAPI
                 Console.WriteLine();
             }
 
-            Console.WriteLine("Loading Extensions".PadRight(80, '.'));
+            Console.WriteLine("Loading Plugins".PadRight(80, '.'));
             Assemblies = loadAssemblies();
 
             List<Type> rocketManagerComponents = getTypes(Assemblies, typeof(RocketManagerComponent));
@@ -75,7 +76,7 @@ namespace Rocket.RocketAPI
                 Bootstrap.Instance.gameObject.AddComponent(component);
             }
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("\nLoading commands".PadRight(80, '.') + "\n");
+            Console.WriteLine("\nLoading Commands".PadRight(80, '.') + "\n");
 
             SteamGameServer.SetKeyValue("rocket", Assembly.GetExecutingAssembly().GetName().Version.ToString());
             SteamGameServer.SetKeyValue("rocketplugins", String.Join(",", Assemblies.Select(a => a.GetName().Name).ToArray()));
@@ -93,7 +94,7 @@ namespace Rocket.RocketAPI
             SDG.Steam.OnServerDisconnected += onPlayerDisconnected;
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("\nLaunching Unturned".PadRight(80, '.'));
+            Console.WriteLine("\nLaunching Server".PadRight(80, '.'));
             Logger.LogWarning("\nThe error concerning a corrupted file resourcs.assets can be");
             Logger.LogWarning("ignored while we work on a bugfix".PadRight(79, '.') + "\n");
 

@@ -26,20 +26,35 @@ namespace Rocket
         [Browsable(false)]
         public static void Launch()
         {
+#if DEBUG
+            Console.WriteLine("Launch");
+#endif
             Instance = new GameObject().AddComponent<Bootstrap>();
         }
 
         [Browsable(false)]
         public static void Splash()
         {
-#if !DEBUG
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("RocketAPI v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " for Unturned v" + Steam.Version + "\n");
+
+#if DEBUG
+            Console.WriteLine("Splash");
+#else
             //RocketLoadingAnimation.Load();
 #endif
         }
 
         private void Start()
         {
-            if (String.IsNullOrEmpty(Steam.InstanceName)) return;
+#if DEBUG
+            Console.WriteLine("Start");
+#endif
+            if (String.IsNullOrEmpty(Steam.InstanceName))
+            {
+                Logger.LogError("Could not get instancename");
+                return;
+            }
             try
             {
                 DontDestroyOnLoad(transform.gameObject);

@@ -1,4 +1,8 @@
-﻿namespace Rocket.RocketLoader.Patches
+﻿using Mono.Cecil;
+using Mono.Cecil.Cil;
+using System.Linq;
+
+namespace Rocket.RocketLoader.Patches
 {
     public class Steam : Patch
     {
@@ -12,7 +16,8 @@
             h.UnlockFieldByType("ServerShutdown", "OnServerShutdown");
             h.UnlockFieldByType("ServerConnected", "OnServerConnected");
             h.UnlockFieldByType("ServerDisconnected", "OnServerDisconnected");
-            h.UnlockFieldByType(typeof(string), "InstanceName", 7);
+            h.UnlockFieldByType(typeof(string), "Version");
+            h.UnlockFieldByType(typeof(string), "InstanceName", 10);
             h.UnlockFieldByType(typeof(uint), "ServerPort", 1);
             h.UnlockFieldByType(typeof(byte), "MaxPlayers");
 
