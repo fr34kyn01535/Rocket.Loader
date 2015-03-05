@@ -35,6 +35,9 @@ namespace Rocket
         [Browsable(false)]
         public static void Splash()
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("RocketAPI v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " for Unturned v" + Steam.Version + "\n");
+
 #if DEBUG
             Console.WriteLine("Splash");
 #else
@@ -44,7 +47,9 @@ namespace Rocket
 
         private void Start()
         {
+#if DEBUG
             Console.WriteLine("Start");
+#endif
             if (String.IsNullOrEmpty(Steam.InstanceName))
             {
                 Logger.LogError("Could not get instancename");
