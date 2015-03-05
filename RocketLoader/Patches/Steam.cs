@@ -16,7 +16,7 @@
             h.UnlockFieldByType(typeof(uint), "ServerPort", 1);
             h.UnlockFieldByType(typeof(byte), "MaxPlayers");
 
-            h.UnlockFieldByType("List<SDG.SteamPlayer>", "Players");
+            h.UnlockFieldByType("List<SteamPlayer>", "Players");
         }
     }
 }

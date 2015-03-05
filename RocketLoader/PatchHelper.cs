@@ -50,11 +50,8 @@ namespace Rocket.RocketLoader
             {
                 string fieldname = field.FieldType.Name;
 
-                if (field.FieldType.FullName.Contains("System.Collections.Generic.List"))
-                {
-                    fieldname = field.FieldType.FullName.Replace("System.Collections.Generic.List`1", "List");
-                }
-
+                fieldname = field.FieldType.FullName.Replace("SDG.Steam/", "").Replace("System.Collections.Generic.List`1", "List").Replace("UnityEngine.", "").Replace("SDG.", "").Replace("Steamworks.","");
+               
                 if (fieldname.ToLower() == typeToUnlock.ToLower())
                 {
                     outFields.Add(field);
