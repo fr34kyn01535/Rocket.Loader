@@ -27,6 +27,9 @@ namespace Rocket.RocketLoader
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error finding assemblies: " + e.ToString());
+#if DEBUG
+                    Console.ReadLine();
+#endif
                     Environment.Exit(1);
                 }
 
@@ -48,6 +51,9 @@ namespace Rocket.RocketLoader
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Unturned is already patched");
+#if DEBUG
+                        Console.ReadLine();
+#endif
                         Environment.Exit(1);
                     }
                 }
@@ -89,6 +95,9 @@ namespace Rocket.RocketLoader
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Your game was successfully patched");
+#if DEBUG
+                    Console.ReadLine();
+#endif
                     Environment.Exit(0);
                 }
             }
