@@ -115,7 +115,7 @@ namespace Rocket.RocketAPI
                     }
                     else
                     {
-                        Logger.LogError("Can not register command " + command.GetType().Assembly.GetName().Name + "." + command.commandName + " because its already registered by " + ccommand.GetType().Assembly.GetName().Name + "." + ccommand.commandName);
+                        Logger.LogWarning("Can not register command " + command.GetType().Assembly.GetName().Name + "." + command.commandName + " because its already registered by " + ccommand.GetType().Assembly.GetName().Name + "." + ccommand.commandName);
                         return;
                     }
                 }
