@@ -19,17 +19,28 @@ namespace Rocket.Commands
 
             string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
 
+            SteamPlayer p = PlayerTool.getSteamPlayer(caller.CSteamID);
+
             if (componentsFromSerial.Length > 1)
             {
                 RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
                 return;
             }
 
+
             SteamPlayerID player = caller;
 
             string name = "Your";
             if (componentsFromSerial.Length != 0)
             {
+
+                if (componentsFromSerial[0].ToString().ToLower() == "reload" && RocketPermissionManager.CheckPermissions(p, "p.reload"))
+                {
+                    RocketPermissionManager.ReloadPermissions();
+                    RocketChatManager.Say(caller.CSteamID, "Reloaded permissions");
+                    return;
+                }
+
                 ushort id = 0;
                 if (!ushort.TryParse(componentsFromSerial[0].ToString(), out id))
                 {

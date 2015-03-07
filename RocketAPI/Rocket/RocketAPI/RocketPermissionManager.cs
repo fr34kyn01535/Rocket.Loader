@@ -14,7 +14,7 @@ namespace Rocket.RocketAPI
 {
     public class RocketPermissionManager : RocketManagerComponent
     {
-        private string permissionsFile;
+        private static string permissionsFile;
         private static Permissions permissions;
 
         private static string webPermissionsUrl;
@@ -51,13 +51,17 @@ namespace Rocket.RocketAPI
         private static bool updated = false;
         private static DateTime lastUpdated = DateTime.MinValue;
 
-        public void FixedUpdate()
+        private void FixedUpdate()
         {
             if (updated && (DateTime.Now - lastUpdated) > TimeSpan.FromSeconds(permissions.WebPermissionsTimeout))
             {
                 updated = false;
                 getWebPermissions();
             }
+        }
+
+        internal static void ReloadPermissions() {
+            loadPermissions();
         }
 
         private static void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
@@ -101,7 +105,7 @@ namespace Rocket.RocketAPI
             updated = true;
         }
 
-        private void loadPermissions()
+        private static void loadPermissions()
         {
             if (File.Exists(permissionsFile))
             {
@@ -135,7 +139,7 @@ namespace Rocket.RocketAPI
                     permissions.Format = "[{0}] ";
                     permissions.Groups = new Group[] {
                             new Group("default","Guest", null , new List<string>() { "p", "reward","balance","pay","rocket" }),
-                            new Group("moderator","Moderator", new List<string>() { "76561197960287930" }, new List<string>() { "p", "tp", "tphere","i","test" })
+                            new Group("moderator","Moderator", new List<string>() { "76561197960287930" }, new List<string>() { "p", "p.reload", "tp", "tphere","i","test" })
                         };
                     permissions.WebPermissionsUrl = "";
                     permissions.WebPermissionsTimeout = 60;
