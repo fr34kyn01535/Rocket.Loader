@@ -8,6 +8,7 @@ namespace Rocket.RocketLoader.Patches
         public void Apply()
         {
             h.UnlockFieldByType("Vector3", "Position");
+            h.UnlockFieldByType("ENodeType", "NodeType");
         }
     }
 }
