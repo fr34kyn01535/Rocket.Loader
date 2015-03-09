@@ -10,7 +10,7 @@ namespace Rocket
         public static bool EnableRcon = false;
         public static string RconPassword = "changeme";
         public static int RconPort = 0;
-
+        
         public static bool EnableJoinLeaveMessages = false;
         public static string JoinMessage = "{0} connected to the server";
         public static string LeaveMessage = "{0} disconnected from the server";

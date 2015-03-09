@@ -20,7 +20,6 @@ namespace Rocket.Commands
         protected override void execute(SteamPlayerID caller, string command)
         {
             RocketChatManager.Say(caller.CSteamID, "Rocket v" + Assembly.GetExecutingAssembly().GetName().Version + " for Unturned v" + Steam.Version);
-            RocketChatManager.Say(caller.CSteamID, "https://github.com/RocketFoundation/Rocket/wiki/Contributors");
             RocketChatManager.Say(caller.CSteamID, "https://rocket.foundation © 2015");
         }
     }

@@ -10,6 +10,9 @@
             h.UnlockFieldByType("PantsUpdated", "OnPantsUpdated");
             h.UnlockFieldByType("BackpackUpdated", "OnBackpackUpdated");
             h.UnlockFieldByType("VestUpdated", "OnVestUpdated");
+            h.UnlockFieldByType("MaskUpdated", "OnMaskUpdated");
+            h.UnlockFieldByType("HatUpdated", "OnHatUpdated");
+            h.UnlockFieldByType("GlassesUpdated", "OnGlassesUpdated");
         }
     }
 }

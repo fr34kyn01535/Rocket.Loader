@@ -15,6 +15,12 @@
             h.UnlockFieldByType("AudioClip", "AudioClips");
             h.UnlockFieldByType("AnimationClip[]", "AnimationClips");
             h.UnlockFieldByType("Blueprint[]", "Blueprints");
+            h.UnlockFieldByType(typeof(byte), "SizeX");
+            h.UnlockFieldByType(typeof(byte), "SizeY", 1);
+            h.UnlockFieldByType(typeof(float), "SizeZ");
+            h.UnlockFieldByType(typeof(byte), "Amount", 2);
+
+
         }
     }
 }
