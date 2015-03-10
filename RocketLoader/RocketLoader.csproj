@@ -233,6 +233,7 @@
     <Compile Include="Patches\NodeLocation.cs" />
     <Compile Include="Patches\Node.cs" />
     <Compile Include="Patches\LevelNodes.cs" />
+    <Compile Include="Patches\PlayerSkills.cs" />
     <Compile Include="Patches\VehicleAsset.cs" />
     <Compile Include="Patches\ItemAsset.cs" />
     <Compile Include="Patches\Managers.cs" />

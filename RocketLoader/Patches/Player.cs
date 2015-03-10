@@ -15,6 +15,7 @@
             h.UnlockFieldByType("PlayerLook", "Look");
             h.UnlockFieldByType("PlayerClothing", "Clothing");
             h.UnlockFieldByType("PlayerInventory", "Inventory");
+            h.UnlockFieldByType("PlayerSkills", "Skills");
 
             h.UnlockFieldByType("PlayerLife", "PlayerLife");
             h.UnlockFieldByType("Player", "Instance");
