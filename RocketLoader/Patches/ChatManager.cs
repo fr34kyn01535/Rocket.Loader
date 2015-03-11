@@ -11,8 +11,9 @@ namespace Rocket.RocketLoader.Patches
         public void Apply()
         {
             h.UnlockFieldByType("Chat[]", "ChatLog");
+            h.UnlockFieldByType(typeof(string[]), "ChatFilter");
             h.UnlockFieldByType("ChatManager", "Instance");
-
+            
             MethodDefinition checkPermissions = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketAPI.RocketPermissionManager").Methods.AsEnumerable().Where(m => m.Name == "CheckPermissions").FirstOrDefault();
             MethodDefinition process = h.GetMethod("process");
             if (process != null)

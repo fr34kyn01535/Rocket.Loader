@@ -15,6 +15,22 @@ namespace Rocket
         public static string JoinMessage = "{0} connected to the server";
         public static string LeaveMessage = "{0} disconnected from the server";
 
+        //public static string[] ChatFilter = new string[] { "cunt", "dick", "pussy", "penis", "vagina", "fuck", "fucking", "fucked", "shit", "shitting", "shat", "damn", "damned", "hell", "cock", "whore", "fag", "faggot", "fag", "nigger" };
+
+        //[XmlArrayItem(ElementName= "ChatFilterListEntry")]
+        //[XmlArray(ElementName = "ChatFilterList")]
+        //public string[] chatFilter
+        //{
+        //    get
+        //    {
+        //        return ChatFilter;
+        //    }
+        //    set
+        //    {
+        //        ChatFilter = value;
+        //        SDG.ChatManager.ChatFilter = ChatFilter;
+        //    }
+        //}
 
         [XmlElement(ElementName = "EnableJoinLeaveMessages")]
         public bool enableJoinLeaveMessages
@@ -25,7 +41,7 @@ namespace Rocket
             }
             set
             {
-                EnableJoinLeaveMessages = value; ;
+                EnableJoinLeaveMessages = value;
             }
         }
 
@@ -38,7 +54,7 @@ namespace Rocket
             }
             set
             {
-                JoinMessage = value; ;
+                JoinMessage = value;
             }
         }
 
@@ -51,7 +67,7 @@ namespace Rocket
             }
             set
             {
-                LeaveMessage = value; ;
+                LeaveMessage = value;
             }
         }
 
@@ -64,7 +80,7 @@ namespace Rocket
             }
             set
             {
-                EnableRcon = value; ;
+                EnableRcon = value;
             }
         }
 
@@ -77,7 +93,7 @@ namespace Rocket
             }
             set
             {
-                RconPassword = value; ;
+                RconPassword = value;
             }
         }
 
@@ -101,13 +117,22 @@ namespace Rocket
             if (File.Exists(configFile))
             {
                 instance = new RocketSettings();
-                RocketSettings s = (RocketSettings)serializer.Deserialize(new StreamReader(configFile));
-                instance.enableRcon = s.enableRcon;
-                if (s.rconPassword != null) instance.rconPassword = s.rconPassword;
-                instance.rconPort = s.rconPort;
-                instance.joinMessage = s.joinMessage;
-                instance.leaveMessage = s.leaveMessage;
-                instance.enableJoinLeaveMessages = s.enableJoinLeaveMessages;
+                RocketSettings s;
+                using (StreamReader r = new StreamReader(configFile))
+                {
+                    s = (RocketSettings)serializer.Deserialize(r);
+                    instance.enableRcon = s.enableRcon;
+                    if (s.rconPassword != null) instance.rconPassword = s.rconPassword;
+                    instance.rconPort = s.rconPort;
+                    if (s.joinMessage != null) instance.joinMessage = s.joinMessage;
+                    if (s.leaveMessage != null) instance.leaveMessage = s.leaveMessage;
+                    instance.enableJoinLeaveMessages = s.enableJoinLeaveMessages;
+                   // if (s.chatFilter != null) instance.chatFilter = s.chatFilter;
+                }
+                using (StreamWriter w = new StreamWriter(configFile))
+                {
+                    serializer.Serialize(w, instance);
+                }
             }
             else
             {
