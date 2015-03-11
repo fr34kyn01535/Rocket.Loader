@@ -49,8 +49,12 @@ namespace Rocket.RocketAPI.Events
                     if (instance.OnUpdateLife != null) instance.OnUpdateLife(s.Player, (byte)R[0]);
                     break;
                 case "tellDead":
-                    if (OnPlayerDeath != null) OnPlayerDeath(s.Player, (Vector3)R[0]);
-                    if (instance.OnDeath != null) instance.OnDeath(s.Player, (Vector3)R[0]);
+                    if (OnPlayerDead != null) OnPlayerDead(s.Player, (Vector3)R[0]);
+                    if (instance.OnDead != null) instance.OnDead(s.Player, (Vector3)R[0]);
+                    break;
+                case "tellDeath":
+                    if (OnPlayerDeath != null) OnPlayerDeath(s.Player, (EDeathCause)(byte)R[0], (ELimb)(byte)R[1], new CSteamID(ulong.Parse(R[2].ToString())));
+                    if (instance.OnDeath != null) instance.OnDeath(s.Player, (EDeathCause)(byte)R[0], (ELimb)(byte)R[1], new CSteamID(ulong.Parse(R[2].ToString())));
                     break;
                 case "tellFood":
                     if (OnPlayerUpdateFood != null) OnPlayerUpdateFood(s.Player, (byte)R[0]);
@@ -88,7 +92,7 @@ namespace Rocket.RocketAPI.Events
                     {
                         o += r.ToString();
                     }
-                    //Logger.Log(s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
+                    Logger.Log(s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
 #endif
                     break;
             }
@@ -106,9 +110,13 @@ namespace Rocket.RocketAPI.Events
         public static event PlayerUpdatePosition OnPlayerUpdatePosition;
         public event PlayerUpdatePosition OnUpdatePosition;
 
-        public delegate void PlayerDeath(SDG.Player player, Vector3 position);
+        public delegate void PlayerDeath(SDG.Player player, EDeathCause cause, ELimb limb, CSteamID murderer);
         public static event PlayerDeath OnPlayerDeath;
         public event PlayerDeath OnDeath;
+
+        public delegate void PlayerDead(SDG.Player player, Vector3 position);
+        public static event PlayerDead OnPlayerDead;
+        public event PlayerDead OnDead;
 
         public delegate void PlayerUpdateLife(SDG.Player player, byte life);
         public static event PlayerUpdateLife OnPlayerUpdateLife;

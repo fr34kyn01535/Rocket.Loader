@@ -1,5 +1,4 @@
-﻿using SDG;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,7 +25,7 @@ namespace VersionInfo
 
         private static string getUnturnedVersion()
         {
-            Type t = typeof(Steam);
+            Type t = typeof(SDG.Steam);
             FieldInfo field = t.GetFields().Where(f => f.IsStatic == true && f.FieldType == typeof(string)).FirstOrDefault();
             return (string)field.GetValue(null);
         }

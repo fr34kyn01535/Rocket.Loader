@@ -19,8 +19,8 @@ namespace Rocket.Commands
         {
             if (!RocketCommand.IsPlayer(caller)) return;
 
-            SteamPlayer otherPlayer;
-            if (!String.IsNullOrEmpty(command) && SteamPlayerlist.tryGetSteamPlayer(command, out otherPlayer) && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
+            SteamPlayer otherPlayer = PlayerTool.getSteamPlayer(command);
+            if (otherPlayer!=null && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
             {
                 SteamPlayer myPlayer = PlayerTool.getSteamPlayer(caller.CSteamID);
 

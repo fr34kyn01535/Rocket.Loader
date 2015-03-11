@@ -110,8 +110,9 @@
     <Compile Include="Rocket\RocketAPI\Events\RocketServerEvents.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Rocket\RocketAPI\Extensions\Player.cs" />
+    <Compile Include="Rocket\RocketAPI\RocketChatManager.cs" />
     <Compile Include="Rocket\RocketAPI\RocketCommand.cs" />
-    <Compile Include="Rocket\RocketAPI\RocketPlayer.cs" />
     <Compile Include="Rocket\RocketAPI\RocketPlayerFeatures.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -124,7 +125,6 @@
     <Compile Include="Rocket\Commands\CommandLag.cs" />
     <Compile Include="Rocket\Commands\CommandRocket.cs" />
     <Compile Include="Rocket\Commands\CommandP.cs" />
-    <Compile Include="Rocket\RocketAPI\RocketChatManager.cs" />
     <Compile Include="Rocket\Commands\CommandTp.cs" />
     <Compile Include="Rocket\Commands\CommandTphere.cs" />
     <Compile Include="Rocket\Commands\CommandI.cs" />

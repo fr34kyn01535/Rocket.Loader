@@ -20,10 +20,8 @@ namespace Rocket.Commands
         {
             if (!RocketCommand.IsPlayer(caller)) return;
 
-            SteamPlayer otherPlayer;
             SteamPlayer myPlayer = PlayerTool.getSteamPlayer(caller.CSteamID);
 
-            
             if(String.IsNullOrEmpty(command)){
                 RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
                 return;
@@ -33,10 +31,11 @@ namespace Rocket.Commands
             {
                 RocketChatManager.Say(caller.CSteamID, "You can't teleport while you are driving");
                 return;
-            } 
+            }
 
 
-            if (SteamPlayerlist.tryGetSteamPlayer(command, out otherPlayer) && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
+            SteamPlayer otherPlayer = PlayerTool.getSteamPlayer(command);
+            if (otherPlayer!=null && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
             {
 
                 

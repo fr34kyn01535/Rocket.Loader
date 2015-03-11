@@ -9,7 +9,6 @@ namespace Rocket.RocketAPI
 {
     public class RocketPlayerFeatures : RocketPlayerComponent
     {
-        private RocketPlayer p = null;
         private RocketPlayerEvents e = null;
         private Player pl = null;
         private bool godMode = false;
@@ -47,7 +46,6 @@ namespace Rocket.RocketAPI
             if (!RocketPermissionManager.CheckReservedSlotSpace(pl.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID)) return;
             if (!RocketPermissionManager.CheckWhitelisted(pl.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID)) return;
 
-            p = gameObject.transform.GetComponent<RocketPlayer>();
             e = gameObject.transform.GetComponent<RocketPlayerEvents>();
 
             if (godMode)
@@ -56,31 +54,31 @@ namespace Rocket.RocketAPI
                 e.OnUpdateWater += e_OnPlayerUpdateWater;
                 e.OnUpdateFood += e_OnPlayerUpdateFood;
                 e.OnUpdateVirus += e_OnPlayerUpdateVirus;
-                p.Heal(100);
-                p.Infection = 0;
-                p.Hunger = 0;
-                p.Thirst = 0;
+                pl.Heal(100);
+                pl.SetInfection(0);
+                pl.SetHunger(0);
+                pl.SetThirst(0);
             }
         }
 
         private void e_OnPlayerUpdateVirus(Player player, byte virus)
         {
-            if (virus < 95) p.Infection = 0;
+            if (virus < 95) pl.SetInfection(0);
         }
 
         private void e_OnPlayerUpdateFood(Player player, byte food)
         {
-            if (food < 95 ) p.Hunger = 0;
+            if (food < 95) pl.SetHunger(0);
         }
 
         private void e_OnPlayerUpdateWater(Player player, byte water)
         {
-            if (water < 95) p.Thirst = 0;
+            if (water < 95) pl.SetThirst(0);
         }
 
         private void e_OnPlayerUpdateHealth(Player player, byte health)
         {
-            if (health < 95) p.Heal(100);
+            if (health < 95) pl.Heal(100);
         }
     }
 }
