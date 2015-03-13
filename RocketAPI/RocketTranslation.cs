@@ -34,7 +34,7 @@ namespace Rocket.RocketAPI
             {"command_p_groups_private","{0} groups are: {1}"},
             {"command_p_permissions_private","{0} permissions are: {1}"},
             {"command_tp_teleport_console","{0} teleported to {1}"},
-            {"command_tp_teleport_private","Teleported to {1}"},
+            {"command_tp_teleport_private","Teleported to {0}"},
             {"command_tp_failed_find_destination","Failed to find destination"},
             {"command_tphere_teleport_console","{0} was teleported to {1}"},
             {"command_tphere_teleport_from_private","Teleported {0} to you"},
