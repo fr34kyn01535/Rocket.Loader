@@ -33,7 +33,7 @@ namespace Rocket.RocketAPI
     public class RocketPlugin : RocketManagerComponent
     {
         public static bool Loaded = false;
-        public static Dictionary<string, string> Translations;
+        public static Dictionary<string, string> Translations = null;
         public virtual Dictionary<string, string> DefaultTranslations { get { return new Dictionary<string, string>(); } }
 
         public void Start()
@@ -47,6 +47,10 @@ namespace Rocket.RocketAPI
             
             try
             {
+#if DEBUG
+                int c = DefaultTranslations == null ? 0 : DefaultTranslations.Count;
+                Logger.Log("Loading " + c + " translations for " + this.GetType().Assembly.GetName().Name);
+#endif
                 Translations = RocketTranslationHelper.LoadTranslation(this.GetType().Assembly.GetName().Name, DefaultTranslations);
             }
             catch (Exception ex)
@@ -59,10 +63,17 @@ namespace Rocket.RocketAPI
 
         public static string Translate(string translationKey, params object[] placeholder)
         {
-            string value = translationKey;
+            string value = null;
             if (Translations != null)
             {
                 Translations.TryGetValue(translationKey, out value);
+                if (value == null) value = translationKey;
+
+                for (int i = 0; i < placeholder.Length; i++)
+                {
+                    if (placeholder[i] == null) placeholder[i] = "NULL";
+                }
+
                 if (value.Contains("{0}") && placeholder != null && placeholder.Length != 0)
                 {
                     value = String.Format(value, placeholder);

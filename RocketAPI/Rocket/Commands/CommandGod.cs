@@ -23,13 +23,13 @@ namespace Rocket.Commands
             if (pf.GodMode)
             {
                 Logger.Log(RocketTranslation.Translate("command_god_disable_console", caller.CharacterName));
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_god_disable_privatechat"));
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_god_disable_private"));
                 pf.GodMode = false;
             }
             else
             {
                 Logger.Log(RocketTranslation.Translate("command_god_enable_console", caller.CharacterName));
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_god_enable_privatechat"));
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_god_enable_private"));
                 pf.GodMode = true;
             }
         }

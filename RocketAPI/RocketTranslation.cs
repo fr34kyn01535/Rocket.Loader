@@ -50,10 +50,17 @@ namespace Rocket.RocketAPI
 
         public static string Translate(string translationKey, params object[] placeholder)
         {
-            string value = translationKey;
+            string value = null;
             if (translations != null)
             {
                 translations.TryGetValue(translationKey, out value);
+                if (value == null) value = translationKey;
+
+                for (int i = 0; i < placeholder.Length; i++)
+                {
+                    if (placeholder[i] == null) placeholder[i] = "NULL";
+                }
+
                 if (value.Contains("{0}") && placeholder != null && placeholder.Length != 0)
                 {
                     value = String.Format(value, placeholder);
