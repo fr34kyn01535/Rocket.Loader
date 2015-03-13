@@ -17,8 +17,8 @@ namespace Rocket
         internal static Bootstrap Instance;
 
         private float updateInterval = 0.005F;
-        internal static DateTime Started = DateTime.UtcNow;
-        internal static float TPS = 0; 
+        public static DateTime Started = DateTime.UtcNow;
+        public static float TPS = 0; 
         private float accum = 0;
         private int frames = 0;
         private float timeleft;
