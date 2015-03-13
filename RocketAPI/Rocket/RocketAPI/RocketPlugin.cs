@@ -63,7 +63,10 @@ namespace Rocket.RocketAPI
             if (Translations != null)
             {
                 Translations.TryGetValue(translationKey, out value);
-                value = String.Format(value, placeholder);
+                if (value.Contains("{0}") && placeholder != null && placeholder.Length != 0)
+                {
+                    value = String.Format(value, placeholder);
+                }
             }
             return value;
         }
