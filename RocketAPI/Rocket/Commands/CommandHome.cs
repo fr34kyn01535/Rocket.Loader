@@ -23,14 +23,14 @@ namespace Rocket.Commands
             byte rot;
             if (!BarricadeManager.tryGetBed(caller.CSteamID, out pos, out rot))
             {
-                RocketChatManager.Say(caller.CSteamID, "You do not have a bed to teleport to.");
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_bed_no_bed_found_private"));
             }
             else
             {
                 SteamPlayer player = PlayerTool.getSteamPlayer(caller.CSteamID);
                 if (player.Player.Stance.Stance == EPlayerStance.DRIVING || player.Player.Stance.Stance == EPlayerStance.SITTING)
                 {
-                    RocketChatManager.Say(caller.CSteamID, "You cannot teleport home when driving or riding in a vehicle.");
+                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_teleport_while_driving_error"));
                 }
                 else
                 {

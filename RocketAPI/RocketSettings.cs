@@ -12,8 +12,7 @@ namespace Rocket
         public static int RconPort = 0;
         
         public static bool EnableJoinLeaveMessages = false;
-        public static string JoinMessage = "{0} connected to the server";
-        public static string LeaveMessage = "{0} disconnected from the server";
+        public static string LanguageCode = "en";
 
         //public static string[] ChatFilter = new string[] { "cunt", "dick", "pussy", "penis", "vagina", "fuck", "fucking", "fucked", "shit", "shitting", "shat", "damn", "damned", "hell", "cock", "whore", "fag", "faggot", "fag", "nigger" };
 
@@ -32,6 +31,19 @@ namespace Rocket
         //    }
         //}
 
+        [XmlElement(ElementName = "LanguageCode")]
+        public string languageCode
+        {
+            get
+            {
+                return LanguageCode;
+            }
+            set
+            {
+                LanguageCode = value;
+            }
+        }
+
         [XmlElement(ElementName = "EnableJoinLeaveMessages")]
         public bool enableJoinLeaveMessages
         {
@@ -42,32 +54,6 @@ namespace Rocket
             set
             {
                 EnableJoinLeaveMessages = value;
-            }
-        }
-
-        [XmlElement(ElementName = "JoinMessage")]
-        public string joinMessage
-        {
-            get
-            {
-                return JoinMessage;
-            }
-            set
-            {
-                JoinMessage = value;
-            }
-        }
-
-        [XmlElement(ElementName = "LeaveMessage")]
-        public string leaveMessage
-        {
-            get
-            {
-                return LeaveMessage;
-            }
-            set
-            {
-                LeaveMessage = value;
             }
         }
 
@@ -113,7 +99,7 @@ namespace Rocket
         internal static void LoadSettings()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(RocketSettings));
-            string configFile = Path.Combine(HomeFolder, "Rocket.config");
+            string configFile = Path.Combine(HomeFolder, "Rocket.config.xml");
             if (File.Exists(configFile))
             {
                 instance = new RocketSettings();
@@ -124,8 +110,6 @@ namespace Rocket
                     instance.enableRcon = s.enableRcon;
                     if (s.rconPassword != null) instance.rconPassword = s.rconPassword;
                     instance.rconPort = s.rconPort;
-                    if (s.joinMessage != null) instance.joinMessage = s.joinMessage;
-                    if (s.leaveMessage != null) instance.leaveMessage = s.leaveMessage;
                     instance.enableJoinLeaveMessages = s.enableJoinLeaveMessages;
                    // if (s.chatFilter != null) instance.chatFilter = s.chatFilter;
                 }

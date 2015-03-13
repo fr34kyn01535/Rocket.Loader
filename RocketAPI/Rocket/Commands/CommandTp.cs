@@ -23,13 +23,13 @@ namespace Rocket.Commands
             SteamPlayer myPlayer = PlayerTool.getSteamPlayer(caller.CSteamID);
 
             if(String.IsNullOrEmpty(command)){
-                RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
             if (myPlayer.Player.Stance.Stance == EPlayerStance.DRIVING || myPlayer.Player.Stance.Stance == EPlayerStance.SITTING)
             {
-                RocketChatManager.Say(caller.CSteamID, "You can't teleport while you are driving");
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_teleport_while_driving_error"));
                 return;
             }
 
@@ -42,8 +42,8 @@ namespace Rocket.Commands
                 Vector3 d1 = otherPlayer.Player.transform.position;
                 Vector3 vector31 = otherPlayer.Player.transform.rotation.eulerAngles;
                 myPlayer.Player.sendTeleport(d1, MeasurementTool.angleToByte(vector31.y));
-                Logger.Log(caller.CharacterName + " teleported to " + otherPlayer.SteamPlayerID.CharacterName);
-                RocketChatManager.Say(caller.CSteamID, "Teleported to " + otherPlayer.SteamPlayerID.CharacterName);
+                Logger.Log(RocketTranslation.Translate("command_tp_teleport_console", caller.CharacterName, otherPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_tp_teleport_private", otherPlayer.SteamPlayerID.CharacterName));
             }
             else {
                 Node item = LevelNodes.Nodes.Where(n => n.NodeType == ENodeType.Location && ((NodeLocation)n).Name.ToLower().Contains(command.ToLower())).FirstOrDefault();
@@ -52,12 +52,12 @@ namespace Rocket.Commands
                     Vector3 c = item.Position + new Vector3(0f, 0.5f, 0f);
                     Vector3 vector31 = myPlayer.Player.transform.rotation.eulerAngles;
                     myPlayer.Player.sendTeleport(c, MeasurementTool.angleToByte(vector31.y));
-                    Logger.Log(caller.CharacterName + " teleported to " + ((NodeLocation)item).Name);
-                    RocketChatManager.Say(caller.CSteamID, "Teleported to " + ((NodeLocation)item).Name);
+                    Logger.Log(RocketTranslation.Translate("command_tp_teleport_console", caller.CharacterName, ((NodeLocation)item).Name));
+                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_tp_teleport_private", ((NodeLocation)item).Name));
                 }
                 else
                 {
-                    RocketChatManager.Say(caller.CSteamID, "Failed to find destination");
+                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_tp_failed_find_destination"));
                 }
             }
         }

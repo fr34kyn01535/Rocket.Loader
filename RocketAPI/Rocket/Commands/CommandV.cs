@@ -22,7 +22,7 @@ namespace Rocket.Commands
 
             if (componentsFromSerial.Length == 0 || componentsFromSerial.Length > 1)
             {
-                RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace Rocket.Commands
                 }
                 if (String.IsNullOrEmpty(itemString.Trim()) || id == 0)
                 {
-                    RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
+                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
                     return;
                 }
             }
@@ -55,12 +55,12 @@ namespace Rocket.Commands
             SDG.Player player = PlayerTool.getPlayer(caller.CSteamID);
             if (VehicleTool.giveVehicle(player, id))
             {
-                Logger.Log("Giving " + caller.CharacterName + " vehicle " + id);
-                RocketChatManager.Say(caller.CSteamID, "Giving you a " + assetName + " (" + id + ")");
+                Logger.Log(RocketTranslation.Translate("command_v_giving_console", caller.CharacterName, id));
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_v_giving_private", assetName, id));
             }
             else
             {
-                RocketChatManager.Say(caller.CSteamID, "Failed giving you a " + assetName + " (" + id + ")");
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_v_giving_failed_private", assetName, id));
             }
         }
     }

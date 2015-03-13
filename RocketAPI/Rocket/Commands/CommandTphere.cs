@@ -27,13 +27,13 @@ namespace Rocket.Commands
                 Vector3 d1 = myPlayer.Player.transform.position;
                 Vector3 vector31 = myPlayer.Player.transform.rotation.eulerAngles;
                 otherPlayer.Player.sendTeleport(d1, MeasurementTool.angleToByte(vector31.y));
-                Logger.Log(otherPlayer.SteamPlayerID.CharacterName + " was teleported to " + myPlayer.SteamPlayerID.CharacterName);
-                RocketChatManager.Say(caller.CSteamID, "Teleported " + otherPlayer.SteamPlayerID.CharacterName + " to you");
-                RocketChatManager.Say(otherPlayer.SteamPlayerID.CSteamID, "You were teleported to " + myPlayer.SteamPlayerID.CharacterName);
+                Logger.Log(RocketTranslation.Translate("command_tphere_teleport_console", otherPlayer.SteamPlayerID.CharacterName, myPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(caller.CSteamID,RocketTranslation.Translate("command_tphere_teleport_from_private",otherPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(otherPlayer.SteamPlayerID.CSteamID, RocketTranslation.Translate("command_tphere_teleport_to_private",myPlayer.SteamPlayerID.CharacterName));
             }
             else
             {
-                RocketChatManager.Say(caller.CSteamID, "Failed to find player");
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_tphere_failed_find_player"));
             }
         }
     }

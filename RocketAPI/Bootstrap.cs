@@ -66,10 +66,36 @@ namespace Rocket
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Plugins/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Plugins/");
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Libraries/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Libraries/");
 
+                /*Cleaning the workspace...*/
+                foreach (string file in Directory.GetFiles(RocketSettings.HomeFolder, "*.config", SearchOption.AllDirectories)) {
+                    if (!File.Exists(file + ".xml"))
+                        File.Move(file, file + ".xml");
+                }
+                try
+                {
+                if (Directory.Exists(RocketSettings.HomeFolder + "Plugins/Libraries/")) {
+                    foreach (string file in Directory.GetFiles(RocketSettings.HomeFolder + "Plugins/Libraries/", "*"))
+                    {
+                        if (!File.Exists(RocketSettings.HomeFolder + "Libraries/" + file))
+                            File.Move(file, RocketSettings.HomeFolder + "Libraries/" + Path.GetFileName(file));
+                    }
+                    Directory.Delete(RocketSettings.HomeFolder + "Plugins/Libraries/", true);
+                }
+
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex.ToString());
+                }
+
 #if DEBUG
                 Console.WriteLine("LoadSettings");
 #endif
                 RocketSettings.LoadSettings();
+#if DEBUG
+                Console.WriteLine("LoadTranslations");
+#endif
+                RocketTranslation.LoadTranslations();
 #if DEBUG
                 Console.WriteLine("BindEvents");
 #endif

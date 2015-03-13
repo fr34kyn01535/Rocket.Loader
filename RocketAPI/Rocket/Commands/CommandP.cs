@@ -23,7 +23,7 @@ namespace Rocket.Commands
 
             if (componentsFromSerial.Length > 1)
             {
-                RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
@@ -37,22 +37,22 @@ namespace Rocket.Commands
                 if (componentsFromSerial[0].ToString().ToLower() == "reload" && RocketPermissionManager.CheckPermissions(p, "p.reload"))
                 {
                     RocketPermissionManager.ReloadPermissions();
-                    RocketChatManager.Say(caller.CSteamID, "Reloaded permissions");
+                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_p_reload_private"));
                     return;
                 }
 
                 ushort id = 0;
                 if (!ushort.TryParse(componentsFromSerial[0].ToString(), out id))
                 {
-                    RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
+                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
                     return;
                 }
                 player = PlayerTool.getPlayer(caller.CSteamID).SteamChannel.SteamPlayer.SteamPlayerID;
                 name = player.CharacterName + "s";
             }
 
-            RocketChatManager.Say(caller.CSteamID, name + " groups are: " + String.Join(", ", RocketPermissionManager.GetDisplayGroups(player.CSteamID)));
-            RocketChatManager.Say(caller.CSteamID, name + " permissions are: " + String.Join(", ", RocketPermissionManager.GetPermissions(player.CSteamID)));
+            RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_p_groups_private", name, String.Join(", ", RocketPermissionManager.GetDisplayGroups(player.CSteamID))));
+            RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_p_permissions_private", name, String.Join(", ", RocketPermissionManager.GetPermissions(player.CSteamID))));
         }
     }
 }

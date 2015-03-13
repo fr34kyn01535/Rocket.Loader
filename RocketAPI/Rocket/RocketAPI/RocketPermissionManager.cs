@@ -25,7 +25,7 @@ namespace Rocket.RocketAPI
             Logger.Log("Awake RocketPermissionManager");
 #endif
             base.Awake();
-            permissionsFile = RocketSettings.HomeFolder + "Permissions.config";
+            permissionsFile = RocketSettings.HomeFolder + "Permissions.config.xml";
             loadPermissions();
             webPermissionsUrl = String.IsNullOrEmpty(permissions.WebPermissionsUrl) ? "" : permissions.WebPermissionsUrl.Trim() + "?instance=" + Steam.InstanceName;
             updated = true;
@@ -221,7 +221,7 @@ namespace Rocket.RocketAPI
 
             foreach (Group group in RocketPermissionManager.permissions.Groups)
             {
-                if (group.Commands.Contains(commandstring.ToLower()) || group.Commands.Contains("*"))
+                if (group.Commands.Where(c => c.StartsWith(commandstring.ToLower()) || c.StartsWith(commandstring.ToLower() + ".")).Count() != 0 || group.Commands.Contains("*"))
                 {
                     if (group.Id.ToLower() == permissions.DefaultGroupName) return true;
                     if (group.Members.Contains(player.SteamPlayerID.CSteamID.ToString().ToLower())) return true;

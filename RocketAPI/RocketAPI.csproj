@@ -104,6 +104,8 @@
   <ItemGroup>
     <Compile Include="Rocket\Commands\CommandHome.cs" />
     <Compile Include="Rocket\Commands\CommandV.cs" />
+    <Compile Include="RocketTranslation.cs" />
+    <Compile Include="Rocket\RocketAPI\Translation\RocketTranslationHelper.cs" />
     <Compile Include="Rocket\RocketAPI\Events\RocketPlayerInventoryEvents.cs" />
     <Compile Include="Rocket\RocketAPI\Events\RocketPlayerLifeEvents.cs" />
     <Compile Include="Rocket\RocketAPI\Events\RocketPlayerEvents.cs" />
@@ -130,7 +132,7 @@
     <Compile Include="Rocket\Commands\CommandI.cs" />
     <Compile Include="Rocket\RocketAPI\RocketPlugin.cs" />
     <Compile Include="Rocket\Components\RocketManagerComponent.cs" />
-    <Compile Include="Rocket\RocketAPI\RocketConfiguration.cs" />
+    <Compile Include="Rocket\RocketAPI\Configuration\RocketConfiguration.cs" />
     <Compile Include="Rocket\Components\RocketPlayerComponent.cs" />
     <Compile Include="Rocket\RocketAPI\RocketPluginManager.cs" />
     <Compile Include="Rocket\Rcon\RocketRconServer.cs" />

@@ -22,14 +22,14 @@ namespace Rocket.Commands
             RocketPlayerFeatures pf = p.gameObject.transform.GetComponent<RocketPlayerFeatures>();
             if (pf.GodMode)
             {
-                Logger.Log(caller.CharacterName + " disabled Godmode");
-                RocketChatManager.Say(caller.CSteamID, "The godly powers left you...");
+                Logger.Log(RocketTranslation.Translate("command_god_disable_console", caller.CharacterName));
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_god_disable_privatechat"));
                 pf.GodMode = false;
             }
             else
             {
-                Logger.Log(caller.CharacterName + " enabled Godmode");
-                RocketChatManager.Say(caller.CSteamID, "You can feel the strength now...");
+                Logger.Log(RocketTranslation.Translate("command_god_enable_console", caller.CharacterName));
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_god_enable_privatechat"));
                 pf.GodMode = true;
             }
         }

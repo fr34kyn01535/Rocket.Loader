@@ -145,17 +145,17 @@ namespace Rocket.RocketAPI
                 player.gameObject.AddComponent(component);
             }
 
-            if (RocketSettings.EnableJoinLeaveMessages && !String.IsNullOrEmpty(RocketSettings.JoinMessage))
+            if (RocketSettings.EnableJoinLeaveMessages)
             {
-                RocketChatManager.Say(String.Format(RocketSettings.JoinMessage, player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(RocketTranslation.Translate("rocket_join_public", player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
             }
         }
 
         private void onPlayerDisconnected(CSteamID id)
         {
-            if(RocketSettings.EnableJoinLeaveMessages && !String.IsNullOrEmpty(RocketSettings.LeaveMessage)){
+            if(RocketSettings.EnableJoinLeaveMessages){
                 SDG.Player player = PlayerTool.getPlayer(id);
-                RocketChatManager.Say(String.Format(RocketSettings.LeaveMessage, player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(RocketTranslation.Translate("rocket_leave_public", player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
             }
         }
 

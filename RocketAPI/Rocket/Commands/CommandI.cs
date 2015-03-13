@@ -22,7 +22,7 @@ namespace Rocket.Commands
 
             if (componentsFromSerial.Length == 0 || componentsFromSerial.Length > 2)
             {
-                RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace Rocket.Commands
                 }
                 if (String.IsNullOrEmpty(itemString.Trim()) || id == 0)
                 {
-                    RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
+                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
                     return;
                 }
             }
@@ -53,19 +53,19 @@ namespace Rocket.Commands
 
             if (componentsFromSerial.Length == 2 && !byte.TryParse(componentsFromSerial[1].ToString(), out amount))
             {
-                RocketChatManager.Say(caller.CSteamID, "Invalid Parameter");
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
             SDG.Player player = PlayerTool.getPlayer(caller.CSteamID);
             if (ItemTool.tryForceGiveItem(player, id, amount))
             {
-                Logger.Log("Giving " + caller.CharacterName +" item " + id + ":" + amount);
-                RocketChatManager.Say(caller.CSteamID, "Giving you " + amount + "x " + assetName + " ("+id+")");
+                Logger.Log(RocketTranslation.Translate("command_i_giving_console", caller.CharacterName, id, amount));
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_i_giving_private", amount, assetName, id));
             }
             else
             {
-                RocketChatManager.Say(caller.CSteamID, "Failed giving you " + amount + "x " + assetName + " (" + id + ")");
+                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_i_giving_failed_private", amount, assetName, id));
             }
         }
     }

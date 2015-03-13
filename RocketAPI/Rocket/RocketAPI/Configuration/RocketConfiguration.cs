@@ -14,10 +14,10 @@ namespace Rocket.RocketAPI
 
     public static class RocketConfigurationHelper
     {
-        private static string pluginFolder = "{0}Plugins/{1}/{1}.config";
+        private static string configurationFile = "{0}Plugins/{1}/{1}.config.xml";
         public static T LoadConfiguration<T>()
         {
-            string filename = String.Format(pluginFolder, RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
+            string filename = String.Format(configurationFile, RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
             if (File.Exists(filename))
             {
                 try
@@ -80,7 +80,7 @@ namespace Rocket.RocketAPI
 
         public static T SaveConfiguration<T>()
         {
-            string filename = String.Format(pluginFolder, RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
+            string filename = String.Format(configurationFile, RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             using (TextWriter writer = new StreamWriter(filename))
             {
