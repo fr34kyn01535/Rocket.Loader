@@ -9,8 +9,8 @@ namespace Rocket.RocketAPI
 
     public class RocketPlugin<TConfiguration> : RocketPlugin
     {
-        public static TConfiguration Configuration;
-        public static string HomeDirectory;
+        public TConfiguration Configuration;
+        public string HomeDirectory;
 
         public override void Awake()
         {
@@ -32,8 +32,8 @@ namespace Rocket.RocketAPI
 
     public class RocketPlugin : RocketManagerComponent
     {
-        public static bool Loaded = false;
-        public static Dictionary<string, string> Translations = null;
+        public bool Loaded = false;
+        public Dictionary<string, string> Translations = null;
         public virtual Dictionary<string, string> DefaultTranslations { get { return new Dictionary<string, string>(); } }
 
         public void Start()
@@ -61,20 +61,26 @@ namespace Rocket.RocketAPI
             Loaded = true;
         }
 
-        public static string Translate(string translationKey, params object[] placeholder)
+        public string Translate(string translationKey, params object[] placeholder)
         {
-            string value = null;
+            string value = translationKey;
             if (Translations != null)
             {
+                Logger.Log("Allkeys:");
+                foreach(string k in Translations.Keys){
+                    Logger.Log(k);
+                }
+                Logger.Log("Where is !:" + translationKey);
+
+
                 Translations.TryGetValue(translationKey, out value);
-                if (value == null) value = translationKey;
 
                 for (int i = 0; i < placeholder.Length; i++)
                 {
                     if (placeholder[i] == null) placeholder[i] = "NULL";
                 }
 
-                if (value.Contains("{0}") && placeholder != null && placeholder.Length != 0)
+                if (value != null && value.Contains("{0}") && placeholder != null && placeholder.Length != 0)
                 {
                     value = String.Format(value, placeholder);
                 }
