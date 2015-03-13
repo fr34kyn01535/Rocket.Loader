@@ -66,13 +66,6 @@ namespace Rocket.RocketAPI
             string value = translationKey;
             if (Translations != null)
             {
-                Logger.Log("Allkeys:");
-                foreach(string k in Translations.Keys){
-                    Logger.Log(k);
-                }
-                Logger.Log("Where is !:" + translationKey);
-
-
                 Translations.TryGetValue(translationKey, out value);
 
                 for (int i = 0; i < placeholder.Length; i++)
