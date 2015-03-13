@@ -82,16 +82,17 @@ namespace Rocket.RocketAPI
         {
             string filename = String.Format(configurationFile, RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
             XmlSerializer serializer = new XmlSerializer(typeof(T));
+
+            T config = (T)Activator.CreateInstance(typeof(T));
             using (TextWriter writer = new StreamWriter(filename))
             {
-                object config = Activator.CreateInstance(typeof(T));
                 if (typeof(T).GetInterfaces().Contains(typeof(RocketConfiguration)))
                 {
-                    config = ((RocketConfiguration)config).DefaultConfiguration;
+                    config = (T)((RocketConfiguration)config).DefaultConfiguration;
                 }
                 serializer.Serialize(writer, config);
             }
-            return (T)Activator.CreateInstance(typeof(T));
+            return config;
         }
     }
 }
