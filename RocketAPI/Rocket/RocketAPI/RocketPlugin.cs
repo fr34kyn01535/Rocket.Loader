@@ -63,22 +63,31 @@ namespace Rocket.RocketAPI
 
         public string Translate(string translationKey, params object[] placeholder)
         {
-            string value = translationKey;
-            if (Translations != null)
+            try
             {
-                Translations.TryGetValue(translationKey, out value);
 
-                for (int i = 0; i < placeholder.Length; i++)
+                string value = translationKey;
+                if (Translations != null)
                 {
-                    if (placeholder[i] == null) placeholder[i] = "NULL";
-                }
+                    Translations.TryGetValue(translationKey, out value);
 
-                if (value != null && value.Contains("{0}") && placeholder != null && placeholder.Length != 0)
-                {
-                    value = String.Format(value, placeholder);
+                    for (int i = 0; i < placeholder.Length; i++)
+                    {
+                        if (placeholder[i] == null) placeholder[i] = "NULL";
+                    }
+
+                    if (value != null && value.Contains("{0}") && placeholder != null && placeholder.Length != 0)
+                    {
+                        value = String.Format(value, placeholder);
+                    }
                 }
+                return value;
             }
-            return value;
+            catch (Exception er)
+            {
+                Logger.LogError("Error fetching translation for " + translationKey + ": " + er.ToString());
+                return translationKey;
+            }
         }
 
         protected virtual void Load()

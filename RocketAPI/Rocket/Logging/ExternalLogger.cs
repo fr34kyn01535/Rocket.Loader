@@ -53,8 +53,8 @@ namespace Rocket.Logging
 
         public static void ProcessLog(ELogType type, string message, object context = null)
         {
-            if (String.IsNullOrEmpty(RocketSettings.HomeFolder)) return;
-            StreamWriter streamWriter = File.AppendText(RocketSettings.HomeFolder + "Rocket.log");
+            if (String.IsNullOrEmpty(RocketSettings.HomeFolder) || !Directory.Exists(RocketSettings.HomeFolder + "Logs/")) return;
+            StreamWriter streamWriter = File.AppendText(RocketSettings.HomeFolder + "Logs/" + "Rocket.log");
             streamWriter.WriteLine("[" + DateTime.Now + "] " + message);
             streamWriter.Close();
             RocketRconServer.ProcessLog(type, message);

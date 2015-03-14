@@ -65,18 +65,31 @@ namespace Rocket
                 if (!Directory.Exists(RocketSettings.HomeFolder)) Directory.CreateDirectory(RocketSettings.HomeFolder);
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Plugins/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Plugins/");
                 if (!Directory.Exists(RocketSettings.HomeFolder + "Libraries/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Libraries/");
+                if (!Directory.Exists(RocketSettings.HomeFolder + "Logs/")) Directory.CreateDirectory(RocketSettings.HomeFolder + "Logs/");
+                if (File.Exists(RocketSettings.HomeFolder + "Logs/Rocket.log"))
+                {
+                    string ver = ((int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds).ToString();
+                    File.Move(RocketSettings.HomeFolder + "Logs/Rocket.log",RocketSettings.HomeFolder + "Logs/Rocket."+ ver +".log");
+                };
+
 
                 /*Cleaning the workspace...*/
                 foreach (string file in Directory.GetFiles(RocketSettings.HomeFolder, "*.config", SearchOption.AllDirectories)) {
+#if DEBUG
+                    Console.WriteLine("Fixing xml files");
+#endif
                     if (!File.Exists(file + ".xml"))
                         File.Move(file, file + ".xml");
                 }
                 try
                 {
                 if (Directory.Exists(RocketSettings.HomeFolder + "Plugins/Libraries/")) {
+#if DEBUG
+                Console.WriteLine("Fixing Libraries folder");
+#endif
                     foreach (string file in Directory.GetFiles(RocketSettings.HomeFolder + "Plugins/Libraries/", "*"))
                     {
-                        if (!File.Exists(RocketSettings.HomeFolder + "Libraries/" + file))
+                        if (!File.Exists(RocketSettings.HomeFolder + "Libraries/" + Path.GetFileName(file)))
                             File.Move(file, RocketSettings.HomeFolder + "Libraries/" + Path.GetFileName(file));
                     }
                     Directory.Delete(RocketSettings.HomeFolder + "Plugins/Libraries/", true);
@@ -105,6 +118,7 @@ namespace Rocket
                 gameObject.AddComponent<RocketChatManager>();
                 gameObject.AddComponent<RocketPluginManager>();
                 gameObject.AddComponent<RocketPermissionManager>();
+                gameObject.AddComponent<RocketFeatures>();
             }
             catch (Exception e)
             {

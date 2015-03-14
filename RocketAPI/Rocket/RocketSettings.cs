@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml.Serialization;
 
 namespace Rocket
@@ -10,9 +11,13 @@ namespace Rocket
         public static bool EnableRcon = false;
         public static string RconPassword = "changeme";
         public static int RconPort = 0;
-        
+
         public static bool EnableJoinLeaveMessages = false;
         public static string LanguageCode = "en";
+        public static int AutomaticShutdownInterval = 0;
+        public static string AutomaticShutdownNotificationMessage = "This server will be restarted in 30 seconds";
+        public static bool AutomaticShutdownClearLevel = false;
+        public static bool AutomaticShutdownClearPlayers = false;
 
         //public static string[] ChatFilter = new string[] { "cunt", "dick", "pussy", "penis", "vagina", "fuck", "fucking", "fucked", "shit", "shitting", "shat", "damn", "damned", "hell", "cock", "whore", "fag", "faggot", "fag", "nigger" };
 
@@ -30,6 +35,60 @@ namespace Rocket
         //        SDG.ChatManager.ChatFilter = ChatFilter;
         //    }
         //}
+
+
+
+        [XmlElement(ElementName = "AutomaticShutdownNotificationMessage")]
+        public string automaticShutdownNotificationMessage
+        {
+            get
+            {
+                return AutomaticShutdownNotificationMessage;
+            }
+            set
+            {
+                AutomaticShutdownNotificationMessage = value;
+            }
+        }
+
+        [XmlElement(ElementName = "AutomaticShutdownInterval")]
+        public int automaticShutdownInterval
+        {
+            get
+            {
+                return AutomaticShutdownInterval;
+            }
+            set
+            {
+                AutomaticShutdownInterval = value;
+            }
+        }
+
+        [XmlElement(ElementName = "AutomaticShutdownClearLevel")]
+        public bool automaticShutdownClearLevel
+        {
+            get
+            {
+                return AutomaticShutdownClearLevel;
+            }
+            set
+            {
+                AutomaticShutdownClearLevel = value;
+            }
+        }
+
+        [XmlElement(ElementName = "AutomaticShutdownClearPlayers")]
+        public bool automaticShutdownClearPlayers
+        {
+            get
+            {
+                return AutomaticShutdownClearPlayers;
+            }
+            set
+            {
+                AutomaticShutdownClearPlayers = value;
+            }
+        }
 
         [XmlElement(ElementName = "LanguageCode")]
         public string languageCode
@@ -108,9 +167,13 @@ namespace Rocket
                 {
                     s = (RocketSettings)serializer.Deserialize(r);
                     instance.enableRcon = s.enableRcon;
-                    if (s.rconPassword != null) instance.rconPassword = s.rconPassword;
+                    if (!String.IsNullOrEmpty(s.rconPassword)) instance.rconPassword = s.rconPassword;
                     instance.rconPort = s.rconPort;
                     instance.enableJoinLeaveMessages = s.enableJoinLeaveMessages;
+                    instance.automaticShutdownInterval = s.automaticShutdownInterval;
+                    instance.automaticShutdownClearLevel = s.automaticShutdownClearLevel;
+                    instance.automaticShutdownClearPlayers = s.automaticShutdownClearPlayers;
+                    if(!String.IsNullOrEmpty(s.automaticShutdownNotificationMessage))instance.automaticShutdownNotificationMessage = s.automaticShutdownNotificationMessage;
                    // if (s.chatFilter != null) instance.chatFilter = s.chatFilter;
                 }
                 using (StreamWriter w = new StreamWriter(configFile))

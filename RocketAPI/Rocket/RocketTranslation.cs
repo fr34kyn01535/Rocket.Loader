@@ -1,4 +1,5 @@
 ﻿using Rocket.Logging;
+using Rocket.RocketAPI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Xml.Serialization;
 
 
-namespace Rocket.RocketAPI
+namespace Rocket
 {
     internal static class RocketTranslation
     {
@@ -50,56 +51,73 @@ namespace Rocket.RocketAPI
 
         public static string Translate(string translationKey, params object[] placeholder)
         {
-            string value = null;
-            if (translations != null)
+            try
             {
-                translations.TryGetValue(translationKey, out value);
-                if (value == null) value = translationKey;
-
-                for (int i = 0; i < placeholder.Length; i++)
+                string value = null;
+                if (translations != null)
                 {
-                    if (placeholder[i] == null) placeholder[i] = "NULL";
-                }
+                    translations.TryGetValue(translationKey, out value);
+                    if (value == null) value = translationKey;
 
-                if (value.Contains("{0}") && placeholder != null && placeholder.Length != 0)
-                {
-                    value = String.Format(value, placeholder);
+                    for (int i = 0; i < placeholder.Length; i++)
+                    {
+                        if (placeholder[i] == null) placeholder[i] = "NULL";
+                    }
+
+                    if (value.Contains("{0}") && placeholder != null && placeholder.Length != 0)
+                    {
+                        value = String.Format(value, placeholder);
+                    }
                 }
+                return value;
             }
-            return value;
+            catch (Exception er)
+            {
+                Logger.LogError("Error fetching translation for " + translationKey+": "+er.ToString());
+                return translationKey;
+            }
         }
 
         internal static void LoadTranslations()
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Rocket.RocketAPI.RocketTranslationHelper.Translation[]), new XmlRootAttribute() { ElementName = "Translations" });
-            string rocketTranslation = String.Format(translationFile, RocketSettings.HomeFolder, RocketSettings.LanguageCode);
-
-            if (File.Exists(rocketTranslation))
+            try
             {
-                using (StreamReader r = new StreamReader(rocketTranslation))
+                XmlSerializer serializer = new XmlSerializer(typeof(RocketTranslationHelper.Translation[]), new XmlRootAttribute() { ElementName = "Translations" });
+                string rocketTranslation = String.Format(translationFile, RocketSettings.HomeFolder, RocketSettings.LanguageCode);
+
+                if (File.Exists(rocketTranslation))
                 {
-                    translations = ((Rocket.RocketAPI.RocketTranslationHelper.Translation[])serializer.Deserialize(r)).ToDictionary(i => i.Id, i => i.Value);
-                }
-                foreach (string key in defaultTranslations.Keys)
-                {
-                    if (!translations.ContainsKey(key)) {
-                        translations.Add(key, defaultTranslations[key]);
+                    using (StreamReader r = new StreamReader(rocketTranslation))
+                    {
+                        translations = ((RocketTranslationHelper.Translation[])serializer.Deserialize(r)).ToDictionary(i => i.Id, i => i.Value);
+                    }
+                    foreach (string key in defaultTranslations.Keys)
+                    {
+                        if (!translations.ContainsKey(key))
+                        {
+                            translations.Add(key, defaultTranslations[key]);
+                        }
                     }
                 }
-            }
-            else
-            {
-                if (RocketSettings.LanguageCode != "en")
+                else
                 {
-                    rocketTranslation = String.Format(translationFile, RocketSettings.HomeFolder, "en");
-                    Logger.LogWarning(Path.GetFileName(rocketTranslation) + " could not be found, recovering default language");
+                    if (RocketSettings.LanguageCode != "en")
+                    {
+                        rocketTranslation = String.Format(translationFile, RocketSettings.HomeFolder, "en");
+                        Logger.LogWarning(Path.GetFileName(rocketTranslation) + " could not be found, recovering default language");
+                    }
+                    translations = defaultTranslations;
                 }
-                translations = defaultTranslations;
-            }
 
-            using (StreamWriter w = new StreamWriter(rocketTranslation))
+                using (StreamWriter w = new StreamWriter(rocketTranslation))
+                {
+                    serializer.Serialize(w, translations.Select(kv => new RocketTranslationHelper.Translation() { Id = kv.Key, Value = kv.Value }).ToArray());
+                }
+
+            }
+            catch (Exception ex)
             {
-                serializer.Serialize(w, translations.Select(kv => new Rocket.RocketAPI.RocketTranslationHelper.Translation() { Id = kv.Key, Value = kv.Value }).ToArray());
+                Logger.LogError("Error loading translations: "+ex.ToString());
             }
         }
     }
