@@ -15,7 +15,6 @@ namespace Rocket
         public static bool EnableJoinLeaveMessages = false;
         public static string LanguageCode = "en";
         public static int AutomaticShutdownInterval = 0;
-        public static string AutomaticShutdownNotificationMessage = "This server will be restarted in 30 seconds";
         public static bool AutomaticShutdownClearLevel = false;
         public static bool AutomaticShutdownClearPlayers = false;
 
@@ -35,21 +34,6 @@ namespace Rocket
         //        SDG.ChatManager.ChatFilter = ChatFilter;
         //    }
         //}
-
-
-
-        [XmlElement(ElementName = "AutomaticShutdownNotificationMessage")]
-        public string automaticShutdownNotificationMessage
-        {
-            get
-            {
-                return AutomaticShutdownNotificationMessage;
-            }
-            set
-            {
-                AutomaticShutdownNotificationMessage = value;
-            }
-        }
 
         [XmlElement(ElementName = "AutomaticShutdownInterval")]
         public int automaticShutdownInterval
@@ -173,7 +157,6 @@ namespace Rocket
                     instance.automaticShutdownInterval = s.automaticShutdownInterval;
                     instance.automaticShutdownClearLevel = s.automaticShutdownClearLevel;
                     instance.automaticShutdownClearPlayers = s.automaticShutdownClearPlayers;
-                    if(!String.IsNullOrEmpty(s.automaticShutdownNotificationMessage))instance.automaticShutdownNotificationMessage = s.automaticShutdownNotificationMessage;
                    // if (s.chatFilter != null) instance.chatFilter = s.chatFilter;
                 }
                 using (StreamWriter w = new StreamWriter(configFile))

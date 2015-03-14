@@ -45,7 +45,7 @@ namespace Rocket
                     if ((shutdownTime.Value - DateTime.UtcNow).TotalSeconds < 30 && !notificationShown)
                     {
                         notificationShown = true;
-                        RocketChatManager.Say(RocketSettings.AutomaticShutdownNotificationMessage);
+                        RocketChatManager.Say(RocketTranslation.Translate("rocket_restart_warning_public"));
                     }
                     if ((shutdownTime.Value - DateTime.UtcNow).TotalSeconds < 0 && !shutdown)
                     {
