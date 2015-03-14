@@ -17,6 +17,7 @@ namespace Rocket
         private static Dictionary<string, string> defaultTranslations = new Dictionary<string, string>()
         {
             {"command_generic_invalid_parameter","Invalid Parameter"},
+            {"command_generic_target_player_not_found","Target player not found"},
             {"command_generic_teleport_while_driving_error","You cannot teleport while driving or riding in a vehicle."},
             {"command_god_enable_console","{0} enabled Godmode"},
             {"command_god_enable_private","You can feel the strength now..."},
@@ -41,6 +42,10 @@ namespace Rocket
             {"command_tphere_teleport_from_private","Teleported {0} to you"},
             {"command_tphere_teleport_to_private","You were teleported to {0}"},
             {"command_tphere_failed_find_player","Failed to find player"},
+            
+            {"command_heal_success_me","{0} was successfully healed"},
+            {"command_heal_success","You were healed"},
+            {"command_heal_success_other","You were healed by {0}"},
             
             {"rocket_join_public","{0} connected to the server"},
             {"rocket_leave_public","{0} disconnected from the server"},

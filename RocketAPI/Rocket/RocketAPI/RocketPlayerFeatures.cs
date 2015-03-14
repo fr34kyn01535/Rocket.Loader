@@ -58,6 +58,8 @@ namespace Rocket.RocketAPI
                 pl.SetInfection(0);
                 pl.SetHunger(0);
                 pl.SetThirst(0);
+                pl.SetBleeding(false);
+                pl.SetBroken(false);
             }
         }
 
@@ -78,7 +80,12 @@ namespace Rocket.RocketAPI
 
         private void e_OnPlayerUpdateHealth(Player player, byte health)
         {
-            if (health < 95) pl.Heal(100);
+            if (health < 95)
+            {
+                pl.Heal(100);
+                pl.SetBleeding(false);
+                pl.SetBroken(false);
+            }
         }
     }
 }
