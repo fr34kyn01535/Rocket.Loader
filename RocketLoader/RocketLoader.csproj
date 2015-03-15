@@ -230,6 +230,7 @@
     <Compile Include="Patches\Asset.cs" />
     <Compile Include="Patches\Items.cs" />
     <Compile Include="Patches\Item.cs" />
+    <Compile Include="Patches\LevelZombies.cs" />
     <Compile Include="Patches\NodeLocation.cs" />
     <Compile Include="Patches\Node.cs" />
     <Compile Include="Patches\LevelNodes.cs" />

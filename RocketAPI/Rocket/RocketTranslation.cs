@@ -44,8 +44,8 @@ namespace Rocket
             {"command_tphere_failed_find_player","Failed to find player"},
             
             {"command_heal_success_me","{0} was successfully healed"},
-            {"command_heal_success","You were healed"},
             {"command_heal_success_other","You were healed by {0}"},
+            {"command_heal_success","You were healed"},
             
             {"rocket_join_public","{0} connected to the server"},
             {"rocket_leave_public","{0} disconnected from the server"},
