@@ -263,6 +263,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LICENSE">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="mscorlib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
