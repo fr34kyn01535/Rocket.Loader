@@ -161,7 +161,9 @@
     <Content Include="lib\Assembly-CSharp-firstpass.dll" />
     <Content Include="lib\Assembly-CSharp.dll" />
     <Content Include="lib\UnityEngine.dll" />
-    <None Include="LICENSE" />
+    <None Include="LICENSE">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
