@@ -85,7 +85,7 @@ namespace Rocket.RocketAPI
             /*But now i could also use the API commands & players loaded */
             Assemblies.Add(Assembly.GetExecutingAssembly());
             /*so i add the rocketapi to Assemblies*/
-            List<Type> commands = getTypes(Assemblies, typeof(Command));
+            List<Type> commands = getTypes(Assemblies, typeof(Command)).Where(c => c.Name != "RocketTextCommand").ToList();
             foreach (Type command in commands)
             {
                 registerCommand((Command)Activator.CreateInstance(command));
