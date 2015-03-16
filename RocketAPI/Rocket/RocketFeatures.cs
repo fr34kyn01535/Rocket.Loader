@@ -32,7 +32,7 @@ namespace Rocket
             if (RocketSettings.AutomaticShutdownInterval != 0)
             {
                 shutdownTime = Bootstrap.Started.ToUniversalTime().AddSeconds(RocketSettings.AutomaticShutdownInterval);
-                Logger.Log("The server will automaticly shutdown in " + RocketSettings.AutomaticShutdownInterval + " seconds (" + shutdownTime.ToString()+")");
+                Logger.Log("The server will automaticly shutdown in " + RocketSettings.AutomaticShutdownInterval + " seconds (" + shutdownTime.ToString()+" UTC)");
             }
         }
 
