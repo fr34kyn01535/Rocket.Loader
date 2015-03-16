@@ -10,11 +10,11 @@ namespace Rocket.Commands
     {
         private List<string> text;
 
-        public RocketTextCommand(string commandName,string commandHelp,string commandInfo,List<string> text)
+        public RocketTextCommand(string commandName,string commandHelp,List<string> text)
         {
             base.commandName = commandName;
             base.commandHelp = commandHelp;
-            base.commandInfo = commandInfo;
+            base.commandInfo = base.commandName + " - " + base.commandHelp;
             this.text = text;
         }
 

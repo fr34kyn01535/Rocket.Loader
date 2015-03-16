@@ -1,9 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
 namespace Rocket
 {
+    public class TextCommand {
+        public string Name;
+        public string Help;
+        [XmlArrayItem("Line")]
+        public List<String> Text;
+    }
+
     public class RocketSettings
     {
         private static RocketSettings instance;
@@ -17,6 +25,8 @@ namespace Rocket
         public static int AutomaticShutdownInterval = 0;
         public static bool AutomaticShutdownClearLevel = false;
         public static bool AutomaticShutdownClearPlayers = false;
+
+        public static List<TextCommand> TextCommands;
 
         //public static string[] ChatFilter = new string[] { "cunt", "dick", "pussy", "penis", "vagina", "fuck", "fucking", "fucked", "shit", "shitting", "shat", "damn", "damned", "hell", "cock", "whore", "fag", "faggot", "fag", "nigger" };
 
@@ -34,6 +44,20 @@ namespace Rocket
         //        SDG.ChatManager.ChatFilter = ChatFilter;
         //    }
         //}
+
+        [XmlArrayItem("TextCommand")]
+        [XmlArray(ElementName = "TextCommands")]
+        public List<TextCommand> textCommands
+        {
+            get
+            {
+                return TextCommands;
+            }
+            set
+            {
+                TextCommands = value;
+            }
+        }
 
         [XmlElement(ElementName = "AutomaticShutdownInterval")]
         public int automaticShutdownInterval
@@ -157,6 +181,7 @@ namespace Rocket
                     instance.automaticShutdownInterval = s.automaticShutdownInterval;
                     instance.automaticShutdownClearLevel = s.automaticShutdownClearLevel;
                     instance.automaticShutdownClearPlayers = s.automaticShutdownClearPlayers;
+                    if (s.textCommands != null) instance.textCommands = s.textCommands;
                    // if (s.chatFilter != null) instance.chatFilter = s.chatFilter;
                 }
                 using (StreamWriter w = new StreamWriter(configFile))

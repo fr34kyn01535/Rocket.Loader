@@ -1,4 +1,5 @@
-﻿using Rocket.Components;
+﻿using Rocket.Commands;
+using Rocket.Components;
 using Rocket.Logging;
 using Rocket.Rcon;
 using SDG;
@@ -90,6 +91,12 @@ namespace Rocket.RocketAPI
             {
                 registerCommand((Command)Activator.CreateInstance(command));
             }
+
+            foreach (TextCommand t in RocketSettings.TextCommands)
+            {
+                registerCommand(new Rocket.Commands.RocketTextCommand(t.Name, t.Help, t.Text));
+            }
+
             SDG.Steam.OnServerConnected += onPlayerConnected;
             SDG.Steam.OnServerDisconnected += onPlayerDisconnected;
 
@@ -108,6 +115,10 @@ namespace Rocket.RocketAPI
             {
                 if (ccommand.commandName.ToLower().Equals(command.commandName.ToLower()))
                 {
+                    if (command is RocketTextCommand) {
+                        Logger.LogWarning("Couldn't register RocketTextCommand." + command.commandName + " because it would overwrite "+command.GetType().Assembly.GetName().Name + "." +  ccommand.commandName);
+                        return;
+                    }
                     if (ccommand.GetType().Assembly.GetName().Name == "Assembly-CSharp")
                     {
                         Logger.LogWarning(command.GetType().Assembly.GetName().Name + "." + command.commandName + " overwrites built in command " + ccommand.commandName);
@@ -125,7 +136,14 @@ namespace Rocket.RocketAPI
                 }
             }
 
-            if (!msg) Logger.Log(command.GetType().Assembly.GetName().Name + "." + command.commandName);
+            if (command is RocketTextCommand)
+            {
+                if (!msg) Logger.Log("RocketTextCommand." + command.commandName);
+            }
+            else
+            {
+                if (!msg) Logger.Log(command.GetType().Assembly.GetName().Name + "." + command.commandName);
+            }
             commandList.Add(command);
             Commander.Commands = commandList.ToArray();
         }
