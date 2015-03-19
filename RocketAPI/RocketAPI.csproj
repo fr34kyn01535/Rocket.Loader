@@ -105,6 +105,7 @@
     <Compile Include="RocketLoadingAnimation.cs" />
     <Compile Include="Rocket\Commands\CommandHome.cs" />
     <Compile Include="Rocket\Commands\CommandHeal.cs" />
+    <Compile Include="Rocket\Commands\CommandCompass.cs" />
     <Compile Include="Rocket\Commands\CommandV.cs" />
     <Compile Include="Rocket\Commands\RocketTextCommand.cs" />
     <Compile Include="Rocket\RocketTranslation.cs" />

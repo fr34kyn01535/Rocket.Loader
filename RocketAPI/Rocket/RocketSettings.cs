@@ -27,7 +27,6 @@ namespace Rocket
         public static bool AutomaticShutdownClearPlayers = false;
 
         public static List<TextCommand> TextCommands;
-
         //public static string[] ChatFilter = new string[] { "cunt", "dick", "pussy", "penis", "vagina", "fuck", "fucking", "fucked", "shit", "shitting", "shat", "damn", "damned", "hell", "cock", "whore", "fag", "faggot", "fag", "nigger" };
 
         //[XmlArrayItem(ElementName= "ChatFilterListEntry")]
