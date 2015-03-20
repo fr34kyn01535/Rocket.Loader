@@ -97,6 +97,8 @@ namespace Rocket.RocketAPI
                 registerCommand(new Rocket.Commands.RocketTextCommand(t.Name, t.Help, t.Text));
             }
 
+            Commander.Commands = Commander.Commands.Where(c => c.GetType() != typeof(CommandInvestigate)).ToArray();
+
             SDG.Steam.OnServerConnected += onPlayerConnected;
             SDG.Steam.OnServerDisconnected += onPlayerDisconnected;
 
