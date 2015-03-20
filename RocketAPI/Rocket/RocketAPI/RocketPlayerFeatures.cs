@@ -4,6 +4,7 @@ using Rocket.RocketAPI.Events;
 using SDG;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
@@ -13,7 +14,14 @@ namespace Rocket.RocketAPI
         private Player pl = null;
         private bool godMode = false;
 
-        internal bool GodMode
+        public bool VanishMode {
+            get { return vanishMode; }
+            set { vanishMode = value; }
+        }
+
+        private bool vanishMode = false;
+
+        public bool GodMode
         {
             set
             {
@@ -36,6 +44,15 @@ namespace Rocket.RocketAPI
             get
             {
                 return godMode;
+            }
+        }
+
+
+        public void FixedUpdate()
+        {
+            if (this.vanishMode)
+            {
+                pl.SteamChannel.send("tellPosition", ESteamCall.NOT_OWNER, ESteamPacket.UPDATE_UDP_BUFFER, new object[] {new Vector3(pl.transform.position.x,-3,pl.transform.position.z)});
             }
         }
 
