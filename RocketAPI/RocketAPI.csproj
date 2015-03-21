@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RocketLoadingAnimation.cs" />
+    <Compile Include="Rocket\Commands\CommandDuty.cs" />
     <Compile Include="Rocket\Commands\CommandVanish.cs" />
     <Compile Include="Rocket\Commands\CommandHome.cs" />
     <Compile Include="Rocket\Commands\CommandHeal.cs" />
