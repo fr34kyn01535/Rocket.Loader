@@ -20,12 +20,15 @@ namespace Rocket.Commands
             if (!RocketCommand.IsPlayer(caller)) return;
 
             Player p = PlayerTool.getPlayer(caller.CSteamID);
+            RocketPlayerFeatures pf = p.transform.GetComponent<RocketPlayerFeatures>();
 
             if (p.SteamChannel.SteamPlayer.IsAdmin)
             {
                 Logger.Log(RocketTranslation.Translate("command_duty_disable_console", caller.CharacterName));
                 RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_duty_disable_private"));
                 SteamAdminlist.unadmin(caller);
+                pf.GodMode = false;
+                pf.VanishMode = false;
             }
             else
             {
