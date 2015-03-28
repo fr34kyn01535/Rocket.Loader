@@ -8,19 +8,27 @@ using UnityEngine;
 
 namespace Rocket.Commands
 {
-    public class CommandRocket : Command
+    public class CommandRocket : IRocketCommand
     {
-        public CommandRocket()
+        public bool RunFromConsole
         {
-            base.commandName = "rocket";
-            base.commandHelp = "About us :)";
-            base.commandInfo = base.commandName + " - " + base.commandHelp;
+            get { return true; }
         }
 
-        protected override void execute(SteamPlayerID caller, string command)
+        public string Name
         {
-            RocketChatManager.Say(caller.CSteamID, "Rocket v" + Assembly.GetExecutingAssembly().GetName().Version + " for Unturned v" + Steam.Version);
-            RocketChatManager.Say(caller.CSteamID, "https://rocket.foundation © 2015");
+            get { return "rocket"; }
+        }
+
+        public string Help
+        {
+            get { return "About us :)";}
+        }
+
+        public void Execute(Steamworks.CSteamID caller, string command)
+        {
+            RocketChatManager.Say(caller, "Rocket v" + Assembly.GetExecutingAssembly().GetName().Version + " for Unturned v" + Steam.Version);
+            RocketChatManager.Say(caller, "https://rocket.foundation © 2015");
         }
     }
 }

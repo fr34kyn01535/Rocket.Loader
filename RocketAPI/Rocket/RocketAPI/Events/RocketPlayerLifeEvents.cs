@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Rocket.RocketAPI.Events
 {
-    public partial class RocketPlayerEvents : RocketPlayerComponent
+    public sealed partial class RocketPlayerEvents : RocketPlayerComponent
     {
         public delegate void PlayerUpdateStamina(SDG.Player player, byte stamina);
         public static event PlayerUpdateStamina OnPlayerUpdateStamina;

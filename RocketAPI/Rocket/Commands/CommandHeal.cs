@@ -5,35 +5,40 @@ using System;
 
 namespace Rocket.Commands
 {
-    public class CommandHeal : Command
+    public class CommandHeal : IRocketCommand
     {
-        public CommandHeal()
+        public bool RunFromConsole
         {
-            base.commandName = "heal";
-            base.commandHelp = "Heals yourself or somebody else";
-            base.commandInfo = base.commandName + " - " + base.commandHelp;
+            get { return true; }
         }
 
-        protected override void execute(SteamPlayerID caller, string command)
+        public string Name
         {
-            if (!RocketCommand.IsPlayer(caller)) return;
+            get { return "heal"; }
+        }
 
-            Player myPlayer = PlayerTool.getPlayer(caller.CSteamID);
+        public string Help
+        {
+            get { return "Heals yourself or somebody else";}
+        }
 
-            if (String.IsNullOrEmpty(command))
+        public void Execute(Steamworks.CSteamID caller, string command)
+        {
+            if (String.IsNullOrEmpty(command) && RocketCommandBase.IsPlayer(caller))
             {
+                Player myPlayer = PlayerTool.getPlayer(caller);
                 myPlayer.Heal(100);
                 myPlayer.SetBleeding(false);
                 myPlayer.SetBroken(false);
                 myPlayer.SetInfection(0);
                 myPlayer.SetHunger(0);
                 myPlayer.SetThirst(0);
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_heal_success"));
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_heal_success"));
             }
             else
             {
                 Player otherPlayer = PlayerTool.getPlayer(command);
-                if (otherPlayer != null && otherPlayer.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
+                if (otherPlayer != null && otherPlayer.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID.ToString() != caller.ToString())
                 {
                     otherPlayer.Heal(100);
                     otherPlayer.SetBleeding(false);
@@ -41,12 +46,14 @@ namespace Rocket.Commands
                     otherPlayer.SetInfection(0);
                     otherPlayer.SetHunger(0);
                     otherPlayer.SetThirst(0);
-                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_heal_success_me",myPlayer.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
-                    RocketChatManager.Say(otherPlayer.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, RocketTranslation.Translate("command_heal_success_other",caller.CharacterName));
+                    RocketChatManager.Say(caller, RocketTranslation.Translate("command_heal_success_me",otherPlayer.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                    
+                    if(RocketCommandBase.IsPlayer(caller))
+                        RocketChatManager.Say(otherPlayer.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, RocketTranslation.Translate("command_heal_success_other", PlayerTool.getPlayer(caller).SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
                 }
                 else
                 {
-                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_target_player_not_found"));
+                    RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_target_player_not_found"));
                 }
             }
         }

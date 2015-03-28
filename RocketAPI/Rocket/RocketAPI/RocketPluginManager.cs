@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace Rocket.RocketAPI
 {
-    public class RocketPluginManager : RocketManagerComponent
+    public sealed class RocketPluginManager : RocketManagerComponent
     {
         public List<Assembly> Assemblies;
 
@@ -69,7 +69,7 @@ namespace Rocket.RocketAPI
             Console.WriteLine("Loading Plugins".PadRight(80, '.'));
             Assemblies = loadAssemblies();
 
-            List<Type> rocketManagerComponents = getTypes(Assemblies, typeof(RocketManagerComponent));
+            List<Type> rocketManagerComponents = getTypesFromParentClass(Assemblies, typeof(RocketManagerComponent));
             /*The API rocketmanagers are loaded in the RocketLauncher, they dont have to be included here*/
 
             foreach (Type component in rocketManagerComponents)
@@ -86,10 +86,12 @@ namespace Rocket.RocketAPI
             /*But now i could also use the API commands & players loaded */
             Assemblies.Add(Assembly.GetExecutingAssembly());
             /*so i add the rocketapi to Assemblies*/
-            List<Type> commands = getTypes(Assemblies, typeof(Command)).Where(c => c.Name != "RocketTextCommand").ToList();
+            List<Type> commands = getTypesFromInterface(Assemblies,"IRocketCommand");
             foreach (Type command in commands)
             {
-                registerCommand((Command)Activator.CreateInstance(command));
+                IRocketCommand rocketCommand = (IRocketCommand)Activator.CreateInstance(command);
+                RocketCommandBase baseCommand = new RocketCommandBase(rocketCommand);
+                registerCommand((Command)(baseCommand), rocketCommand.GetType().Assembly.GetName().Name);
             }
 
             foreach (TextCommand t in RocketSettings.TextCommands)
@@ -97,7 +99,7 @@ namespace Rocket.RocketAPI
                 registerCommand(new Rocket.Commands.RocketTextCommand(t.Name, t.Help, t.Text));
             }
 
-            Commander.Commands = Commander.Commands.Where(c => c.GetType() != typeof(CommandInvestigate)).ToArray();
+            //Hacky Hacky :D Commander.Commands = Commander.Commands.Where(c => c.GetType() != typeof(CommandInvestigate)).ToArray();
 
             SDG.Steam.OnServerConnected += onPlayerConnected;
             SDG.Steam.OnServerDisconnected += onPlayerDisconnected;
@@ -109,8 +111,18 @@ namespace Rocket.RocketAPI
 
         }
 
-        internal static void registerCommand(Command command)
+        internal static void registerCommand(Command command, string originalAssemblyName = null)
         {
+            string assemblyName = "";
+            if (originalAssemblyName != null)
+            {
+                assemblyName = originalAssemblyName;
+            }
+            else
+            {
+                assemblyName = command.GetType().Assembly.GetName().Name;
+            }
+
             List<Command> commandList = new List<Command>();
             bool msg = false;
             foreach (Command ccommand in Commander.Commands)
@@ -118,17 +130,17 @@ namespace Rocket.RocketAPI
                 if (ccommand.commandName.ToLower().Equals(command.commandName.ToLower()))
                 {
                     if (command is RocketTextCommand) {
-                        Logger.LogWarning("Couldn't register RocketTextCommand." + command.commandName + " because it would overwrite "+command.GetType().Assembly.GetName().Name + "." +  ccommand.commandName);
+                        Logger.LogWarning("Couldn't register RocketTextCommand." + command.commandName + " because it would overwrite " + assemblyName + "." + ccommand.commandName);
                         return;
                     }
                     if (ccommand.GetType().Assembly.GetName().Name == "Assembly-CSharp")
                     {
-                        Logger.LogWarning(command.GetType().Assembly.GetName().Name + "." + command.commandName + " overwrites built in command " + ccommand.commandName);
+                        Logger.LogWarning(assemblyName + "." + command.commandName + " overwrites built in command " + ccommand.commandName);
                         msg = true;
                     }
                     else
                     {
-                        Logger.LogWarning("Can not register command " + command.GetType().Assembly.GetName().Name + "." + command.commandName + " because its already registered by " + ccommand.GetType().Assembly.GetName().Name + "." + ccommand.commandName);
+                        Logger.LogWarning("Can not register command " + assemblyName + "." + command.commandName + " because its already registered by " + ccommand.GetType().Assembly.GetName().Name + "." + ccommand.commandName);
                         return;
                     }
                 }
@@ -144,7 +156,10 @@ namespace Rocket.RocketAPI
             }
             else
             {
-                if (!msg) Logger.Log(command.GetType().Assembly.GetName().Name + "." + command.commandName);
+                if (!msg)
+                {
+                    Logger.Log(assemblyName + "." + command.commandName);
+                }
             }
             commandList.Add(command);
             Commander.Commands = commandList.ToArray();
@@ -153,7 +168,7 @@ namespace Rocket.RocketAPI
         private void onPlayerConnected(CSteamID id)
         {
             SDG.Player player = PlayerTool.getPlayer(id);
-            List<Type> rocketPlayerComponents = getTypes(Assemblies, typeof(RocketPlayerComponent));
+            List<Type> rocketPlayerComponents = getTypesFromParentClass(Assemblies, typeof(RocketPlayerComponent));
 #if DEBUG
             Logger.Log("Adding PlayerComponents");
 #endif
@@ -240,7 +255,7 @@ namespace Rocket.RocketAPI
             return allTypes;
         }
 
-        internal static List<Type> getTypes(List<Assembly> assemblies, Type parentClass)
+        internal static List<Type> getTypesFromParentClass(List<Assembly> assemblies, Type parentClass)
         {
             List<Type> allTypes = new List<Type>();
             foreach (Assembly assembly in assemblies)
@@ -257,6 +272,31 @@ namespace Rocket.RocketAPI
                 foreach (Type type in types.Where(t => t != null))
                 {
                     if (type.IsSubclassOf(parentClass))
+                    {
+                        allTypes.Add(type);
+                    }
+                }
+            }
+            return allTypes;
+        }
+
+        internal static List<Type> getTypesFromInterface(List<Assembly> assemblies, string interfaceName)
+        {
+            List<Type> allTypes = new List<Type>();
+            foreach (Assembly assembly in assemblies)
+            {
+                Type[] types;
+                try
+                {
+                    types = assembly.GetTypes();
+                }
+                catch (ReflectionTypeLoadException e)
+                {
+                    types = e.Types;
+                }
+                foreach (Type type in types.Where(t => t != null))
+                {
+                    if (type.GetInterface(interfaceName) != null)
                     {
                         allTypes.Add(type);
                     }

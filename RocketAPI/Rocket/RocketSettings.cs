@@ -5,14 +5,14 @@ using System.Xml.Serialization;
 
 namespace Rocket
 {
-    public class TextCommand {
+    public sealed class TextCommand {
         public string Name;
         public string Help;
         [XmlArrayItem("Line")]
         public List<String> Text;
     }
 
-    public class RocketSettings
+    public sealed class RocketSettings
     {
         private static RocketSettings instance;
         public static string HomeFolder;

@@ -24,6 +24,13 @@ namespace Rocket.RocketLoader.Patches
             h.UnlockFieldByType(typeof(bool), "PvP",5);
 
             h.UnlockFieldByType("List<SteamPlayer>", "Players");
+
+            MethodDefinition reject = h.Type.Methods.AsEnumerable().Where(m => m.Parameters.Count == 2 &&
+                 m.Parameters[0].ParameterType.Name == "CSteamID" &&
+                 m.Parameters[1].ParameterType.Name == "ESteamRejection").FirstOrDefault();
+            reject.Name = "Reject";
+            reject.IsPublic = true;
+
         }
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Rocket.RocketAPI.Events
 {
-    public partial class RocketPlayerEvents : RocketPlayerComponent
+    public sealed partial class RocketPlayerEvents : RocketPlayerComponent
     {
         private new void Awake()
         {
@@ -24,7 +24,37 @@ namespace Rocket.RocketAPI.Events
                 PlayerInstance.Inventory.OnInventoryUpdated += onInventoryUpdated;
             #endregion RocketPlayerEvents
         }
-    
+
+        public static void Receive(SteamChannel instance,CSteamID d, byte[] a, int b)
+        {
+//#if DEBUG
+//            ESteamPacket eSteamPacket = (ESteamPacket)a[0];
+//            int num = a[1];
+
+//            if (eSteamPacket == ESteamPacket.UPDATE_UDP_CHUNK || eSteamPacket == ESteamPacket.UPDATE_TCP_CHUNK)
+//            {
+//                string o = "";
+//                foreach (Type r in instance.Methods[num].Types)
+//                {
+//                    o += r.ToString() + ",";
+//                }
+//                Logger.Log("Receive+Invoke+" + d.ToString() + ": " + o + " - " + b);
+//            }
+//            else if (eSteamPacket != ESteamPacket.UPDATE_VOICE)
+//            {
+//                object[] objects = SteamPacker.getObjects(d, 2, a, instance.Methods[num].Types);
+
+
+//                string o = "";
+//                foreach (byte r in objects)
+//                {
+//                    o += r.ToString() + ",";
+//                }
+//                Logger.Log("Receive+" + d.ToString() + ": " + o + " - " + b);
+//            }
+//#endif
+        }
+
         public static void Send(SteamPlayer s, string W, ESteamCall X, ESteamPacket l, params object[] R)
         {
             if (s == null || R == null) return;
@@ -92,7 +122,7 @@ namespace Rocket.RocketAPI.Events
                     {
                         o += r.ToString();
                     }
-                    Logger.Log(s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
+                    Logger.Log("Send+"+s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
 #endif
                     break;
             }

@@ -8,8 +8,8 @@ using UnityEngine;
 namespace Rocket.RocketAPI.Events
 {
     public enum InventoryGroup { Primary = 0, Secondary = 1, Backpack = 3, Vest = 4, Shirt = 5, Pants = 6, Storage = 7 };
-    
-    public partial class RocketPlayerEvents : RocketPlayerComponent
+
+    public sealed partial class RocketPlayerEvents : RocketPlayerComponent
     {
         public delegate void PlayerInventoryUpdated(SDG.Player player, InventoryGroup inventoryGroup, byte inventoryIndex, ItemJar P);
         public static event PlayerInventoryUpdated OnPlayerInventoryUpdated;

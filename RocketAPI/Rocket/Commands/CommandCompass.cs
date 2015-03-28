@@ -7,26 +7,34 @@ using System.Linq;
 
 namespace Rocket.Commands
 {
-    public class CommandCompass : Command
+    public class CommandCompass : IRocketCommand
     {
-        public CommandCompass()
+        public bool RunFromConsole
         {
-            base.commandName = "compass";
-            base.commandHelp = "Shows the direction you are facing";
-            base.commandInfo = base.commandName + " - " + base.commandHelp;
+            get { return false; }
+        }
+        
+        public string Name
+        {
+            get { return "compass"; }
         }
 
-        protected override void execute(SteamPlayerID caller, string command)
+        public string Help
         {
-            if (!RocketCommand.IsPlayer(caller)) return;
+            get { return "Shows the direction you are facing"; }
+        }
 
-            Player myPlayer = PlayerTool.getPlayer(caller.CSteamID);
+        public void Execute(Steamworks.CSteamID caller, string command)
+        {
+            Player myPlayer = PlayerTool.getPlayer(caller);
 
             float currentDirection = myPlayer.transform.rotation.eulerAngles.y;
 
-            if(!String.IsNullOrEmpty(command)){
-                switch(command.ToLower()){
-                    case "north": 
+            if (!String.IsNullOrEmpty(command))
+            {
+                switch (command.ToLower())
+                {
+                    case "north":
                         currentDirection = 0;
                         break;
                     case "east":
@@ -39,7 +47,7 @@ namespace Rocket.Commands
                         currentDirection = 270;
                         break;
                     default:
-                        RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
+                        RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                         return;
                 }
                 myPlayer.sendTeleport(myPlayer.transform.position, MeasurementTool.angleToByte(currentDirection));
@@ -47,7 +55,7 @@ namespace Rocket.Commands
 
 
             string directionName = "Unknown";
-            
+
             if (currentDirection > 30 && currentDirection < 60)
             {
                 directionName = RocketTranslation.Translate("command_compass_north") + "-" + RocketTranslation.Translate("command_compass_east");
@@ -62,7 +70,7 @@ namespace Rocket.Commands
             }
             else if (currentDirection > 150 && currentDirection < 210)
             {
-                directionName = RocketTranslation.Translate("command_compass_south") ;
+                directionName = RocketTranslation.Translate("command_compass_south");
             }
             else if (currentDirection > 210 && currentDirection < 240)
             {
@@ -81,9 +89,7 @@ namespace Rocket.Commands
                 directionName = RocketTranslation.Translate("command_compass_north");
             }
 
-            RocketChatManager.Say(caller.CSteamID,RocketTranslation.Translate("command_compass_facing_private",directionName));
-
-
+            RocketChatManager.Say(caller, RocketTranslation.Translate("command_compass_facing_private", directionName));
         }
     }
 }

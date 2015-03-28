@@ -5,24 +5,30 @@ using System;
 
 namespace Rocket.Commands
 {
-    public class CommandI : Command
+    public class CommandI : IRocketCommand
     {
-        public CommandI()
+        public bool RunFromConsole
         {
-            base.commandName = "i";
-            base.commandHelp = "Gives yourself an item";
-            base.commandInfo = base.commandName + " - " + base.commandHelp;
+            get { return false; }
         }
 
-        protected override void execute(SteamPlayerID caller, string command)
+        public string Name
         {
-            if (!RocketCommand.IsPlayer(caller)) return;
-            
-            string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
+            get { return "i"; }
+        }
+
+        public string Help
+        {
+            get { return "Gives yourself an item";}
+        }
+
+        public void Execute(Steamworks.CSteamID caller, string command)
+        {
+            string[] componentsFromSerial = command.Split('/');
 
             if (componentsFromSerial.Length == 0 || componentsFromSerial.Length > 2)
             {
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
@@ -43,7 +49,7 @@ namespace Rocket.Commands
                 }
                 if (String.IsNullOrEmpty(itemString.Trim()) || id == 0)
                 {
-                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
+                    RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                     return;
                 }
             }
@@ -53,19 +59,19 @@ namespace Rocket.Commands
 
             if (componentsFromSerial.Length == 2 && !byte.TryParse(componentsFromSerial[1].ToString(), out amount))
             {
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
-            SDG.Player player = PlayerTool.getPlayer(caller.CSteamID);
+            SDG.Player player = PlayerTool.getPlayer(caller);
             if (ItemTool.tryForceGiveItem(player, id, amount))
             {
-                Logger.Log(RocketTranslation.Translate("command_i_giving_console", caller.CharacterName, id, amount));
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_i_giving_private", amount, assetName, id));
+                Logger.Log(RocketTranslation.Translate("command_i_giving_console", player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName, id, amount));
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_i_giving_private", amount, assetName, id));
             }
             else
             {
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_i_giving_failed_private", amount, assetName, id));
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_i_giving_failed_private", amount, assetName, id));
             }
         }
     }

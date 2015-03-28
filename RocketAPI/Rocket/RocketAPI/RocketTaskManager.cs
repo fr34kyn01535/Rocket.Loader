@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Rocket.RocketAPI
 {
-    public class RocketTaskManager : RocketManagerComponent
+    public sealed class RocketTaskManager : RocketManagerComponent
     {
         private Queue<Action> work = new Queue<Action>();
         public static RocketTaskManager Instance;

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
-    public class RocketPlayerFeatures : RocketPlayerComponent
+    public sealed class RocketPlayerFeatures : RocketPlayerComponent
     {
         private RocketPlayerEvents e = null;
         private Player pl = null;
@@ -59,11 +59,10 @@ namespace Rocket.RocketAPI
         private void Start()
         {
             pl = gameObject.transform.GetComponent<Player>();
+            e = gameObject.transform.GetComponent<RocketPlayerEvents>();
 
             if (!RocketPermissionManager.CheckReservedSlotSpace(pl.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID)) return;
             if (!RocketPermissionManager.CheckWhitelisted(pl.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID)) return;
-
-            e = gameObject.transform.GetComponent<RocketPlayerEvents>();
 
             if (godMode)
             {

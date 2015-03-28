@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 
 namespace Rocket.RocketAPI
 {
-    public class RocketPermissionManager : RocketManagerComponent
+    public sealed class RocketPermissionManager : RocketManagerComponent
     {
         private static string permissionsFile;
         private static Permissions permissions;
@@ -144,11 +144,18 @@ namespace Rocket.RocketAPI
                     permissions.WebPermissionsUrl = "";
                     permissions.WebPermissionsTimeout = 60;
                     permissions.WhitelistedGroups = new string[0];
-                    permissions.NotWhitelistedMessage = "you are not whitelisted";
-                    permissions.AllSlotsReservedMessage = "all slots are in use";
                     permissions.ReservedSlotsGroups = new string[0];
                     serializer.Serialize(writer, permissions);
                 }
+            }
+        }
+
+        public static void SavePermissions()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(Permissions));
+            using (TextWriter writer = new StreamWriter(permissionsFile))
+            {
+                serializer.Serialize(writer, permissions);
             }
         }
 
@@ -254,7 +261,7 @@ namespace Rocket.RocketAPI
                             return true;
                         }
                     }
-                    Steam.kick(cSteamID, permissions.AllSlotsReservedMessage);
+                    Steam.Reject(cSteamID, ESteamRejection.SERVER_FULL);
                     return false;
                 }
                 return true;
@@ -282,7 +289,7 @@ namespace Rocket.RocketAPI
             {
                 return true;
             }
-            Steam.kick(cSteamID, permissions.NotWhitelistedMessage);
+            Steam.Reject(cSteamID, ESteamRejection.WHITELISTED);
             return false;
         }
     }
@@ -310,9 +317,6 @@ namespace Rocket.RocketAPI
         [XmlArrayItem(ElementName = "ReservedSlotsGroup")]
         public string[] ReservedSlotsGroups;
         public int ReservedSlots = 0;
-        
-        public string NotWhitelistedMessage;
-        public string AllSlotsReservedMessage;
     }
     
 

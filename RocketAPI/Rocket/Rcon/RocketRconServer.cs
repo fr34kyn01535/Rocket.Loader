@@ -217,7 +217,7 @@ namespace Rocket.Rcon
                     {
                         try
                         {
-                            command.check(null, cmd, Input);
+                            command.check(new Steamworks.CSteamID(0), cmd, Input);
                             //h.Add("Done\n\r");
                         }
                         catch (Exception ex)

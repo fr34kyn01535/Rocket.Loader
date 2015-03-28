@@ -4,55 +4,75 @@ using System;
 
 namespace Rocket.Commands
 {
-    public class CommandP : Command
+    public class CommandP : IRocketCommand
     {
-        public CommandP()
+        public bool RunFromConsole
         {
-            base.commandName = "p";
-            base.commandHelp = "Lists permissions";
-            base.commandInfo = base.commandName + " - " + base.commandHelp;
+            get { return false; }
         }
 
-        protected override void execute(SteamPlayerID caller, string command)
+        public string Name
         {
-            if (!RocketCommand.IsPlayer(caller)) return;
+            get { return "p"; }
+        }
 
-            string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
+        public string Help
+        {
+            get { return "Lists permissions";}
+        }
 
-            SteamPlayer p = PlayerTool.getSteamPlayer(caller.CSteamID);
+        public void Execute(Steamworks.CSteamID caller, string command)
+        {
+            string[] componentsFromSerial = command.Split('/');
+
+            SteamPlayer p = PlayerTool.getSteamPlayer(caller);
 
             if (componentsFromSerial.Length > 1)
             {
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
 
-            SteamPlayerID player = caller;
+            Steamworks.CSteamID player = caller;
 
             string name = "Your";
             if (componentsFromSerial.Length != 0)
             {
-
                 if (componentsFromSerial[0].ToString().ToLower() == "reload" && RocketPermissionManager.CheckPermissions(p, "p.reload"))
                 {
                     RocketPermissionManager.ReloadPermissions();
-                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_p_reload_private"));
+                    RocketChatManager.Say(caller, RocketTranslation.Translate("command_p_reload_private"));
                     return;
                 }
+
+                //if (componentsFromSerial[0].ToString().ToLower() == "set" && RocketPermissionManager.CheckPermissions(p, "p.set"))
+                //{
+                //    if (componentsFromSerial.Length != 5)
+                //    {
+                //        RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
+                //    }
+
+                //    SteamPlayer toSetPlayer = PlayerTool.getSteamPlayer("");
+
+                //    RocketPermissionManager.SavePermissions();
+                //    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_p_set_private", toSetPlayer.SteamPlayerID.CharacterName));
+                //    return;
+                //}
 
                 ushort id = 0;
                 if (!ushort.TryParse(componentsFromSerial[0].ToString(), out id))
                 {
-                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
+                    RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                     return;
                 }
-                player = PlayerTool.getPlayer(caller.CSteamID).SteamChannel.SteamPlayer.SteamPlayerID;
-                name = player.CharacterName + "s";
+                SteamPlayerID otherPlayer = PlayerTool.getPlayer(caller).SteamChannel.SteamPlayer.SteamPlayerID;
+                player = otherPlayer.CSteamID;
+                name = otherPlayer.CharacterName + "s";
             }
 
-            RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_p_groups_private", name, String.Join(", ", RocketPermissionManager.GetDisplayGroups(player.CSteamID))));
-            RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_p_permissions_private", name, String.Join(", ", RocketPermissionManager.GetPermissions(player.CSteamID))));
+            RocketChatManager.Say(caller, RocketTranslation.Translate("command_p_groups_private", name, String.Join(", ", RocketPermissionManager.GetDisplayGroups(player))));
+            RocketChatManager.Say(caller, RocketTranslation.Translate("command_p_permissions_private", name, String.Join(", ", RocketPermissionManager.GetPermissions(player))));
         }
     }
 }

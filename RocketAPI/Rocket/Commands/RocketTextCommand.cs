@@ -18,10 +18,10 @@ namespace Rocket.Commands
             this.text = text;
         }
 
-        protected override void execute(SteamPlayerID caller, string command)
+        protected override void execute(Steamworks.CSteamID caller, string command)
         {
             foreach (string l in text) {
-                RocketChatManager.Say(caller.CSteamID, l);
+                RocketChatManager.Say(caller, l);
             }
         }
     }

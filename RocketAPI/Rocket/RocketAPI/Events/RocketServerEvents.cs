@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Rocket.RocketAPI.Events
 {
-    public partial class RocketServerEvents
+    public sealed partial class RocketServerEvents
     {
         public static void BindEvents()
         {

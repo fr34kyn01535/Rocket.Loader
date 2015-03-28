@@ -104,11 +104,14 @@
   <ItemGroup>
     <Compile Include="RocketLoadingAnimation.cs" />
     <Compile Include="Rocket\Commands\CommandDuty.cs" />
+    <Compile Include="Rocket\Commands\CommandInvestigate.cs" />
     <Compile Include="Rocket\Commands\CommandVanish.cs" />
     <Compile Include="Rocket\Commands\CommandHome.cs" />
     <Compile Include="Rocket\Commands\CommandHeal.cs" />
     <Compile Include="Rocket\Commands\CommandCompass.cs" />
     <Compile Include="Rocket\Commands\CommandV.cs" />
+    <Compile Include="Rocket\RocketAPI\Commands\IRocketCommand.cs" />
+    <Compile Include="Rocket\RocketAPI\Commands\RocketCommandBase.cs" />
     <Compile Include="Rocket\Commands\RocketTextCommand.cs" />
     <Compile Include="Rocket\RocketTranslation.cs" />
     <Compile Include="Rocket\RocketAPI\Translation\RocketTranslationHelper.cs" />
@@ -120,7 +123,6 @@
     </Compile>
     <Compile Include="Rocket\RocketAPI\Extensions\Player.cs" />
     <Compile Include="Rocket\RocketAPI\RocketChatManager.cs" />
-    <Compile Include="Rocket\RocketAPI\RocketCommand.cs" />
     <Compile Include="Rocket\RocketAPI\RocketPlayerFeatures.cs">
       <SubType>Code</SubType>
     </Compile>

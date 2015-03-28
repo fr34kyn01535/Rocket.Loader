@@ -3,19 +3,27 @@ using SDG;
 
 namespace Rocket.Commands
 {
-    public class CommandLag : Command
+    public class CommandLag : IRocketCommand
     {
-        public CommandLag()
+        public bool RunFromConsole
         {
-            base.commandName = "lag";
-            base.commandHelp = "Shows the servers TPS";
-            base.commandInfo = base.commandName + " - " + base.commandHelp;
+            get { return true; }
         }
 
-        protected override void execute(SteamPlayerID caller, string command)
+        public string Name
         {
-            RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_tps_tps", Bootstrap.TPS));
-            RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_tps_running_since", Bootstrap.Started.ToString()));
+            get { return "lag"; }
+        }
+
+        public string Help
+        {
+            get { return "Shows the servers TPS";}
+        }
+
+        public void Execute(Steamworks.CSteamID caller, string command)
+        {
+            RocketChatManager.Say(caller, RocketTranslation.Translate("command_tps_tps", Bootstrap.TPS));
+            RocketChatManager.Say(caller, RocketTranslation.Translate("command_tps_running_since", Bootstrap.Started.ToString()));
         }
     }
 }

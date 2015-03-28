@@ -5,31 +5,37 @@ using System;
 
 namespace Rocket.Commands
 {
-    public class CommandGod : Command
+    public class CommandGod : IRocketCommand
     {
-        public CommandGod()
+        public bool RunFromConsole
         {
-            base.commandName = "god";
-            base.commandHelp = "Cause you ain't givin a shit";
-            base.commandInfo = base.commandName + " - " + base.commandHelp;
+            get { return false; }
         }
 
-        protected override void execute(SteamPlayerID caller, string command)
+        public string Name
         {
-            if (!RocketCommand.IsPlayer(caller)) return;
+            get { return "god"; }
+        }
 
-            Player p = PlayerTool.getPlayer(caller.CSteamID);
+        public string Help
+        {
+            get { return "Cause you ain't givin a shit";}
+        }
+
+        public void Execute(Steamworks.CSteamID caller, string command)
+        {
+            Player p = PlayerTool.getPlayer(caller);
             RocketPlayerFeatures pf = p.gameObject.transform.GetComponent<RocketPlayerFeatures>();
             if (pf.GodMode)
             {
-                Logger.Log(RocketTranslation.Translate("command_god_disable_console", caller.CharacterName));
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_god_disable_private"));
+                Logger.Log(RocketTranslation.Translate("command_god_disable_console", p.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_god_disable_private"));
                 pf.GodMode = false;
             }
             else
             {
-                Logger.Log(RocketTranslation.Translate("command_god_enable_console", caller.CharacterName));
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_god_enable_private"));
+                Logger.Log(RocketTranslation.Translate("command_god_enable_console", p.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_god_enable_private"));
                 pf.GodMode = true;
             }
         }

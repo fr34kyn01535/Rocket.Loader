@@ -5,7 +5,7 @@ using Steamworks;
 
 namespace Rocket.RocketAPI
 {
-    public class RocketChatManager : RocketManagerComponent
+    public sealed class RocketChatManager : RocketManagerComponent
     {
         private static ChatManager chatmanager;
 

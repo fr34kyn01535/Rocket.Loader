@@ -7,43 +7,47 @@ using System.Linq;
 
 namespace Rocket.Commands
 {
-    public class CommandTp : Command
+    public class CommandTp : IRocketCommand
     {
-        public CommandTp()
+        public bool RunFromConsole
         {
-            base.commandName = "tp";
-            base.commandHelp = "Teleports you to another player";
-            base.commandInfo = base.commandName + " - " + base.commandHelp;
+            get { return false; }
         }
 
-        protected override void execute(SteamPlayerID caller, string command)
+        public string Name
         {
-            if (!RocketCommand.IsPlayer(caller)) return;
+            get { return "tp"; }
+        }
 
-            SteamPlayer myPlayer = PlayerTool.getSteamPlayer(caller.CSteamID);
+        public string Help
+        {
+            get { return "Teleports you to another player";}
+        }
+
+        public void Execute(Steamworks.CSteamID caller, string command)
+        {
+            SteamPlayer myPlayer = PlayerTool.getSteamPlayer(caller);
 
             if(String.IsNullOrEmpty(command)){
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_invalid_parameter"));
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
             if (myPlayer.Player.Stance.Stance == EPlayerStance.DRIVING || myPlayer.Player.Stance.Stance == EPlayerStance.SITTING)
             {
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_generic_teleport_while_driving_error"));
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_teleport_while_driving_error"));
                 return;
             }
 
 
             SteamPlayer otherPlayer = PlayerTool.getSteamPlayer(command);
-            if (otherPlayer!=null && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.CSteamID.ToString())
+            if (otherPlayer!=null && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.ToString())
             {
-
-                
                 Vector3 d1 = otherPlayer.Player.transform.position;
                 Vector3 vector31 = otherPlayer.Player.transform.rotation.eulerAngles;
                 myPlayer.Player.sendTeleport(d1, MeasurementTool.angleToByte(vector31.y));
-                Logger.Log(RocketTranslation.Translate("command_tp_teleport_console", caller.CharacterName, otherPlayer.SteamPlayerID.CharacterName));
-                RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_tp_teleport_private", otherPlayer.SteamPlayerID.CharacterName));
+                Logger.Log(RocketTranslation.Translate("command_tp_teleport_console", myPlayer.SteamPlayerID.CharacterName, otherPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_tp_teleport_private", otherPlayer.SteamPlayerID.CharacterName));
             }
             else {
                 Node item = LevelNodes.Nodes.Where(n => n.NodeType == ENodeType.Location && ((NodeLocation)n).Name.ToLower().Contains(command.ToLower())).FirstOrDefault();
@@ -52,12 +56,12 @@ namespace Rocket.Commands
                     Vector3 c = item.Position + new Vector3(0f, 0.5f, 0f);
                     Vector3 vector31 = myPlayer.Player.transform.rotation.eulerAngles;
                     myPlayer.Player.sendTeleport(c, MeasurementTool.angleToByte(vector31.y));
-                    Logger.Log(RocketTranslation.Translate("command_tp_teleport_console", caller.CharacterName, ((NodeLocation)item).Name));
-                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_tp_teleport_private", ((NodeLocation)item).Name));
+                    Logger.Log(RocketTranslation.Translate("command_tp_teleport_console", myPlayer.SteamPlayerID.CharacterName, ((NodeLocation)item).Name));
+                    RocketChatManager.Say(caller, RocketTranslation.Translate("command_tp_teleport_private", ((NodeLocation)item).Name));
                 }
                 else
                 {
-                    RocketChatManager.Say(caller.CSteamID, RocketTranslation.Translate("command_tp_failed_find_destination"));
+                    RocketChatManager.Say(caller, RocketTranslation.Translate("command_tp_failed_find_destination"));
                 }
             }
         }
