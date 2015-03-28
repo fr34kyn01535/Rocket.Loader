@@ -91,7 +91,7 @@ namespace Rocket.RocketAPI
             {
                 IRocketCommand rocketCommand = (IRocketCommand)Activator.CreateInstance(command);
                 RocketCommandBase baseCommand = new RocketCommandBase(rocketCommand);
-                registerCommand((Command)(baseCommand), rocketCommand.GetType().Assembly.GetName().Name);
+                registerCommand((Command)(baseCommand), command.Assembly.GetName().Name);
             }
 
             foreach (TextCommand t in RocketSettings.TextCommands)
@@ -130,17 +130,17 @@ namespace Rocket.RocketAPI
                 if (ccommand.commandName.ToLower().Equals(command.commandName.ToLower()))
                 {
                     if (command is RocketTextCommand) {
-                        Logger.LogWarning("Couldn't register RocketTextCommand." + command.commandName + " because it would overwrite " + assemblyName + "." + ccommand.commandName);
+                        Logger.LogWarning("Couldn't register RocketTextCommand." + command.commandName + " because it would overwrite " + ccommand.GetType().Assembly.GetName().Name  + "." + ccommand.commandName);
                         return;
                     }
-                    if (ccommand.GetType().Assembly.GetName().Name == "Assembly-CSharp")
+                    if (assemblyName == "Assembly-CSharp")
                     {
                         Logger.LogWarning(assemblyName + "." + command.commandName + " overwrites built in command " + ccommand.commandName);
                         msg = true;
                     }
                     else
                     {
-                        Logger.LogWarning("Can not register command " + assemblyName + "." + command.commandName + " because its already registered by " + ccommand.GetType().Assembly.GetName().Name + "." + ccommand.commandName);
+                        //Logger.LogWarning("Already register command " + assemblyName + "." + command.commandName + " because it would overwrite " + ccommand.GetType().Assembly.GetName().Name + "." + ccommand.commandName);
                         return;
                     }
                 }
