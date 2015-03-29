@@ -96,7 +96,7 @@ namespace Rocket.RocketLoader
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Your game was successfully patched");
 #if DEBUG
-                    Console.ReadLine();
+                    //Console.ReadLine();
 #endif
                     Environment.Exit(0);
                 }

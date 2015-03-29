@@ -242,7 +242,15 @@ namespace Rocket.RocketAPI
             return permissions.ReservedSlots;
         }
 
-        internal static bool CheckReservedSlotSpace(CSteamID cSteamID)
+
+
+        public static void CheckValid(CSteamID cSteamID)
+        {
+            checkReservedSlotSpace(cSteamID);
+            checkWhitelisted(cSteamID);
+        }
+
+        private static bool checkReservedSlotSpace(CSteamID cSteamID)
         {
             if (permissions.ReservedSlotsGroups != null && permissions.ReservedSlotsGroups.Count() != 0 && permissions.Groups != null && permissions.Groups.Count() != 0) //If setup
             {
@@ -261,6 +269,7 @@ namespace Rocket.RocketAPI
                             return true;
                         }
                     }
+                    Logger.Log("full");
                     Steam.Reject(cSteamID, ESteamRejection.SERVER_FULL);
                     return false;
                 }
@@ -272,7 +281,7 @@ namespace Rocket.RocketAPI
             }
         }
 
-        internal static bool CheckWhitelisted(CSteamID cSteamID)
+        private static bool checkWhitelisted(CSteamID cSteamID)
         {
             if (permissions.WhitelistedGroups != null && permissions.WhitelistedGroups.Count() != 0 && permissions.Groups != null && permissions.Groups.Count() != 0) //If setup
             {
@@ -289,6 +298,7 @@ namespace Rocket.RocketAPI
             {
                 return true;
             }
+            Logger.Log("whitelist");
             Steam.Reject(cSteamID, ESteamRejection.WHITELISTED);
             return false;
         }

@@ -61,9 +61,6 @@ namespace Rocket.RocketAPI
             pl = gameObject.transform.GetComponent<Player>();
             e = gameObject.transform.GetComponent<RocketPlayerEvents>();
 
-            if (!RocketPermissionManager.CheckReservedSlotSpace(pl.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID)) return;
-            if (!RocketPermissionManager.CheckWhitelisted(pl.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID)) return;
-
             if (godMode)
             {
                 e.OnUpdateHealth += e_OnPlayerUpdateHealth;
