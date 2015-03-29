@@ -24,7 +24,7 @@ namespace Rocket.Commands
 
         public void Execute(Steamworks.CSteamID caller, string command)
         {
-            string[] componentsFromSerial = command.Split('/');
+            string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
 
             if (componentsFromSerial.Length == 0 || componentsFromSerial.Length > 1)
             {
