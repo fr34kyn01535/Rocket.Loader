@@ -238,7 +238,6 @@
     <Compile Include="Patches\SteamChannelMethod.cs" />
     <Compile Include="Patches\VehicleAsset.cs" />
     <Compile Include="Patches\ItemAsset.cs" />
-    <Compile Include="Patches\Managers.cs" />
     <Compile Include="Patches\MenuPlayUI.cs" />
     <Compile Include="Patches\Player.Clothing.cs" />
     <Compile Include="Patches\InventorySearch.cs" />

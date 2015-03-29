@@ -38,6 +38,13 @@ namespace Rocket
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("RocketAPI v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " for Unturned v" + Steam.Version + "\n");
 
+            Steam.OnServerHosted += () =>
+            {
+#if DEBUG
+                Logger.Log("OnServerHosted"); 
+#endif
+                Launch();
+            };
 #if DEBUG
             Console.WriteLine("Splash");
 #else
