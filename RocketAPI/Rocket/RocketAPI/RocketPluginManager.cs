@@ -133,14 +133,14 @@ namespace Rocket.RocketAPI
                         Logger.LogWarning("Couldn't register RocketTextCommand." + command.commandName + " because it would overwrite " + ccommand.GetType().Assembly.GetName().Name  + "." + ccommand.commandName);
                         return;
                     }
-                    if (assemblyName == "Assembly-CSharp")
+                    if (ccommand.GetType().Assembly.GetName().Name == "Assembly-CSharp")
                     {
                         Logger.LogWarning(assemblyName + "." + command.commandName + " overwrites built in command " + ccommand.commandName);
                         msg = true;
                     }
                     else
                     {
-                        //Logger.LogWarning("Already register command " + assemblyName + "." + command.commandName + " because it would overwrite " + ccommand.GetType().Assembly.GetName().Name + "." + ccommand.commandName);
+                        Logger.LogWarning("Already register command " + assemblyName + "." + command.commandName + " because it would overwrite " + ccommand.GetType().Assembly.GetName().Name + "." + ccommand.commandName);
                         return;
                     }
                 }
