@@ -202,7 +202,12 @@ namespace Rocket.RocketAPI
             return permissions.Groups.Where(g => g.Members.Contains(CSteamID.ToString())).Select(g => g.DisplayName + " (" + g.Id + ")").ToArray();
         }
 
-        public static string[] GetPermissions(CSteamID CSteamID)
+        public static List<Group> GetGroups(CSteamID CSteamID)
+        {
+            return permissions.Groups.Where(g => g.Members.Contains(CSteamID.ToString())).ToList();
+        }
+
+        public static List<string> GetPermissions(CSteamID CSteamID)
         {
             List<string> p = new List<string>();
             foreach (Group g in permissions.Groups)
@@ -212,7 +217,7 @@ namespace Rocket.RocketAPI
                     p.AddRange(g.Commands);
                 }
             }
-            return p.Distinct().ToArray();
+            return p.Distinct().ToList();
         }
 
         /// <summary>

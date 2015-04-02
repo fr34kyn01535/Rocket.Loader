@@ -72,7 +72,7 @@ namespace Rocket.Commands
             }
 
             RocketChatManager.Say(caller, RocketTranslation.Translate("command_p_groups_private", name, String.Join(", ", RocketPermissionManager.GetDisplayGroups(player))));
-            RocketChatManager.Say(caller, RocketTranslation.Translate("command_p_permissions_private", name, String.Join(", ", RocketPermissionManager.GetPermissions(player))));
+            RocketChatManager.Say(caller, RocketTranslation.Translate("command_p_permissions_private", name, String.Join(", ", RocketPermissionManager.GetPermissions(player).ToArray())));
         }
     }
 }

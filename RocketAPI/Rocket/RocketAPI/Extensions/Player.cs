@@ -10,6 +10,69 @@ namespace Rocket.RocketAPI
 {
     public static class PlayerExtensions
     {
+        public static List<Group> GetGroups(this SDG.Player player)
+        {
+            return RocketPermissionManager.GetGroups(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID);
+        }
+
+        public static List<string> GetPermissions(this SDG.Player player)
+        {
+            return RocketPermissionManager.GetPermissions(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID);
+        }
+
+        public static void Kick(this SDG.Player player, string reason)
+        {
+            Steam.kick(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, reason);
+        }
+
+        public static void Ban(this SDG.Player player, string reason, uint duration)
+        {
+            Steam.ban(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, reason, duration);
+        }
+
+        public static bool IsAdmin(this SDG.Player player)
+        {
+            return player.SteamChannel.SteamPlayer.IsAdmin;
+        }
+        
+        public static void SetAdmin(this SDG.Player player,bool admin,SDG.Player issuer = null)
+        {
+            if (admin)
+            {
+                if (issuer == null)
+                {
+                    SteamAdminlist.admin(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, new CSteamID(0));
+                }
+                else
+                {
+                    SteamAdminlist.admin(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, issuer.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID);
+                }
+            }
+            else {
+                SteamAdminlist.unadmin(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID);
+            }
+        } 
+
+        public static void Teleport(this SDG.Player player, SDG.Player target)
+        {
+            Vector3 d1 = target.transform.position;
+            Vector3 vector31 = target.transform.rotation.eulerAngles;
+            player.sendTeleport(d1, MeasurementTool.angleToByte(vector31.y));
+        }
+
+        public static bool Teleport(this SDG.Player player, string node)
+        {
+            Node item = LevelNodes.Nodes.Where(n => n.NodeType == ENodeType.Location && ((NodeLocation)n).Name.ToLower().Contains(node)).FirstOrDefault();
+            if (item != null)
+            {
+                Vector3 c = item.Position + new Vector3(0f, 0.5f, 0f);
+                Vector3 vector31 = player.transform.rotation.eulerAngles;
+                player.sendTeleport(c, MeasurementTool.angleToByte(vector31.y));
+                return true;
+            }
+            return false;
+        }
+
         public static byte GetStamina(this SDG.Player player)
         {
             return player.PlayerLife.Stamina;
@@ -53,8 +116,7 @@ namespace Rocket.RocketAPI
             player.PlayerLife.askDehydrate(thirst);
         }
 
-
-        public static bool GetBroken(this SDG.Player player)
+        public static bool IsBroken(this SDG.Player player)
         {
             return player.PlayerLife.Broken;
         }
@@ -63,7 +125,7 @@ namespace Rocket.RocketAPI
         {
             player.PlayerLife.SteamChannel.send("tellBroken", ESteamCall.OWNER, ESteamPacket.UPDATE_TCP_BUFFER, new object[] { broken });
         }
-        public static bool GetBleeding(this SDG.Player player)
+        public static bool IsBleeding(this SDG.Player player)
         {
             return player.PlayerLife.Bleeding;
         }
@@ -74,12 +136,12 @@ namespace Rocket.RocketAPI
             player.PlayerLife.SteamChannel.send("tellBleeding", ESteamCall.OWNER, ESteamPacket.UPDATE_TCP_BUFFER, new object[] { bleeding });
         }
 
-        public static bool GetDead(this SDG.Player player)
+        public static bool IsDead(this SDG.Player player)
         {
             return player.PlayerLife.Dead;
         }
 
-        public static bool GetFreezing(this SDG.Player player)
+        public static bool IsFreezing(this SDG.Player player)
         {
             return player.PlayerLife.Freezing;
         }
