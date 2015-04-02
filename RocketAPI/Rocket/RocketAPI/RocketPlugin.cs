@@ -44,7 +44,6 @@ namespace Rocket.RocketAPI
         public virtual void Awake()
         {
             DontDestroyOnLoad(transform.gameObject);
-            
             try
             {
 #if DEBUG
@@ -57,7 +56,6 @@ namespace Rocket.RocketAPI
             {
                 Logger.LogError("Failed to load translation: " + ex.ToString());
             }
-
             Loaded = true;
         }
 
@@ -65,7 +63,6 @@ namespace Rocket.RocketAPI
         {
             try
             {
-
                 string value = translationKey;
                 if (Translations != null)
                 {

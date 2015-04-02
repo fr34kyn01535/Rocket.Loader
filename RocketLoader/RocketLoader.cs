@@ -114,9 +114,9 @@ namespace Rocket.RocketLoader
 
         private static bool isPatched()
         {
-            MethodDefinition awake = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.Managers").Methods.AsEnumerable().Where(m => m.Name.ToLower() == "awake").FirstOrDefault();
+            MethodDefinition splash = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.CommandLine").Methods.AsEnumerable().Where(m => m.Name.ToLower() == "getcommands").FirstOrDefault();
 
-            if (awake.Body.Instructions[0].ToString().Contains("Launch"))
+            if (splash.Body.Instructions[0].ToString().Contains("Splash"))
             {
                 return true;
             }

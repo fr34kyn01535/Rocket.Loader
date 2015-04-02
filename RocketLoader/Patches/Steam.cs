@@ -34,11 +34,23 @@ namespace Rocket.RocketLoader.Patches
             //CheckValid
             MethodDefinition checkValid = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketAPI.RocketPermissionManager").Methods.AsEnumerable().Where(m => m.Name == "CheckValid").FirstOrDefault();
             MethodDefinition check = h.Type.Methods.AsEnumerable().Where(m => m.Parameters.Count == 1 && m.Parameters[0].ParameterType.Name == "ValidateAuthTicketResponse_t").FirstOrDefault();
+
+            FieldDefinition field = check.parameters[0].ParameterType.Resolve().Fields.Where(f => f.FieldType.Name == "CSteamID").FirstOrDefault();
             int i = 0;
-            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[i], Instruction.Create(OpCodes.Call, RocketLoader.UnturnedAssembly.MainModule.Import(checkValid)));
-            FieldDefinition field = check.parameters[0].ParameterType.Resolve().Fields.Where(f => f.FieldType.Name =="CSteamID").FirstOrDefault();
-            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[i], Instruction.Create(OpCodes.Ldfld, check.Module.Import(field)));
-            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[i], Instruction.Create(OpCodes.Ldarga_S, check.parameters[0]));
+            ILProcessor il = check.Body.GetILProcessor();
+
+            
+            il.InsertAfter(check.Body.Instructions[i++], Instruction.Create(OpCodes.Ldarga_S, check.parameters[0]));
+            il.InsertAfter(check.Body.Instructions[i++], Instruction.Create(OpCodes.Ldfld, check.Module.Import(field)));
+            il.InsertAfter(check.Body.Instructions[i++], Instruction.Create(OpCodes.Call, RocketLoader.UnturnedAssembly.MainModule.Import(checkValid)));
+            //il.InsertAfter(check.Body.Instructions[i++], Instruction.Create(OpCodes.Ldloc_2));
+            //il.InsertBefore(check.Body.Instructions[i], Instruction.Create(OpCodes.Brfalse_S, check.Body.Instructions[i]));
+            //il.InsertAfter(check.Body.Instructions[i++], Instruction.Create(OpCodes.Ret));
+            //il.InsertAfter(check.Body.Instructions[i++], Instruction.Create(OpCodes.Nop));
+
+
+           // il.InsertAfter(check.Body.Instructions[check.Body.Instructions.Count-1], last);
+
         }
     }
 }
