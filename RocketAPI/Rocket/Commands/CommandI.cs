@@ -63,7 +63,7 @@ namespace Rocket.Commands
                 return;
             }
 
-            if (ItemTool.tryForceGiveItem(caller.Player, id, amount))
+            if (caller.GiveItem(id, amount))
             {
                 Logger.Log(RocketTranslation.Translate("command_i_giving_console",caller.CharacterName, id, amount));
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_i_giving_private", amount, assetName, id));

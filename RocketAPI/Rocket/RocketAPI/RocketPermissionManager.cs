@@ -220,13 +220,7 @@ namespace Rocket.RocketAPI
             return p.Distinct().ToList();
         }
 
-        /// <summary>
-        /// This method checks if a player has a specific permission
-        /// </summary>
-        /// <param name="player">The player to check on</param>
-        /// <param name="permission">The permission to check</param>
-        /// <returns></returns>
-        public static bool CheckPermissions(RocketPlayer player, string permission)
+        public static bool CheckPermissions(SteamPlayer player, string permission)
         {
             Regex r = new Regex("^\\/[a-zA-Z]*");
             String commandstring = r.Match(permission.ToLower()).Value.ToString().TrimStart('/');
@@ -236,7 +230,7 @@ namespace Rocket.RocketAPI
                 if (group.Commands.Where(c => c.ToLower() == commandstring.ToLower() || c.StartsWith(commandstring.ToLower() + ".")).Count() != 0 || group.Commands.Contains("*"))
                 {
                     if (group.Id.ToLower() == permissions.DefaultGroupName) return true;
-                    if (group.Members.Contains(player.CSteamID.ToString().ToLower())) return true;
+                    if (group.Members.Contains(player.SteamPlayerID.CSteamID.ToString().ToLower())) return true;
                 }
             }
 

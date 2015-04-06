@@ -131,6 +131,10 @@ namespace Rocket.RocketAPI
             }
         }
 
+        public bool HasPermission(string permission) {
+            return RocketPermissionManager.CheckPermissions(player.SteamChannel.SteamPlayer, permission);
+        }
+
         public void Kick(string reason)
         {
             Steam.kick(this.CSteamID, reason);

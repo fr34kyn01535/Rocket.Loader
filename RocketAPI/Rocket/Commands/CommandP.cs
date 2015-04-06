@@ -33,7 +33,7 @@ namespace Rocket.Commands
 
             if (componentsFromSerial.Length != 0)
             {
-                if (componentsFromSerial[0].ToString().ToLower() == "reload" && RocketPermissionManager.CheckPermissions(caller, "p.reload"))
+                if (componentsFromSerial[0].ToString().ToLower() == "reload" && caller.HasPermission("p.reload"))
                 {
                     RocketPermissionManager.ReloadPermissions();
                     RocketChatManager.Say(caller, RocketTranslation.Translate("command_p_reload_private"));
