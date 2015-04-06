@@ -26,7 +26,7 @@ namespace Rocket.RocketAPI
 
         public static void Say(RocketPlayer player, string message, EChatMode chatmode = EChatMode.SAY)
         {
-            if (player.IsConsole)
+            if (player == null)
             {
                 Logger.Log(message);
              }

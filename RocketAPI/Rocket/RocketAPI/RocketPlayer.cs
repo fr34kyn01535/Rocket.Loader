@@ -82,11 +82,6 @@ namespace Rocket.RocketAPI
             return new RocketPlayer(player.SteamPlayerID.CSteamID);
         }
 
-        private bool isConsole = false;
-        public bool IsConsole{
-            get { return isConsole; }
-        }
-
         public RocketPlayerFeatures Features
         {
             get { return player.gameObject.transform.GetComponent<RocketPlayerFeatures>(); }
@@ -105,6 +100,20 @@ namespace Rocket.RocketAPI
         public PlayerInventory Inventory
         {
             get { return player.Inventory; }
+        }
+
+        public bool GiveItem(ushort itemId,byte amount) {
+            return ItemTool.tryForceGiveItem(player, itemId, amount);
+        }
+
+        public bool GiveVehicle(ushort vehicleId)
+        {
+            return VehicleTool.giveVehicle(player, vehicleId);
+        }
+
+        public void GiveZombie(byte amount)
+        {
+            ZombieTool.giveZombie(player,amount);
         }
 
         public List<Group> Groups
@@ -236,6 +245,19 @@ namespace Rocket.RocketAPI
             set{
                 player.PlayerLife.askDisinfect(100);
                 player.PlayerLife.askInfect(value);
+            }
+        }
+
+        public uint Experience
+        {
+            get
+            {
+                return player.Skills.Experience;
+            }
+            set
+            {
+                player.Skills.Experience = value;
+                player.SteamChannel.send("tellExperience", ESteamCall.OWNER, ESteamPacket.UPDATE_TCP_BUFFER, new object[] { value });
             }
         }
 
