@@ -167,6 +167,7 @@ namespace Rocket.RocketAPI
 
         private void onPlayerConnected(CSteamID id)
         {
+            if (!RocketPermissionManager.CheckValid(id)) return;
             SDG.Player player = PlayerTool.getPlayer(id);
             List<Type> rocketPlayerComponents = getTypesFromParentClass(Assemblies, typeof(RocketPlayerComponent));
 #if DEBUG

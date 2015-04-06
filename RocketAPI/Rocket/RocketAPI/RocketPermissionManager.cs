@@ -243,12 +243,14 @@ namespace Rocket.RocketAPI
 
 
 
-        public static void CheckValid(CSteamID cSteamID)
+        public static bool CheckValid(CSteamID cSteamID)
         {
             if (!checkReservedSlotSpace(cSteamID) || !checkWhitelisted(cSteamID))
             {
-                throw (new Exception("Player "+cSteamID+" was rejected!"));
-            }   
+                return false;
+            }
+
+            return true;
         }
 
         private static bool checkReservedSlotSpace(CSteamID cSteamID)
@@ -259,7 +261,7 @@ namespace Rocket.RocketAPI
                 int currentPlayers = Steam.Players.Count();
                 int reservedSlots = permissions.ReservedSlots;
 
-                if (currentPlayers + reservedSlots >= maxPlayers) // If not enought slots
+                if (currentPlayers + reservedSlots > maxPlayers) // If not enought slots
                 {
 
                     string[] myGroups = permissions.Groups.Where(g => g.Members.Contains(cSteamID.ToString())).Select(g => g.Id).ToArray();
@@ -271,6 +273,7 @@ namespace Rocket.RocketAPI
                         }
                     }
                     Steam.Reject(cSteamID, ESteamRejection.SERVER_FULL);
+                    Steam.kick(cSteamID, "");
                     return false;
                 }
                 return true;
@@ -299,6 +302,7 @@ namespace Rocket.RocketAPI
                 return true;
             }
             Steam.Reject(cSteamID, ESteamRejection.WHITELISTED);
+            Steam.kick(cSteamID, "");
             return false;
         }
     }
