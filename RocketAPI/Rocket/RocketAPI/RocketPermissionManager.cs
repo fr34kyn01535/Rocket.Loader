@@ -245,10 +245,10 @@ namespace Rocket.RocketAPI
 
         public static bool CheckValid(CSteamID cSteamID)
         {
-            if (!checkReservedSlotSpace(cSteamID) || !checkWhitelisted(cSteamID))
-            {
-                return false;
-            }
+            //if (!checkReservedSlotSpace(cSteamID) || !checkWhitelisted(cSteamID))
+            //{
+            //    return false;
+            //}
 
             return true;
         }
