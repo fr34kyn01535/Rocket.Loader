@@ -25,7 +25,7 @@ namespace Rocket.Commands
             get { return "About us :)";}
         }
 
-        public void Execute(Steamworks.CSteamID caller, string command)
+        public void Execute(RocketPlayer caller, string command)
         {
             RocketChatManager.Say(caller, "Rocket v" + Assembly.GetExecutingAssembly().GetName().Version + " for Unturned v" + Steam.Version);
             RocketChatManager.Say(caller, "https://rocket.foundation © 2015");

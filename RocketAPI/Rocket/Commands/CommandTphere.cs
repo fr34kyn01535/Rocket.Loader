@@ -23,19 +23,15 @@ namespace Rocket.Commands
             get { return "Teleports another player to you";}
         }
 
-        public void Execute(Steamworks.CSteamID caller, string command)
+        public void Execute(RocketPlayer caller, string command)
         {
-            SteamPlayer otherPlayer = PlayerTool.getSteamPlayer(command);
-            if (otherPlayer!=null && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.ToString())
+            RocketPlayer otherPlayer = RocketPlayer.FromName(command);
+            if (otherPlayer!=null && otherPlayer != caller)
             {
-                SteamPlayer myPlayer = PlayerTool.getSteamPlayer(caller);
-
-                Vector3 d1 = myPlayer.Player.transform.position;
-                Vector3 vector31 = myPlayer.Player.transform.rotation.eulerAngles;
-                otherPlayer.Player.sendTeleport(d1, MeasurementTool.angleToByte(vector31.y));
-                Logger.Log(RocketTranslation.Translate("command_tphere_teleport_console", otherPlayer.SteamPlayerID.CharacterName, myPlayer.SteamPlayerID.CharacterName));
-                RocketChatManager.Say(caller,RocketTranslation.Translate("command_tphere_teleport_from_private",otherPlayer.SteamPlayerID.CharacterName));
-                RocketChatManager.Say(otherPlayer.SteamPlayerID.CSteamID, RocketTranslation.Translate("command_tphere_teleport_to_private",myPlayer.SteamPlayerID.CharacterName));
+                otherPlayer.Teleport(caller);
+                Logger.Log(RocketTranslation.Translate("command_tphere_teleport_console", otherPlayer.CharacterName, caller.CharacterName));
+                RocketChatManager.Say(caller,RocketTranslation.Translate("command_tphere_teleport_from_private",otherPlayer.CharacterName));
+                RocketChatManager.Say(otherPlayer, RocketTranslation.Translate("command_tphere_teleport_to_private", caller.CharacterName));
             }
             else
             {

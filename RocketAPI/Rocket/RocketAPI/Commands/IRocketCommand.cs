@@ -10,6 +10,6 @@ namespace Rocket.RocketAPI
         bool RunFromConsole { get; }
         string Name { get; }
         string Help { get; }
-        void Execute(Steamworks.CSteamID caller, string command);
+        void Execute(RocketPlayer caller, string command);
     }
 }

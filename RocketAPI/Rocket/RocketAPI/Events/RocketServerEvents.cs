@@ -14,14 +14,14 @@ namespace Rocket.RocketAPI.Events
             Steam.OnServerConnected += onPlayerConnected;
         }
         
-        public delegate void PlayerDisconnected(SDG.Player player);
+        public delegate void PlayerDisconnected(RocketPlayer player);
         public static event PlayerDisconnected OnPlayerDisconnected;
 
         private static void onPlayerDisconnected(CSteamID r)
         {
             try
             {
-                if (OnPlayerDisconnected != null) OnPlayerDisconnected(PlayerTool.getPlayer(r));
+                if (OnPlayerDisconnected != null) OnPlayerDisconnected(RocketPlayer.FromCSteamID(r));
             }
             catch (System.Exception ex)
             {
@@ -29,14 +29,14 @@ namespace Rocket.RocketAPI.Events
             }
         }
 
-        public delegate void PlayerConnected(SDG.Player player);
+        public delegate void PlayerConnected(RocketPlayer player);
         public static event PlayerConnected OnPlayerConnected;
 
         private static void onPlayerConnected(CSteamID r)
         {
             try
             {
-                if (OnPlayerConnected != null) OnPlayerConnected(PlayerTool.getPlayer(r));
+                if (OnPlayerConnected != null) OnPlayerConnected(RocketPlayer.FromCSteamID(r));
             }
             catch (System.Exception ex)
             {

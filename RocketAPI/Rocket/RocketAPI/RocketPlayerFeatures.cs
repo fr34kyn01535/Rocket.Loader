@@ -11,7 +11,7 @@ namespace Rocket.RocketAPI
     public sealed class RocketPlayerFeatures : RocketPlayerComponent
     {
         private RocketPlayerEvents e = null;
-        private Player pl = null;
+        private RocketPlayer pl = null;
         private bool godMode = false;
 
         public bool VanishMode {
@@ -52,13 +52,13 @@ namespace Rocket.RocketAPI
         {
             if (this.vanishMode)
             {
-                pl.SteamChannel.send("tellPosition", ESteamCall.NOT_OWNER, ESteamPacket.UPDATE_UDP_BUFFER, new object[] {new Vector3(pl.transform.position.x,-3,pl.transform.position.z)});
+                pl.Player.SteamChannel.send("tellPosition", ESteamCall.NOT_OWNER, ESteamPacket.UPDATE_UDP_BUFFER, new object[] {new Vector3(pl.Position.x,-3,pl.Position.z)});
             }
         }
 
         private void Start()
         {
-            pl = gameObject.transform.GetComponent<Player>();
+            pl = RocketPlayer.FromPlayer(gameObject.transform.GetComponent<Player>());
             e = gameObject.transform.GetComponent<RocketPlayerEvents>();
 
             if (godMode)
@@ -68,36 +68,36 @@ namespace Rocket.RocketAPI
                 e.OnUpdateFood += e_OnPlayerUpdateFood;
                 e.OnUpdateVirus += e_OnPlayerUpdateVirus;
                 pl.Heal(100);
-                pl.SetInfection(0);
-                pl.SetHunger(0);
-                pl.SetThirst(0);
-                pl.SetBleeding(false);
-                pl.SetBroken(false);
+                pl.Infection = 0;
+                pl.Hunger = 0;
+                pl.Thirst = 0;
+                pl.Bleeding = false;
+                pl.Broken = false;
             }
         }
 
-        private void e_OnPlayerUpdateVirus(Player player, byte virus)
+        private void e_OnPlayerUpdateVirus(RocketPlayer player, byte virus)
         {
-            if (virus < 95) pl.SetInfection(0);
+            if (virus < 95) pl.Infection = 0;
         }
 
-        private void e_OnPlayerUpdateFood(Player player, byte food)
+        private void e_OnPlayerUpdateFood(RocketPlayer player, byte food)
         {
-            if (food < 95) pl.SetHunger(0);
+            if (food < 95) pl.Hunger = 0;
         }
 
-        private void e_OnPlayerUpdateWater(Player player, byte water)
+        private void e_OnPlayerUpdateWater(RocketPlayer player, byte water)
         {
-            if (water < 95) pl.SetThirst(0);
+            if (water < 95) pl.Thirst = 0;
         }
 
-        private void e_OnPlayerUpdateHealth(Player player, byte health)
+        private void e_OnPlayerUpdateHealth(RocketPlayer player, byte health)
         {
             if (health < 95)
             {
-                pl.Heal(100);
-                pl.SetBleeding(false);
-                pl.SetBroken(false);
+                pl.Heal(100); 
+                pl.Bleeding = false;
+                pl.Broken = false;
             }
         }
     }

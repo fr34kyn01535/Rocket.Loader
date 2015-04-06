@@ -96,7 +96,7 @@ namespace Rocket.RocketAPI
 
             foreach (TextCommand t in RocketSettings.TextCommands)
             {
-                registerCommand(new Rocket.Commands.RocketTextCommand(t.Name, t.Help, t.Text));
+                registerCommand(new RocketTextCommand(t.Name, t.Help, t.Text));
             }
 
             //Hacky Hacky :D Commander.Commands = Commander.Commands.Where(c => c.GetType() != typeof(CommandInvestigate)).ToArray();
@@ -106,7 +106,7 @@ namespace Rocket.RocketAPI
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\nLaunching Server".PadRight(80, '.'));
-            Logger.LogWarning("\nThe error concerning a corrupted file resourcs.assets can be");
+            Logger.LogWarning("\nThe error concerning a corrupted file resources.assets can be");
             Logger.LogWarning("ignored while we work on a bugfix".PadRight(79, '.') + "\n");
 
         }

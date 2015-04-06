@@ -22,21 +22,19 @@ namespace Rocket.Commands
             get { return "Cause you ain't givin a shit";}
         }
 
-        public void Execute(Steamworks.CSteamID caller, string command)
+        public void Execute(RocketPlayer caller, string command)
         {
-            Player p = PlayerTool.getPlayer(caller);
-            RocketPlayerFeatures pf = p.gameObject.transform.GetComponent<RocketPlayerFeatures>();
-            if (pf.GodMode)
+            if (caller.Features.GodMode)
             {
-                Logger.Log(RocketTranslation.Translate("command_god_disable_console", p.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                Logger.Log(RocketTranslation.Translate("command_god_disable_console", caller.CharacterName));
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_god_disable_private"));
-                pf.GodMode = false;
+                caller.Features.GodMode = false;
             }
             else
             {
-                Logger.Log(RocketTranslation.Translate("command_god_enable_console", p.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                Logger.Log(RocketTranslation.Translate("command_god_enable_console", caller.CharacterName));
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_god_enable_private"));
-                pf.GodMode = true;
+                caller.Features.GodMode = true;
             }
         }
     }

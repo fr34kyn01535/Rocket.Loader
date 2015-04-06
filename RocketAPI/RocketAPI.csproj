@@ -112,7 +112,8 @@
     <Compile Include="Rocket\Commands\CommandV.cs" />
     <Compile Include="Rocket\RocketAPI\Commands\IRocketCommand.cs" />
     <Compile Include="Rocket\RocketAPI\Commands\RocketCommandBase.cs" />
-    <Compile Include="Rocket\Commands\RocketTextCommand.cs" />
+    <Compile Include="Rocket\RocketAPI\Commands\RocketTextCommand.cs" />
+    <Compile Include="Rocket\RocketAPI\RocketPlayerFeatures.cs" />
     <Compile Include="Rocket\RocketTranslation.cs" />
     <Compile Include="Rocket\RocketAPI\Translation\RocketTranslationHelper.cs" />
     <Compile Include="Rocket\RocketAPI\Events\RocketPlayerInventoryEvents.cs" />
@@ -121,9 +122,8 @@
     <Compile Include="Rocket\RocketAPI\Events\RocketServerEvents.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Rocket\RocketAPI\Extensions\Player.cs" />
     <Compile Include="Rocket\RocketAPI\RocketChatManager.cs" />
-    <Compile Include="Rocket\RocketAPI\RocketPlayerFeatures.cs">
+    <Compile Include="Rocket\RocketAPI\RocketPlayer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Rocket\Logging\ELogType.cs" />

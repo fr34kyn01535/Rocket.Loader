@@ -22,21 +22,19 @@ namespace Rocket.Commands
             get { return "Are we rushing in or are we goin' sneaky beaky like?";}
         }
 
-        public void Execute(Steamworks.CSteamID caller, string command)
+        public void Execute(RocketPlayer caller, string command)
         {
-            Player p = PlayerTool.getPlayer(caller);
-            RocketPlayerFeatures pf = p.gameObject.transform.GetComponent<RocketPlayerFeatures>();
-            if (pf.VanishMode)
+            if (caller.Features.VanishMode)
             {
-                Logger.Log(RocketTranslation.Translate("command_vanish_disable_console", p.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                Logger.Log(RocketTranslation.Translate("command_vanish_disable_console", caller.CharacterName));
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_vanish_disable_private"));
-                pf.VanishMode = false;
+                caller.Features.VanishMode = false;
             }
             else
             {
-                Logger.Log(RocketTranslation.Translate("command_vanish_enable_console", p.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                Logger.Log(RocketTranslation.Translate("command_vanish_enable_console", caller.CharacterName));
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_vanish_enable_private"));
-                pf.VanishMode = true;
+                caller.Features.VanishMode = true;
             }
         }
     }

@@ -11,7 +11,7 @@ namespace Rocket.RocketAPI.Events
 
     public sealed partial class RocketPlayerEvents : RocketPlayerComponent
     {
-        public delegate void PlayerInventoryUpdated(SDG.Player player, InventoryGroup inventoryGroup, byte inventoryIndex, ItemJar P);
+        public delegate void PlayerInventoryUpdated(RocketPlayer player, InventoryGroup inventoryGroup, byte inventoryIndex, ItemJar P);
         public static event PlayerInventoryUpdated OnPlayerInventoryUpdated;
         public event PlayerInventoryUpdated OnInventoryUpdated;
 
@@ -28,7 +28,7 @@ namespace Rocket.RocketAPI.Events
             }
         }
 
-        public delegate void PlayerInventoryResized(SDG.Player player, InventoryGroup inventoryGroup, byte O, byte U);
+        public delegate void PlayerInventoryResized(RocketPlayer player, InventoryGroup inventoryGroup, byte O, byte U);
         public static event PlayerInventoryResized OnPlayerInventoryResized;
         public event PlayerInventoryResized OnInventoryResized;
 
@@ -45,7 +45,7 @@ namespace Rocket.RocketAPI.Events
             }
         }
 
-        public delegate void PlayerInventoryRemoved(SDG.Player player, InventoryGroup inventoryGroup, byte inventoryIndex, ItemJar P);
+        public delegate void PlayerInventoryRemoved(RocketPlayer player, InventoryGroup inventoryGroup, byte inventoryIndex, ItemJar P);
         public static event PlayerInventoryRemoved OnPlayerInventoryRemoved;
         public event PlayerInventoryRemoved OnInventoryRemoved;
 
@@ -62,7 +62,7 @@ namespace Rocket.RocketAPI.Events
             }
         }
 
-        public delegate void PlayerInventoryAdded(SDG.Player player, InventoryGroup inventoryGroup, byte inventoryIndex, ItemJar P);
+        public delegate void PlayerInventoryAdded(RocketPlayer player, InventoryGroup inventoryGroup, byte inventoryIndex, ItemJar P);
         public static event PlayerInventoryAdded OnPlayerInventoryAdded;
         public event PlayerInventoryAdded OnInventoryAdded;
 

@@ -22,34 +22,33 @@ namespace Rocket.Commands
             get { return "Heals yourself or somebody else";}
         }
 
-        public void Execute(Steamworks.CSteamID caller, string command)
+        public void Execute(RocketPlayer caller, string command)
         {
-            if (String.IsNullOrEmpty(command) && RocketCommandBase.IsPlayer(caller))
+            if (caller != null && String.IsNullOrEmpty(command))
             {
-                Player myPlayer = PlayerTool.getPlayer(caller);
-                myPlayer.Heal(100);
-                myPlayer.SetBleeding(false);
-                myPlayer.SetBroken(false);
-                myPlayer.SetInfection(0);
-                myPlayer.SetHunger(0);
-                myPlayer.SetThirst(0);
+                caller.Heal(100);
+                caller.Bleeding = false;
+                caller.Broken = false;
+                caller.Infection = 0;
+                caller.Hunger = 0;
+                caller.Thirst = 0;
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_heal_success"));
             }
             else
             {
-                Player otherPlayer = PlayerTool.getPlayer(command);
-                if (otherPlayer != null && otherPlayer.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID.ToString() != caller.ToString())
+                RocketPlayer otherPlayer = RocketPlayer.FromName(command);
+                if (otherPlayer != null && otherPlayer != caller)
                 {
                     otherPlayer.Heal(100);
-                    otherPlayer.SetBleeding(false);
-                    otherPlayer.SetBroken(false);
-                    otherPlayer.SetInfection(0);
-                    otherPlayer.SetHunger(0);
-                    otherPlayer.SetThirst(0);
-                    RocketChatManager.Say(caller, RocketTranslation.Translate("command_heal_success_me",otherPlayer.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                    otherPlayer.Bleeding = false;
+                    otherPlayer.Broken = false;
+                    otherPlayer.Infection = 0;
+                    otherPlayer.Hunger = 0;
+                    otherPlayer.Thirst = 0;
+                    RocketChatManager.Say(caller, RocketTranslation.Translate("command_heal_success_me",otherPlayer.CharacterName));
                     
-                    if(RocketCommandBase.IsPlayer(caller))
-                        RocketChatManager.Say(otherPlayer.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, RocketTranslation.Translate("command_heal_success_other", PlayerTool.getPlayer(caller).SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                    if(caller != null)
+                        RocketChatManager.Say(otherPlayer.CSteamID, RocketTranslation.Translate("command_heal_success_other", caller.CharacterName));
                 }
                 else
                 {

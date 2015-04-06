@@ -30,7 +30,7 @@ namespace Rocket.RocketAPI
                 Logger.Log("This command can't be called from console");
                 return;
             }
-            Command.Execute(caller, command);
+            Command.Execute(RocketPlayer.FromCSteamID(caller), command);
         }
     }
 }

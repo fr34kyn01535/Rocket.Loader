@@ -22,7 +22,7 @@ namespace Rocket.Commands
             get { return "Gives yourself an item";}
         }
 
-        public void Execute(Steamworks.CSteamID caller, string command)
+        public void Execute(RocketPlayer caller, string command)
         {
             string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
 
@@ -63,10 +63,9 @@ namespace Rocket.Commands
                 return;
             }
 
-            SDG.Player player = PlayerTool.getPlayer(caller);
-            if (ItemTool.tryForceGiveItem(player, id, amount))
+            if (ItemTool.tryForceGiveItem(caller.Player, id, amount))
             {
-                Logger.Log(RocketTranslation.Translate("command_i_giving_console", player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName, id, amount));
+                Logger.Log(RocketTranslation.Translate("command_i_giving_console",caller.CharacterName, id, amount));
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_i_giving_private", amount, assetName, id));
             }
             else

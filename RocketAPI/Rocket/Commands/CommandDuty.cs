@@ -23,33 +23,30 @@ namespace Rocket.Commands
             get { return "Admin yourself, promise you will not abuse it ;)";}
         }
 
-        public void Execute(Steamworks.CSteamID caller, string command)
+        public void Execute(RocketPlayer caller, string command)
         {
-            Player p = PlayerTool.getPlayer(caller);
-            RocketPlayerFeatures pf = p.transform.GetComponent<RocketPlayerFeatures>();
-
-            if (p.SteamChannel.SteamPlayer.IsAdmin)
+            if (caller.IsAdmin)
             {
-                Logger.Log(RocketTranslation.Translate("command_duty_disable_console", p.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                Logger.Log(RocketTranslation.Translate("command_duty_disable_console", caller.CharacterName));
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_duty_disable_private"));
-                SteamAdminlist.unadmin(caller);
-                pf.GodMode = false;
-                pf.VanishMode = false;
+                caller.Admin(false);
+                caller.Features.GodMode = false;
+                caller.Features.VanishMode = false;
             }
             else
             {
-                Logger.Log(RocketTranslation.Translate("command_duty_enable_console", p.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                Logger.Log(RocketTranslation.Translate("command_duty_enable_console", caller.CharacterName));
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_duty_enable_private"));
-                SteamAdminlist.admin(caller, caller);
+                caller.Admin(true,caller);
             }
 
-            RocketServerEvents.OnPlayerDisconnected += (Player player) =>
+            RocketServerEvents.OnPlayerDisconnected += (RocketPlayer player) =>
             {
-                if (player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID == caller)
+                if (player == caller)
                 {
-                    Logger.Log(RocketTranslation.Translate("command_duty_disable_console", p.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                    Logger.Log(RocketTranslation.Translate("command_duty_disable_console", player.CharacterName));
                     RocketChatManager.Say(caller, RocketTranslation.Translate("command_duty_disable_private"));
-                    SteamAdminlist.unadmin(caller);
+                    caller.Admin(false);
                 }
             };            
         }

@@ -24,7 +24,7 @@ namespace Rocket.Commands
             get { return "Shows you the SteamID64 of a player";}
         }
 
-        public void Execute(Steamworks.CSteamID caller, string command)
+        public void Execute(RocketPlayer caller, string command)
         {
             if (String.IsNullOrEmpty(command))
             {

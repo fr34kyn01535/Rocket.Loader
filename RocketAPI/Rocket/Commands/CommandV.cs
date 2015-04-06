@@ -22,7 +22,7 @@ namespace Rocket.Commands
             get { return "Gives yourself an vehicle";}
         }
 
-        public void Execute(Steamworks.CSteamID caller, string command)
+        public void Execute(RocketPlayer caller, string command)
         {
             string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
 
@@ -57,11 +57,9 @@ namespace Rocket.Commands
             Asset a = SDG.Assets.find(EAssetType.Vehicle, id);
             string assetName = ((VehicleAsset)a).Name;
 
-
-            SDG.Player player = PlayerTool.getPlayer(caller);
-            if (VehicleTool.giveVehicle(player, id))
+            if (VehicleTool.giveVehicle(caller.Player, id))
             {
-                Logger.Log(RocketTranslation.Translate("command_v_giving_console", player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName, id));
+                Logger.Log(RocketTranslation.Translate("command_v_giving_console", caller.CharacterName, id));
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_v_giving_private", assetName, id));
             }
             else

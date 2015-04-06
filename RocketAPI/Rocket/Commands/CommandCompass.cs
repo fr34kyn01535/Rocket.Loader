@@ -24,11 +24,9 @@ namespace Rocket.Commands
             get { return "Shows the direction you are facing"; }
         }
 
-        public void Execute(Steamworks.CSteamID caller, string command)
+        public void Execute(RocketPlayer caller, string command)
         {
-            Player myPlayer = PlayerTool.getPlayer(caller);
-
-            float currentDirection = myPlayer.transform.rotation.eulerAngles.y;
+            float currentDirection = caller.Rotation;
 
             if (!String.IsNullOrEmpty(command))
             {
@@ -50,7 +48,7 @@ namespace Rocket.Commands
                         RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                         return;
                 }
-                myPlayer.sendTeleport(myPlayer.transform.position, MeasurementTool.angleToByte(currentDirection));
+                caller.Teleport(caller.Position, currentDirection);
             }
 
 

@@ -4,7 +4,7 @@ using SDG;
 using System;
 using System.Collections.Generic;
 
-namespace Rocket.Commands
+namespace Rocket.RocketAPI
 {
     public class RocketTextCommand : Command
     {
