@@ -53,6 +53,7 @@ namespace Rocket.RocketAPI.Events
 //                Logger.Log("Receive+" + d.ToString() + ": " + o + " - " + b);
 //            }
 //#endif
+            return;
         }
 
         public static void Send(SteamPlayer s, string W, ESteamCall X, ESteamPacket l, params object[] R)
@@ -127,6 +128,7 @@ namespace Rocket.RocketAPI.Events
 #endif
                     break;
             }
+            return;
         }
 
         public delegate void PlayerUpdateBleeding(RocketPlayer player, bool bleeding);

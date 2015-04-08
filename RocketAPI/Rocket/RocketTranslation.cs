@@ -37,6 +37,8 @@ namespace Rocket
             {"command_bed_no_bed_found_private","You do not have a bed to teleport to."},
             {"command_i_giving_console","Giving {0} item {1}:{2}"},
             {"command_i_giving_private","Giving you item {0}x {1} ({2})"},
+            {"command_z_giving_console","Spawning {1} zombies near {0}"},
+            {"command_z_giving_private","Spawning {0} zombies nerby"},
             {"command_i_giving_failed_private","Failed giving you item {0}x {1} ({2})"},
             {"command_v_giving_console","Giving {0} vehicle {1}"},
             {"command_v_giving_private","Giving you a {0} ({1})"},

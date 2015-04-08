@@ -243,13 +243,12 @@ namespace Rocket.RocketAPI
 
 
 
-        public static bool CheckValid(CSteamID cSteamID)
+        public static bool CheckValid(ValidateAuthTicketResponse_t r)
         {
-            //if (!checkReservedSlotSpace(cSteamID) || !checkWhitelisted(cSteamID))
-            //{
-            //    return false;
-            //}
-
+            if (!checkReservedSlotSpace(r.m_SteamID) || !checkWhitelisted(r.m_SteamID))
+            {
+                return false;
+            }
             return true;
         }
 

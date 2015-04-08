@@ -14,13 +14,23 @@ namespace Rocket
     {
         private void FixedUpdate()
         {
-            checkTimerRestart();
+            if (started)
+            {
+                checkTimerRestart();
+                checkTimerSave();
+            }
+        }
+
+        private void Start() {
+            started = true;
         }
 
         private DateTime? shutdownTime = null;
+        private DateTime lastSaveTime;
         private bool notificationShown = false;
         private bool shutdown = false;
         public static RocketFeatures Instance;
+        private bool started = false;
 
         private new void Awake()
         {
@@ -29,10 +39,28 @@ namespace Rocket
 #endif
             base.Awake();
             Instance = this;
-            if (RocketSettings.AutomaticShutdownInterval != 0)
+            if (RocketSettings.AutoShutdownInterval != 0)
             {
-                shutdownTime = Bootstrap.Started.ToUniversalTime().AddSeconds(RocketSettings.AutomaticShutdownInterval);
-                Logger.Log("The server will automaticly shutdown in " + RocketSettings.AutomaticShutdownInterval + " seconds (" + shutdownTime.ToString()+" UTC)");
+                shutdownTime = Bootstrap.Started.ToUniversalTime().AddSeconds(RocketSettings.AutoShutdownInterval);
+                Logger.Log("The server will automaticly shutdown in " + RocketSettings.AutoShutdownInterval + " seconds (" + shutdownTime.ToString()+" UTC)");
+            }
+            lastSaveTime = DateTime.UtcNow;
+        }
+
+        private void checkTimerSave()
+        {
+            try
+            {
+                if (RocketSettings.AutoSaveInterval > 0 && (DateTime.UtcNow - lastSaveTime).TotalSeconds > RocketSettings.AutoSaveInterval)
+                {
+                    SaveManager.save();
+                    Logger.Log("Server saved.");
+                    lastSaveTime = DateTime.UtcNow;
+                }
+            }
+            catch (Exception er)
+            {
+                Logger.LogException(er);
             }
         }
 
@@ -50,12 +78,12 @@ namespace Rocket
                     if ((shutdownTime.Value - DateTime.UtcNow).TotalSeconds < 0 && !shutdown)
                     {
                         shutdown = true;
-                        if (RocketSettings.AutomaticShutdownClearLevel && Directory.Exists(combine(RocketSettings.HomeFolder, "../Level/")))
+                        if (RocketSettings.AutoShutdownClearLevel && Directory.Exists(combine(RocketSettings.HomeFolder, "../Level/")))
                         {
                             Logger.Log("Deleting Level...");
                             Directory.Delete(combine(RocketSettings.HomeFolder, "../Level/"), true);
                         }
-                        if (RocketSettings.AutomaticShutdownClearPlayers && Directory.Exists(combine(RocketSettings.HomeFolder, "../Players/")))
+                        if (RocketSettings.AutoShutdownClearPlayers && Directory.Exists(combine(RocketSettings.HomeFolder, "../Players/")))
                         {
                             Logger.Log("Deleting Players...");
                             Directory.Delete(combine(RocketSettings.HomeFolder, "../Players/"), true);

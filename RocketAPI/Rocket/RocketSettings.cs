@@ -19,12 +19,13 @@ namespace Rocket
         public static bool EnableRcon = false;
         public static string RconPassword = "changeme";
         public static int RconPort = 0;
+        public static int AutoSaveInterval = 300;
 
         public static bool EnableJoinLeaveMessages = false;
         public static string LanguageCode = "en";
-        public static int AutomaticShutdownInterval = 0;
-        public static bool AutomaticShutdownClearLevel = false;
-        public static bool AutomaticShutdownClearPlayers = false;
+        public static int AutoShutdownInterval = 0;
+        public static bool AutoShutdownClearLevel = false;
+        public static bool AutoShutdownClearPlayers = false;
 
         public static List<TextCommand> TextCommands;
         //public static string[] ChatFilter = new string[] { "cunt", "dick", "pussy", "penis", "vagina", "fuck", "fucking", "fucked", "shit", "shitting", "shat", "damn", "damned", "hell", "cock", "whore", "fag", "faggot", "fag", "nigger" };
@@ -63,11 +64,11 @@ namespace Rocket
         {
             get
             {
-                return AutomaticShutdownInterval;
+                return AutoShutdownInterval;
             }
             set
             {
-                AutomaticShutdownInterval = value;
+                AutoShutdownInterval = value;
             }
         }
 
@@ -76,11 +77,11 @@ namespace Rocket
         {
             get
             {
-                return AutomaticShutdownClearLevel;
+                return AutoShutdownClearLevel;
             }
             set
             {
-                AutomaticShutdownClearLevel = value;
+                AutoShutdownClearLevel = value;
             }
         }
 
@@ -89,11 +90,11 @@ namespace Rocket
         {
             get
             {
-                return AutomaticShutdownClearPlayers;
+                return AutoShutdownClearPlayers;
             }
             set
             {
-                AutomaticShutdownClearPlayers = value;
+                AutoShutdownClearPlayers = value;
             }
         }
 
@@ -162,6 +163,19 @@ namespace Rocket
             }
         }
 
+        [XmlElement(ElementName = "AutomaticSaveInterval")]
+        public int automaticSaveInterval
+        {
+            get
+            {
+                return AutoSaveInterval;
+            }
+            set
+            {
+                AutoSaveInterval = value; ;
+            }
+        }
+
         internal static void LoadSettings()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(RocketSettings));
@@ -176,6 +190,7 @@ namespace Rocket
                     instance.enableRcon = s.enableRcon;
                     if (!String.IsNullOrEmpty(s.rconPassword)) instance.rconPassword = s.rconPassword;
                     instance.rconPort = s.rconPort;
+                    instance.automaticSaveInterval = s.automaticSaveInterval;
                     instance.enableJoinLeaveMessages = s.enableJoinLeaveMessages;
                     instance.automaticShutdownInterval = s.automaticShutdownInterval;
                     instance.automaticShutdownClearLevel = s.automaticShutdownClearLevel;
