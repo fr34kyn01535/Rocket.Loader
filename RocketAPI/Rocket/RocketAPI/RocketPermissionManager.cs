@@ -272,7 +272,6 @@ namespace Rocket.RocketAPI
                         }
                     }
                     Steam.Reject(cSteamID, ESteamRejection.SERVER_FULL);
-                    Steam.kick(cSteamID, "");
                     return false;
                 }
                 return true;
@@ -301,7 +300,6 @@ namespace Rocket.RocketAPI
                 return true;
             }
             Steam.Reject(cSteamID, ESteamRejection.WHITELISTED);
-            Steam.kick(cSteamID, "");
             return false;
         }
     }
