@@ -37,10 +37,12 @@ namespace Rocket.RocketLoader.Patches
 
             FieldDefinition field = check.parameters[0].ParameterType.Resolve().Fields.Where(f => f.FieldType.Name == "CSteamID").FirstOrDefault();
 
-            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_0));
-            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[1], Instruction.Create(OpCodes.Call, RocketLoader.UnturnedAssembly.MainModule.Import(checkValid)));
-            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[2], Instruction.Create(OpCodes.Ret));
-            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[2], Instruction.Create(OpCodes.Brtrue_S, check.Body.Instructions[3]));
+            int i = 3;
+
+            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[i], Instruction.Create(OpCodes.Ldarg_0));
+            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[i+1], Instruction.Create(OpCodes.Call, RocketLoader.UnturnedAssembly.MainModule.Import(checkValid)));
+            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[i+2], Instruction.Create(OpCodes.Ret));
+            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[i+2], Instruction.Create(OpCodes.Brtrue_S, check.Body.Instructions[i+3]));
         }
     }
 }

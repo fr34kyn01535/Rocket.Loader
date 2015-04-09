@@ -257,7 +257,7 @@ namespace Rocket.RocketAPI
                 int currentPlayers = Steam.Players.Count();
                 int reservedSlots = permissions.ReservedSlots;
 
-                if (currentPlayers + reservedSlots > maxPlayers) // If not enought slots
+                if (currentPlayers + reservedSlots >= maxPlayers) // If not enought slots
                 {
 
                     string[] myGroups = permissions.Groups.Where(g => g.Members.Contains(cSteamID.ToString())).Select(g => g.Id).ToArray();
