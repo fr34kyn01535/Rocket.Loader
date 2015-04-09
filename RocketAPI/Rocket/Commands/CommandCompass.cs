@@ -50,13 +50,12 @@ namespace Rocket.Commands
                 }
                 caller.Teleport(caller.Position, currentDirection);
             }
-
-
+            
             string directionName = "Unknown";
 
             if (currentDirection > 30 && currentDirection < 60)
             {
-                directionName = RocketTranslation.Translate("command_compass_north") + "-" + RocketTranslation.Translate("command_compass_east");
+                directionName = RocketTranslation.Translate("command_compass_northeast");
             }
             else if (currentDirection > 60 && currentDirection < 120)
             {
@@ -64,7 +63,7 @@ namespace Rocket.Commands
             }
             else if (currentDirection > 120 && currentDirection < 150)
             {
-                directionName = RocketTranslation.Translate("command_compass_south") + "-" + RocketTranslation.Translate("command_compass_east");
+                directionName = RocketTranslation.Translate("command_compass_southeast");
             }
             else if (currentDirection > 150 && currentDirection < 210)
             {
@@ -72,7 +71,7 @@ namespace Rocket.Commands
             }
             else if (currentDirection > 210 && currentDirection < 240)
             {
-                directionName = RocketTranslation.Translate("command_compass_south") + "-" + RocketTranslation.Translate("command_compass_west");
+                directionName = RocketTranslation.Translate("command_compass_southwest");
             }
             else if (currentDirection > 240 && currentDirection < 300)
             {
@@ -80,7 +79,7 @@ namespace Rocket.Commands
             }
             else if (currentDirection > 300 && currentDirection < 330)
             {
-                directionName = RocketTranslation.Translate("command_compass_north") + "-" + RocketTranslation.Translate("command_compass_west");
+                directionName = RocketTranslation.Translate("command_compass_northwest");
             }
             else if (currentDirection > 330 || currentDirection < 30)
             {
