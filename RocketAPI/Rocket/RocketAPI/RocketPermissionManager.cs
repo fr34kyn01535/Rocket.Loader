@@ -251,7 +251,7 @@ namespace Rocket.RocketAPI
 
         private static bool checkReservedSlotSpace(CSteamID cSteamID)
         {
-            if (!RocketPlayer.FromCSteamID(cSteamID).IsAdmin && permissions.ReservedSlotsGroups != null && permissions.ReservedSlotsGroups.Count() != 0 && permissions.Groups != null && permissions.Groups.Count() != 0) //If setup
+            if (!SteamAdminlist.checkAdmin(cSteamID) && permissions.ReservedSlotsGroups != null && permissions.ReservedSlotsGroups.Count() != 0 && permissions.Groups != null && permissions.Groups.Count() != 0) //If setup
             {
                 int maxPlayers = Steam.MaxPlayers;
                 int currentPlayers = Steam.Players.Count();
@@ -281,7 +281,7 @@ namespace Rocket.RocketAPI
 
         private static bool checkWhitelisted(CSteamID cSteamID)
         {
-            if (!RocketPlayer.FromCSteamID(cSteamID).IsAdmin && (permissions.WhitelistedGroups != null && permissions.WhitelistedGroups.Count() != 0 && permissions.Groups != null && permissions.Groups.Count() != 0)) 
+            if (!SteamAdminlist.checkAdmin(cSteamID) && (permissions.WhitelistedGroups != null && permissions.WhitelistedGroups.Count() != 0 && permissions.Groups != null && permissions.Groups.Count() != 0)) 
             {
                 string[] myGroups = permissions.Groups.Where(g => g.Members.Contains(cSteamID.ToString())).Select(g => g.Id).ToArray();
                 foreach (string g in myGroups)
