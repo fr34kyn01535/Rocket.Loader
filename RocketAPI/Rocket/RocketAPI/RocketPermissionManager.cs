@@ -133,10 +133,7 @@ namespace Rocket.RocketAPI
                 {
                     permissions = new Permissions();
 
-                    permissions.ShowGroup = true;
-                    permissions.DefaultGroupName = "default";
-                    permissions.AdminGroupDisplayName = "Admin";
-                    permissions.Format = "[{0}] ";
+                    permissions.DefaultGroupId = "default";
                     permissions.Groups = new Group[] {
                             new Group("default","Guest", null , new List<string>() { "p", "reward","balance","pay","rocket" }),
                             new Group("moderator","Moderator", new List<string>() { "76561197960287930" }, new List<string>() { "p", "p.reload", "tp", "tphere","i","test" })
@@ -163,39 +160,39 @@ namespace Rocket.RocketAPI
             return permissions.WhitelistedGroups;
         }
 
-        public static string GetChatPrefix(CSteamID CSteamID)
-        {
-            string prefix = "";
-            try
-            {
-                if (permissions.ShowGroup)
-                {
-                    if (PlayerTool.getSteamPlayer(CSteamID).IsAdmin)
-                    {
-                        return String.Format(permissions.Format, permissions.AdminGroupDisplayName);
-                    }
-                    else
-                    {
-                        Group group = permissions.Groups.Where(g => g.Members != null && g.Members.Contains(CSteamID.ToString())).FirstOrDefault();
-                        if (group == null)
-                        {
-                            Group defaultGroup = permissions.Groups.Where(g => g.Id == permissions.DefaultGroupName).FirstOrDefault();
-                            if (defaultGroup == null) throw new Exception("No group found with the name " + permissions.DefaultGroupName + ", can not get default group");
-                            return String.Format(permissions.Format, defaultGroup.DisplayName);
-                        }
-                        else
-                        {
-                            return String.Format(permissions.Format, group.DisplayName);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.LogException(ex);
-            }
-            return prefix;
-        }
+        //public static string GetChatPrefix(CSteamID CSteamID)
+        //{
+        //    string prefix = "";
+        //    try
+        //    {
+        //        if (permissions.ShowGroup)
+        //        {
+        //            if (PlayerTool.getSteamPlayer(CSteamID).IsAdmin)
+        //            {
+        //                return String.Format(permissions.Format, permissions.AdminGroupDisplayName);
+        //            }
+        //            else
+        //            {
+        //                Group group = permissions.Groups.Where(g => g.Members != null && g.Members.Contains(CSteamID.ToString())).FirstOrDefault();
+        //                if (group == null)
+        //                {
+        //                    Group defaultGroup = permissions.Groups.Where(g => g.Id == permissions.DefaultGroupId).FirstOrDefault();
+        //                    if (defaultGroup == null) throw new Exception("No group found with the name " + permissions.DefaultGroupId + ", can not get default group");
+        //                    return String.Format(permissions.Format, defaultGroup.DisplayName);
+        //                }
+        //                else
+        //                {
+        //                    return String.Format(permissions.Format, group.DisplayName);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logger.LogException(ex);
+        //    }
+        //    return prefix;
+        //}
 
         public static string[] GetDisplayGroups(CSteamID CSteamID)
         {
@@ -212,7 +209,7 @@ namespace Rocket.RocketAPI
             List<string> p = new List<string>();
             foreach (Group g in permissions.Groups)
             {
-                if (g.Members.Contains(CSteamID.ToString()) || g.Id == permissions.DefaultGroupName)
+                if (g.Members.Contains(CSteamID.ToString()) || g.Id == permissions.DefaultGroupId)
                 {
                     p.AddRange(g.Commands);
                 }
@@ -229,7 +226,7 @@ namespace Rocket.RocketAPI
             {
                 if (group.Commands.Where(c => c.ToLower() == commandstring.ToLower() || c.StartsWith(commandstring.ToLower() + ".")).Count() != 0 || group.Commands.Contains("*"))
                 {
-                    if (group.Id.ToLower() == permissions.DefaultGroupName) return true;
+                    if (group.Id.ToLower() == permissions.DefaultGroupId) return true;
                     if (group.Members.Contains(player.SteamPlayerID.CSteamID.ToString().ToLower())) return true;
                 }
             }
@@ -311,10 +308,7 @@ namespace Rocket.RocketAPI
         {
         }
 
-        public bool ShowGroup;
-        public string DefaultGroupName;
-        public string AdminGroupDisplayName;
-        public string Format;
+        public string DefaultGroupId;
         public string WebPermissionsUrl;
         public int WebPermissionsTimeout;
         
