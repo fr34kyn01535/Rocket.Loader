@@ -115,6 +115,7 @@ namespace Rocket.RocketAPI
                     permissions = (Permissions)serializer.Deserialize(reader);
 
                     if (permissions.Groups == null) permissions.Groups = new Group[0];
+                    if (String.IsNullOrEmpty(permissions.DefaultGroupId)) permissions.DefaultGroupId = "default";
 
                     foreach (Group group in permissions.Groups)
                     {
