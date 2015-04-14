@@ -54,11 +54,8 @@ namespace Rocket
             {"command_tphere_teleport_console","{0} was teleported to {1}"},
             {"command_tphere_teleport_from_private","Teleported {0} to you"},
             {"command_tphere_teleport_to_private","You were teleported to {0}"},
-
             {"command_clear_private","Your inventory was cleared!"},
-            
             {"command_investigate_private","{0} SteamID64 is {1}"},
-
             {"command_heal_success_me","{0} was successfully healed"},
             {"command_heal_success_other","You were healed by {0}"},
             {"command_heal_success","You were healed"},
