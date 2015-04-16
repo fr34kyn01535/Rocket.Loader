@@ -59,14 +59,14 @@ namespace Rocket.RocketAPI
         private void Start()
         {
             pl = RocketPlayer.FromPlayer(gameObject.transform.GetComponent<Player>());
-            e = gameObject.transform.GetComponent<RocketPlayerEvents>();
+            
 
             if (godMode)
             {
-                e.OnUpdateHealth += e_OnPlayerUpdateHealth;
-                e.OnUpdateWater += e_OnPlayerUpdateWater;
-                e.OnUpdateFood += e_OnPlayerUpdateFood;
-                e.OnUpdateVirus += e_OnPlayerUpdateVirus;
+                pl.Events.OnUpdateHealth += e_OnPlayerUpdateHealth;
+                pl.Events.OnUpdateWater += e_OnPlayerUpdateWater;
+                pl.Events.OnUpdateFood += e_OnPlayerUpdateFood;
+                pl.Events.OnUpdateVirus += e_OnPlayerUpdateVirus;
                 pl.Heal(100);
                 pl.Infection = 0;
                 pl.Hunger = 0;
