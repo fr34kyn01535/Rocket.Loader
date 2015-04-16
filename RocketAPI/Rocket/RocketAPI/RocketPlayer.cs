@@ -116,6 +116,14 @@ namespace Rocket.RocketAPI
             ZombieTool.giveZombie(player,amount);
         }
 
+        public CSteamID SteamGroupID
+        {
+            get
+            {
+                return player.SteamChannel.SteamPlayer.SteamPlayerID.SteamGroupID;
+            }
+        }
+
         public List<Group> Groups
         {
             get
@@ -343,9 +351,11 @@ namespace Rocket.RocketAPI
             player.PlayerLife.askSuicide(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID);
         }
 
-        public void Damage(byte amount, Vector3 direction, EDeathCause cause, ELimb limb, CSteamID damageDealer)
+        public EPlayerKill Damage(byte amount, Vector3 direction, EDeathCause cause, ELimb limb, CSteamID damageDealer)
         {
-            player.PlayerLife.askDamage(amount, direction, cause, limb, damageDealer);
+            EPlayerKill playerKill;
+            player.PlayerLife.askDamage(amount, direction, cause, limb, damageDealer, out playerKill);
+            return playerKill;
         }
     }
 }
