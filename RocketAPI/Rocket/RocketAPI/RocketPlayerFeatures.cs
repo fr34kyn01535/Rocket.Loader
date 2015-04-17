@@ -10,7 +10,6 @@ namespace Rocket.RocketAPI
 {
     public sealed class RocketPlayerFeatures : RocketPlayerComponent
     {
-        private RocketPlayerEvents e = null;
         private RocketPlayer pl = null;
         private bool godMode = false;
 
@@ -27,17 +26,17 @@ namespace Rocket.RocketAPI
             {
                 if (value)
                 {
-                    e.OnUpdateHealth += e_OnPlayerUpdateHealth;
-                    e.OnUpdateWater += e_OnPlayerUpdateWater;
-                    e.OnUpdateFood += e_OnPlayerUpdateFood;
-                    e.OnUpdateVirus += e_OnPlayerUpdateVirus;
+                    pl.Events.OnUpdateHealth += e_OnPlayerUpdateHealth;
+                    pl.Events.OnUpdateWater += e_OnPlayerUpdateWater;
+                    pl.Events.OnUpdateFood += e_OnPlayerUpdateFood;
+                    pl.Events.OnUpdateVirus += e_OnPlayerUpdateVirus;
                 }
                 else
                 {
-                    e.OnUpdateHealth -= e_OnPlayerUpdateHealth;
-                    e.OnUpdateWater -= e_OnPlayerUpdateWater;
-                    e.OnUpdateFood -= e_OnPlayerUpdateFood;
-                    e.OnUpdateVirus -= e_OnPlayerUpdateVirus;
+                    pl.Events.OnUpdateHealth -= e_OnPlayerUpdateHealth;
+                    pl.Events.OnUpdateWater -= e_OnPlayerUpdateWater;
+                    pl.Events.OnUpdateFood -= e_OnPlayerUpdateFood;
+                    pl.Events.OnUpdateVirus -= e_OnPlayerUpdateVirus;
                 }
                 godMode = value;
             }
