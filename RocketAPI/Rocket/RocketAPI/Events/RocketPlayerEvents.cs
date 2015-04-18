@@ -116,7 +116,7 @@ namespace Rocket.RocketAPI.Events
                     if (OnPlayerRevive != null) OnPlayerRevive(rp, (Vector3)R[0], (byte)R[1]);
                     if (instance.OnRevive != null) instance.OnRevive(rp, (Vector3)R[0], (byte)R[1]);
                     break;
-                case "askStat":
+                case "tellStat":
                     if (OnPlayerUpdateStat != null) OnPlayerUpdateStat(rp, (EPlayerStat)(byte)R[0]);
                     if (instance.OnUpdateStat != null) instance.OnUpdateStat(rp, (EPlayerStat)(byte)R[0]);
                     break;
