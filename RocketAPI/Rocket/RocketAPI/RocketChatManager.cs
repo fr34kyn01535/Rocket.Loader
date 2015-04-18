@@ -2,6 +2,7 @@
 using Rocket.Logging;
 using SDG;
 using Steamworks;
+using System.Collections.Generic;
 
 namespace Rocket.RocketAPI
 {
@@ -21,7 +22,10 @@ namespace Rocket.RocketAPI
         public static void Say(string message, EChatMode chatmode = EChatMode.GLOBAL)
         {
             Logger.Log("Broadcast: " + message);
-            ChatManager.Instance.SteamChannel.send("tellChat", ESteamCall.OTHERS, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode, message });
+            foreach (string m in wrapMessage(message))
+            {
+                ChatManager.Instance.SteamChannel.send("tellChat", ESteamCall.OTHERS, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode, m });
+            }
         }
 
         public static void Say(RocketPlayer player, string message, EChatMode chatmode = EChatMode.SAY)
@@ -31,7 +35,10 @@ namespace Rocket.RocketAPI
                 Logger.Log(message);
              }
             else {
-                ChatManager.Instance.SteamChannel.send("tellChat", player.CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode, message });
+                foreach (string m in wrapMessage(message))
+                {
+                    ChatManager.Instance.SteamChannel.send("tellChat", player.CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode, m });
+                }
             }
         }
 
@@ -40,10 +47,43 @@ namespace Rocket.RocketAPI
             if (CSteamID == null || CSteamID.ToString() == "0")
             {
                 Logger.Log(message);
-             }
-            else {
-                ChatManager.Instance.SteamChannel.send("tellChat", CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode, message });
+            }
+            else
+            {
+                foreach (string m in wrapMessage(message))
+                {
+                    ChatManager.Instance.SteamChannel.send("tellChat", CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode, m });
+                }
             }
         }
+
+         public static List<string> wrapMessage(string text)
+         {
+             if (text.Length == 0) return new List<string>();
+             string[] words = text.Split(' ');
+             List<string> lines = new List<string>();
+             string currentLine = "";
+             int maxLength = 90;
+             foreach (var currentWord in words)
+             {
+  
+                 if ((currentLine.Length > maxLength) ||
+                     ((currentLine.Length + currentWord.Length) > maxLength))
+                 {
+                     lines.Add(currentLine);
+                     currentLine = "";
+                 }
+  
+                 if (currentLine.Length > 0)
+                     currentLine += " " + currentWord;
+                 else
+                     currentLine += currentWord;
+  
+             }
+  
+             if (currentLine.Length > 0)
+                 lines.Add(currentLine);
+                 return lines;
+            }
     }
 }
