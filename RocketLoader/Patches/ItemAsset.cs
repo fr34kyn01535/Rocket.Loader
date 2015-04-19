@@ -19,8 +19,6 @@
             h.UnlockFieldByType(typeof(byte), "SizeY", 1);
             h.UnlockFieldByType(typeof(float), "SizeZ");
             h.UnlockFieldByType(typeof(byte), "Amount", 2);
-
-
         }
     }
 }
