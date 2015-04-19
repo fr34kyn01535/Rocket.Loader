@@ -23,6 +23,11 @@ namespace Rocket.Commands
 
         public void Execute(RocketPlayer caller, string command)
         {
+            foreach (string p in caller.Permissions)
+            {
+                Rocket.Logging.Logger.Log("P:" + p);
+            }
+
             string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
 
             if (componentsFromSerial.Length > 1)
@@ -33,7 +38,7 @@ namespace Rocket.Commands
 
             if (componentsFromSerial.Length != 0)
             {
-                if (componentsFromSerial[0].ToString().ToLower() == "reload" && caller.HasPermission("p.reload"))
+                if (componentsFromSerial[0].ToString().ToLower() == "reload" && caller.Permissions.Contains("p.reload"))
                 {
                     RocketPermissionManager.ReloadPermissions();
                     RocketChatManager.Say(caller, RocketTranslation.Translate("command_p_reload_private"));
