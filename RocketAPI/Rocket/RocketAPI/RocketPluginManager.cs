@@ -167,7 +167,7 @@ namespace Rocket.RocketAPI
 
         private void onPlayerConnected(CSteamID id)
         {
-            SDG.Player player = PlayerTool.getPlayer(id);
+            RocketPlayer player = RocketPlayer.FromCSteamID(id);
             List<Type> rocketPlayerComponents = getTypesFromParentClass(Assemblies, typeof(RocketPlayerComponent));
 #if DEBUG
             Logger.Log("Adding PlayerComponents");
@@ -177,13 +177,14 @@ namespace Rocket.RocketAPI
 #if DEBUG
                 Logger.Log(component.Name);
 #endif
-                player.gameObject.AddComponent(component);
+                player.Player.gameObject.AddComponent(component);
             }
 
             if (RocketSettings.EnableJoinLeaveMessages)
             {
-                RocketChatManager.Say(RocketTranslation.Translate("rocket_join_public", player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(RocketTranslation.Translate("rocket_join_public", player.CharacterName));
             }
+            Rocket.RocketAPI.Events.RocketServerEvents.firePlayerConnected(player);
         }
 
         private void onPlayerDisconnected(CSteamID id)

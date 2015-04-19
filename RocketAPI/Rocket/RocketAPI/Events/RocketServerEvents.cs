@@ -11,7 +11,6 @@ namespace Rocket.RocketAPI.Events
         {
             Steam.OnServerShutdown += onServerShutdown;
             Steam.OnServerDisconnected += onPlayerDisconnected;
-            Steam.OnServerConnected += onPlayerConnected;
         }
         
         public delegate void PlayerDisconnected(RocketPlayer player);
@@ -42,6 +41,11 @@ namespace Rocket.RocketAPI.Events
             {
                 Logger.Log(ex);
             }
+        }
+
+        internal static void firePlayerConnected(RocketPlayer player)
+        {
+            if (OnPlayerConnected != null) OnPlayerConnected(player);
         }
 
         public delegate void ServerShutdown();
