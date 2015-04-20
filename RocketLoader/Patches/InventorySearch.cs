@@ -7,6 +7,7 @@
         public void Apply()
         {
             h.UnlockFieldByType("ItemJar", "ItemJar");
+            h.UnlockFieldByType(typeof(byte), "InventoryGroup");
         }
     }
 }
