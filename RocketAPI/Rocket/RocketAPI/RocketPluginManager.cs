@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace Rocket.RocketAPI
 {
@@ -227,6 +228,7 @@ namespace Rocket.RocketAPI
                     Assembly assembly = Assembly.Load(File.ReadAllBytes(library.FullName));
                     Logger.Log(assembly.GetName().Name + " Version: " + assembly.GetName().Version);
                     assemblies.Add(assembly);
+                    Debug.Break();
                 }
             }
             catch (Exception ex)
