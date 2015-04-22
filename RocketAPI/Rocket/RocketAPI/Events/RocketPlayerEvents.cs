@@ -28,7 +28,7 @@ namespace Rocket.RocketAPI.Events
         public static void Receive(SteamChannel instance,CSteamID d, byte[] a, int b)
         {
 #if DEBUG
-            ESteamPacket eSteamPacket = (ESteamPacket)a[0];
+            /*ESteamPacket eSteamPacket = (ESteamPacket)a[0];
             int num = a[1];
 
             if (eSteamPacket != ESteamPacket.UPDATE_VOICE && eSteamPacket != ESteamPacket.UPDATE_UDP_CHUNK && eSteamPacket != ESteamPacket.UPDATE_TCP_CHUNK)
@@ -36,12 +36,12 @@ namespace Rocket.RocketAPI.Events
                 object[] objects = SteamPacker.getObjects(d, 2, a, instance.Methods[num].Types);
 
                 string o = "";
-                foreach (byte r in objects)
+                foreach (object r in objects)
                 {
                     o += r.ToString() + ",";
                 }
                 Logger.Log("Receive+" + d.ToString() + ": " + o + " - " + b);
-            }
+            }*/
 #endif
             return;
         }
@@ -109,6 +109,10 @@ namespace Rocket.RocketAPI.Events
                 case "tellStat":
                     if (OnPlayerUpdateStat != null) OnPlayerUpdateStat(rp, (EPlayerStat)(byte)R[0]);
                     if (instance.OnUpdateStat != null) instance.OnUpdateStat(rp, (EPlayerStat)(byte)R[0]);
+                    break;
+                case "tellExperience":
+                    if (OnPlayerUpdateExperience != null) OnPlayerUpdateExperience(rp, (uint)R[0]);
+                    if (instance.OnUpdateExperience != null) instance.OnUpdateExperience(rp, (uint)R[0]);
                     break;
                 default:
 #if DEBUG
@@ -180,5 +184,9 @@ namespace Rocket.RocketAPI.Events
         public delegate void PlayerUpdateStat(RocketPlayer player, EPlayerStat stat);
         public static event PlayerUpdateStat OnPlayerUpdateStat;
         public event PlayerUpdateStat OnUpdateStat;
+
+        public delegate void PlayerUpdateExperience(RocketPlayer player, uint experience);
+        public static event PlayerUpdateExperience OnPlayerUpdateExperience;
+        public event PlayerUpdateExperience OnUpdateExperience;
     }
 }
