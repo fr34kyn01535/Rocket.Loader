@@ -77,6 +77,7 @@ namespace Rocket.RocketAPI
             {
                 Bootstrap.Instance.gameObject.AddComponent(component);
             }
+
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\nLoading Commands".PadRight(80, '.') + "\n");
 
