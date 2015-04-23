@@ -49,7 +49,7 @@ namespace Rocket.RocketLoader
             foreach (FieldDefinition field in fields)
             {
                 string fieldname = field.FieldType.FullName;
-                fieldname = fieldname.Replace("Steam/", "").Replace("List`1", "List").Replace("SDG.", "");
+                fieldname = fieldname.Replace("Steam/", "").Replace("System.Collections.Generic.List", "List").Replace("UnityEngine.", "").Replace("List`1", "List").Replace("SDG.", "");
                 fieldname = fieldname.Split('.')[fieldname.Split('.').Count() - 1];
                 if (fieldname.ToLower() == typeToUnlock.ToLower())
                 {
