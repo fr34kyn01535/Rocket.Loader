@@ -6,7 +6,7 @@
 
         public void Apply()
         {
-            h.UnlockFieldByType(typeof(string), "Name", 0);
+            h.UnlockFieldByType(typeof(string), "Name");
         }
     }
 }

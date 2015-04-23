@@ -270,6 +270,7 @@
     <Compile Include="Patches\PlayerEquipment.cs" />
     <Compile Include="Patches\PlayerSkills.cs" />
     <Compile Include="Patches\SteamChannelMethod.cs" />
+    <Compile Include="Patches\VehicleManager.cs" />
     <Compile Include="Patches\VehicleAsset.cs" />
     <Compile Include="Patches\ItemAsset.cs" />
     <Compile Include="Patches\MenuPlayUI.cs" />
