@@ -6,7 +6,7 @@
 
         public void Apply()
         {
-            h.UnlockFieldByType("CSteamID", "CSteamID", 0);
+            h.UnlockFieldByType("CSteamID", "CSteamID");
             h.UnlockFieldByType("CSteamID", "SteamGroupID", 1);
             h.UnlockFieldByType(typeof(string), "SteamName", 0);
             h.UnlockFieldByType(typeof(string), "CharacterName", 1);
