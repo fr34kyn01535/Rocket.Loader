@@ -28,38 +28,47 @@ namespace Rocket.RocketAPI
                 }
                 // Now reset the Clothing class.
                 if (PlayerSavedata.fileExists(p.SteamChannel.SteamPlayer.SteamPlayerID, "/Player/Clothing.dat"))
-                {
                     // Delete the file
                     PlayerSavedata.deleteFile(p.SteamChannel.SteamPlayer.SteamPlayerID, "/Player/Clothing.dat");
-                    // Now reset the Clothing class.
-                    p.Clothing.load();
-                    // And send to the player the update to their clothing.
-                    p.SteamChannel.send("tellClothing", ESteamCall.ALL, ESteamPacket.UPDATE_UDP_BUFFER, new object[]
-                            {
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0
-                            });
-                }
-
+                // Now reset the Clothing class.
+                p.Clothing.load();
+                // And send to the player the update to their clothing.
+                p.SteamChannel.send("tellClothing", ESteamCall.ALL, ESteamPacket.UPDATE_UDP_BUFFER, new object[]
+                {
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                });
+                p.SteamChannel.send("tellSlot", ESteamCall.ALL, ESteamPacket.UPDATE_TCP_BUFFER, new object[]
+		        {
+			        0,
+			        0,
+			        new byte[0]
+		        });
+                p.SteamChannel.send("tellSlot", ESteamCall.ALL, ESteamPacket.UPDATE_TCP_BUFFER, new object[]
+		        {
+			        1,
+			        0,
+			        new byte[0]
+		        });
             }
             catch (Exception ex)
             {
                 Logger.Log(ex);
                 return false;
             }
-            return false;
+            return true;
         }
     }
 }
