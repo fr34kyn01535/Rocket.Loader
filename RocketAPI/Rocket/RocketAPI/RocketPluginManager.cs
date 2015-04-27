@@ -52,7 +52,9 @@ namespace Rocket.RocketAPI
             if (RocketSettings.EnableRcon)
             {
                 Console.WriteLine("Loading RocketRcon".PadRight(80, '.'));
-                RocketRconServer.Listen();
+                int port = RocketSettings.RconPort;
+                if (port == 0) port = (int)(Steam.ServerPort + 100);
+                RocketRconServer.Listen(port);
                 Console.WriteLine();
             }
 
@@ -88,6 +90,7 @@ namespace Rocket.RocketAPI
             /*But now i could also use the API commands & players loaded */
             Assemblies.Add(Assembly.GetExecutingAssembly());
             /*so i add the rocketapi to Assemblies*/
+
             List<Type> commands = getTypesFromInterface(Assemblies,"IRocketCommand");
             foreach (Type command in commands)
             {
@@ -95,13 +98,6 @@ namespace Rocket.RocketAPI
                 RocketCommandBase baseCommand = new RocketCommandBase(rocketCommand);
                 registerCommand((Command)(baseCommand), command.Assembly.GetName().Name);
             }
-
-            foreach (TextCommand t in RocketSettings.TextCommands)
-            {
-                registerCommand(new RocketTextCommand(t.Name, t.Help, t.Text));
-            }
-
-            //Hacky Hacky :D Commander.Commands = Commander.Commands.Where(c => c.GetType() != typeof(CommandInvestigate)).ToArray();
 
             SDG.Steam.OnServerConnected += onPlayerConnected;
             SDG.Steam.OnServerDisconnected += onPlayerDisconnected;
@@ -126,19 +122,13 @@ namespace Rocket.RocketAPI
             }
 
             List<Command> commandList = new List<Command>();
-            bool msg = false;
             foreach (Command ccommand in Commander.Commands)
             {
                 if (ccommand.commandName.ToLower().Equals(command.commandName.ToLower()))
                 {
-                    if (command is RocketTextCommand) {
-                        Logger.LogWarning("Couldn't register RocketTextCommand." + command.commandName + " because it would overwrite " + ccommand.GetType().Assembly.GetName().Name  + "." + ccommand.commandName);
-                        return;
-                    }
                     if (ccommand.GetType().Assembly.GetName().Name == "Assembly-CSharp")
                     {
                         Logger.LogWarning(assemblyName + "." + command.commandName + " overwrites built in command " + ccommand.commandName);
-                        msg = true;
                     }
                     else
                     {
@@ -151,20 +141,16 @@ namespace Rocket.RocketAPI
                     commandList.Add(ccommand);
                 }
             }
-
-            if (command is RocketTextCommand)
-            {
-                if (!msg) Logger.Log("RocketTextCommand." + command.commandName);
-            }
-            else
-            {
-                if (!msg)
-                {
-                    Logger.Log(assemblyName + "." + command.commandName);
-                }
-            }
             commandList.Add(command);
             Commander.Commands = commandList.ToArray();
+        }
+
+        internal static void unregisterCommands(Assembly assembly)
+        {
+            foreach (Command command in Commander.Commands.Where(c => c is RocketCommandBase))
+            {
+                Logger.Log(((RocketCommandBase)command).Command.GetType().Assembly.FullName);
+            }
         }
 
         private void onPlayerConnected(CSteamID id)
@@ -197,8 +183,6 @@ namespace Rocket.RocketAPI
             }
         }
 
-        #region Handling additional assemblies
-
         private Dictionary<string, string> additionalLibraries = new Dictionary<string, string>();
 
         private void loadLibraries()
@@ -215,8 +199,7 @@ namespace Rocket.RocketAPI
             }
         }
 
-        #endregion Handling additional assemblies
-
+     
         private static List<Assembly> loadAssemblies()
         {
             List<Assembly> assemblies = new List<Assembly>();

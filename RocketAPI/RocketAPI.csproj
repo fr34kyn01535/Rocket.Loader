@@ -125,7 +125,6 @@
     <Compile Include="Rocket\Commands\CommandV.cs" />
     <Compile Include="Rocket\RocketAPI\Commands\IRocketCommand.cs" />
     <Compile Include="Rocket\RocketAPI\Commands\RocketCommandBase.cs" />
-    <Compile Include="Rocket\RocketAPI\Commands\RocketTextCommand.cs" />
     <Compile Include="Rocket\RocketAPI\Extensions\PlayerInventoryExtension.cs" />
     <Compile Include="Rocket\RocketAPI\RocketPlayer.cs">
       <SubType>Code</SubType>
