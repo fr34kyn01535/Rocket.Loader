@@ -43,7 +43,7 @@ namespace Rocket.RocketAPI
 
         internal void Stop()
         {
-            UnLoad();
+            Unload();
         }
 
         public virtual void Awake()
@@ -98,7 +98,7 @@ namespace Rocket.RocketAPI
         }
 
 
-        protected virtual void UnLoad()
+        protected virtual void Unload()
         {
 
         }
