@@ -28,7 +28,6 @@ namespace Rocket.Logging
             }
             lastAssembly = assembly;
             message = assembly + message;
-            //ProcessLog(ELogType.Info, message);
             Debug.Log(message);
         }
 
@@ -106,7 +105,6 @@ namespace Rocket.Logging
         /// <param name="message"></param>
         public static void LogWarning(string message)
         {
-            //ProcessLog(ELogType.Warning, message);
             Debug.LogWarning(message);
         }
 
@@ -116,7 +114,6 @@ namespace Rocket.Logging
         /// <param name="message"></param>
         public static void LogError(string message)
         {
-            //ProcessLog(ELogType.Error, message);
             Debug.LogError(message);
         }
 
@@ -141,7 +138,6 @@ namespace Rocket.Logging
                 assembly = "\n" + assembly + " >> ";
             }
             lastAssembly = assembly;
-            //ProcessLog(ELogType.Exception, ex.ToString());
             System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
             Debug.LogError(assembly + "Error in " + stackTrace.GetFrame(1).GetMethod().Name + ": " + ex);
         }

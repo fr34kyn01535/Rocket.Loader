@@ -28,7 +28,7 @@ namespace Rocket.Logging
 
         public static void ExternalLogError(object msg, object context)
         {
-            ProcessLog(ELogType.Error, msg.ToString(), context);
+            ProcessLog(ELogType.Error,  msg.ToString(), context);
         }
 
         public static void ExternalLogException(Exception ex)
@@ -51,13 +51,14 @@ namespace Rocket.Logging
             ProcessLog(ELogType.Warning, msg.ToString(), context);
         }
 
-        public static void ProcessLog(ELogType type, string message, object context = null)
+        private static void ProcessLog(ELogType type, string message, object context = null)
         {
             if (String.IsNullOrEmpty(RocketSettings.HomeFolder) || !Directory.Exists(RocketSettings.HomeFolder + "Logs/")) return;
             StreamWriter streamWriter = File.AppendText(RocketSettings.HomeFolder + "Logs/" + "Rocket.log");
             streamWriter.WriteLine("[" + DateTime.Now + "] " + message);
             streamWriter.Close();
-            RocketRconServer.ProcessLog(type, message);
+            if(RocketSettings.EnableRcon)
+            RocketRconServer.broadcast(message);
         }
     }
 }

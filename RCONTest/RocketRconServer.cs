@@ -60,7 +60,7 @@ namespace Rocket.Rcon
             }
         }
 
-        internal static void broadcast(string message)
+        internal static void ProcessLog(ELogType type, string message)
         {
             foreach (List<string> h in logList.Values)
             {
@@ -86,8 +86,14 @@ namespace Rocket.Rcon
             Client client = new Client((IPEndPoint)newSocket.RemoteEndPoint, DateTime.Now, EClientState.NotLogged);
             clientList.Add(newSocket, client);
             logList.Add(newSocket.Handle, new List<string>());
-            log("Client logging in... (From: " + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
-            string output = "Password: ";
+            log("Client connected. (From: " + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
+            string output = "";
+            output += "  ______  _____  _______ _     _ _______ _______  ______ _______  _____  __   _\n\r";
+            output += " |_____/ |     | |       |____/  |______    |    |_____/ |       |     | | \\  |\n\r";
+            output += " |    \\_ |_____| |_____  |    \\_ |______    |    |    \\_ |_____  |_____| |  \\_|\n\r";
+            output += "                                                                       v" + Assembly.GetExecutingAssembly().GetName().Version + "\n\r";
+            output += "\n\r\n\r";
+            output += "Password: ";
             client.clientState = EClientState.Logging;
             byte[] message = Encoding.ASCII.GetBytes(output);
             newSocket.BeginSend(message, 0, message.Length, SocketFlags.None, new AsyncCallback(SendData), newSocket);
@@ -119,24 +125,26 @@ namespace Rocket.Rcon
                     clientSocket.Close();
                     clientList.Remove(clientSocket);
                     serverSocket.BeginAccept(new AsyncCallback(AcceptConnection), serverSocket);
-                    log("Client disconnected. (" + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
+                    log("Client disconnected. (From: " + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
                     return;
                 }
 
                 if (data[0] == 0x2E && data[1] == 0x0D && client.commandIssued.Length == 0)
                 {
                     string currentCommand = client.commandIssued;
-                    log(string.Format("Received '{0}' while EClientStatus '{1}' ({2}:{3})", currentCommand, client.clientState.ToString(), client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
+                    log(string.Format("Received '{0}' while EClientStatus '{1}' (From: {2}:{3})", currentCommand, client.clientState.ToString(), client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
                     client.commandIssued = "";
-                    handleCommand(clientSocket, currentCommand);
+                    byte[] message = Encoding.ASCII.GetBytes("\u001B[1J\u001B[H" + HandleCommand(clientSocket, currentCommand));
+                    clientSocket.BeginSend(message, 0, message.Length, SocketFlags.None, new AsyncCallback(SendData), clientSocket);
                 }
                 else if (data[0] == 0x0D && data[1] == 0x0A)
                 {
                     string currentCommand = client.commandIssued;
                     if (!String.IsNullOrEmpty(currentCommand))
-                        log(string.Format("Received '{0}' ({1}:{2})", currentCommand, client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
+                        log(string.Format("Received '{0}' (From: {1}:{2}", currentCommand, client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
                     client.commandIssued = "";
-                    handleCommand(clientSocket, currentCommand);
+                    byte[] message = Encoding.ASCII.GetBytes("\u001B[1J\u001B[H" + HandleCommand(clientSocket, currentCommand));
+                    clientSocket.BeginSend(message, 0, message.Length, SocketFlags.None, new AsyncCallback(SendData), clientSocket);
                 }
                 else
                 {
@@ -173,19 +181,25 @@ namespace Rocket.Rcon
             }
         }
 
-        private static void handleCommand(Socket clientSocket, string Input)
+        private static string HandleCommand(Socket clientSocket, string Input)
         {
             List<string> h = logList[clientSocket.Handle];
-            if (h.Count > 23)
+            if (h.Count > 20)
             {
-                int l = h.Count - 23;
+                int l = h.Count - 20;
                 for (int i = 0; i < l; i++)
                 {
                     h.RemoveAt(0);
                 }
             }
 
-            string Output ="RocketRcon v" + Assembly.GetExecutingAssembly().GetName().Version + "\n\r";
+            string Output = "";
+
+            Output += "  ______  _____  _______ _     _ _______ _______  ______ _______  _____  __   _\n\r";
+            Output += " |_____/ |     | |       |____/  |______    |    |_____/ |       |     | | \\  |\n\r";
+            Output += " |    \\_ |_____| |_____  |    \\_ |______    |    |    \\_ |_____  |_____| |  \\_|\n\r";
+            Output += "                                                                       v" + Assembly.GetExecutingAssembly().GetName().Version + "\n\r";
+            Output += "\n\r\n\r";
             byte[] dataInput = Encoding.ASCII.GetBytes(Input);
             Client client;
             clientList.TryGetValue(clientSocket, out client);
@@ -196,18 +210,24 @@ namespace Rocket.Rcon
                 {
                     //h.Add(Input + "\n\r");
                     string cmd = Input.Split(' ')[0].ToLower();
-                    if (Commander.execute(new Steamworks.CSteamID(0),Input))
+                    Command command = Commander.Commands.AsEnumerable().Where(x => x.commandName.ToLower() == cmd).FirstOrDefault();
+                    if (command != null)
                     {
-                        //Executed
+                        try
+                        {
+                            command.check(new Steamworks.CSteamID(0), cmd, Input);
+                            //h.Add("Done\n\r");
+                        }
+                        catch (Exception ex)
+                        {
+                            h.Add("An exception was thrown on the server: " + ex.Message + "\n\r");
+                        }
                     }
                     else if (Input == "exit")
                     {
-                        logList.Remove(clientSocket.Handle);
+                        clientSocket.Shutdown(SocketShutdown.Both);
                         clientSocket.Close();
                         clientList.Remove(clientSocket);
-                        serverSocket.BeginAccept(new AsyncCallback(AcceptConnection), serverSocket);
-                        log("Client disconnected. (" + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
-                        return;
                     }
                     else if (Input == "cls")
                     {
@@ -227,7 +247,6 @@ namespace Rocket.Rcon
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(ex);
-                    h.Add("An exception was thrown on the server: " + ex.Message + "\n\r");
                 }
             }
             if (client.clientState == EClientState.Logging)
@@ -239,16 +258,11 @@ namespace Rocket.Rcon
                 }
                 else
                 {
-                    logList.Remove(clientSocket.Handle);
-                    clientSocket.Close();
-                    clientList.Remove(clientSocket);
-                    serverSocket.BeginAccept(new AsyncCallback(AcceptConnection), serverSocket);
-                    log("Client kicked because of incorrect password. (" + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
-                    return;
+                    log("Client login failed (incorrect password).");
+                    Output += "Incorrect password. Please try again: ";
                 }
             }
-            byte[] message = Encoding.ASCII.GetBytes("\u001B[1J\u001B[H" + Output);
-            clientSocket.BeginSend(message, 0, message.Length, SocketFlags.None, new AsyncCallback(SendData), clientSocket);
+            return Output;
         }
 
     }

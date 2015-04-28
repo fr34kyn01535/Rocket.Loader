@@ -36,9 +36,14 @@ namespace Rocket.RocketAPI
         public Dictionary<string, string> Translations = null;
         public virtual Dictionary<string, string> DefaultTranslations { get { return new Dictionary<string, string>(); } }
 
-        public void Start()
+        internal void Start()
         {
             Load();
+        }
+
+        internal void Stop()
+        {
+            UnLoad();
         }
 
         public virtual void Awake()
@@ -89,6 +94,13 @@ namespace Rocket.RocketAPI
 
         protected virtual void Load()
         {
+
+        }
+
+
+        protected virtual void UnLoad()
+        {
+
         }
     }
 }

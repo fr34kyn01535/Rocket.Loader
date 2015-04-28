@@ -13,7 +13,7 @@ namespace Rocket.RocketAPI
             return (caller != null && !String.IsNullOrEmpty(caller.ToString()) && caller.ToString() != "0");
         }
 
-        private IRocketCommand Command;
+        internal IRocketCommand Command;
 
         public RocketCommandBase(IRocketCommand command)
         {
