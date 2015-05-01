@@ -166,6 +166,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Rocket\RocketFeatures.cs" />
+    <Compile Include="Rocket\RocketUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="doc\Doxyfile">
@@ -203,7 +204,7 @@
     <CallTarget Targets="GenerateMonoSymbols" Condition=" Exists('$(OutputPath)\$(AssemblyName).pdb') " />
   </Target>
   <Target Name="GenerateMonoSymbols">
-    <Message Text="$(ProjectName) -> $(TargetPath).mdb" Importance="High" />
+    <Message Text="$(ProjectName) -&gt; $(TargetPath).mdb" Importance="High" />
     <Exec Command="$(ProjectDir)lib\pdb2mdb.exe $(AssemblyName).dll" WorkingDirectory="$(MSBuildProjectDirectory)\$(OutputPath)" />
   </Target>
 </Project>

@@ -57,6 +57,7 @@ namespace Rocket
 #if DEBUG
             Console.WriteLine("Start");
 #endif
+            Steam.IsServer = true;
             if (String.IsNullOrEmpty(Steam.InstanceName))
             {
                 Logger.LogError("Could not get instancename");
