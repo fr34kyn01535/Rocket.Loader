@@ -46,6 +46,10 @@ namespace Rocket.RocketAPI
             {
                 System.Diagnostics.Process.Start("https://github.com/RocketFoundation/Rocket/wiki/Installing-Rocket");
             }
+            if (GUILayout.Button("Exit", GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
+            {
+                Application.Quit();
+            }
             //if (cam != null)
             //{
             //    Vector3 _cam = cam.transform.position;
