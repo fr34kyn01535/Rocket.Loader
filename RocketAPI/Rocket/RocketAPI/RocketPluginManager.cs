@@ -87,7 +87,7 @@ namespace Rocket.RocketAPI
             SteamGameServer.SetKeyValue("rocketplugins", String.Join(",", Assemblies.Select(a => a.GetName().Name).ToArray()));
             SteamGameServer.SetKeyValue("maxprotectedslots", RocketPermissionManager.GetProtectedSlots().ToString());
 
-            SteamGameServer.SetBotPlayerCount(42);
+            SteamGameServer.SetBotPlayerCount(1);
 
             /*But now i could also use the API commands & players loaded */
             Assemblies.Add(Assembly.GetExecutingAssembly());
