@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
+using SDG;
 
 namespace Rocket.Logging
 {
@@ -28,7 +29,7 @@ namespace Rocket.Logging
             }
             lastAssembly = assembly;
             message = assembly + message;
-            Debug.Log(message);
+            Steam.k(message);
         }
 
         internal static string var_dump(object obj, int recursion = 0)
@@ -105,7 +106,7 @@ namespace Rocket.Logging
         /// <param name="message"></param>
         public static void LogWarning(string message)
         {
-            Debug.LogWarning(message);
+            Steam.LogWarning(message);
         }
 
         /// <summary>
@@ -114,7 +115,7 @@ namespace Rocket.Logging
         /// <param name="message"></param>
         public static void LogError(string message)
         {
-            Debug.LogError(message);
+            Steam.LogError(message);
         }
 
         public static void Log(Exception ex)
@@ -139,7 +140,7 @@ namespace Rocket.Logging
             }
             lastAssembly = assembly;
             System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
-            Debug.LogError(assembly + "Error in " + stackTrace.GetFrame(1).GetMethod().Name + ": " + ex);
+            Steam.LogError(assembly + "Error in " + stackTrace.GetFrame(1).GetMethod().Name + ": " + ex);
         }
 
     }
