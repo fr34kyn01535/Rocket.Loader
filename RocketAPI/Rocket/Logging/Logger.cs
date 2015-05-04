@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SDG;
+using System;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -28,7 +29,7 @@ namespace Rocket.Logging
             }
             lastAssembly = assembly;
             message = assembly + message;
-            Debug.Log(message);
+            ProcessInternalLog(ELogType.Info, message);
         }
 
         internal static string var_dump(object obj, int recursion = 0)
@@ -105,7 +106,7 @@ namespace Rocket.Logging
         /// <param name="message"></param>
         public static void LogWarning(string message)
         {
-            Debug.LogWarning(message);
+            ProcessInternalLog(ELogType.Warning, message);
         }
 
         /// <summary>
@@ -114,7 +115,7 @@ namespace Rocket.Logging
         /// <param name="message"></param>
         public static void LogError(string message)
         {
-            Debug.LogError(message);
+            ProcessInternalLog(ELogType.Error, message);
         }
 
         public static void Log(Exception ex)
@@ -139,8 +140,46 @@ namespace Rocket.Logging
             }
             lastAssembly = assembly;
             System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
-            Debug.LogError(assembly + "Error in " + stackTrace.GetFrame(1).GetMethod().Name + ": " + ex);
+            ProcessInternalLog(ELogType.Exception, assembly + "Exception in " + stackTrace.GetFrame(1).GetMethod().Name + ": " + ex);
         }
+
+        private static void ProcessInternalLog(ELogType type, string message)
+        {
+            if (type == ELogType.Error || type == ELogType.Exception)
+            {
+
+               // Debug.LogError(message);
+                writeToConsole(message, ConsoleColor.Red);
+            }
+            else if (type == ELogType.Warning)
+            {
+              //  Debug.LogWarning(message);
+                writeToConsole(message, ConsoleColor.Yellow);
+            }
+            else
+            {
+                //Debug.Log(message);
+                writeToConsole(message, ConsoleColor.White);
+            }
+            ProcessLog(type,message);
+        }
+
+        private static void writeToConsole(string message,ConsoleColor color){
+            Console.ForegroundColor = color;
+            if (Console.CursorLeft != 0)
+            {
+                Steam.ConsoleInput.clearLine();
+            }
+            Console.WriteLine(message);
+            Steam.ConsoleInput.redrawInputLine();
+        }
+
+
+        private static void ProcessLog(ELogType type, string message)
+        {
+            AsyncLoggerQueue.Current.Enqueue(new LogEntry() { Severity = type, Message = message });
+        }
+
 
     }
 }

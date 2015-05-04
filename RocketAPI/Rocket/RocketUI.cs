@@ -31,7 +31,7 @@ namespace Rocket.RocketAPI
             Camera.main.transform.rotation = new Quaternion(0, 5, 0, 0);
 
             ObjectAsset objectAsset = (ObjectAsset)Assets.find(EAssetType.Object, 402);
-            billboard = ((GameObject)UnityEngine.Object.Instantiate(objectAsset.w)).transform;
+            billboard = ((GameObject)UnityEngine.Object.Instantiate(objectAsset.Model)).transform;
             billboard.transform.rotation = new Quaternion(-19.73f, 0, 0, 20);
             billboard.transform.position = new Vector3(0.54f, -6.81f, -3);
         }

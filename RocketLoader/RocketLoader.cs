@@ -8,7 +8,7 @@ namespace Rocket.RocketLoader
 {
     public class RocketLoader
     {
-        public static AssemblyDefinition UnturnedAssembly, LoaderAssembly, APIAssembly, UnityAssembly;
+        public static AssemblyDefinition UnturnedAssembly, LoaderAssembly, APIAssembly;//, UnityAssembly;
 
         private static void Main(string[] args)
         {
@@ -18,7 +18,7 @@ namespace Rocket.RocketLoader
 
                 try
                 {
-                    UnityAssembly = AssemblyDefinition.ReadAssembly("UnityEngine.dll");
+                    //UnityAssembly = AssemblyDefinition.ReadAssembly("UnityEngine.dll");
                     UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
                     APIAssembly = AssemblyDefinition.ReadAssembly("RocketAPI.dll");
                     LoaderAssembly = AssemblyDefinition.ReadAssembly(System.Reflection.Assembly.GetExecutingAssembly().Location);
@@ -41,11 +41,11 @@ namespace Rocket.RocketLoader
                         UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
                     }
 
-                    if (File.Exists("UnityEngine.dll.bak"))
-                    {
-                        File.Copy("UnityEngine.dll.bak", "UnityEngine.dll", true);
-                        UnityAssembly = AssemblyDefinition.ReadAssembly("UnityEngine.dll");
-                    }
+                    //if (File.Exists("UnityEngine.dll.bak"))
+                    //{
+                    //    File.Copy("UnityEngine.dll.bak", "UnityEngine.dll", true);
+                    //    UnityAssembly = AssemblyDefinition.ReadAssembly("UnityEngine.dll");
+                    //}
 
                     if (isPatched())
                     {
@@ -63,8 +63,8 @@ namespace Rocket.RocketLoader
                     Console.WriteLine("Backing up Assembly-CSharp.dll");
                     File.Copy("Assembly-CSharp.dll", "Assembly-CSharp.dll.bak", true);
 
-                    Console.WriteLine("Backing up UnityEngine.dll");
-                    File.Copy("UnityEngine.dll", "UnityEngine.dll.bak", true);
+                    //Console.WriteLine("Backing up UnityEngine.dll");
+                    //File.Copy("UnityEngine.dll", "UnityEngine.dll.bak", true);
 
                 }
 
@@ -89,7 +89,7 @@ namespace Rocket.RocketLoader
                 }
 
                 UnturnedAssembly.Write("Assembly-CSharp.dll");
-                UnityAssembly.Write("UnityEngine.dll");
+                //UnityAssembly.Write("UnityEngine.dll");
 
                 if (!(args.Count() == 1 && args[0] == "silent"))
                 {

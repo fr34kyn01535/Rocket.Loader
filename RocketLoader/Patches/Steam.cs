@@ -20,17 +20,33 @@ namespace Rocket.RocketLoader.Patches
             h.UnlockFieldByType(typeof(string), "InstanceName", 13);
             h.UnlockFieldByType(typeof(uint), "ServerPort", 1);
             h.UnlockFieldByType(typeof(byte), "MaxPlayers");
-
+            
             h.UnlockFieldByType(typeof(bool), "PvP", 5);
             h.UnlockFieldByType(typeof(bool), "IsServer", 8);
-
+            
             h.UnlockFieldByType("List<SteamPlayer>", "Players");
+            h.UnlockFieldByType("ConsoleInput", "ConsoleInput");
 
             MethodDefinition reject = h.Type.Methods.AsEnumerable().Where(m => m.Parameters.Count == 2 &&
                  m.Parameters[0].ParameterType.Name == "CSteamID" &&
                  m.Parameters[1].ParameterType.Name == "ESteamRejection").FirstOrDefault();
             reject.Name = "Reject";
             reject.IsPublic = true;
+
+
+            MethodDefinition log = h.Type.Methods.AsEnumerable().Where(m => m.Parameters.Count == 2 &&
+                 m.Parameters[0].ParameterType.Name == "String" &&
+                 m.Parameters[1].ParameterType.Name == "ConsoleColor").FirstOrDefault();
+            log.Name = "Log";
+            log.IsPublic = true;
+
+            MethodDefinition externalLog = RocketLoader.APIAssembly.MainModule.GetType("Rocket.Logging.Logger").Methods.AsEnumerable().Where(m => m.Name == "ExternalLog").FirstOrDefault();
+
+            log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnturnedAssembly.MainModule.Import(externalLog)));
+            log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_1));
+            log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_0));
+
+             
 
             //CheckValid
             MethodDefinition checkValid = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketAPI.RocketPermissionManager").Methods.AsEnumerable().Where(m => m.Name == "CheckValid").FirstOrDefault();

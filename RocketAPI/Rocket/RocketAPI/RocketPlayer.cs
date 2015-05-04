@@ -102,8 +102,19 @@ namespace Rocket.RocketAPI
             get { return player.Inventory; }
         }
 
-        public bool GiveItem(ushort itemId,byte amount) {
-            return ItemTool.tryForceGiveItem(player, itemId, amount);
+        public bool GiveItem(ushort itemId, byte amount, bool randomQuality = false)
+        {
+            ItemAsset itemAsset = (ItemAsset)Assets.find(EAssetType.Item, itemId);
+            if (itemAsset == null)
+            {
+                return false;
+            }
+            for (int i = 0; i < amount; i++)
+            {
+                Item item = new Item(itemId, !randomQuality);
+                Inventory.forceAddItem(item, true);
+            }
+            return true;
         }
 
         public bool GiveVehicle(ushort vehicleId)

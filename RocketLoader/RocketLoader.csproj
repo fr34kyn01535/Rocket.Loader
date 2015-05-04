@@ -261,6 +261,7 @@
     <Compile Include="Mono\Empty.cs" />
     <Compile Include="Mono\Funcs.cs" />
     <Compile Include="Patches\BarricadeManager.cs" />
+    <Compile Include="Patches\ObjectAsset.cs" />
     <Compile Include="Patches\MenuUI.cs" />
     <Compile Include="Patches\StructureManager.cs" />
     <Compile Include="Patches\Character.cs" />

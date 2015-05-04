@@ -35,6 +35,7 @@ namespace Rocket
         [Browsable(false)]
         public static void Splash()
         {
+            Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("RocketAPI v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " for Unturned v" + Steam.Version + "\n");
 
