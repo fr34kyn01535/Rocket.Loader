@@ -29,7 +29,7 @@ namespace Rocket.Logging
             }
             lastAssembly = assembly;
             message = assembly + message;
-            Debug.Log(message);
+            Steam.k(message);
         }
 
         internal static string var_dump(object obj, int recursion = 0)
