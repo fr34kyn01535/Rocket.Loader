@@ -31,6 +31,11 @@ namespace Rocket.RocketLoader
             return Type.Methods.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefault();
         }
 
+        public bool RemoveMethod(string name)
+        {
+            return Type.Methods.Remove(Type.Methods.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefault());
+        }
+
         public FieldDefinition GetField(string name)
         {
             return Type.Fields.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefault();

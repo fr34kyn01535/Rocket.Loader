@@ -166,6 +166,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Rocket\RocketFeatures.cs" />
+    <Compile Include="Rocket\RocketUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="doc\Doxyfile">
@@ -179,6 +180,9 @@
     </Content>
     <Content Include="lib\Assembly-CSharp-firstpass.dll" />
     <Content Include="lib\Assembly-CSharp.dll" />
+    <Content Include="lib\Mono.Cecil.dll" />
+    <Content Include="lib\Mono.CompilerServices.SymbolWriter.dll" />
+    <Content Include="lib\pdb2mdb.exe" />
     <Content Include="lib\UnityEngine.dll" />
     <None Include="LICENSE">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -197,5 +201,10 @@
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
+    <CallTarget Targets="GenerateMonoSymbols" Condition=" Exists('$(OutputPath)\$(AssemblyName).pdb') " />
+  </Target>
+  <Target Name="GenerateMonoSymbols">
+    <Message Text="$(ProjectName) -&gt; $(TargetPath).mdb" Importance="High" />
+    <Exec Command="$(ProjectDir)lib\pdb2mdb.exe $(AssemblyName).dll" WorkingDirectory="$(MSBuildProjectDirectory)\$(OutputPath)" />
   </Target>
 </Project>
