@@ -14,7 +14,7 @@ namespace Rocket.RocketLoader.Patches
             h.RemoveMethod("OnGUI");
 
            MethodDefinition start = h.GetMethod("Start");
-            MethodDefinition Instantiate = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketAPI.RenderManager").Methods.AsEnumerable().Where(m => m.Name == "Instantiate").FirstOrDefault();
+           MethodDefinition Instantiate = RocketLoader.APIAssembly.MainModule.GetType("Rocket.RocketUI").Methods.AsEnumerable().Where(m => m.Name == "Instantiate").FirstOrDefault();
             start.Body.GetILProcessor().InsertBefore(start.Body.Instructions[0],Instruction.Create(OpCodes.Call, RocketLoader.UnturnedAssembly.MainModule.Import(Instantiate)));
         }
     }

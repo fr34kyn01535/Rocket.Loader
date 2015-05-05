@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using System.Linq;
 
 namespace Rocket
 {
@@ -38,7 +39,7 @@ namespace Rocket
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("RocketAPI v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " for Unturned v" + Steam.Version + "\n");
-
+            
             Steam.OnServerHosted += () =>
             {
 #if DEBUG

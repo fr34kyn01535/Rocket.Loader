@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Rocket.RocketAPI
+namespace Rocket
 {
-    public class RenderManager : MonoBehaviour
+    public class RocketUI : MonoBehaviour
     {
-        public static RenderManager Instance;
+        public static RocketUI Instance;
         public static void Instantiate()
         {
-            Instance = new GameObject().AddComponent<RenderManager>();
+            Instance = new GameObject().AddComponent<RocketUI>();
         }
 
         //Camera cam = Camera.main;
