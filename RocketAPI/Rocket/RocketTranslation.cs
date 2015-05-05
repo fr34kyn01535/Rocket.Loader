@@ -130,8 +130,8 @@ namespace Rocket
                 {
                     if (RocketSettings.LanguageCode != "en")
                     {
-                        rocketTranslation = String.Format(translationFile, RocketSettings.HomeFolder, "en");
                         Logger.LogWarning(Path.GetFileName(rocketTranslation) + " could not be found, recovering default language");
+                        rocketTranslation = String.Format(translationFile, RocketSettings.HomeFolder, "en");
                     }
                     translations = defaultTranslations;
                 }
