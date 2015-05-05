@@ -14,11 +14,11 @@ namespace Rocket.RocketAPI
 
         public override void Awake()
         {
-            HomeDirectory = RocketSettings.HomeFolder + "Plugins/" + (typeof(TConfiguration).Assembly.GetName().Name);
-            if (!Directory.Exists(HomeDirectory)) Directory.CreateDirectory(HomeDirectory);
-
             if (String.IsNullOrEmpty(RocketSettings.WebConfigurations))
             {
+                HomeDirectory = RocketSettings.HomeFolder + "Plugins/" + (typeof(TConfiguration).Assembly.GetName().Name);
+                if (!Directory.Exists(HomeDirectory)) Directory.CreateDirectory(HomeDirectory);
+
                 try
                 {
                     Configuration = RocketConfigurationHelper.LoadConfiguration<TConfiguration>();

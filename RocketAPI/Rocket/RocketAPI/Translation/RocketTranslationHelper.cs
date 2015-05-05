@@ -18,9 +18,11 @@ namespace Rocket.RocketAPI
             public string Value;
         }
 
-        private static string configurationFile = "{0}Plugins/{1}/{1}.{2}.translation.xml"; 
+        private static string configurationFile = "{0}Plugins/{1}/{1}.{2}.translation.xml";
+        private static string configurationFolder = "{0}Plugins/{1}/"; 
         internal static Dictionary<string, string> LoadTranslation(string assemblyName,Dictionary<string, string> fallback)
         {
+            if (Directory.Exists(String.Format(configurationFolder, RocketSettings.HomeFolder, assemblyName))) return fallback;
             XmlSerializer serializer = new XmlSerializer(typeof(Translation[]), new XmlRootAttribute() { ElementName = "Translations" });
             Dictionary<string, string> translations;
             string rocketTranslation = String.Format(configurationFile, RocketSettings.HomeFolder, assemblyName, RocketSettings.LanguageCode);
