@@ -35,7 +35,17 @@ namespace Rocket.RocketAPI
                 {
                     RocketWebClient wc = new RocketWebClient();
                     wc.DownloadStringCompleted += wc_DownloadStringCompleted;
-                    wc.DownloadStringAsync(new Uri(RocketSettings.WebPermissions + "&request=" + Guid.NewGuid()));
+                    string target = RocketSettings.WebPermissions;
+                    if (target.Contains("?"))
+                    {
+                        target += "&";
+                    }
+                    else
+                    {
+                        target += "?";
+                    }
+
+                    wc.DownloadStringAsync(new Uri(target +"instance=" + Steam.InstanceName +"&request=" + Guid.NewGuid()));
                 }
                 catch (Exception ex)
                 {
