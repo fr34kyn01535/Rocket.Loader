@@ -18,7 +18,7 @@ namespace Rocket.RocketAPI
             public string Value;
         }
 
-        private static string configurationFile = "{0}Plugins/{1}/{1}.{2}.translation.xml"; // Plugins/TestPlugin/TestPlugin.en.translation.xml
+        private static string configurationFile = "{0}Plugins/{1}/{1}.{2}.translation.xml"; 
         internal static Dictionary<string, string> LoadTranslation(string assemblyName,Dictionary<string, string> fallback)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Translation[]), new XmlRootAttribute() { ElementName = "Translations" });
