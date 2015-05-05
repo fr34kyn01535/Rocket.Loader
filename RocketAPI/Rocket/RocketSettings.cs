@@ -20,22 +20,48 @@ namespace Rocket
         public static bool AutoShutdownClearLevel = false;
         public static bool AutoShutdownClearPlayers = false;
 
-        //public static string[] ChatFilter = new string[] { "cunt", "dick", "pussy", "penis", "vagina", "fuck", "fucking", "fucked", "shit", "shitting", "shat", "damn", "damned", "hell", "cock", "whore", "fag", "faggot", "fag", "nigger" };
+        public static string WebPermissions = "";
+        public static string WebConfigurations = "";
+        public static int WebPermissionsUpdateInterval = 60;
+        
+        [XmlElement(ElementName = "WebPermissions")]
+        public string webPermissions
+        {
+            get
+            {
+                return WebPermissions;
+            }
+            set
+            {
+                WebPermissions = value;
+            }
+        }
 
-        //[XmlArrayItem(ElementName= "ChatFilterListEntry")]
-        //[XmlArray(ElementName = "ChatFilterList")]
-        //public string[] chatFilter
-        //{
-        //    get
-        //    {
-        //        return ChatFilter;
-        //    }
-        //    set
-        //    {
-        //        ChatFilter = value;
-        //        SDG.ChatManager.ChatFilter = ChatFilter;
-        //    }
-        //}
+        [XmlElement(ElementName = "WebPermissionsUpdateInterval")]
+        public int webPermissionsUpdateInterval
+        {
+            get
+            {
+                return WebPermissionsUpdateInterval;
+            }
+            set
+            {
+                WebPermissionsUpdateInterval = value;
+            }
+        }
+
+        [XmlElement(ElementName = "WebConfigurations")]
+        public string webConfigurations
+        {
+            get
+            {
+                return WebConfigurations;
+            }
+            set
+            {
+                WebConfigurations = value;
+            }
+        }
 
         [XmlElement(ElementName = "AutomaticShutdownInterval")]
         public int automaticShutdownInterval
@@ -167,13 +193,18 @@ namespace Rocket
                     s = (RocketSettings)serializer.Deserialize(r);
                     instance.enableRcon = s.enableRcon;
                     if (!String.IsNullOrEmpty(s.rconPassword)) instance.rconPassword = s.rconPassword;
+
+                    if (RocketHelper.IsUri(s.webConfigurations)) instance.webConfigurations = s.webConfigurations;
+                    if (RocketHelper.IsUri(s.webPermissions)) instance.webPermissions = s.webPermissions;
+                    instance.webPermissionsUpdateInterval = s.webPermissionsUpdateInterval;
+                    
                     instance.rconPort = s.rconPort;
                     instance.automaticSaveInterval = s.automaticSaveInterval;
                     instance.enableJoinLeaveMessages = s.enableJoinLeaveMessages;
                     instance.automaticShutdownInterval = s.automaticShutdownInterval;
                     instance.automaticShutdownClearLevel = s.automaticShutdownClearLevel;
                     instance.automaticShutdownClearPlayers = s.automaticShutdownClearPlayers;
-                   // if (s.chatFilter != null) instance.chatFilter = s.chatFilter;
+
                 }
                 using (StreamWriter w = new StreamWriter(configFile))
                 {

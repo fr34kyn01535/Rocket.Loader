@@ -131,6 +131,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Rocket\RocketAPI\RocketPlayerFeatures.cs" />
+    <Compile Include="Rocket\RocketHelper.cs" />
     <Compile Include="Rocket\RocketTranslation.cs" />
     <Compile Include="Rocket\RocketAPI\Translation\RocketTranslationHelper.cs" />
     <Compile Include="Rocket\RocketAPI\Events\RocketPlayerInventoryEvents.cs" />

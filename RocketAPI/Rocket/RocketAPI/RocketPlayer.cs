@@ -48,6 +48,10 @@ namespace Rocket.RocketAPI
             return (this.CSteamID.ToString() == p.CSteamID.ToString());
         }
 
+        public Component GetComponent<T>() {
+            return Player.GetComponent(typeof(T));    
+        }
+
         private RocketPlayer(Player p)
         {
             player = p;

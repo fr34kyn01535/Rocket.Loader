@@ -17,8 +17,6 @@ namespace Rocket.RocketAPI
         private static string permissionsFile;
         private static Permissions permissions;
 
-        private static string webPermissionsUrl;
-
         public new void Awake()
         {
 #if DEBUG
@@ -26,42 +24,49 @@ namespace Rocket.RocketAPI
 #endif
             base.Awake();
             permissionsFile = RocketSettings.HomeFolder + "Permissions.config.xml";
-            loadPermissions();
-            webPermissionsUrl = String.IsNullOrEmpty(permissions.WebPermissionsUrl) ? "" : permissions.WebPermissionsUrl.Trim() + "?instance=" + Steam.InstanceName;
-            updated = true;
+            ReloadPermissions();
         }
 
-        private static void getWebPermissions()
+        private static void loadWebPermissions()
         {
-            if (!String.IsNullOrEmpty(permissions.WebPermissionsUrl))
+            if (!String.IsNullOrEmpty(RocketSettings.WebPermissions))
             {
                 try
                 {
                     RocketWebClient wc = new RocketWebClient();
                     wc.DownloadStringCompleted += wc_DownloadStringCompleted;
-                    wc.DownloadStringAsync(new Uri(webPermissionsUrl + "&request=" + Guid.NewGuid()));
+                    wc.DownloadStringAsync(new Uri(RocketSettings.WebPermissions + "&request=" + Guid.NewGuid()));
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError("Failed getting WebPermissions from " + webPermissionsUrl + ": " + ex.ToString());
+                    Logger.LogError("Failed getting WebPermissions from " + RocketSettings.WebPermissions + ": " + ex.ToString());
                 }
             }
         }
 
-        private static bool updated = false;
-        private static DateTime lastUpdated = DateTime.MinValue;
+        private static bool updatedWebPermissions = false;
+        private static DateTime lastUpdatedWebPermissions = DateTime.MinValue;
 
         private void FixedUpdate()
         {
-            if (updated && (DateTime.Now - lastUpdated) > TimeSpan.FromSeconds(permissions.WebPermissionsTimeout))
+            if (updatedWebPermissions && (DateTime.Now - lastUpdatedWebPermissions) > TimeSpan.FromSeconds(RocketSettings.WebPermissionsUpdateInterval))
             {
-                updated = false;
-                getWebPermissions();
+                updatedWebPermissions = false;
+                ReloadPermissions();
             }
         }
 
         internal static void ReloadPermissions() {
-            loadPermissions();
+            if (String.IsNullOrEmpty(RocketSettings.WebPermissions))
+            {
+                loadPermissions();
+            }
+            else
+            {
+                loadWebPermissions();
+                updatedWebPermissions = true;
+            }
+
         }
 
         private static void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
@@ -76,7 +81,7 @@ namespace Rocket.RocketAPI
                 {
                     RocketTaskManager.Enqueue(() =>
                     {
-                        Logger.LogError("Failed getting WebPermissions from " + webPermissionsUrl + ": Empty result");
+                        Logger.LogError("Failed getting WebPermissions from " + RocketSettings.WebPermissions + ": Empty result");
                     });
                 }
                 else
@@ -85,12 +90,12 @@ namespace Rocket.RocketAPI
                     {
                         result = (Permissions)serializer.Deserialize(reader);
                     }
-                    permissions.Groups = result.Groups;
+                    permissions = result;
                 }
             }
             catch (Exception ex)
             {
-                r = "Failed getting WebPermissions from " + webPermissionsUrl + ": "+ ex.ToString();
+                r = "Failed getting WebPermissions from " + RocketSettings.WebPermissions + ": " + ex.ToString();
                 if (!String.IsNullOrEmpty(r))
                 {
                     r += " Result:" + r;
@@ -101,8 +106,8 @@ namespace Rocket.RocketAPI
             {
                 if (!String.IsNullOrEmpty(r)) Logger.LogError(r);
             });
-            lastUpdated = DateTime.Now;
-            updated = true;
+            lastUpdatedWebPermissions = DateTime.Now;
+            updatedWebPermissions = true;
         }
 
         private static void loadPermissions()

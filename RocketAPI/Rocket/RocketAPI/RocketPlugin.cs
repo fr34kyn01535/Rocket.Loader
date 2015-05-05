@@ -14,18 +14,31 @@ namespace Rocket.RocketAPI
 
         public override void Awake()
         {
-            HomeDirectory = RocketSettings.HomeFolder + "Plugins/" + (typeof(TConfiguration).Assembly.GetName().Name);
-            if (!Directory.Exists(HomeDirectory)) Directory.CreateDirectory(HomeDirectory);
-
-            try
+            if (String.IsNullOrEmpty(RocketSettings.WebConfigurations))
             {
-                Configuration = RocketConfigurationHelper.LoadConfiguration<TConfiguration>();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError("Failed to load configuration: " + ex.ToString());
-            }
+                HomeDirectory = RocketSettings.HomeFolder + "Plugins/" + (typeof(TConfiguration).Assembly.GetName().Name);
+                if (!Directory.Exists(HomeDirectory)) Directory.CreateDirectory(HomeDirectory);
 
+                try
+                {
+                    Configuration = RocketConfigurationHelper.LoadConfiguration<TConfiguration>();
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError("Failed to load configuration: " + ex.ToString());
+                }
+            }
+            else
+            {
+                try
+                {
+                    Configuration = RocketConfigurationHelper.LoadWebConfiguration<TConfiguration>();
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError("Failed to load configuration: " + ex.ToString());
+                }
+            }
             base.Awake();
         }
     }

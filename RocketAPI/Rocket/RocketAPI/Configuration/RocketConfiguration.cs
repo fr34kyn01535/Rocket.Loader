@@ -7,80 +7,67 @@ using System.Xml.Serialization;
 
 namespace Rocket.RocketAPI
 {
-    public interface RocketConfiguration //Not correct! TODO: FIX THIS ON MAJOR UPDATE
+    public interface IRocketConfiguration
     {
-        RocketConfiguration DefaultConfiguration { get; }
+        IRocketConfiguration DefaultConfiguration { get; }
     }
 
 
-    public static class RocketConfigurationHelper
+    internal static class RocketConfigurationHelper
     {
         private static string configurationFile = "{0}Plugins/{1}/{1}.config.xml";
 
-        public static void Save(this RocketConfiguration configuration)
+        public static void Save(this IRocketConfiguration configuration)
         {
             RocketConfigurationHelper.SaveConfiguration(configuration);
         }
 
-        private static Uri getUriFromFile(string filename)
+        internal static T LoadWebConfiguration<T>()
         {
-            string filecontent = "";
-            using (StreamReader reader = new StreamReader(filename))
-            {
-                filecontent = reader.ReadToEnd().Trim();
+            string target = RocketSettings.WebConfigurations;
+            if (String.IsNullOrEmpty(target)) return default(T);
+            try
+            { 
+                if (target.Contains("?"))
+                {
+                    target += "&";
+                }
+                else
+                {
+                    target += "?";
+                }
+
+                target += "configuration=" + typeof(T).Assembly.GetName().Name + "&instance=" + Steam.InstanceName + "&request=" + Guid.NewGuid();
+                string xml = new RocketWebClient().DownloadString(target);
+                XmlSerializer serializer = new XmlSerializer(typeof(T));
+                T output = (T)serializer.Deserialize(new StringReader(xml));
+                return output;
             }
-            Uri uriOut = null;
-            if (Uri.TryCreate(filecontent, UriKind.Absolute, out uriOut) && (uriOut.Scheme == Uri.UriSchemeHttp || uriOut.Scheme == Uri.UriSchemeHttps))
+            catch (Exception ex)
             {
-                return uriOut;
+                Logger.LogError("An error occured while loading the configuration from " + target + ": " + ex.ToString());
+                return (T)Activator.CreateInstance(typeof(T));
             }
-            return null;
         }
 
-        public static T LoadConfiguration<T>()
+        internal static T LoadConfiguration<T>()
         {
             string filename = String.Format(configurationFile, RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
             if (File.Exists(filename))
             {
                 try
                 {
-                    string filecontent = "";
-                    using (StreamReader reader = new StreamReader(filename))
-                    {
-                        filecontent = reader.ReadToEnd().Trim();
-                    }
-                    Uri uriOut = getUriFromFile(filename);
-                    if (uriOut!=null)
-                    {
-                        string target = uriOut.ToString();
-
-                        if (target.Contains("?"))
-                        {
-                            target += "&";
-                        }
-                        else
-                        {
-                            target += "?";
-                        }
-
-                        target += "configuration=" + typeof(T).Assembly.GetName().Name + "&instance=" + Steam.InstanceName + "&request=" + Guid.NewGuid();
-                        filecontent = new RocketWebClient().DownloadString(target);
-                    }
-
                     XmlSerializer serializer = new XmlSerializer(typeof(T));
 
                     T output = default(T);
 
-                    output = (T)serializer.Deserialize(new StringReader(filecontent));
+                    output = (T)serializer.Deserialize(new StreamReader(filename));
 
-                    if (uriOut == null)
+                    XmlSerializer outserializer = new XmlSerializer(typeof(T));
+
+                    using (TextWriter writer = new StreamWriter(filename, false))
                     {
-                        XmlSerializer outserializer = new XmlSerializer(typeof(T));
-
-                        using (TextWriter writer = new StreamWriter(filename, false))
-                        {
-                            outserializer.Serialize(writer, output);
-                        }
+                        outserializer.Serialize(writer, output);
                     }
 
                     return output;
@@ -88,8 +75,6 @@ namespace Rocket.RocketAPI
                 catch (Exception ex)
                 {
                     Logger.LogError("An error occured while loading the configuration: " + ex.ToString());// The old version was backuped and a new version was created: " + ex.ToString());
-                    //File.Copy(filename, filename + ".bak", true);
-                    //return SaveConfiguration<T>(filename);
                     return (T)Activator.CreateInstance(typeof(T));
                 }
             }
@@ -99,7 +84,7 @@ namespace Rocket.RocketAPI
             }
         }
 
-        public static T InitialiseConfiguration<T>()
+        internal static T InitialiseConfiguration<T>()
         {
             string filename = String.Format(configurationFile, RocketSettings.HomeFolder, typeof(T).Assembly.GetName().Name);
             XmlSerializer serializer = new XmlSerializer(typeof(T));
@@ -107,24 +92,19 @@ namespace Rocket.RocketAPI
             T config = (T)Activator.CreateInstance(typeof(T));
             using (TextWriter writer = new StreamWriter(filename))
             {
-                if (typeof(T).GetInterfaces().Contains(typeof(RocketConfiguration)))
+                if (typeof(T).GetInterfaces().Contains(typeof(IRocketConfiguration)))
                 {
-                    config = (T)((RocketConfiguration)config).DefaultConfiguration;
+                    config = (T)((IRocketConfiguration)config).DefaultConfiguration;
                 }
                 serializer.Serialize(writer, config);
             }
             return config;
         }
 
-        public static void SaveConfiguration(RocketConfiguration configuration)
+        internal static void SaveConfiguration(IRocketConfiguration configuration)
         {
+            if (!String.IsNullOrEmpty(RocketSettings.WebConfigurations)) return;
             string filename = String.Format(configurationFile, RocketSettings.HomeFolder, configuration.GetType().Assembly.GetName().Name);
-
-            if (getUriFromFile(filename) != null)
-            {
-                return;
-            }
-
             XmlSerializer serializer = new XmlSerializer(configuration.GetType());
 
             using (TextWriter writer = new StreamWriter(filename))
