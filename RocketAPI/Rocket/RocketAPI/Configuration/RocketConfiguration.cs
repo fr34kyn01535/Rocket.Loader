@@ -61,7 +61,10 @@ namespace Rocket.RocketAPI
 
                     T output = default(T);
 
-                    output = (T)serializer.Deserialize(new StreamReader(filename));
+                    using (StreamReader r = new StreamReader(filename))
+                    {
+                        output = (T)serializer.Deserialize(r);
+                    }
 
                     XmlSerializer outserializer = new XmlSerializer(typeof(T));
 
