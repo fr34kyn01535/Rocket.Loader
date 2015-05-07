@@ -46,6 +46,7 @@ namespace Rocket.RocketAPI
                     }
 
                     wc.DownloadStringAsync(new Uri(target +"instance=" + Steam.InstanceName +"&request=" + Guid.NewGuid()));
+                    Logger.Log("Updating WebPermissions from " + target);
                 }
                 catch (Exception ex)
                 {
@@ -59,7 +60,7 @@ namespace Rocket.RocketAPI
 
         private void FixedUpdate()
         {
-            if (updatedWebPermissions && (DateTime.Now - lastUpdatedWebPermissions) > TimeSpan.FromSeconds(RocketSettings.WebPermissionsUpdateInterval))
+            if (updatedWebPermissions && RocketSettings.WebPermissionsUpdateInterval > 0 && (DateTime.Now - lastUpdatedWebPermissions) > TimeSpan.FromSeconds(RocketSettings.WebPermissionsUpdateInterval))
             {
                 updatedWebPermissions = false;
                 ReloadPermissions();
@@ -74,15 +75,14 @@ namespace Rocket.RocketAPI
             else
             {
                 loadWebPermissions();
-                updatedWebPermissions = true;
             }
-
         }
 
         private static void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
             string r = null;
             string re = e.Result;
+
             try
             {
                 var serializer = new XmlSerializer(typeof(Permissions));
@@ -154,8 +154,6 @@ namespace Rocket.RocketAPI
                             new Group("default","Guest", null , new List<string>() { "p", "reward","balance","pay","rocket" }),
                             new Group("moderator","Moderator", new List<string>() { "76561197960287930" }, new List<string>() { "p", "p.reload", "tp", "tphere","i","test" })
                         };
-                    permissions.WebPermissionsUrl = "";
-                    permissions.WebPermissionsTimeout = 60;
                     permissions.WhitelistedGroups = new string[0];
                     permissions.ReservedSlotsGroups = new string[0];
                     serializer.Serialize(writer, permissions);
@@ -325,8 +323,6 @@ namespace Rocket.RocketAPI
         }
 
         public string DefaultGroupId;
-        public string WebPermissionsUrl;
-        public int WebPermissionsTimeout;
         
         [XmlArrayItem(ElementName = "Group")]
         public Group[] Groups;
