@@ -21,7 +21,7 @@ namespace Rocket.RocketAPI
 
                 try
                 {
-                    Configuration = RocketConfigurationHelper.LoadConfiguration<TConfiguration>();
+                    Configuration = RocketConfiguration.LoadConfiguration<TConfiguration>();
                 }
                 catch (Exception ex)
                 {
@@ -32,7 +32,7 @@ namespace Rocket.RocketAPI
             {
                 try
                 {
-                    Configuration = RocketConfigurationHelper.LoadWebConfiguration<TConfiguration>();
+                    Configuration = RocketConfiguration.LoadWebConfiguration<TConfiguration>();
                 }
                 catch (Exception ex)
                 {
