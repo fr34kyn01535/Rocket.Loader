@@ -16,6 +16,13 @@ namespace Rocket.RocketAPI
 
         internal override void LoadPlugin()
         {
+            ReloadConfiguration();
+            base.LoadPlugin();
+        }
+
+
+        public void ReloadConfiguration()
+        {
             if (String.IsNullOrEmpty(RocketSettings.WebConfigurations))
             {
                 HomeDirectory = RocketSettings.HomeFolder + "Plugins/" + (typeof(TConfiguration).Assembly.GetName().Name);
@@ -41,7 +48,6 @@ namespace Rocket.RocketAPI
                     Logger.LogError("Failed to load configuration: " + ex.ToString());
                 }
             }
-            base.LoadPlugin();
         }
     }
 
@@ -59,13 +65,7 @@ namespace Rocket.RocketAPI
             {
                 RocketPluginManager.AddRocketPlayerComponents(GetType().Assembly);
                 RocketPluginManager.RegisterCommands(GetType().Assembly);
-
-
-#if DEBUG
-                int c = DefaultTranslations == null ? 0 : DefaultTranslations.Count;
-                Logger.Log("Loading " + c + " translations for " + name);
-#endif
-                Translations = RocketTranslationHelper.LoadTranslation(name, DefaultTranslations);
+                ReloadTranslation();
             }
             catch (Exception ex)
             {
@@ -90,6 +90,14 @@ namespace Rocket.RocketAPI
             }
         }
 
+        public void ReloadTranslation()
+        {
+#if DEBUG
+            int c = DefaultTranslations == null ? 0 : DefaultTranslations.Count;
+            Logger.Log("Loading " + c + " translations for " + name);
+#endif
+            Translations = RocketTranslationHelper.LoadTranslation(name, DefaultTranslations);
+        }
 
         internal virtual void UnloadPlugin()
         {
