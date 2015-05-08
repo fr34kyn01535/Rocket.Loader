@@ -1,8 +1,10 @@
 ﻿using Rocket.Components;
 using Rocket.Logging;
+using SDG;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Rocket.RocketAPI
 {
@@ -12,7 +14,7 @@ namespace Rocket.RocketAPI
         public TConfiguration Configuration;
         public string HomeDirectory;
 
-        public override void Awake()
+        internal override void LoadPlugin()
         {
             if (String.IsNullOrEmpty(RocketSettings.WebConfigurations))
             {
@@ -39,7 +41,7 @@ namespace Rocket.RocketAPI
                     Logger.LogError("Failed to load configuration: " + ex.ToString());
                 }
             }
-            base.Awake();
+            base.LoadPlugin();
         }
     }
 
@@ -49,33 +51,64 @@ namespace Rocket.RocketAPI
         public Dictionary<string, string> Translations = null;
         public virtual Dictionary<string, string> DefaultTranslations { get { return new Dictionary<string, string>(); } }
 
-        internal void Start()
-        {
-            Load();
-        }
-
-        internal void Stop()
-        {
-            Unload();
-        }
-
-        public virtual void Awake()
+        internal virtual void LoadPlugin()
         {
             DontDestroyOnLoad(transform.gameObject);
+            string name = GetType().Assembly.GetName().Name;
             try
             {
+                RocketPluginManager.AddRocketPlayerComponents(GetType().Assembly);
+                RocketPluginManager.RegisterCommands(GetType().Assembly);
+
+
 #if DEBUG
                 int c = DefaultTranslations == null ? 0 : DefaultTranslations.Count;
-                Logger.Log("Loading " + c + " translations for " + this.GetType().Assembly.GetName().Name);
+                Logger.Log("Loading " + c + " translations for " + name);
 #endif
-                Translations = RocketTranslationHelper.LoadTranslation(this.GetType().Assembly.GetName().Name, DefaultTranslations);
+                Translations = RocketTranslationHelper.LoadTranslation(name, DefaultTranslations);
             }
             catch (Exception ex)
             {
                 Logger.LogError("Failed to load translation: " + ex.ToString());
             }
             Loaded = true;
+            try
+            {
+                Load();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Failed to load " + name+", unloading now... :"+ex.ToString());
+                try 
+	            {	        
+                    UnloadPlugin();
+	            }
+	            catch (Exception ex1)
+	            {
+                    Logger.LogError("Failed to unload " + name+":"+ex1.ToString());
+	            }
+            }
         }
+
+
+        internal virtual void UnloadPlugin()
+        {
+            Unload();
+            RocketPluginManager.UnregisterCommands(GetType().Assembly);
+            RocketPluginManager.RemoveRocketPlayerComponents(GetType().Assembly);
+            Loaded = false;
+        }
+
+        internal void OnEnable()
+        {
+            LoadPlugin();
+        }
+
+        internal void OnDisable()
+        {
+            UnloadPlugin();
+        }
+
 
         public string Translate(string translationKey, params object[] placeholder)
         {

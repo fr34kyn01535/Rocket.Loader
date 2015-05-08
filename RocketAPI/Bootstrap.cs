@@ -10,6 +10,7 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Rocket
 {
@@ -93,18 +94,18 @@ namespace Rocket
                 }
                 try
                 {
-                if (Directory.Exists(RocketSettings.HomeFolder + "Plugins/Libraries/")) {
-#if DEBUG
-                Console.WriteLine("Fixing Libraries folder");
-#endif
-                    foreach (string file in Directory.GetFiles(RocketSettings.HomeFolder + "Plugins/Libraries/", "*"))
+                    if (Directory.Exists(RocketSettings.HomeFolder + "Plugins/Libraries/"))
                     {
-                        if (!File.Exists(RocketSettings.HomeFolder + "Libraries/" + Path.GetFileName(file)))
-                            File.Move(file, RocketSettings.HomeFolder + "Libraries/" + Path.GetFileName(file));
+#if DEBUG
+                        Console.WriteLine("Fixing Libraries folder");
+#endif
+                        foreach (string file in Directory.GetFiles(RocketSettings.HomeFolder + "Plugins/Libraries/", "*"))
+                        {
+                            if (!File.Exists(RocketSettings.HomeFolder + "Libraries/" + Path.GetFileName(file)))
+                                File.Move(file, RocketSettings.HomeFolder + "Libraries/" + Path.GetFileName(file));
+                        }
+                        Directory.Delete(RocketSettings.HomeFolder + "Plugins/Libraries/", true);
                     }
-                    Directory.Delete(RocketSettings.HomeFolder + "Plugins/Libraries/", true);
-                }
-
                 }
                 catch (Exception ex)
                 {
@@ -129,6 +130,16 @@ namespace Rocket
                 gameObject.AddComponent<RocketPluginManager>();
                 gameObject.AddComponent<RocketPermissionManager>();
                 gameObject.AddComponent<RocketFeatures>();
+
+                if (RocketSettings.EnableRcon)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Loading RocketRcon".PadRight(80, '.'));
+                    int port = RocketSettings.RconPort;
+                    if (port == 0) port = (int)(Steam.ServerPort + 100);
+                    RocketRconServer.Listen(port);
+                    Console.WriteLine();
+                }
             }
             catch (Exception e)
             {
@@ -136,6 +147,7 @@ namespace Rocket
             }
             timeleft = updateInterval;
         }
+
         private void Update()
         {
             timeleft -= Time.deltaTime;

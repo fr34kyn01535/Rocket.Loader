@@ -23,9 +23,14 @@ namespace Rocket.Commands
             get { return "Teleports another player to you";}
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] command)
         {
-            RocketPlayer otherPlayer = RocketPlayer.FromName(command);
+            if (command.Length != 1)
+            {
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
+                return;
+            }
+            RocketPlayer otherPlayer = RocketPlayer.FromName(command[0]);
             if (otherPlayer!=null && otherPlayer != caller)
             {
                 otherPlayer.Teleport(caller);

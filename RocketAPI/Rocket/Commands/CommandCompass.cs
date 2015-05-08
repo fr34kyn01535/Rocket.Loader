@@ -24,13 +24,13 @@ namespace Rocket.Commands
             get { return "Shows the direction you are facing"; }
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] command)
         {
             float currentDirection = caller.Rotation;
 
-            if (!String.IsNullOrEmpty(command))
+            if (command.Length == 1)
             {
-                switch (command.ToLower())
+                switch (command[0])
                 {
                     case "north":
                         currentDirection = 0;

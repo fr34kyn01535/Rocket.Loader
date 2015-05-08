@@ -15,18 +15,41 @@ namespace Rocket.RocketAPI
 {
     public sealed class RocketPluginManager : RocketManagerComponent
     {
-        public List<Assembly> Assemblies;
+        private static List<Assembly> pluginAssemblies;
+        private Dictionary<string, string> additionalLibraries = new Dictionary<string, string>();
+        private static List<Type> rocketPlayerComponents = new List<Type>();
+
+        public static RocketPlugin GetPlugin(string name) {
+            Assembly assembly = pluginAssemblies.Where(a => a.GetName().Name.ToLower().Contains(name.ToLower())).FirstOrDefault();
+            if (assembly == null) return null;
+
+            Type plugin = RocketHelper.GetTypesFromParentClass(assembly, typeof(RocketPlugin)).FirstOrDefault();
+
+            return GetPlugin(plugin);
+        }
+
+        public static RocketPlugin GetPlugin(Type plugin)
+        {
+            Component c = Bootstrap.Instance.gameObject.GetComponent(plugin);
+            return (c is RocketPlugin) ? (RocketPlugin)c : null;
+        }
+
+        public static string[] GetPluginNames() {
+            return pluginAssemblies.Select(a => a.GetName().Name).ToArray();
+        }
+
+        public static List<RocketPlugin> GetPlugins()
+        {
+            return pluginAssemblies.Select(a => GetPlugin(a.GetName().Name)).ToList();
+        }
 
         private void Start()
         {
-#if !DEBUG
-            //RocketLoadingAnimation.Stop();
-            //Console.Clear();
-#else
+#if DEBUG
             Logger.Log("Start RocketPluginManager");
 #endif
-
-            #region Handling additional assemblies
+            rocketPlayerComponents = RocketHelper.GetTypesFromParentClass(Assembly.GetExecutingAssembly(), typeof(RocketPlayerComponent));
+            RegisterCommands(Assembly.GetExecutingAssembly());
 
             AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs args)
             {
@@ -41,77 +64,90 @@ namespace Rocket.RocketAPI
                 }
                 return null;
             };
-            loadLibraries();
 
-            #endregion Handling additional assemblies
+            additionalLibraries = loadAdditionalAssemblies();
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-
             Console.WriteLine();
-
-            if (RocketSettings.EnableRcon)
-            {
-                Console.WriteLine("Loading RocketRcon".PadRight(80, '.'));
-                int port = RocketSettings.RconPort;
-                if (port == 0) port = (int)(Steam.ServerPort + 100);
-                RocketRconServer.Listen(port);
-                Console.WriteLine();
-            }
-
-            string[] whitelist = RocketPermissionManager.GetWhitelistedGroups();
-            if (whitelist != null && whitelist.Count() != 0)
-            {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Whitelist following groups".PadRight(80, '.'));
-                foreach (string s in whitelist) {
-                    Console.WriteLine(s);
-                }
-                Console.WriteLine();
-            }
-
             Console.WriteLine("Loading Plugins".PadRight(80, '.'));
-            Assemblies = loadAssemblies();
-
-            List<Type> rocketManagerComponents = getTypesFromParentClass(Assemblies, typeof(RocketManagerComponent));
-            /*The API rocketmanagers are loaded in the RocketLauncher, they dont have to be included here*/
+            pluginAssemblies = loadPluginAssemblies();
+            List<Type> rocketManagerComponents = RocketHelper.GetTypesFromParentClass(pluginAssemblies, typeof(RocketPlugin));
 
             foreach (Type component in rocketManagerComponents)
             {
                 Bootstrap.Instance.gameObject.AddComponent(component);
             }
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("\nLoading Commands".PadRight(80, '.') + "\n");
-
             SteamGameServer.SetKeyValue("rocket", Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            SteamGameServer.SetKeyValue("rocketplugins", String.Join(",", Assemblies.Select(a => a.GetName().Name).ToArray()));
+            SteamGameServer.SetKeyValue("rocketplugins", String.Join(",", pluginAssemblies.Select(a => a.GetName().Name).ToArray()));
             SteamGameServer.SetKeyValue("maxprotectedslots", RocketPermissionManager.GetProtectedSlots().ToString());
 
             SteamGameServer.SetBotPlayerCount(1);
-
-            /*But now i could also use the API commands & players loaded */
-            Assemblies.Add(Assembly.GetExecutingAssembly());
-            /*so i add the rocketapi to Assemblies*/
-
-            List<Type> commands = getTypesFromInterface(Assemblies,"IRocketCommand");
-            foreach (Type command in commands)
-            {
-                IRocketCommand rocketCommand = (IRocketCommand)Activator.CreateInstance(command);
-                RocketCommandBase baseCommand = new RocketCommandBase(rocketCommand);
-                registerCommand((Command)(baseCommand), command.Assembly.GetName().Name);
-            }
 
             SDG.Steam.OnServerConnected += onPlayerConnected;
             SDG.Steam.OnServerDisconnected += onPlayerDisconnected;
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("\nLaunching Server".PadRight(80, '.'));
-            Logger.LogWarning("\nThe error concerning a corrupted file resources.assets can be");
-            Logger.LogWarning("ignored while we work on a bugfix".PadRight(79, '.') + "\n");
 
         }
 
-        internal static void registerCommand(Command command, string originalAssemblyName = null)
+        public void load() { 
+            
+        }
+
+        public void unload() {
+        }
+
+        internal void Reload() { 
+            unload();
+            load();
+        }
+
+        internal static void RemoveRocketPlayerComponents(Assembly plugin)
+        {
+            try
+            {
+                rocketPlayerComponents = rocketPlayerComponents.Where(p => p.Assembly != plugin).ToList();
+                List<Type> playerComponents = RocketHelper.GetTypesFromParentClass(plugin, typeof(RocketPlayerComponent));
+                Steam.Players.ForEach(p => Destroy(p.Player.gameObject.GetComponent(playerComponents.GetType())));
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        internal static void AddRocketPlayerComponents(Assembly plugin)
+        {
+            try
+            {
+                List<Type> playerComponents = RocketHelper.GetTypesFromParentClass(plugin, typeof(RocketPlayerComponent));
+                rocketPlayerComponents.AddRange(playerComponents);
+                Steam.Players.ForEach(p => p.Player.gameObject.AddComponent(playerComponents.GetType()));
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        internal static void RegisterCommands(Assembly assembly)
+        {
+            List<Type> commands = RocketHelper.GetTypesFromInterface(assembly, "IRocketCommand");
+            foreach (Type command in commands)
+            {
+                IRocketCommand rocketCommand = (IRocketCommand)Activator.CreateInstance(command);
+                RocketCommandBase baseCommand = new RocketCommandBase(rocketCommand);
+                RegisterCommand((Command)(baseCommand), command.Assembly.GetName().Name);
+            }
+        }
+
+        internal static void UnregisterCommands(Assembly assembly)
+        {
+            Commander.Commands = Commander.Commands.Where(c => !(c is RocketCommandBase) || (c is RocketCommandBase && ((RocketCommandBase)c).Command.GetType().Assembly != assembly)).ToArray();
+        }
+
+        private static void RegisterCommand(Command command, string originalAssemblyName = null)
         {
             string assemblyName = "";
             if (originalAssemblyName != null)
@@ -147,18 +183,9 @@ namespace Rocket.RocketAPI
             Commander.Commands = commandList.ToArray();
         }
 
-        internal static void unregisterCommands(Assembly assembly)
-        {
-            foreach (Command command in Commander.Commands.Where(c => c is RocketCommandBase))
-            {
-                Logger.Log(((RocketCommandBase)command).Command.GetType().Assembly.FullName);
-            }
-        }
-
         private void onPlayerConnected(CSteamID id)
         {
             RocketPlayer player = RocketPlayer.FromCSteamID(id);
-            List<Type> rocketPlayerComponents = getTypesFromParentClass(Assemblies, typeof(RocketPlayerComponent));
 #if DEBUG
             Logger.Log("Adding PlayerComponents");
 #endif
@@ -185,24 +212,23 @@ namespace Rocket.RocketAPI
             }
         }
 
-        private Dictionary<string, string> additionalLibraries = new Dictionary<string, string>();
-
-        private void loadLibraries()
+        private Dictionary<string, string> loadAdditionalAssemblies()
         {
+            Dictionary<string, string> l = new Dictionary<string, string>(); 
             IEnumerable<FileInfo> libraries = new DirectoryInfo(RocketSettings.HomeFolder + "Libraries/").GetFiles("*.dll", SearchOption.AllDirectories).Where(f => f.Extension == ".dll");
             foreach (FileInfo library in libraries)
             {
                 try
                 {
                     AssemblyName name = AssemblyName.GetAssemblyName(library.FullName);
-                    additionalLibraries.Add(name.FullName, library.FullName);
+                    l.Add(name.FullName, library.FullName);
                 }
                 catch { }
             }
+            return l;
         }
-
      
-        private static List<Assembly> loadAssemblies()
+        private static List<Assembly> loadPluginAssemblies()
         {
             List<Assembly> assemblies = new List<Assembly>();
             try
@@ -223,75 +249,6 @@ namespace Rocket.RocketAPI
             }
 
             return assemblies;
-        }
-
-        internal static List<Type> getTypes(List<Assembly> assemblies)
-        {
-            List<Type> allTypes = new List<Type>();
-            foreach (Assembly assembly in assemblies)
-            {
-                Type[] types;
-                try
-                {
-                    types = assembly.GetTypes();
-                }
-                catch (ReflectionTypeLoadException e)
-                {
-                    types = e.Types;
-                }
-                allTypes.AddRange(types);
-            }
-            return allTypes;
-        }
-
-        internal static List<Type> getTypesFromParentClass(List<Assembly> assemblies, Type parentClass)
-        {
-            List<Type> allTypes = new List<Type>();
-            foreach (Assembly assembly in assemblies)
-            {
-                Type[] types;
-                try
-                {
-                    types = assembly.GetTypes();
-                }
-                catch (ReflectionTypeLoadException e)
-                {
-                    types = e.Types;
-                }
-                foreach (Type type in types.Where(t => t != null))
-                {
-                    if (type.IsSubclassOf(parentClass))
-                    {
-                        allTypes.Add(type);
-                    }
-                }
-            }
-            return allTypes;
-        }
-
-        internal static List<Type> getTypesFromInterface(List<Assembly> assemblies, string interfaceName)
-        {
-            List<Type> allTypes = new List<Type>();
-            foreach (Assembly assembly in assemblies)
-            {
-                Type[] types;
-                try
-                {
-                    types = assembly.GetTypes();
-                }
-                catch (ReflectionTypeLoadException e)
-                {
-                    types = e.Types;
-                }
-                foreach (Type type in types.Where(t => t != null))
-                {
-                    if (type.GetInterface(interfaceName) != null)
-                    {
-                        allTypes.Add(type);
-                    }
-                }
-            }
-            return allTypes;
         }
     }
 }

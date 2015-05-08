@@ -3,6 +3,7 @@ using Rocket.RocketAPI;
 using SDG;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Rocket.RocketAPI
 {
@@ -30,7 +31,16 @@ namespace Rocket.RocketAPI
                 Logger.Log("This command can't be called from console");
                 return;
             }
-            Command.Execute(RocketPlayer.FromCSteamID(caller), command);
+
+            MatchCollection collection = Regex.Matches(command, @"(?<match>\w+)|\""(?<match>[\w\s]*)""");
+                
+            List<string> parameters = new List<string>();
+            int i = 0;
+            foreach(Match m in collection){
+                parameters.Add(m.Groups["match"].Value);
+            }
+            
+            Command.Execute(RocketPlayer.FromCSteamID(caller), parameters.ToArray());
         }
     }
 }

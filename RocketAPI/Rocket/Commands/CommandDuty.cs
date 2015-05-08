@@ -23,7 +23,7 @@ namespace Rocket.Commands
             get { return "Admin yourself, promise you will not abuse it ;)";}
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] command)
         {
             if (caller.IsAdmin)
             {

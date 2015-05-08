@@ -22,7 +22,7 @@ namespace Rocket.Commands
             get { return "Clears your inventory"; }
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] command)
         {
             if(!caller.Inventory.Clear())
             {

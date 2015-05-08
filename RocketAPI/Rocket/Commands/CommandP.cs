@@ -21,24 +21,22 @@ namespace Rocket.Commands
             get { return "Lists permissions";}
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] command)
         {
             foreach (string p in caller.Permissions)
             {
                 Rocket.Logging.Logger.Log("P:" + p);
             }
 
-            string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
-
-            if (componentsFromSerial.Length > 1)
+            if (command.Length > 1)
             {
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
-            if (componentsFromSerial.Length != 0)
+            if (command.Length != 0)
             {
-                if (componentsFromSerial[0].ToString().ToLower() == "reload" && caller.Permissions.Contains("p.reload"))
+                if (command[0].ToString().ToLower() == "reload" && caller.Permissions.Contains("p.reload"))
                 {
                     RocketPermissionManager.ReloadPermissions();
                     RocketChatManager.Say(caller, RocketTranslation.Translate("command_p_reload_private"));
