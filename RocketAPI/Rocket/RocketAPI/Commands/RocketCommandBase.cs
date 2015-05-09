@@ -37,11 +37,10 @@ namespace Rocket.RocketAPI
             try
             {
                 Command.Execute(RocketPlayer.FromCSteamID(caller), collection);
-
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex);
+                Logger.LogError("An error occured while executing command /" + commandName + " " + command + ": " + ex.ToString());
             }
         }
     }
