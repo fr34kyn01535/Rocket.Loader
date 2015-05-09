@@ -60,7 +60,6 @@ namespace Rocket.RocketAPI
         internal virtual void LoadPlugin()
         {
             DontDestroyOnLoad(transform.gameObject);
-            string name = GetType().Assembly.GetName().Name;
             try
             {
                 RocketPluginManager.AddRocketPlayerComponents(GetType().Assembly);
@@ -78,6 +77,7 @@ namespace Rocket.RocketAPI
             }
             catch (Exception ex)
             {
+                string name = GetType().Assembly.GetName().Name;
                 Logger.LogError("Failed to load " + name+", unloading now... :"+ex.ToString());
                 try 
 	            {	        
@@ -92,6 +92,7 @@ namespace Rocket.RocketAPI
 
         public void ReloadTranslation()
         {
+            string name = GetType().Assembly.GetName().Name;
 #if DEBUG
             int c = DefaultTranslations == null ? 0 : DefaultTranslations.Count;
             Logger.Log("Loading " + c + " translations for " + name);

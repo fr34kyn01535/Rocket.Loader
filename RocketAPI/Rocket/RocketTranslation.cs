@@ -72,6 +72,15 @@ namespace Rocket
             {"rocket_leave_public","{0} disconnected from the server"},
             {"rocket_restart_warning_public","This server will be restarted in 30 seconds"},
 
+            {"command_rocket_plugins_loaded","Plugins loaded: {0}"},
+            {"command_rocket_plugins_unloaded","Plugins unloaded: {0}"},
+            {"command_rocket_reload_plugin","Reloaded {0}"},
+            {"command_rocket_not_loaded","The plugin {0} is not loaded"},
+            {"command_rocket_unload_plugin","Unloaded {0}"},
+            {"command_rocket_load_plugin","Loaded {0}"},
+            {"command_rocket_already_loaded","The plugin {0} is already loaded"},
+            {"command_rocket_reload","Rocket was reloaded"},
+            
         };
 
         private static Dictionary<string, string> translations = null;

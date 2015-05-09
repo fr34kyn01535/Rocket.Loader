@@ -154,6 +154,11 @@ namespace Rocket.RocketAPI
             }
         }
 
+        public bool HasPermission(string permission)
+        {
+            return (Permissions.Where(p => p.ToLower() == permission.ToLower()).FirstOrDefault() != null);
+        }
+
         public void Kick(string reason)
         {
             Steam.kick(this.CSteamID, reason);
