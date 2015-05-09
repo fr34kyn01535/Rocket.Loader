@@ -22,10 +22,10 @@ namespace Rocket.Commands
             get { return "Gives yourself a zombie";}
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] command)
         {
             byte amount = 0;
-            if(!byte.TryParse(command,out amount)){
+            if(command.Length == 0 || !byte.TryParse(command[0],out amount)){
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
             }

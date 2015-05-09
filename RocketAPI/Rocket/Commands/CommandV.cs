@@ -22,11 +22,9 @@ namespace Rocket.Commands
             get { return "Gives yourself an vehicle";}
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] command)
         {
-            string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
-
-            if (componentsFromSerial.Length == 0 || componentsFromSerial.Length > 1)
+            if (command.Length != 1)
             {
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
@@ -34,7 +32,7 @@ namespace Rocket.Commands
 
             ushort id = 0;
 
-            string itemString = componentsFromSerial[0].ToString();
+            string itemString = command[0].ToString();
 
             if (!ushort.TryParse(itemString, out id))
             {

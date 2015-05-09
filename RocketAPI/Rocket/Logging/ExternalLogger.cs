@@ -1,6 +1,7 @@
 ﻿using Rocket.Rcon;
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Rocket.Logging
 {
     public static partial class Logger
     {
-
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void ExternalLog(string message, ConsoleColor color)
         {
             ELogType severity;

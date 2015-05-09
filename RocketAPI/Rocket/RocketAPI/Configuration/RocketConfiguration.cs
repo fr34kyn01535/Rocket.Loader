@@ -13,13 +13,13 @@ namespace Rocket.RocketAPI
     }
 
 
-    internal static class RocketConfigurationHelper
+    public static class RocketConfiguration
     {
         private static string configurationFile = "{0}Plugins/{1}/{1}.config.xml";
 
         public static void Save(this IRocketConfiguration configuration)
         {
-            RocketConfigurationHelper.SaveConfiguration(configuration);
+            RocketConfiguration.SaveConfiguration(configuration);
         }
 
         internal static T LoadWebConfiguration<T>()

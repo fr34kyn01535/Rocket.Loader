@@ -1,8 +1,10 @@
 ﻿using Rocket.Components;
 using Rocket.Logging;
+using SDG;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Rocket.RocketAPI
 {
@@ -12,7 +14,14 @@ namespace Rocket.RocketAPI
         public TConfiguration Configuration;
         public string HomeDirectory;
 
-        public override void Awake()
+        internal override void LoadPlugin()
+        {
+            ReloadConfiguration();
+            base.LoadPlugin();
+        }
+
+
+        public void ReloadConfiguration()
         {
             if (String.IsNullOrEmpty(RocketSettings.WebConfigurations))
             {
@@ -21,7 +30,7 @@ namespace Rocket.RocketAPI
 
                 try
                 {
-                    Configuration = RocketConfigurationHelper.LoadConfiguration<TConfiguration>();
+                    Configuration = RocketConfiguration.LoadConfiguration<TConfiguration>();
                 }
                 catch (Exception ex)
                 {
@@ -32,14 +41,13 @@ namespace Rocket.RocketAPI
             {
                 try
                 {
-                    Configuration = RocketConfigurationHelper.LoadWebConfiguration<TConfiguration>();
+                    Configuration = RocketConfiguration.LoadWebConfiguration<TConfiguration>();
                 }
                 catch (Exception ex)
                 {
                     Logger.LogError("Failed to load configuration: " + ex.ToString());
                 }
             }
-            base.Awake();
         }
     }
 
@@ -49,33 +57,67 @@ namespace Rocket.RocketAPI
         public Dictionary<string, string> Translations = null;
         public virtual Dictionary<string, string> DefaultTranslations { get { return new Dictionary<string, string>(); } }
 
-        internal void Start()
-        {
-            Load();
-        }
-
-        internal void Stop()
-        {
-            Unload();
-        }
-
-        public virtual void Awake()
+        internal virtual void LoadPlugin()
         {
             DontDestroyOnLoad(transform.gameObject);
             try
             {
-#if DEBUG
-                int c = DefaultTranslations == null ? 0 : DefaultTranslations.Count;
-                Logger.Log("Loading " + c + " translations for " + this.GetType().Assembly.GetName().Name);
-#endif
-                Translations = RocketTranslationHelper.LoadTranslation(this.GetType().Assembly.GetName().Name, DefaultTranslations);
+                RocketPluginManager.AddRocketPlayerComponents(GetType().Assembly);
+                RocketPluginManager.RegisterCommands(GetType().Assembly);
+                ReloadTranslation();
             }
             catch (Exception ex)
             {
                 Logger.LogError("Failed to load translation: " + ex.ToString());
             }
             Loaded = true;
+            try
+            {
+                Load();
+            }
+            catch (Exception ex)
+            {
+                string name = GetType().Assembly.GetName().Name;
+                Logger.LogError("Failed to load " + name+", unloading now... :"+ex.ToString());
+                try 
+	            {	        
+                    UnloadPlugin();
+	            }
+	            catch (Exception ex1)
+	            {
+                    Logger.LogError("Failed to unload " + name+":"+ex1.ToString());
+	            }
+            }
         }
+
+        public void ReloadTranslation()
+        {
+            string name = GetType().Assembly.GetName().Name;
+#if DEBUG
+            int c = DefaultTranslations == null ? 0 : DefaultTranslations.Count;
+            Logger.Log("Loading " + c + " translations for " + name);
+#endif
+            Translations = RocketTranslationHelper.LoadTranslation(name, DefaultTranslations);
+        }
+
+        internal virtual void UnloadPlugin()
+        {
+            Unload();
+            RocketPluginManager.UnregisterCommands(GetType().Assembly);
+            RocketPluginManager.RemoveRocketPlayerComponents(GetType().Assembly);
+            Loaded = false;
+        }
+
+        internal void OnEnable()
+        {
+            LoadPlugin();
+        }
+
+        internal void OnDisable()
+        {
+            UnloadPlugin();
+        }
+
 
         public string Translate(string translationKey, params object[] placeholder)
         {

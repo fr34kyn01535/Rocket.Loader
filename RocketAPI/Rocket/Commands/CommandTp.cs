@@ -21,12 +21,13 @@ namespace Rocket.Commands
 
         public string Help
         {
-            get { return "Teleports you to another player";}
+            get { return "Teleports you to another player or location";}
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] command)
         {
-            if(String.IsNullOrEmpty(command)){
+            if (command.Length != 1)
+            {
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
             }
@@ -38,7 +39,7 @@ namespace Rocket.Commands
             }
 
 
-            RocketPlayer otherPlayer = RocketPlayer.FromName(command);
+            RocketPlayer otherPlayer = RocketPlayer.FromName(command[0]);
             if (otherPlayer!=null && otherPlayer != caller)
             {
                 Vector3 d1 = otherPlayer.Player.transform.position;
@@ -48,7 +49,7 @@ namespace Rocket.Commands
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_tp_teleport_private", otherPlayer.CharacterName));
             }
             else {
-                Node item = LevelNodes.Nodes.Where(n => n.NodeType == ENodeType.Location && ((NodeLocation)n).Name.ToLower().Contains(command.ToLower())).FirstOrDefault();
+                Node item = LevelNodes.Nodes.Where(n => n.NodeType == ENodeType.Location && ((NodeLocation)n).Name.ToLower().Contains(command[0].ToLower())).FirstOrDefault();
                 if (item != null)
                 {
                     Vector3 c = item.Position + new Vector3(0f, 0.5f, 0f);

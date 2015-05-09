@@ -23,7 +23,7 @@ namespace Rocket.Commands
             get { return "Teleports you to your last bed";}
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] command)
         {
             Vector3 pos;
             byte rot;

@@ -22,7 +22,7 @@ namespace Rocket.Commands
             get { return "Cause you ain't givin a shit";}
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] command)
         {
             if (caller.Features.GodMode)
             {

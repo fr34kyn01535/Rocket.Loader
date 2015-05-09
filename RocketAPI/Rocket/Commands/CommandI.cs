@@ -22,11 +22,9 @@ namespace Rocket.Commands
             get { return "Gives yourself an item";}
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] command)
         {
-            string[] componentsFromSerial = Parser.getComponentsFromSerial(command, '/');
-
-            if (componentsFromSerial.Length == 0 || componentsFromSerial.Length > 2)
+            if (command.Length == 0 || command.Length > 2)
             {
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;
@@ -35,7 +33,7 @@ namespace Rocket.Commands
             ushort id = 0;
             byte amount = 1;
 
-            string itemString = componentsFromSerial[0].ToString();
+            string itemString = command[0].ToString();
 
             if (!ushort.TryParse(itemString, out id))
             {
@@ -57,7 +55,7 @@ namespace Rocket.Commands
             Asset a = SDG.Assets.find(EAssetType.Item,id);
             string assetName = ((ItemAsset)a).Name;
 
-            if (componentsFromSerial.Length == 2 && !byte.TryParse(componentsFromSerial[1].ToString(), out amount))
+            if (command.Length == 2 && !byte.TryParse(command[1].ToString(), out amount))
             {
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_invalid_parameter"));
                 return;

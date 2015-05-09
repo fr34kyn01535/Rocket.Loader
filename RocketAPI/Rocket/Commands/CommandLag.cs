@@ -20,7 +20,7 @@ namespace Rocket.Commands
             get { return "Shows the servers TPS";}
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] command)
         {
             RocketChatManager.Say(caller, RocketTranslation.Translate("command_tps_tps", Bootstrap.TPS));
             RocketChatManager.Say(caller, RocketTranslation.Translate("command_tps_running_since", Bootstrap.Started.ToString()));
