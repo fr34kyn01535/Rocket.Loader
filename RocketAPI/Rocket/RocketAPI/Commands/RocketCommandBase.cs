@@ -4,6 +4,7 @@ using SDG;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Rocket.RocketAPI
 {
@@ -32,15 +33,9 @@ namespace Rocket.RocketAPI
                 return;
             }
 
-            MatchCollection collection = Regex.Matches(command, @"(?<match>\w+)|\""(?<match>[\w\s]*)""");
-                
-            List<string> parameters = new List<string>();
-            int i = 0;
-            foreach(Match m in collection){
-                parameters.Add(m.Groups["match"].Value);
-            }
-            
-            Command.Execute(RocketPlayer.FromCSteamID(caller), parameters.ToArray());
+            string[] collection = Regex.Matches(command, @"[\""](.+?)[\""]|([^ ]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Cast<Match>().Select(m => m.Value.Trim().Trim('"')).ToArray();
+
+            Command.Execute(RocketPlayer.FromCSteamID(caller), collection);
         }
     }
 }
