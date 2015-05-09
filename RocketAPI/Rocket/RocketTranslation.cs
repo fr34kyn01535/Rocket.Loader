@@ -80,6 +80,7 @@ namespace Rocket
             {"command_rocket_load_plugin","Loaded {0}"},
             {"command_rocket_already_loaded","The plugin {0} is already loaded"},
             {"command_rocket_reload","Rocket was reloaded"},
+            {"command_rocket_plugin_not_found","Plugin {0} not found"},
             
         };
 

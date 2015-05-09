@@ -36,16 +36,17 @@ namespace Rocket.Commands
                 return;
             }
 
-            if (command.Length == 1) {
+            if (command.Length == 1)
+            {
                 switch (command[0].ToLower()) {
                     case "plugins":
-                        if (!caller.HasPermission("rocket.plugins") || !caller.HasPermission("rocket.*")) return;
+                        if (caller != null && !(caller.HasPermission("rocket.plugins") || caller.HasPermission("rocket.*"))) return;
                         List<RocketPlugin> plugins = RocketPluginManager.GetPlugins();
-                        RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_plugins_loaded", String.Join(",", plugins.Where(p => p.Loaded).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
-                        RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_plugins_unloaded", String.Join(",", plugins.Where(p => !p.Loaded).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
+                        RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_plugins_loaded", String.Join(", ", plugins.Where(p => p.Loaded).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
+                        RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_plugins_unloaded", String.Join(", ", plugins.Where(p => !p.Loaded).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
                         break;
                     case "reload":
-                        if (!caller.HasPermission("rocket.reload") || !caller.HasPermission("rocket.*")) return;
+                        if (caller != null && !(caller.HasPermission("rocket.reload") || caller.HasPermission("rocket.*"))) return;
                             RocketPermissionManager.ReloadPermissions();
                             RocketTranslation.LoadTranslations();
                             RocketSettings.LoadSettings();
@@ -62,7 +63,7 @@ namespace Rocket.Commands
                     switch (command[0].ToLower())
                     {
                         case "reload":
-                            if (!caller.HasPermission("rocket.reloadplugin") || !caller.HasPermission("rocket.*")) return;
+                            if (caller != null && !(caller.HasPermission("rocket.reloadplugin") || !caller.HasPermission("rocket.*"))) return;
                             if (p.Loaded)
                             {
                                 p.UnloadPlugin();
@@ -75,7 +76,7 @@ namespace Rocket.Commands
                             }
                             break;
                         case "unload":
-                            if (!caller.HasPermission("rocket.unloadplugin") || !caller.HasPermission("rocket.*")) return;
+                            if (caller != null && !(caller.HasPermission("rocket.unloadplugin") || caller.HasPermission("rocket.*"))) return;
                             if (p.Loaded)
                             {
                                 p.UnloadPlugin();
@@ -87,7 +88,7 @@ namespace Rocket.Commands
                             }
                             break;
                         case "load":
-                            if (!caller.HasPermission("rocket.loadplugin") || !caller.HasPermission("rocket.*")) return;
+                            if (caller != null && !(caller.HasPermission("rocket.loadplugin") || caller.HasPermission("rocket.*"))) return;
                             if (!p.Loaded)
                             {
                                 p.LoadPlugin();
@@ -99,8 +100,10 @@ namespace Rocket.Commands
                             }
                             break;
                     }
-                }else{
-                                RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_plugin_not_found", command[1]));
+                }
+                else
+                {
+                    RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_plugin_not_found", command[1]));
                 }
             }
 

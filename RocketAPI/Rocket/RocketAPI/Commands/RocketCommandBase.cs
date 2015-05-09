@@ -34,8 +34,15 @@ namespace Rocket.RocketAPI
             }
 
             string[] collection = Regex.Matches(command, @"[\""](.+?)[\""]|([^ ]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Cast<Match>().Select(m => m.Value.Trim().Trim('"')).ToArray();
+            try
+            {
+                Command.Execute(RocketPlayer.FromCSteamID(caller), collection);
 
-            Command.Execute(RocketPlayer.FromCSteamID(caller), collection);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
     }
 }
