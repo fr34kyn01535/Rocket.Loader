@@ -10,7 +10,7 @@
             h.UnlockFieldByType("PlayerStance", "Stance");
             h.UnlockFieldByType("PlayerEquipment", "Equipment");
             h.UnlockFieldByType("PlayerAnimator", "Animator");
-            h.UnlockFieldByType("PlayerHitbox", "Hitbox");
+            //h.UnlockFieldByType("PlayerHitbox", "Hitbox");
             h.UnlockFieldByType("PlayerMovement", "Movement");
             h.UnlockFieldByType("PlayerLook", "Look");
             h.UnlockFieldByType("PlayerClothing", "Clothing");
