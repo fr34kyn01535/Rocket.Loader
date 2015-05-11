@@ -45,6 +45,7 @@ namespace Rocket
             if (GUILayout.Button("Note: You can't play Unturned with Rocket installed. Rocket is a mod for Unturned 3 servers only. Please read the wiki in order to find out how to host Rocket servers.", GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
             {
                 System.Diagnostics.Process.Start("https://github.com/RocketFoundation/Rocket/wiki/Installing-Rocket");
+                dumpImages();
             }
             if (GUILayout.Button("Exit", GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
             {
