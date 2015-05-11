@@ -19,8 +19,8 @@ namespace Rocket.RocketAPI.Events
         {
             try
             {
-                if (OnPlayerInventoryUpdated != null) OnPlayerInventoryUpdated(PlayerInstance, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), O, P);
-                if (OnInventoryUpdated != null) OnInventoryUpdated(PlayerInstance, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), O, P);
+                if (OnPlayerInventoryUpdated != null) OnPlayerInventoryUpdated(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), O, P);
+                if (OnInventoryUpdated != null) OnInventoryUpdated(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), O, P);
             }
             catch (System.Exception ex)
             {
@@ -36,8 +36,8 @@ namespace Rocket.RocketAPI.Events
         {
             try
             {
-                if (OnPlayerInventoryResized != null) OnPlayerInventoryResized(PlayerInstance, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), M, U);
-                if (OnInventoryResized != null) OnInventoryResized(PlayerInstance, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), M, U);
+                if (OnPlayerInventoryResized != null) OnPlayerInventoryResized(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), M, U);
+                if (OnInventoryResized != null) OnInventoryResized(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), M, U);
             }
             catch (System.Exception ex)
             {
@@ -53,8 +53,8 @@ namespace Rocket.RocketAPI.Events
         {
             try
             {
-                if (OnPlayerInventoryRemoved != null) OnPlayerInventoryRemoved(PlayerInstance, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), y, f);
-                if (OnInventoryRemoved != null) OnInventoryRemoved(PlayerInstance, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), y, f);
+                if (OnPlayerInventoryRemoved != null) OnPlayerInventoryRemoved(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), y, f);
+                if (OnInventoryRemoved != null) OnInventoryRemoved(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), y, f);
             }
             catch (System.Exception ex)
             {
@@ -70,8 +70,8 @@ namespace Rocket.RocketAPI.Events
         {
             try
             {
-                if (OnPlayerInventoryAdded != null) OnPlayerInventoryAdded(PlayerInstance, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), u, J);
-                if (OnInventoryAdded != null) OnInventoryAdded(PlayerInstance, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), u, J);
+                if (OnPlayerInventoryAdded != null) OnPlayerInventoryAdded(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), u, J);
+                if (OnInventoryAdded != null) OnInventoryAdded(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), u, J);
             }
             catch (System.Exception ex)
             {

@@ -71,11 +71,11 @@ namespace Rocket.RocketAPI
             Console.WriteLine();
             Console.WriteLine("Loading Plugins".PadRight(80, '.'));
             pluginAssemblies = loadPluginAssemblies();
-            List<Type> rocketManagerComponents = RocketHelper.GetTypesFromParentClass(pluginAssemblies, typeof(RocketPlugin));
+            List<Type> plugins = RocketHelper.GetTypesFromParentClass(pluginAssemblies, typeof(RocketPlugin));
 
-            foreach (Type component in rocketManagerComponents)
+            foreach (Type plugin in plugins)
             {
-                Bootstrap.Instance.gameObject.AddComponent(component);
+                Bootstrap.Instance.gameObject.AddComponent(plugin);
             }
 
             SteamGameServer.SetKeyValue("rocket", Assembly.GetExecutingAssembly().GetName().Version.ToString());
@@ -201,7 +201,6 @@ namespace Rocket.RocketAPI
             {
                 RocketChatManager.Say(RocketTranslation.Translate("rocket_join_public", player.CharacterName));
             }
-            Rocket.RocketAPI.Events.RocketServerEvents.firePlayerConnected(player);
         }
 
         private void onPlayerDisconnected(CSteamID id)

@@ -10,7 +10,6 @@ namespace Rocket.RocketAPI
 {
     public sealed class RocketPlayerFeatures : RocketPlayerComponent
     {
-        private RocketPlayer pl = null;
         private bool godMode = false;
 
         public bool VanishMode {
@@ -26,17 +25,17 @@ namespace Rocket.RocketAPI
             {
                 if (value)
                 {
-                    pl.Events.OnUpdateHealth += e_OnPlayerUpdateHealth;
-                    pl.Events.OnUpdateWater += e_OnPlayerUpdateWater;
-                    pl.Events.OnUpdateFood += e_OnPlayerUpdateFood;
-                    pl.Events.OnUpdateVirus += e_OnPlayerUpdateVirus;
+                    Player.Events.OnUpdateHealth += e_OnPlayerUpdateHealth;
+                    Player.Events.OnUpdateWater += e_OnPlayerUpdateWater;
+                    Player.Events.OnUpdateFood += e_OnPlayerUpdateFood;
+                    Player.Events.OnUpdateVirus += e_OnPlayerUpdateVirus;
                 }
                 else
                 {
-                    pl.Events.OnUpdateHealth -= e_OnPlayerUpdateHealth;
-                    pl.Events.OnUpdateWater -= e_OnPlayerUpdateWater;
-                    pl.Events.OnUpdateFood -= e_OnPlayerUpdateFood;
-                    pl.Events.OnUpdateVirus -= e_OnPlayerUpdateVirus;
+                    Player.Events.OnUpdateHealth -= e_OnPlayerUpdateHealth;
+                    Player.Events.OnUpdateWater -= e_OnPlayerUpdateWater;
+                    Player.Events.OnUpdateFood -= e_OnPlayerUpdateFood;
+                    Player.Events.OnUpdateVirus -= e_OnPlayerUpdateVirus;
                 }
                 godMode = value;
             }
@@ -51,52 +50,50 @@ namespace Rocket.RocketAPI
         {
             if (this.vanishMode)
             {
-                pl.Player.SteamChannel.send("tellPosition", ESteamCall.NOT_OWNER, ESteamPacket.UPDATE_UDP_BUFFER, new object[] {new Vector3(pl.Position.x,-3,pl.Position.z)});
+                Player.Player.SteamChannel.send("tellPosition", ESteamCall.NOT_OWNER, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { new Vector3(Player.Position.x, -3, Player.Position.z) });
             }
         }
 
         private void Start()
         {
-            pl = RocketPlayer.FromPlayer(gameObject.transform.GetComponent<Player>());
-            
-
             if (godMode)
             {
-                pl.Events.OnUpdateHealth += e_OnPlayerUpdateHealth;
-                pl.Events.OnUpdateWater += e_OnPlayerUpdateWater;
-                pl.Events.OnUpdateFood += e_OnPlayerUpdateFood;
-                pl.Events.OnUpdateVirus += e_OnPlayerUpdateVirus;
-                pl.Heal(100);
-                pl.Infection = 0;
-                pl.Hunger = 0;
-                pl.Thirst = 0;
-                pl.Bleeding = false;
-                pl.Broken = false;
+                Player.Events.OnUpdateHealth += e_OnPlayerUpdateHealth;
+                Player.Events.OnUpdateWater += e_OnPlayerUpdateWater;
+                Player.Events.OnUpdateFood += e_OnPlayerUpdateFood;
+                Player.Events.OnUpdateVirus += e_OnPlayerUpdateVirus;
+                Player.Heal(100);
+                Player.Infection = 0;
+                Player.Hunger = 0;
+                Player.Thirst = 0;
+                Player.Bleeding = false;
+                Player.Broken = false;
             }
+            Rocket.RocketAPI.Events.RocketServerEvents.firePlayerConnected(Player);
         }
 
         private void e_OnPlayerUpdateVirus(RocketPlayer player, byte virus)
         {
-            if (virus < 95) pl.Infection = 0;
+            if (virus < 95) Player.Infection = 0;
         }
 
         private void e_OnPlayerUpdateFood(RocketPlayer player, byte food)
         {
-            if (food < 95) pl.Hunger = 0;
+            if (food < 95) Player.Hunger = 0;
         }
 
         private void e_OnPlayerUpdateWater(RocketPlayer player, byte water)
         {
-            if (water < 95) pl.Thirst = 0;
+            if (water < 95) Player.Thirst = 0;
         }
 
         private void e_OnPlayerUpdateHealth(RocketPlayer player, byte health)
         {
             if (health < 95)
             {
-                pl.Heal(100); 
-                pl.Bleeding = false;
-                pl.Broken = false;
+                Player.Heal(100);
+                Player.Bleeding = false;
+                Player.Broken = false;
             }
         }
     }

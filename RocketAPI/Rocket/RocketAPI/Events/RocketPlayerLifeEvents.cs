@@ -16,8 +16,8 @@ namespace Rocket.RocketAPI.Events
         {
             try
             {
-                if (OnPlayerUpdateStamina != null) OnPlayerUpdateStamina(PlayerInstance, stamina);
-                if (OnUpdateStamina != null) OnUpdateStamina(PlayerInstance, stamina);
+                if (OnPlayerUpdateStamina != null) OnPlayerUpdateStamina(Player, stamina);
+                if (OnUpdateStamina != null) OnUpdateStamina(Player, stamina);
             }
             catch (System.Exception ex)
             {

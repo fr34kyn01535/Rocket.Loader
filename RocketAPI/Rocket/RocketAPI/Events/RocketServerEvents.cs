@@ -31,18 +31,6 @@ namespace Rocket.RocketAPI.Events
         public delegate void PlayerConnected(RocketPlayer player);
         public static event PlayerConnected OnPlayerConnected;
 
-        private static void onPlayerConnected(CSteamID r)
-        {
-            try
-            {
-                if (OnPlayerConnected != null) OnPlayerConnected(RocketPlayer.FromCSteamID(r));
-            }
-            catch (System.Exception ex)
-            {
-                Logger.Log(ex);
-            }
-        }
-
         internal static void firePlayerConnected(RocketPlayer player)
         {
             if (OnPlayerConnected != null) OnPlayerConnected(player);

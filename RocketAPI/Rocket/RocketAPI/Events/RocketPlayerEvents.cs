@@ -14,14 +14,14 @@ namespace Rocket.RocketAPI.Events
             base.Awake();
 
             #region RocketPlayerLifeEvents
-                PlayerInstance.Player.PlayerLife.OnUpdateStamina += onUpdateStamina;
+                Player.Player.PlayerLife.OnUpdateStamina += onUpdateStamina;
             #endregion RocketPlayerLifeEvents
 
             #region RocketPlayerEvents
-                PlayerInstance.Player.Inventory.OnInventoryAdded += onInventoryAdded;
-                PlayerInstance.Player.Inventory.OnInventoryRemoved += onInventoryRemoved;
-                PlayerInstance.Player.Inventory.OnInventoryResized += onInventoryResized;
-                PlayerInstance.Player.Inventory.OnInventoryUpdated += onInventoryUpdated;
+                Player.Player.Inventory.OnInventoryAdded += onInventoryAdded;
+                Player.Player.Inventory.OnInventoryRemoved += onInventoryRemoved;
+                Player.Player.Inventory.OnInventoryResized += onInventoryResized;
+                Player.Player.Inventory.OnInventoryUpdated += onInventoryUpdated;
             #endregion RocketPlayerEvents
         }
 
