@@ -33,7 +33,7 @@ namespace Rocket.Commands
             }
 
             SteamPlayer otherPlayer = PlayerTool.getSteamPlayer(command[0]);
-            if (otherPlayer != null && otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.ToString())
+            if (otherPlayer != null && (caller == null || otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.ToString()))
             {
                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_investigate_private", otherPlayer.SteamPlayerID.CharacterName, otherPlayer.SteamPlayerID.CSteamID.ToString()));
             }
