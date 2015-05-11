@@ -21,8 +21,8 @@ namespace Rocket.RocketLoader.Patches
             h.UnlockFieldByType(typeof(uint), "ServerPort", 1);
             h.UnlockFieldByType(typeof(byte), "MaxPlayers");
             
-            h.UnlockFieldByType(typeof(bool), "PvP", 5);
-            h.UnlockFieldByType(typeof(bool), "IsServer", 8);
+            h.UnlockFieldByType(typeof(bool), "PvP", 8);
+            h.UnlockFieldByType(typeof(bool), "IsServer", 10);
             
             h.UnlockFieldByType("List<SteamPlayer>", "Players");
             h.UnlockFieldByType("ConsoleInput", "ConsoleInput");
