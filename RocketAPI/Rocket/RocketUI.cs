@@ -87,7 +87,7 @@ namespace Rocket
                     ushort id = ((Asset)asset).Id;
                     Texture2D t = ItemTool.getIcon(id, new byte[0], asset);
                     byte[] bytes = t.EncodeToPNG();
-                    string filename = "images/" + id + ".png";
+                    string filename = "Images/" + id + ".png";
                     System.IO.File.WriteAllBytes(filename, bytes);
                 }
                 catch (Exception ex)

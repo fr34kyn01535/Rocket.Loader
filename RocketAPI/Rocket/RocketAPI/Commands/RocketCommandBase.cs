@@ -33,7 +33,7 @@ namespace Rocket.RocketAPI
                 return;
             }
 
-            string[] collection = Regex.Matches(command, @"[\""](.+?)[\""]|([^ ]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Cast<Match>().Select(m => m.Value.Trim().Trim('"')).ToArray();
+            string[] collection = Regex.Matches(command, @"[\""](.+?)[\""]|([^ ]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Cast<Match>().Select(m => m.Value.Trim('"').Trim()).ToArray();
             try
             {
                 Command.Execute(RocketPlayer.FromCSteamID(caller), collection);
