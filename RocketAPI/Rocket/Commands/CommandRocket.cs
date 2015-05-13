@@ -48,9 +48,9 @@ namespace Rocket.Commands
                     case "reload":
                         if (caller != null && !(caller.HasPermission("rocket.reload") || caller.HasPermission("rocket.*"))) return;
                             RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_reload"));
+                            RocketTranslation.ReloadTranslations();
+                            RocketSettings.ReloadSettings();
                             RocketPermissionManager.ReloadPermissions();
-                            RocketTranslation.LoadTranslations();
-                            RocketSettings.LoadSettings();
                         break;
                 }
             }

@@ -180,7 +180,7 @@ namespace Rocket
             }
         }
 
-        internal static void LoadSettings()
+        internal static void ReloadSettings()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(RocketSettings));
             string configFile = Path.Combine(HomeFolder, "Rocket.config.xml");

@@ -115,7 +115,7 @@ namespace Rocket
             }
         }
 
-        internal static void LoadTranslations()
+        internal static void ReloadTranslations()
         {
             try
             {

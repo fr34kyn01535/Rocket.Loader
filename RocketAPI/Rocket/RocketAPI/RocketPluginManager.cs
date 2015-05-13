@@ -91,18 +91,6 @@ namespace Rocket.RocketAPI
 
         }
 
-        public void load() { 
-            
-        }
-
-        public void unload() {
-        }
-
-        internal void Reload() { 
-            unload();
-            load();
-        }
-
         internal static void RemoveRocketPlayerComponents(Assembly plugin)
         {
             try

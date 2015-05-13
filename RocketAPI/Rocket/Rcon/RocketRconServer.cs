@@ -74,8 +74,7 @@ namespace Rocket.Rcon
 
         private static void log(string m)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("RocketRcon >> " + m);
+            Logger.logRcon(m);
         }
 
         private static void AcceptConnection(IAsyncResult result)

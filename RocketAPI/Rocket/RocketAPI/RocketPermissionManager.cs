@@ -140,7 +140,9 @@ namespace Rocket.RocketAPI
                         }
                     }
                 }
-                serializer.Serialize(new StreamWriter(permissionsFile), permissions);
+                using(StreamWriter streamWriter = new StreamWriter(permissionsFile)){
+                    serializer.Serialize(streamWriter, permissions);
+                }
             }
             else
             {
@@ -151,8 +153,8 @@ namespace Rocket.RocketAPI
 
                     permissions.DefaultGroupId = "default";
                     permissions.Groups = new Group[] {
-                            new Group("default","Guest", null , new List<string>() { "p", "reward","balance","pay","rocket" }),
-                            new Group("moderator","Moderator", new List<string>() { "76561197960287930" }, new List<string>() { "p", "p.reload", "tp", "tphere","i","test" })
+                            new Group("default","Guest",new List<string>(), null , new List<string>() { "p", "reward","balance","pay","rocket" }),
+                            new Group("moderator","Moderator", new List<string>(),new List<string>() { "76561197960287930" }, new List<string>() { "p", "p.reload", "tp", "tphere","i","test" })
                         };
                     permissions.WhitelistedGroups = new string[0];
                     permissions.ReservedSlotsGroups = new string[0];
@@ -174,77 +176,86 @@ namespace Rocket.RocketAPI
             return permissions.WhitelistedGroups;
         }
 
-        //public static string GetChatPrefix(CSteamID CSteamID)
-        //{
-        //    string prefix = "";
-        //    try
-        //    {
-        //        if (permissions.ShowGroup)
-        //        {
-        //            if (PlayerTool.getSteamPlayer(CSteamID).IsAdmin)
-        //            {
-        //                return String.Format(permissions.Format, permissions.AdminGroupDisplayName);
-        //            }
-        //            else
-        //            {
-        //                Group group = permissions.Groups.Where(g => g.Members != null && g.Members.Contains(CSteamID.ToString())).FirstOrDefault();
-        //                if (group == null)
-        //                {
-        //                    Group defaultGroup = permissions.Groups.Where(g => g.Id == permissions.DefaultGroupId).FirstOrDefault();
-        //                    if (defaultGroup == null) throw new Exception("No group found with the name " + permissions.DefaultGroupId + ", can not get default group");
-        //                    return String.Format(permissions.Format, defaultGroup.DisplayName);
-        //                }
-        //                else
-        //                {
-        //                    return String.Format(permissions.Format, group.DisplayName);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logger.LogException(ex);
-        //    }
-        //    return prefix;
-        //}
-
         public static string[] GetDisplayGroups(CSteamID CSteamID)
         {
-            return permissions.Groups.Where(g => g.Members.Contains(CSteamID.ToString())).Select(g => g.DisplayName + " (" + g.Id + ")").ToArray();
+            return GetGroups(CSteamID,true).Select(g => g.DisplayName + " (" + g.Id + ")").ToArray();
         }
 
-        public static List<Group> GetGroups(CSteamID CSteamID)
+        private static List<Group> getGroupsByIds(List<string> ids)
         {
-            return permissions.Groups.Where(g => g.Members.Contains(CSteamID.ToString())).ToList();
+            Logger.Log("getGroupsByIds");
+            return permissions.Groups.Where(g => ids.Select(i => i.ToLower()).Contains(g.Id.ToLower())).ToList();
+        }
+
+
+        private static List<string> getParentGroups(List<string> parentGroups, string currentGroup)
+        {
+            List<string> allgroups = new List<string>();
+            foreach (string g in parentGroups)
+            {
+                Group group = permissions.Groups.Where(gr => gr.Id.ToLower() == g.ToLower()).FirstOrDefault();
+                if (group != null && currentGroup.ToLower() != group.Id.ToLower())
+                {
+                    Logger.Log(group.Id);
+                    allgroups.Add(group.Id);
+                    allgroups.AddRange(getParentGroups(group.ParentGroups, currentGroup));
+                }
+            }
+            Console.WriteLine(String.Join(",",allgroups.ToArray()));
+            return allgroups;
+        }
+
+
+        public static List<Group> GetGroups(CSteamID CSteamID, bool includeParentGroups)
+        {
+            List<Group> groups = permissions.Groups.Where(g => g.Members.Contains(CSteamID.ToString())).ToList(); // Get my Groups
+            Group defaultGroup = permissions.Groups.Where(g => g.Id.ToLower() == permissions.DefaultGroupId.ToLower()).FirstOrDefault();
+            if (defaultGroup != null) groups.Add(defaultGroup);
+
+            if (includeParentGroups)
+            {
+                List<Group> parentGroups = new List<Group>();
+                foreach (Group g in groups)
+                {
+                    parentGroups.AddRange(getGroupsByIds(getParentGroups(g.ParentGroups,g.Id)));
+                }
+                groups.AddRange(parentGroups);
+            }
+
+            Logger.Log("GetGroups" + groups.Distinct().Count());
+            return groups.Distinct().ToList();
         }
 
         public static List<string> GetPermissions(CSteamID CSteamID)
         {
+            Logger.Log("GetPermissions");
             List<string> p = new List<string>();
-            foreach (Group g in permissions.Groups)
+
+            List<Group> myGroups = GetGroups(CSteamID,true);
+
+            foreach (Group g in myGroups)
             {
-                if (g.Members.Contains(CSteamID.ToString()) || g.Id == permissions.DefaultGroupId)
-                {
-                    p.AddRange(g.Commands);
+                foreach(Group myGroup in permissions.Groups.Where(group => group.ParentGroups.Select(parentGroup => parentGroup.ToLower()).Contains(g.Id.ToLower()))){
+                    p.AddRange(myGroup.Commands);
                 }
+                p.AddRange(g.Commands);
             }
+
+            Logger.Log("GetPermissions"+p.Distinct().Count());
             return p.Distinct().ToList();
         }
 
         public static bool CheckPermissions(SteamPlayer player, string permission)
         {
             Regex r = new Regex("^\\/[a-zA-Z]*");
-            String commandstring = r.Match(permission.ToLower()).Value.ToString().TrimStart('/');
+            String requestedPermission = r.Match(permission.ToLower()).Value.ToString().TrimStart('/').ToLower();
 
-            foreach (Group group in RocketPermissionManager.permissions.Groups)
-            {
-                if (group.Commands.Where(c => c.ToLower() == commandstring.ToLower() || c.StartsWith(commandstring.ToLower() + ".")).Count() != 0 || group.Commands.Contains("*"))
-                {
-                    if (group.Id.ToLower() == permissions.DefaultGroupId) return true;
-                    if (group.Members.Contains(player.SteamPlayerID.CSteamID.ToString().ToLower())) return true;
-                }
+            List<string> permissions = GetPermissions(player.SteamPlayerID.CSteamID);
+
+            if(permissions.Where( p => p.ToLower() == requestedPermission || p.StartsWith(requestedPermission + ".")).Count() != 0 || permissions.Contains("*")){
+                return true;
             }
-
+            
             return player.IsAdmin;
         }
 
@@ -343,12 +354,13 @@ namespace Rocket.RocketAPI
         {
         }
 
-        public Group(string name, string displayName, List<string> members, List<string> commands)
+        public Group(string name, string displayName, List<string> parentGroups, List<string> members, List<string> commands)
         {
             Id = name;
             DisplayName = displayName;
             Members = members;
             Commands = commands;
+            ParentGroups = parentGroups;
         }
 
         public string Id;
@@ -359,5 +371,8 @@ namespace Rocket.RocketAPI
 
         [XmlArrayItem(ElementName = "Command")]
         public List<string> Commands;
+        
+        [XmlArrayItem(ElementName = "ParentGroup")]
+        public List<string> ParentGroups;
     }
 }

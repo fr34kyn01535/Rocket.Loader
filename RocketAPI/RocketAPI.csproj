@@ -185,6 +185,7 @@
     <Content Include="lib\Mono.Cecil.dll" />
     <Content Include="lib\Mono.CompilerServices.SymbolWriter.dll" />
     <Content Include="lib\pdb2mdb.exe" />
+    <Content Include="lib\RocketAPI.dll" />
     <Content Include="lib\UnityEngine.dll" />
     <None Include="LICENSE">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

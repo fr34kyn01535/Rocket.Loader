@@ -139,12 +139,9 @@ namespace Rocket.RocketAPI
             }
         }
 
-        public List<Group> Groups
+        public List<Group> GetGroups(bool includeParentGroups)
         {
-            get
-            {
-                return RocketPermissionManager.GetGroups(this.CSteamID);
-            }
+            return RocketPermissionManager.GetGroups(this.CSteamID, includeParentGroups);
         }
 
         public List<string> Permissions
@@ -156,7 +153,7 @@ namespace Rocket.RocketAPI
 
         public bool HasPermission(string permission)
         {
-            return (Permissions.Where(p => p.ToLower() == permission.ToLower()).FirstOrDefault() != null);
+            return RocketPermissionManager.CheckPermissions(this.Player.SteamChannel.SteamPlayer,permission);
         }
 
         public void Kick(string reason)

@@ -115,11 +115,11 @@ namespace Rocket
 #if DEBUG
                 Console.WriteLine("LoadSettings");
 #endif
-                RocketSettings.LoadSettings();
+                RocketSettings.ReloadSettings();
 #if DEBUG
                 Console.WriteLine("LoadTranslations");
 #endif
-                RocketTranslation.LoadTranslations();
+                RocketTranslation.ReloadTranslations();
 #if DEBUG
                 Console.WriteLine("BindEvents");
 #endif
