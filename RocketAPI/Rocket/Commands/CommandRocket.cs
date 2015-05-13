@@ -40,13 +40,13 @@ namespace Rocket.Commands
             {
                 switch (command[0].ToLower()) {
                     case "plugins":
-                        if (caller != null && !(caller.HasPermission("rocket.plugins") || caller.HasPermission("rocket.*"))) return;
+                        if (caller != null && !caller.HasPermission("rocket.plugins")) return;
                         List<RocketPlugin> plugins = RocketPluginManager.GetPlugins();
                         RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_plugins_loaded", String.Join(", ", plugins.Where(p => p.Loaded).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
                         RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_plugins_unloaded", String.Join(", ", plugins.Where(p => !p.Loaded).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
                         break;
                     case "reload":
-                        if (caller != null && !(caller.HasPermission("rocket.reload") || caller.HasPermission("rocket.*"))) return;
+                        if (caller != null && !caller.HasPermission("rocket.reload")) return;
                             RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_reload"));
                             RocketTranslation.ReloadTranslations();
                             RocketSettings.ReloadSettings();
@@ -63,7 +63,7 @@ namespace Rocket.Commands
                     switch (command[0].ToLower())
                     {
                         case "reload":
-                            if (caller != null && !(caller.HasPermission("rocket.reloadplugin") || !caller.HasPermission("rocket.*"))) return;
+                            if (caller != null && !caller.HasPermission("rocket.reloadplugin")) return;
                             if (p.Loaded)
                             {
                                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_reload_plugin", p.GetType().Assembly.GetName().Name));
@@ -76,7 +76,7 @@ namespace Rocket.Commands
                             }
                             break;
                         case "unload":
-                            if (caller != null && !(caller.HasPermission("rocket.unloadplugin") || caller.HasPermission("rocket.*"))) return;
+                            if (caller != null && !caller.HasPermission("rocket.unloadplugin")) return;
                             if (p.Loaded)
                             {
                                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_unload_plugin", p.GetType().Assembly.GetName().Name));
@@ -88,7 +88,7 @@ namespace Rocket.Commands
                             }
                             break;
                         case "load":
-                            if (caller != null && !(caller.HasPermission("rocket.loadplugin") || caller.HasPermission("rocket.*"))) return;
+                            if (caller != null && !caller.HasPermission("rocket.loadplugin")) return;
                             if (!p.Loaded)
                             {
                                 RocketChatManager.Say(caller, RocketTranslation.Translate("command_rocket_load_plugin", p.GetType().Assembly.GetName().Name));
