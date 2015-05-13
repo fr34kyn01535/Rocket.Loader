@@ -64,7 +64,7 @@ namespace Rocket.Rcon
         {
             foreach (List<string> h in logList.Values)
             {
-                h.Add(message.Trim() + "\n\r");
+                h.Add(message.Trim() + "\r\n");
             }
             foreach (Socket currentSocket in clientList.Keys.ToArray())
             {
@@ -88,7 +88,7 @@ namespace Rocket.Rcon
             log("Client logging in... (From: " + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
             string output = "Password: ";
             client.clientState = EClientState.Logging;
-            byte[] message = Encoding.ASCII.GetBytes(output);
+            byte[] message = Encoding.UTF8.GetBytes(output);
             newSocket.BeginSend(message, 0, message.Length, SocketFlags.None, new AsyncCallback(SendData), newSocket);
             serverSocket.BeginAccept(new AsyncCallback(AcceptConnection), serverSocket);
         }
@@ -106,11 +106,11 @@ namespace Rocket.Rcon
 
         private static void ReceiveData(IAsyncResult result)
         {
+            Client client;
+            Socket clientSocket = (Socket)result.AsyncState;
+            clientList.TryGetValue(clientSocket, out client);
             try
             {
-                Socket clientSocket = (Socket)result.AsyncState;
-                Client client;
-                clientList.TryGetValue(clientSocket, out client);
                 int received = clientSocket.EndReceive(result);
                 if (received == 0)
                 {
@@ -145,7 +145,7 @@ namespace Rocket.Rcon
                         if (client.commandIssued.Length > 0)
                         {
                             client.commandIssued = client.commandIssued.Substring(0, client.commandIssued.Length - 1);
-                            byte[] message = Encoding.ASCII.GetBytes("\u0020\u0008");
+                            byte[] message = Encoding.UTF8.GetBytes("\u0020\u0008");
                             clientSocket.BeginSend(message, 0, message.Length, SocketFlags.None, new AsyncCallback(SendData), clientSocket);
                         }
                         else
@@ -161,10 +161,18 @@ namespace Rocket.Rcon
                     else
                     {
                         string currentCommand = client.commandIssued;
-                        client.commandIssued += Encoding.ASCII.GetString(data, 0, received);
+                        client.commandIssued += Encoding.UTF8.GetString(data, 0, received);
                         clientSocket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(ReceiveData), clientSocket);
                     }
                 }
+            }
+            catch (ObjectDisposedException ex)
+            {
+                log(string.Format("Client quit ({1}:{2})", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
+            }
+            catch (SocketException ex)
+            {
+                log(string.Format("Client quit ({1}:{2})", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
             }
             catch (Exception ex)
             {
@@ -184,8 +192,8 @@ namespace Rocket.Rcon
                 }
             }
 
-            string Output ="RocketRcon v" + Assembly.GetExecutingAssembly().GetName().Version + "\n\r";
-            byte[] dataInput = Encoding.ASCII.GetBytes(Input);
+            string Output = "RocketRcon v" + Assembly.GetExecutingAssembly().GetName().Version + "\r\n";
+            byte[] dataInput = Encoding.UTF8.GetBytes(Input);
             Client client;
             clientList.TryGetValue(clientSocket, out client);
 
@@ -226,7 +234,7 @@ namespace Rocket.Rcon
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(ex);
-                    h.Add("An exception was thrown on the server: " + ex.Message + "\n\r");
+                    h.Add("An exception was thrown on the server: " + ex.Message + "\r\n");
                 }
             }
             if (client.clientState == EClientState.Logging)
@@ -246,7 +254,7 @@ namespace Rocket.Rcon
                     return;
                 }
             }
-            byte[] message = Encoding.ASCII.GetBytes("\u001B[1J\u001B[H" + Output);
+            byte[] message = Encoding.UTF8.GetBytes("\u001B[1J\u001B[H" + Output);
             clientSocket.BeginSend(message, 0, message.Length, SocketFlags.None, new AsyncCallback(SendData), clientSocket);
         }
 

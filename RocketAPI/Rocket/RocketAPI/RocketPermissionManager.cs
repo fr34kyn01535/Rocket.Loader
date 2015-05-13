@@ -183,7 +183,6 @@ namespace Rocket.RocketAPI
 
         private static List<Group> getGroupsByIds(List<string> ids)
         {
-            Logger.Log("getGroupsByIds");
             return permissions.Groups.Where(g => ids.Select(i => i.ToLower()).Contains(g.Id.ToLower())).ToList();
         }
 
@@ -196,7 +195,6 @@ namespace Rocket.RocketAPI
                 Group group = permissions.Groups.Where(gr => gr.Id.ToLower() == g.ToLower()).FirstOrDefault();
                 if (group != null && currentGroup.ToLower() != group.Id.ToLower())
                 {
-                    Logger.Log(group.Id);
                     allgroups.Add(group.Id);
                     allgroups.AddRange(getParentGroups(group.ParentGroups, currentGroup));
                 }
@@ -222,13 +220,11 @@ namespace Rocket.RocketAPI
                 groups.AddRange(parentGroups);
             }
 
-            Logger.Log("GetGroups" + groups.Distinct().Count());
             return groups.Distinct().ToList();
         }
 
         public static List<string> GetPermissions(CSteamID CSteamID)
         {
-            Logger.Log("GetPermissions");
             List<string> p = new List<string>();
 
             List<Group> myGroups = GetGroups(CSteamID,true);
@@ -241,7 +237,6 @@ namespace Rocket.RocketAPI
                 p.AddRange(g.Commands);
             }
 
-            Logger.Log("GetPermissions"+p.Distinct().Count());
             return p.Distinct().ToList();
         }
 

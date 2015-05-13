@@ -12,6 +12,7 @@ namespace RCONTest
         static void Main(string[] args)
         {
             RocketRconServer.Listen(8080);
+            while (Console.ReadLine() != "exit") { }
         }
     }
 }
