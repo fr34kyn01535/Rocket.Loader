@@ -4,7 +4,7 @@ using SDG;
 using System;
 
 namespace Rocket.Commands
-{ 
+{
     public class CommandCi : IRocketCommand
     {
         public bool RunFromConsole
@@ -24,11 +24,31 @@ namespace Rocket.Commands
 
         public void Execute(RocketPlayer caller, string[] command)
         {
-            if(!caller.Inventory.Clear())
+            if (command.Length == 0)
             {
-                Logger.Log("Something went wrong removing " + caller.CharacterName + "'s clothing!");
+                if (!caller.Inventory.Clear())
+                {
+                    Logger.Log("Something went wrong removing " + caller.CharacterName + "'s clothing!");
+                }
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_clear_private"));
             }
-            RocketChatManager.Say(caller, RocketTranslation.Translate("command_clear_private"));
+            else
+            {
+                if (caller != null && !caller.Permissions.Contains("ci.player") && !caller.Permissions.Contains("ci.*") && !caller.IsAdmin) return;
+                RocketPlayer player = RocketPlayer.FromName(command[0]);
+                if (player == null)
+                {
+                    RocketChatManager.Say(caller, RocketTranslation.Translate("command_generic_failed_find_player"));
+                    return;
+                }
+                if (!player.Inventory.Clear())
+                {
+                    RocketChatManager.Say(caller, RocketTranslation.Translate("command_clear_error", player.CharacterName + "'s"));
+                    return;
+                }
+                RocketChatManager.Say(caller, RocketTranslation.Translate("command_clear_other_success", player.CharacterName + "'s"));
+                RocketChatManager.Say(player, RocketTranslation.Translate("command_clear_other", caller.CharacterName));
+            }
         }
     }
 }
