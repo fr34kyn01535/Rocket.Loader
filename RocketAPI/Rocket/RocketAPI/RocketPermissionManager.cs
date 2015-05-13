@@ -199,7 +199,6 @@ namespace Rocket.RocketAPI
                     allgroups.AddRange(getParentGroups(group.ParentGroups, currentGroup));
                 }
             }
-            Console.WriteLine(String.Join(",",allgroups.ToArray()));
             return allgroups;
         }
 
