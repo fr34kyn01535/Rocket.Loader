@@ -34,7 +34,7 @@ namespace Rocket.Commands
             }
             else
             {
-                if (caller != null && !caller.Permissions.Contains("ci.player") && !caller.Permissions.Contains("ci.*") && !caller.IsAdmin) return;
+                if (caller != null && !caller.HasPermission("ci.others")) return;
                 RocketPlayer player = RocketPlayer.FromName(command[0]);
                 if (player == null)
                 {
