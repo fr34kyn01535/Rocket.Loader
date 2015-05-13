@@ -1,4 +1,4 @@
-﻿using Rocket.Rcon;
+﻿using Rocket.RCON;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -78,8 +78,8 @@ namespace Rocket.Logging
             StreamWriter streamWriter = File.AppendText(RocketSettings.HomeFolder + "Logs/" + "Rocket.log");
             streamWriter.WriteLine("[" + DateTime.Now + "] [" + entry.Severity.ToString() + "] " + entry.Message);
             streamWriter.Close();
-            if (RocketSettings.EnableRcon)
-                RocketRconServer.broadcast(entry.Message);
+            if (RocketSettings.RCONPort > 1) 
+                RocketRCONServer.broadcast(entry.Message);
         }
     }
 }

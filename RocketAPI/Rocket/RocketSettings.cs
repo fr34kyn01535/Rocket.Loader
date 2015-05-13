@@ -9,10 +9,12 @@ namespace Rocket
     {
         private static RocketSettings instance;
         public static string HomeFolder;
-        public static bool EnableRcon = false;
-        public static string RconPassword = "changeme";
-        public static int RconPort = 0;
+        public static string RCONPassword = "changeme";
+        public static int RCONPort = 0;
+        public static bool MinimalRCON = false;
         public static int AutoSaveInterval = 300;
+
+        
 
         public static bool EnableJoinLeaveMessages = false;
         public static string LanguageCode = "en";
@@ -128,42 +130,42 @@ namespace Rocket
             }
         }
 
-        [XmlElement(ElementName = "EnableRcon")]
-        public bool enableRcon
+        [XmlElement(ElementName = "MinimalRCON")]
+        public bool minimalRCON
         {
             get
             {
-                return EnableRcon;
+                return MinimalRCON;
             }
             set
             {
-                EnableRcon = value;
+                MinimalRCON = value;
             }
         }
 
-        [XmlElement(ElementName = "RconPassword")]
+        [XmlElement(ElementName = "RCONPassword")]
         public string rconPassword
         {
             get
             {
-                return RconPassword;
+                return RCONPassword;
             }
             set
             {
-                RconPassword = value;
+                RCONPassword = value;
             }
         }
 
-        [XmlElement(ElementName = "RconPort")]
+        [XmlElement(ElementName = "RCONPort")]
         public int rconPort
         {
             get
             {
-                return RconPort;
+                return RCONPort;
             }
             set
             {
-                RconPort = value; ;
+                RCONPort = value; ;
             }
         }
 
@@ -191,7 +193,6 @@ namespace Rocket
                 using (StreamReader r = new StreamReader(configFile))
                 {
                     s = (RocketSettings)serializer.Deserialize(r);
-                    instance.enableRcon = s.enableRcon;
                     if (!String.IsNullOrEmpty(s.rconPassword)) instance.rconPassword = s.rconPassword;
 
                     if (RocketHelper.IsUri(s.webConfigurations)) instance.webConfigurations = s.webConfigurations;

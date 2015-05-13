@@ -1,7 +1,7 @@
 ﻿using Rocket.Commands;
 using Rocket.Components;
 using Rocket.Logging;
-using Rocket.Rcon;
+using Rocket.RCON;
 using SDG;
 using Steamworks;
 using System;

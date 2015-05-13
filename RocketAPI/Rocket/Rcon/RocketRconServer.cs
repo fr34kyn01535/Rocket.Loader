@@ -9,7 +9,7 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 
-namespace Rocket.Rcon
+namespace Rocket.RCON
 {
     public enum EClientState
     {
@@ -33,7 +33,7 @@ namespace Rocket.Rcon
         }
     }
 
-    public class RocketRconServer
+    public class RocketRCONServer
     {
         private static Socket serverSocket;
         private static byte[] data = new byte[dataSize];
@@ -52,11 +52,11 @@ namespace Rocket.Rcon
                 serverSocket.Bind(endPoint);
                 serverSocket.Listen(0);
                 serverSocket.BeginAccept(new AsyncCallback(AcceptConnection), serverSocket);
-                log("Server started successfully at 0.0.0.0:" + port);
+                Logger.logRCON("Server started successfully at 0.0.0.0:" + port);
             }
             catch (Exception ex)
             {
-                log("Error: " + ex.ToString());
+                Logger.logRCON("Error: " + ex.ToString());
             }
         }
 
@@ -64,17 +64,12 @@ namespace Rocket.Rcon
         {
             foreach (List<string> h in logList.Values)
             {
-                h.Add(message.Trim() + "\r\n");
+                h.Add(message.Trim() + "");
             }
             foreach (Socket currentSocket in clientList.Keys.ToArray())
             {
                 currentSocket.BeginSend(new byte[1] { 1 }, 0, 1, SocketFlags.None, new AsyncCallback(ReceiveData), currentSocket);
             }
-        }
-
-        private static void log(string m)
-        {
-            Logger.logRcon(m);
         }
 
         private static void AcceptConnection(IAsyncResult result)
@@ -85,7 +80,7 @@ namespace Rocket.Rcon
             Client client = new Client((IPEndPoint)newSocket.RemoteEndPoint, DateTime.Now, EClientState.NotLogged);
             clientList.Add(newSocket, client);
             logList.Add(newSocket.Handle, new List<string>());
-            log("Client logging in... (From: " + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
+            Logger.logRCON("Client logging in... (From: " + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
             string output = "Password: ";
             client.clientState = EClientState.Logging;
             byte[] message = Encoding.UTF8.GetBytes(output);
@@ -118,22 +113,22 @@ namespace Rocket.Rcon
                     clientSocket.Close();
                     clientList.Remove(clientSocket);
                     serverSocket.BeginAccept(new AsyncCallback(AcceptConnection), serverSocket);
-                    log("Client disconnected. (" + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
+                    Logger.logRCON("Client disconnected. (" + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
                     return;
                 }
 
                 if (data[0] == 0x2E && data[1] == 0x0D && client.commandIssued.Length == 0)
                 {
                     string currentCommand = client.commandIssued;
-                    log(string.Format("Received '{0}' while EClientStatus '{1}' ({2}:{3})", currentCommand, client.clientState.ToString(), client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
+                    Logger.logRCON(string.Format("Received '{0}' while EClientStatus '{1}' ({2}:{3})", currentCommand, client.clientState.ToString(), client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
                     client.commandIssued = "";
                     handleCommand(clientSocket, currentCommand);
                 }
                 else if (data[0] == 0x0D && data[1] == 0x0A)
                 {
-                    string currentCommand = client.commandIssued;
+                    string currentCommand = client.commandIssued.Replace("", ""); ;
                     if (!String.IsNullOrEmpty(currentCommand))
-                        log(string.Format("Received '{0}' ({1}:{2})", currentCommand, client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
+                        Logger.logRCON(string.Format("Received '{0}' ({1}:{2})", currentCommand, client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
                     client.commandIssued = "";
                     handleCommand(clientSocket, currentCommand);
                 }
@@ -168,11 +163,11 @@ namespace Rocket.Rcon
             }
             catch (ObjectDisposedException ex)
             {
-                log(string.Format("Client quit ({1}:{2})", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
+                Logger.logRCON(string.Format("Client quit ({1}:{2})", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
             }
             catch (SocketException ex)
             {
-                log(string.Format("Client quit ({1}:{2})", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
+                Logger.logRCON(string.Format("Client quit ({1}:{2})", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
             }
             catch (Exception ex)
             {
@@ -192,7 +187,7 @@ namespace Rocket.Rcon
                 }
             }
 
-            string Output = "RocketRcon v" + Assembly.GetExecutingAssembly().GetName().Version + "\r\n";
+            string Output = "RocketRcon v" + Assembly.GetExecutingAssembly().GetName().Version + "";
             byte[] dataInput = Encoding.UTF8.GetBytes(Input);
             Client client;
             clientList.TryGetValue(clientSocket, out client);
@@ -213,7 +208,7 @@ namespace Rocket.Rcon
                         clientSocket.Close();
                         clientList.Remove(clientSocket);
                         serverSocket.BeginAccept(new AsyncCallback(AcceptConnection), serverSocket);
-                        log("Client disconnected. (" + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
+                        Logger.logRCON("Client disconnected. (" + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
                         return;
                     }
                     else if (Input == "cls")
@@ -234,14 +229,14 @@ namespace Rocket.Rcon
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(ex);
-                    h.Add("An exception was thrown on the server: " + ex.Message + "\r\n");
+                    h.Add("An exception was thrown on the server: " + ex.Message + "");
                 }
             }
             if (client.clientState == EClientState.Logging)
             {
-                if (Input == RocketSettings.RconPassword)
+                if (Input == RocketSettings.RCONPassword)
                 {
-                    log("Client has logged in");
+                    Logger.logRCON("Client has logged in");
                     client.clientState = EClientState.LoggedIn;
                 }
                 else
@@ -250,11 +245,11 @@ namespace Rocket.Rcon
                     clientSocket.Close();
                     clientList.Remove(clientSocket);
                     serverSocket.BeginAccept(new AsyncCallback(AcceptConnection), serverSocket);
-                    log("Client kicked because of incorrect password. (" + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
+                    Logger.logRCON("Client kicked because of incorrect password. (" + string.Format("{0}:{1}", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port) + ")");
                     return;
                 }
             }
-            byte[] message = Encoding.UTF8.GetBytes("\u001B[1J\u001B[H" + Output);
+            byte[] message = Encoding.UTF8.GetBytes(Output);
             clientSocket.BeginSend(message, 0, message.Length, SocketFlags.None, new AsyncCallback(SendData), clientSocket);
         }
 

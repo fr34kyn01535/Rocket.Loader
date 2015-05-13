@@ -1,5 +1,5 @@
 ﻿using Rocket.Logging;
-using Rocket.Rcon;
+using Rocket.RCON;
 using Rocket.RocketAPI;
 using Rocket.RocketAPI.Events;
 using SDG;
@@ -131,14 +131,19 @@ namespace Rocket
                 gameObject.AddComponent<RocketPermissionManager>();
                 gameObject.AddComponent<RocketFeatures>();
 
-                if (RocketSettings.EnableRcon)
+                if (RocketSettings.RCONPort > 1)
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Loading RocketRcon".PadRight(80, '.'));
-                    int port = RocketSettings.RconPort;
-                    if (port == 0) port = (int)(Steam.ServerPort + 100);
-                    RocketRconServer.Listen(port);
-                    Console.WriteLine();
+                    int port = RocketSettings.RCONPort;
+                    if (RocketSettings.MinimalRCON)
+                    {
+                        MinimalRocketRconServer.Listen(port);
+                    }
+                    else
+                    {
+                        RocketRCONServer.Listen(port);
+                    }
                 }
             }
             catch (Exception e)

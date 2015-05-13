@@ -164,9 +164,10 @@ namespace Rocket.Logging
             ProcessLog(type,message);
         }
 
-        internal static void logRcon(string message) {
+        internal static void logRCON(string message)
+        {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            string m = "RocketRcon >> " + message;
+            string m = "RocketRCON >> " + message;
             ProcessLog(ELogType.Info, message);
             Console.WriteLine(m);
         }

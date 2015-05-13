@@ -1,4 +1,4 @@
-﻿using Rocket.Rcon;
+﻿using Rocket.RCON;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace RCONTest
     {
         static void Main(string[] args)
         {
-            RocketRconServer.Listen(8080);
+            MinimalRocketRconServer.Listen(1234);
             while (Console.ReadLine() != "exit") { }
         }
     }
