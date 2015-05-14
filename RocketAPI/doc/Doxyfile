@@ -1,8 +1,0 @@
-﻿PROJECT_NAME = RocketAPI
-HIDE_UNDOC_MEMBERS = YES
-EXTRACT_ALL = YES
-@INCLUDE_PATH = RocketAPI/bin/Release/RocketAPI.XML
-INPUT = RocketAPI
-RECURSIVE = YES
-GENERATE_LATEX = NO
-HTML_EXTRA_STYLESHEET = RocketAPI/bin/Release/Documentation/doxygen.css

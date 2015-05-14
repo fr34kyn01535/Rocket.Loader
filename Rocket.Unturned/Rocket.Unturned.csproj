@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BADB74F6-90C0-40AF-865D-27795B50C469}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rocket.Unturned</RootNamespace>
+    <AssemblyName>Rocket.Unturned</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\lib\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\lib\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\lib\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Chat\Chat.cs" />
+    <Compile Include="Commands\CommandCi.cs" />
+    <Compile Include="Commands\CommandCompass.cs" />
+    <Compile Include="Commands\CommandDuty.cs" />
+    <Compile Include="Commands\CommandGod.cs" />
+    <Compile Include="Commands\CommandHeal.cs" />
+    <Compile Include="Commands\CommandHome.cs" />
+    <Compile Include="Commands\CommandI.cs" />
+    <Compile Include="Commands\CommandInvestigate.cs" />
+    <Compile Include="Commands\CommandLag.cs" />
+    <Compile Include="Commands\CommandP.cs" />
+    <Compile Include="Commands\CommandRocket.cs" />
+    <Compile Include="Commands\CommandTp.cs" />
+    <Compile Include="Commands\CommandTphere.cs" />
+    <Compile Include="Commands\CommandV.cs" />
+    <Compile Include="Commands\CommandVanish.cs" />
+    <Compile Include="Commands\CommandZ.cs" />
+    <Compile Include="Commands\IRocketCommand.cs" />
+    <Compile Include="Commands\RocketCommandBase.cs" />
+    <Compile Include="Extensions\PlayerInventoryExtension.cs" />
+    <Compile Include="Player\RocketPlayer.cs" />
+    <Compile Include="Player\RocketPlayerComponent.cs" />
+    <Compile Include="Player\RocketPlayerEvents.cs" />
+    <Compile Include="Player\RocketPlayerFeatures.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RocketPlugin.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Rocket.API\Rocket.API.csproj">
+      <Project>{c362df2f-1336-4932-aadc-4f2074fedb64}</Project>
+      <Name>Rocket.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rocket.Core\Rocket.Core.csproj">
+      <Project>{7a9d652f-dc18-45fd-8964-dbaad6384c3d}</Project>
+      <Name>Rocket.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
