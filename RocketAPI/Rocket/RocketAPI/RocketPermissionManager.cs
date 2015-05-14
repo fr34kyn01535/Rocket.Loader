@@ -231,7 +231,8 @@ namespace Rocket.RocketAPI
             foreach (Group g in myGroups)
             {
                 foreach(Group myGroup in permissions.Groups.Where(group => group.ParentGroups.Select(parentGroup => parentGroup.ToLower()).Contains(g.Id.ToLower()))){
-                    p.AddRange(myGroup.Commands);
+                    if (myGroup.Members.Contains(CSteamID.ToString()))
+                        p.AddRange(myGroup.Commands);
                 }
                 p.AddRange(g.Commands);
             }
