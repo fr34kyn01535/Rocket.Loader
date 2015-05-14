@@ -1,7 +1,6 @@
-﻿using Rocket.API.Commands;
-using Rocket.RocketAPI;
-using SDG;
+﻿using SDG;
 using System;
+using Rocket.API;
 
 namespace Rocket.Unturned.Commands
 {

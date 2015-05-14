@@ -66,7 +66,6 @@
     <Compile Include="Commands\CommandV.cs" />
     <Compile Include="Commands\CommandVanish.cs" />
     <Compile Include="Commands\CommandZ.cs" />
-    <Compile Include="Commands\IRocketCommand.cs" />
     <Compile Include="Commands\RocketCommandBase.cs" />
     <Compile Include="Extensions\PlayerInventoryExtension.cs" />
     <Compile Include="Player\RocketPlayer.cs" />

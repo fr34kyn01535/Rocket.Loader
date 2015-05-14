@@ -4,12 +4,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Rocket.Core;
 
 namespace Rocket.API
 {
     public class PlayerIsConsoleException : Exception { }
 
-    public sealed class RocketPlayer
+    public sealed class RocketPlayer : IRocketPlayer
     {
         private Player player;
         public Player Player
@@ -138,19 +139,19 @@ namespace Rocket.API
 
         public List<Group> GetGroups(bool includeParentGroups)
         {
-            return RocketPermissionManager.GetGroups(this.CSteamID, includeParentGroups);
+            return PermissionsManager.GetGroups(this.CSteamID, includeParentGroups);
         }
 
         public List<string> Permissions
         {
-            get { 
-                return RocketPermissionManager.GetPermissions(this.CSteamID); 
+            get {
+                return PermissionsManager.GetPermissions(this.CSteamID); 
             }
         }
 
         public bool HasPermission(string permission)
         {
-            return RocketPermissionManager.CheckPermissions(this.Player.SteamChannel.SteamPlayer,permission);
+            return PermissionsManager.CheckPermissions(this.Player.SteamChannel.SteamPlayer, permission);
         }
 
         public void Kick(string reason)
