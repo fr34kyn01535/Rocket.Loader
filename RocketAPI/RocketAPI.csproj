@@ -125,6 +125,7 @@
     <Compile Include="Rocket\Commands\CommandV.cs" />
     <Compile Include="Rocket\Logging\AsyncLoggerQueue.cs" />
     <Compile Include="Rocket\RCON\MinimalRocketRCONServer.cs" />
+    <Compile Include="Rocket\RCON\RocketRCONServer.cs" />
     <Compile Include="Rocket\RocketAPI\Commands\IRocketCommand.cs" />
     <Compile Include="Rocket\RocketAPI\Commands\RocketCommandBase.cs" />
     <Compile Include="Rocket\RocketAPI\Extensions\PlayerInventoryExtension.cs" />
