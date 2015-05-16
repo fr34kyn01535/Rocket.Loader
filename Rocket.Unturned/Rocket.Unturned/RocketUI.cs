@@ -1,4 +1,5 @@
-﻿using SDG;
+﻿using Rocket.Unturned.Logging;
+using SDG;
 using System;
 using System.IO;
 using UnityEngine;
@@ -21,6 +22,9 @@ namespace Rocket.Unturned
 
         private void Awake()
         {
+#if DEBUG
+            Logger.Log("RocketUI > Awake");
+#endif
             DontDestroyOnLoad(base.gameObject);
             Screen.lockCursor = false;
             Screen.showCursor = true;

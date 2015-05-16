@@ -15,6 +15,9 @@ namespace Rocket.Unturned.Events
     {
         private void Awake()
         {
+#if DEBUG
+            Logger.Log("RocketServerEvents > Awake");
+#endif
             RocketEvents.OnRocketSave += () => { SaveManager.save(); };
             RocketEvents.OnRocketAutomaticShutdown += () =>
             {

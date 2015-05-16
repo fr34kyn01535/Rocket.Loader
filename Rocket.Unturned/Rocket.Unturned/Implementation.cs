@@ -29,8 +29,11 @@ namespace Rocket.Unturned
         public static void Splash()
         {
             Console.Clear();
+#if DEBUG
+            Logger.Log("Implementation > Splash");
+#endif
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("RocketAPI v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " for Unturned v" + Steam.Version + "\n");
+            Console.WriteLine("Rocket Unturned v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " for Unturned v" + Steam.Version + "\n");
 
             Steam.OnServerHosted += () =>
             {
@@ -40,13 +43,16 @@ namespace Rocket.Unturned
 
         private void Awake()
         {
+#if DEBUG
+            Logger.Log("Implementation > Awake");
+#endif
             createDirectories();
             moveLibrariesDirectory();
 
             gameObject.AddComponent(typeof(RocketServerEvents));
             gameObject.AddComponent(typeof(PluginManager));
             
-            Rocket = Instance.gameObject.AddComponent<RocketBootstrap>();
+            Rocket = gameObject.AddComponent<RocketBootstrap>();
         }
 
         public string InstanceName
@@ -60,7 +66,7 @@ namespace Rocket.Unturned
         public string LogsFolder { get { return HomeFolder + "Logs/"; } }
         public string ConfigurationFolder { get { return HomeFolder; } }
 
-        public IRocketImplementationConfigurationSection Configuration { get { return new ImplementationSettings(); } }
+        public ImplementationSettingsSection Configuration { get { return new ImplementationSettings(); } }
 
         public Dictionary<string, string> Translation
         {

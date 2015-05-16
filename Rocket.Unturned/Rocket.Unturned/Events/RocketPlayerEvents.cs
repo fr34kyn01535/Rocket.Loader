@@ -13,6 +13,9 @@ namespace Rocket.Unturned.Events
     {
         private new void Awake()
         {
+#if DEBUG
+            Logger.Log("RocketPlayerEvents > Awake");
+#endif
             base.Awake();
 
             Player.Player.PlayerLife.OnUpdateStamina += onUpdateStamina;

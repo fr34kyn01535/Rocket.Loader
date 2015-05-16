@@ -1,4 +1,6 @@
 ﻿using Rocket.API;
+using Rocket.Core.Logging;
+using System;
 using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
@@ -177,7 +179,7 @@ namespace Rocket.Core.Settings
         }
     }
 
-    public sealed class Settings{
+    public sealed class RocketSettings{
         
         private RCONSettingsSection rcon = new RCONSettingsSection();
         private AutomaticShutdownSettingsSection automaticShutdown = new AutomaticShutdownSettingsSection();
@@ -189,7 +191,7 @@ namespace Rocket.Core.Settings
         private string languageCode = "en";
         private int automaticSaveInterval = 300;
 
-        private IRocketImplementationConfigurationSection implementatonConfiguration = RocketBootstrap.Implementation.Configuration;
+        private object implementatonConfiguration = RocketBootstrap.Implementation.Configuration;
 
         [XmlElement(ElementName = "AutomaticShutdown")]
         public AutomaticShutdownSettingsSection AutomaticShutdown
@@ -283,7 +285,7 @@ namespace Rocket.Core.Settings
         }
 
         [XmlElement(ElementName = "Server")]
-        public IRocketImplementationConfigurationSection Implementation
+        public object Implementation
         {
             get
             {
@@ -299,31 +301,44 @@ namespace Rocket.Core.Settings
 
     public sealed class RocketSettingsManager : MonoBehaviour
     {
-        public static Settings Settings;
+        public static RocketSettings Settings;
 
-        private void Awake(){
+        private void Awake()
+        {
+#if DEBUG
+            Logger.Log("RocketSettingsManager > Awake");
+#endif
             Reload();
         }
 
 
         public static void Reload()
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(RocketSettingsManager));
-            string configFile = Path.Combine(RocketBootstrap.Implementation.HomeFolder, "Rocket.config.xml");
-            if (File.Exists(configFile))
+            try
             {
-                using (StreamReader r = new StreamReader(configFile))
+                RocketSettings fallback = new RocketSettings();
+                Type[] types = {fallback.Implementation.GetType()};
+                XmlSerializer serializer = new XmlSerializer(typeof(RocketSettings), types);
+                string configFile = Path.Combine(RocketBootstrap.Implementation.HomeFolder, "Rocket.config.xml");
+                if (File.Exists(configFile))
                 {
-                    Settings = (Settings)serializer.Deserialize(r);
+                    using (StreamReader r = new StreamReader(configFile))
+                    {
+                        Settings = (RocketSettings)serializer.Deserialize(r);
+                    }
+                    using (StreamWriter w = new StreamWriter(configFile))
+                    {
+                        serializer.Serialize(w, new RocketSettings());
+                    }
                 }
-                using (StreamWriter w = new StreamWriter(configFile))
+                else
                 {
-                    serializer.Serialize(w, new Settings());
+                    serializer.Serialize(new StreamWriter(configFile), fallback);
                 }
             }
-            else
+            catch (System.Exception ex)
             {
-                serializer.Serialize(new StreamWriter(configFile), new RocketSettingsManager());
+                Logger.LogError("Error loading RocketSettings: " + ex.ToString());
             }
         }
     }

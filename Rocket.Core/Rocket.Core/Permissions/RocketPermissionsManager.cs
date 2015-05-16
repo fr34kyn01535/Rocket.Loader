@@ -15,8 +15,11 @@ namespace Rocket.Core.Permissions
     {
         private static Permissions permissions;
 
-        public void Awake()
+        public void Start()
         {
+#if DEBUG
+            Logger.Log("RocketPermissionsManager > Awake");
+#endif
             Reload();
         }
 

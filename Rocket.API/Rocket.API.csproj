@@ -7,7 +7,7 @@
     <ProjectGuid>{C362DF2F-1336-4932-AADC-4F2074FEDB64}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rocket.RocketAPI</RootNamespace>
+    <RootNamespace>Rocket.API</RootNamespace>
     <AssemblyName>Rocket.API</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -99,10 +99,11 @@
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Rocket.API\IRocketImplementationConfigurationSection.cs" />
+    <Compile Include="Rocket.API\ImplementationSettings.cs" />
     <Compile Include="Rocket.API\IRocketImplementation.cs" />
     <Compile Include="Rocket.API\IRocketPlugin.cs" />
     <Compile Include="Rocket.API\IRocketPluginConfiguration.cs" />

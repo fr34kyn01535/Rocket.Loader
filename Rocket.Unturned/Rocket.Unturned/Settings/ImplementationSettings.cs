@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace Rocket.Unturned.Settings
 {
-    public class ImplementationSettings : IRocketImplementationConfigurationSection
+    public class ImplementationSettings : ImplementationSettingsSection
     {
         [XmlArrayItem(ElementName = "WhitelistedGroup")]
         public string[] WhitelistedGroups = new string[0];

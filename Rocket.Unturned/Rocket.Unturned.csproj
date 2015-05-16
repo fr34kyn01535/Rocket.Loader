@@ -32,7 +32,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
     <OutputPath>..\..\..\..\Desktop\Unturned\Unturned_Data\Managed\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>none</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -42,9 +42,11 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\lib\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\lib\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,6 +56,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\lib\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -76,7 +79,7 @@
     <Compile Include="Rocket.Unturned\Commands\CommandZ.cs" />
     <Compile Include="Rocket.Unturned\Commands\RocketCommandBase.cs" />
     <Compile Include="Rocket.Unturned\Permissions\RocketPermissions.cs" />
-    <Compile Include="Rocket.Unturned\Settings\Settings.cs" />
+    <Compile Include="Rocket.Unturned\Settings\ImplementationSettings.cs" />
     <Compile Include="Rocket.Unturned\Logging\Logger.cs" />
     <Compile Include="Rocket.Unturned\Commands\IRocketCommand.cs" />
     <Compile Include="Rocket.Unturned\Plugins\RocketPlugin.cs" />
@@ -95,10 +98,12 @@
     <ProjectReference Include="..\Rocket.API\Rocket.API.csproj">
       <Project>{c362df2f-1336-4932-aadc-4f2074fedb64}</Project>
       <Name>Rocket.API</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Rocket.Core\Rocket.Core.csproj">
       <Project>{7a9d652f-dc18-45fd-8964-dbaad6384c3d}</Project>
       <Name>Rocket.Core</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

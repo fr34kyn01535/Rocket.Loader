@@ -13,7 +13,7 @@ namespace Rocket.Core.Tasks
         private void Awake()
         {
 #if DEBUG
-            Logger.Log("Awake RocketTaskManager");
+            Logger.Log("RocketTaskManager > Awake");
 #endif
             Instance = this;
         }

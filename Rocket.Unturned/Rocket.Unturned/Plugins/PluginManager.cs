@@ -23,6 +23,9 @@ namespace Rocket.Core.Plugins
 
         private void Start()
         {
+#if DEBUG
+            Logger.Log("PluginManager > Start");
+#endif
             AddRocketPlayerComponents(Assembly.GetExecutingAssembly());
             RegisterCommands(Assembly.GetExecutingAssembly());
 

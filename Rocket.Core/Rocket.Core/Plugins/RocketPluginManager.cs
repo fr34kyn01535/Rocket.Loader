@@ -16,8 +16,11 @@ namespace Rocket.Core.Plugins
         private static List<Component> plugins = new List<Component>();
         private Dictionary<string, string> additionalLibraries = new Dictionary<string, string>();
 
-        private void Start()
+        private void Awake()
         {
+#if DEBUG
+            Logger.Log("RocketPluginManager > Start");
+#endif
             AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs args)
             {
                 string file;

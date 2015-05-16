@@ -20,7 +20,12 @@ namespace Rocket.Core.Translations
             [XmlAttribute]
             public string Value;
         }
-        internal void Awake() {
+
+        private void Start()
+        {
+#if DEBUG
+            Logger.Log("RocketTranslationManager > Awake");
+#endif
             foreach (var translation in RocketBootstrap.Implementation.Translation)
                 defaultTranslations.Add(translation.Key, translation.Value);
             Reload();

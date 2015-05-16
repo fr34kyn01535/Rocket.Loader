@@ -21,20 +21,16 @@ namespace Rocket.Core.Misc
             }
         }
 
-        private void Start() {
-            started = true;
-        }
-
         private DateTime? shutdownTime = null;
         private DateTime lastSaveTime;
         private bool shutdown = false;
         public static AutomaticShutdownWatchdog Instance;
         private bool started = false;
 
-        private void Awake()
+        private void Start()
         {
 #if DEBUG
-            Logger.Log("Awake RocketFeatures");
+            Logger.Log("AutomaticShutdownWatchdog > Awake");
 #endif
             DontDestroyOnLoad(transform.gameObject);
             Instance = this;
@@ -44,6 +40,7 @@ namespace Rocket.Core.Misc
                 Logger.Log("The server will automaticly shutdown in " + RocketSettingsManager.Settings.AutomaticShutdown.Interval + " seconds (" + shutdownTime.ToString() + " UTC)");
             }
             lastSaveTime = DateTime.UtcNow;
+            started = true;
         }
 
         private void checkTimerSave()
