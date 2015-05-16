@@ -22,12 +22,7 @@ namespace Rocket.RocketAPI
 
         public static void Say(string message, EChatMode chatmode = EChatMode.GLOBAL)
         {
-            Logger.Log("Broadcast: " + message);
-            Color color = Color.white;
-            foreach (string m in wrapMessage(message))
-            {
-                ChatManager.Instance.SteamChannel.send("tellChat", ESteamCall.OTHERS, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode, color, m });
-            }
+            Say(message, Color.white, chatmode);
         }
 
         public static void Say(string message, Color color, EChatMode chatmode = EChatMode.GLOBAL)
@@ -41,14 +36,7 @@ namespace Rocket.RocketAPI
 
         public static void Say(RocketPlayer player, string message, EChatMode chatmode = EChatMode.SAY)
         {
-            if (player == null)
-            {
-                Logger.Log(message);
-            }
-            else
-            {
-                Say(player.CSteamID, message, Color.white, chatmode);
-            }
+            RocketChatManager.Say(player, message, Color.white, chatmode);
         }
 
         public static void Say(RocketPlayer player, string message, Color color, EChatMode chatmode = EChatMode.SAY)
@@ -59,7 +47,7 @@ namespace Rocket.RocketAPI
             }
             else
             {
-                Say(player.CSteamID, message, Color.white, chatmode);
+                Say(player.CSteamID, message, color, chatmode);
             }
         }
 
