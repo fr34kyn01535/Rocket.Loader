@@ -10,7 +10,7 @@ namespace Rocket.RocketLoader.Patches
 
         public void Apply()
         {
-            MethodDefinition splash = RocketLoader.APIAssembly.MainModule.GetType("Rocket.Core.Rocket").Methods.AsEnumerable().Where(m => m.Name == "Splash").FirstOrDefault();
+            MethodDefinition splash = RocketLoader.APIAssembly.MainModule.GetType("Rocket.Unturned.Implementation").Methods.AsEnumerable().Where(m => m.Name == "Splash").FirstOrDefault();
             MethodDefinition getCommands = h.GetMethod("getCommands");
             getCommands.Body.GetILProcessor().InsertBefore(getCommands.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnturnedAssembly.MainModule.Import(splash)));
         }

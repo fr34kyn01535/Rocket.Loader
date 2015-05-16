@@ -1,11 +1,10 @@
 ﻿using Rocket.Core.RCON;
+using Rocket.Core.Settings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-//Source: http://stackoverflow.com/questions/1181561/how-to-effectively-log-asynchronously
+
 namespace Rocket.Core.Logging
 {
     public class LogEntry
@@ -20,14 +19,14 @@ namespace Rocket.Core.Logging
 
         private static readonly object logEntryQueueLock = new object();
 
-        private Queue<LogEntry> _LogEntryQueue = new Queue<LogEntry>();
-        private BackgroundWorker _Logger = new BackgroundWorker();
+        private Queue<LogEntry> logEntryQueue = new Queue<LogEntry>();
+        private BackgroundWorker logger = new BackgroundWorker();
 
         private AsyncLoggerQueue()
         {
             //configure background worker
-            _Logger.WorkerSupportsCancellation = false;
-            _Logger.DoWork += new DoWorkEventHandler(_Logger_DoWork);
+            logger.WorkerSupportsCancellation = false;
+            logger.DoWork += new DoWorkEventHandler(_Logger_DoWork);
         }
 
         public void Enqueue(LogEntry le)
@@ -35,11 +34,11 @@ namespace Rocket.Core.Logging
             //lock during write
             lock (logEntryQueueLock)
             {
-                _LogEntryQueue.Enqueue(le);
+                logEntryQueue.Enqueue(le);
 
                 //while locked check to see if the BW is running, if not start it
-                if (!_Logger.IsBusy)
-                    _Logger.RunWorkerAsync();
+                if (!logger.IsBusy)
+                    logger.RunWorkerAsync();
             }
         }
 
@@ -52,13 +51,13 @@ namespace Rocket.Core.Logging
                 bool skipEmptyCheck = false;
                 lock (logEntryQueueLock)
                 {
-                    if (_LogEntryQueue.Count <= 0) //if queue is empty than BW is done
+                    if (logEntryQueue.Count <= 0) //if queue is empty than BW is done
                         return;
-                    else if (_LogEntryQueue.Count > 1) //if greater than 1 we can skip checking to see if anything has been enqueued during the logging operation
+                    else if (logEntryQueue.Count > 1) //if greater than 1 we can skip checking to see if anything has been enqueued during the logging operation
                         skipEmptyCheck = true;
 
                     //dequeue the LogEntry that will be written to the log
-                    le = _LogEntryQueue.Dequeue();
+                    le = logEntryQueue.Dequeue();
                 }
 
                 processLog(le);
@@ -67,18 +66,18 @@ namespace Rocket.Core.Logging
                 {
                     lock (logEntryQueueLock)
                     {
-                        if (_LogEntryQueue.Count <= 0) //if queue is still empty than BW is done
+                        if (logEntryQueue.Count <= 0) //if queue is still empty than BW is done
                             return;
                     }
                 }
             }
         }
         private void processLog(LogEntry entry) {
-            if (String.IsNullOrEmpty(Rocket.HomeFolder) || !Directory.Exists(Rocket.HomeFolder + "Logs/")) return;
-            StreamWriter streamWriter = File.AppendText(Rocket.HomeFolder + "Logs/" + "Rocket.log");
+            if (String.IsNullOrEmpty(RocketBootstrap.Implementation.HomeFolder) || !Directory.Exists(RocketBootstrap.Implementation.HomeFolder + "Logs/")) return;
+            StreamWriter streamWriter = File.AppendText(RocketBootstrap.Implementation.HomeFolder + "Logs/" + "Rocket.log");
             streamWriter.WriteLine("[" + DateTime.Now + "] [" + entry.Severity.ToString() + "] " + entry.Message);
             streamWriter.Close();
-            if (SettingsManager.Settings.RCON.Port > 1) 
+            if (RocketSettingsManager.Settings.RCON.Port > 1) 
                 RCONServer.broadcast(entry.Message);
         }
     }

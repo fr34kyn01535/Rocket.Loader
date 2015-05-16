@@ -1,10 +1,10 @@
-﻿using SDG;
+﻿using Rocket.Core.Events;
+using Rocket.Core.Logging;
+using Rocket.Core.Settings;
+using Rocket.Core.Tasks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 
@@ -46,7 +46,7 @@ namespace Rocket.Core.RCON
             {
                 listener.Bind(new IPEndPoint(IPAddress.Any, _port));
                 listener.Listen(100);
-                TaskManager.Enqueue(() => { Logger.logRCON("Minimal server started successfully at 0.0.0.0:" + _port); });
+                RocketTaskManager.Enqueue(() => { Logger.logRCON("Minimal server started successfully at 0.0.0.0:" + _port); });
                 
 
                 while (!_shouldStop)
@@ -58,7 +58,7 @@ namespace Rocket.Core.RCON
             }
             catch (Exception e)
             {
-                TaskManager.Enqueue(() => { Logger.logRCON(e.ToString()); });
+                RocketTaskManager.Enqueue(() => { Logger.logRCON(e.ToString()); });
             }
         }
 
@@ -87,19 +87,19 @@ namespace Rocket.Core.RCON
                 state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
                 content = state.sb.ToString();
 
-                if (!content.StartsWith(RocketSettings.RCON.Password + "|")) { Send(handler, "false"); return; }
+                if (!content.StartsWith(RocketSettingsManager.Settings.RCON.Password + "|")) { Send(handler, "false"); return; }
 
-                content = content.Replace(RocketSettings.RCON.Password + "|", "");
+                content = content.Replace(RocketSettingsManager.Settings.RCON.Password + "|", "");
 
                 //if (content.IndexOf("<EOF>") > -1)
                 //{
                 //    content = content.Replace("<EOF>", "");
                     IPEndPoint remoteIpEndPoint = state.workSocket.RemoteEndPoint as IPEndPoint;
                     bool success = false;
-                    TaskManager.Enqueue(() =>
+                    RocketTaskManager.Enqueue(() =>
                     {
                         Logger.logRCON(string.Format("Received '{0}' (From: " + string.Format("{0}:{1}", remoteIpEndPoint.Address.ToString(), remoteIpEndPoint.Port) + ")", content));
-                        success=Commander.execute(new Steamworks.CSteamID(0), content);
+                        success = RocketEvents.triggerOnRocketCommandTriggered(content); 
                     });
 
                     if (success)
@@ -139,7 +139,7 @@ namespace Rocket.Core.RCON
             }
             catch (Exception e)
             {
-                TaskManager.Enqueue(() => { Logger.logRCON(e.ToString()); });
+                RocketTaskManager.Enqueue(() => { Logger.logRCON(e.ToString()); });
             }
         }
     }

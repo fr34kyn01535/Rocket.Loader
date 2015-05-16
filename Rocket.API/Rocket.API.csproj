@@ -102,10 +102,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Rocket.API\IRocketCommand.cs" />
-    <Compile Include="Rocket.API\IRocketPlayer.cs" />
+    <Compile Include="Rocket.API\IRocketImplementationConfigurationSection.cs" />
+    <Compile Include="Rocket.API\IRocketImplementation.cs" />
     <Compile Include="Rocket.API\IRocketPlugin.cs" />
-    <Compile Include="Rocket.API\IRocketConfiguration.cs" />
+    <Compile Include="Rocket.API\IRocketPluginConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

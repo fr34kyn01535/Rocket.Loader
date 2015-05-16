@@ -30,6 +30,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
+    <OutputPath>..\..\..\..\Desktop\Unturned\Unturned_Data\Managed\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\lib\Assembly-CSharp.dll</HintPath>
@@ -41,7 +50,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
@@ -49,31 +57,39 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chat\Chat.cs" />
-    <Compile Include="Commands\CommandCi.cs" />
-    <Compile Include="Commands\CommandCompass.cs" />
-    <Compile Include="Commands\CommandDuty.cs" />
-    <Compile Include="Commands\CommandGod.cs" />
-    <Compile Include="Commands\CommandHeal.cs" />
-    <Compile Include="Commands\CommandHome.cs" />
-    <Compile Include="Commands\CommandI.cs" />
-    <Compile Include="Commands\CommandInvestigate.cs" />
-    <Compile Include="Commands\CommandLag.cs" />
-    <Compile Include="Commands\CommandP.cs" />
-    <Compile Include="Commands\CommandRocket.cs" />
-    <Compile Include="Commands\CommandTp.cs" />
-    <Compile Include="Commands\CommandTphere.cs" />
-    <Compile Include="Commands\CommandV.cs" />
-    <Compile Include="Commands\CommandVanish.cs" />
-    <Compile Include="Commands\CommandZ.cs" />
-    <Compile Include="Commands\RocketCommandBase.cs" />
-    <Compile Include="Extensions\PlayerInventoryExtension.cs" />
-    <Compile Include="Player\RocketPlayer.cs" />
-    <Compile Include="Player\RocketPlayerComponent.cs" />
-    <Compile Include="Player\RocketPlayerEvents.cs" />
-    <Compile Include="Player\RocketPlayerFeatures.cs" />
+    <Compile Include="Rocket.Unturned\Chat\RocketChat.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandCi.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandCompass.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandDuty.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandGod.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandHeal.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandHome.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandI.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandInvestigate.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandLag.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandP.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandRocket.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandTp.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandTphere.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandV.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandVanish.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandZ.cs" />
+    <Compile Include="Rocket.Unturned\Commands\RocketCommandBase.cs" />
+    <Compile Include="Rocket.Unturned\Permissions\RocketPermissions.cs" />
+    <Compile Include="Rocket.Unturned\Settings\Settings.cs" />
+    <Compile Include="Rocket.Unturned\Logging\Logger.cs" />
+    <Compile Include="Rocket.Unturned\Commands\IRocketCommand.cs" />
+    <Compile Include="Rocket.Unturned\Plugins\RocketPlugin.cs" />
+    <Compile Include="Rocket.Unturned\RocketUI.cs" />
+    <Compile Include="Rocket.Unturned\Events\RocketServerEvents.cs" />
+    <Compile Include="Rocket.Unturned\Extensions\PlayerInventoryExtension.cs" />
+    <Compile Include="Rocket.Unturned\Implementation.cs" />
+    <Compile Include="Rocket.Unturned\Player\RocketPlayer.cs" />
+    <Compile Include="Rocket.Unturned\Player\RocketPlayerComponent.cs" />
+    <Compile Include="Rocket.Unturned\Events\RocketPlayerEvents.cs" />
+    <Compile Include="Rocket.Unturned\Player\RocketPlayerFeatures.cs" />
+    <Compile Include="Rocket.Unturned\Plugins\PluginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RocketPlugin.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rocket.API\Rocket.API.csproj">
@@ -85,6 +101,7 @@
       <Name>Rocket.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

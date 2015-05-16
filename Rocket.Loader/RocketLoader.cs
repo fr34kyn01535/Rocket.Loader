@@ -20,7 +20,7 @@ namespace Rocket.RocketLoader
                 {
                     //UnityAssembly = AssemblyDefinition.ReadAssembly("UnityEngine.dll");
                     UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
-                    APIAssembly = AssemblyDefinition.ReadAssembly("RocketAPI.dll");
+                    APIAssembly = AssemblyDefinition.ReadAssembly("Rocket.Unturned.dll");
                     LoaderAssembly = AssemblyDefinition.ReadAssembly(System.Reflection.Assembly.GetExecutingAssembly().Location);
                 }
                 catch (Exception e)
@@ -96,7 +96,7 @@ namespace Rocket.RocketLoader
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Your game was successfully patched");
 #if DEBUG
-                    //Console.ReadLine();
+                    Console.ReadLine();
 #endif
                     Environment.Exit(0);
                 }

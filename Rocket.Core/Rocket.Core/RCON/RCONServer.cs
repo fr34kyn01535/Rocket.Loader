@@ -1,4 +1,6 @@
-﻿using SDG;
+﻿using Rocket.Core.Events;
+using Rocket.Core.Logging;
+using Rocket.Core.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -159,11 +161,11 @@ namespace Rocket.Core.RCON
                     }
                 }
             }
-            catch (ObjectDisposedException ex)
+            catch (ObjectDisposedException)
             {
                 Logger.logRCON(string.Format("Client quit ({1}:{2})", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
             }
-            catch (SocketException ex)
+            catch (SocketException)
             {
                 Logger.logRCON(string.Format("Client quit ({1}:{2})", client.remoteEndPoint.Address.ToString(), client.remoteEndPoint.Port));
             }
@@ -196,7 +198,7 @@ namespace Rocket.Core.RCON
                 {
                     //h.Add(Input + "\n\r");
                     string cmd = Input.Split(' ')[0].ToLower();
-                    if (Commander.execute(new Steamworks.CSteamID(0), Input))
+                    if (RocketEvents.triggerOnRocketCommandTriggered(Input))
                     {
                         //Executed
                     }
@@ -232,7 +234,7 @@ namespace Rocket.Core.RCON
             }
             if (client.clientState == EClientState.Logging)
             {
-                if (Input == RocketSettings.RCON.Password)
+                if (Input == RocketSettingsManager.Settings.RCON.Password)
                 {
                     Logger.logRCON("Client has logged in");
                     client.clientState = EClientState.LoggedIn;

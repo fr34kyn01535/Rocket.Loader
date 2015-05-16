@@ -1,25 +1,18 @@
-﻿using SDG;
-using System;
+﻿using System;
 using System.Collections;
-using System.IO;
 using System.Reflection;
 using System.Text;
-using UnityEngine;
 
 namespace Rocket.Core.Logging
 {
-    public static partial class Logger
+    public partial class Logger
     {
         private static string lastAssembly = "";
 
-        /// <summary>
-        /// Log an message to console
-        /// </summary>
-        /// <param name="message"></param>
         public static void Log(string message)
         {
             string assembly = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
-            if (assembly == typeof(Logger).Assembly.GetName().Name || assembly == lastAssembly)
+            if (assembly == typeof(Logger).Assembly.GetName().Name || assembly == lastAssembly || assembly == "Rocket.Unturned")
             {
                 assembly = "";
             }
@@ -100,19 +93,11 @@ namespace Rocket.Core.Logging
             return result.ToString();
         }
 
-        /// <summary>
-        /// Log a warning message to console
-        /// </summary>
-        /// <param name="message"></param>
         public static void LogWarning(string message)
         {
             ProcessInternalLog(ELogType.Warning, message);
         }
 
-        /// <summary>
-        /// Log an error message to console
-        /// </summary>
-        /// <param name="message"></param>
         public static void LogError(string message)
         {
             ProcessInternalLog(ELogType.Error, message);
@@ -123,10 +108,6 @@ namespace Rocket.Core.Logging
             LogException(ex);
         }
 
-        /// <summary>
-        /// Log Exception object stracktrace to console
-        /// </summary>
-        /// <param name="ex"></param>
         public static void LogException(Exception ex)
         {
             string assembly = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
@@ -174,12 +155,7 @@ namespace Rocket.Core.Logging
 
         private static void writeToConsole(string message,ConsoleColor color){
             Console.ForegroundColor = color;
-            if (Console.CursorLeft != 0)
-            {
-                Steam.ConsoleInput.clearLine();
-            }
             Console.WriteLine(message);
-            Steam.ConsoleInput.redrawInputLine();
         }
 
 
@@ -187,7 +163,6 @@ namespace Rocket.Core.Logging
         {
             AsyncLoggerQueue.Current.Enqueue(new LogEntry() { Severity = type, Message = message });
         }
-
 
     }
 }
