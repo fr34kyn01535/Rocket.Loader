@@ -11,28 +11,36 @@ namespace Rocket.Core.Logging
 
         public static void Log(string message)
         {
-            System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
-
             string assembly = "";
-            if (stackTrace.FrameCount != 0)
-                assembly = stackTrace.GetFrame(1).GetMethod().DeclaringType.Assembly.GetName().Name;
-
-            if (assembly == "Rocket.Unturned" && stackTrace.FrameCount > 1)
+            try
             {
-                assembly = stackTrace.GetFrame(2).GetMethod().DeclaringType.Assembly.GetName().Name;
-            }
 
-            if (assembly == "" || assembly == typeof(Logger).Assembly.GetName().Name || assembly == lastAssembly || assembly == "Rocket.Unturned")
-            {
-                assembly = "";
-            }
-            else
-            {
-                assembly = assembly + " >> ";
-            }
+                System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
 
-            lastAssembly = assembly;
-            message = assembly + message;
+                if (stackTrace.FrameCount != 0)
+                    assembly = stackTrace.GetFrame(1).GetMethod().DeclaringType.Assembly.GetName().Name;
+
+                if (assembly == "Rocket.Unturned" && stackTrace.FrameCount > 1)
+                {
+                    assembly = stackTrace.GetFrame(2).GetMethod().DeclaringType.Assembly.GetName().Name;
+                }
+
+                if (assembly == "" || assembly == typeof(Logger).Assembly.GetName().Name || assembly == lastAssembly || assembly == "Rocket.Unturned")
+                {
+                    assembly = "";
+                }
+                else
+                {
+                    assembly = assembly + " >> ";
+                }
+
+                lastAssembly = assembly;
+                message = assembly + message;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("ouch");
+            }
             ProcessInternalLog(ELogType.Info, message);
         }
 
@@ -121,16 +129,31 @@ namespace Rocket.Core.Logging
 
         public static void LogException(Exception ex)
         {
-            System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
-            string source = stackTrace.GetFrame(1).GetMethod().Name;
-            string assembly = stackTrace.GetFrame(1).GetMethod().DeclaringType.Assembly.GetName().Name;
-            if (assembly == "Rocket.Unturned" && stackTrace.FrameCount > 1)
+            string source = "";
+            string assembly = "";
+            try
             {
-                source = stackTrace.GetFrame(2).GetMethod().Name;
-                assembly = stackTrace.GetFrame(2).GetMethod().DeclaringType.Assembly.GetName().Name;
+                System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
+                if (stackTrace.FrameCount != 0)
+                {
+                    source = stackTrace.GetFrame(1).GetMethod().DeclaringType.Assembly.GetName().Name;
+                    assembly = stackTrace.GetFrame(1).GetMethod().DeclaringType.Assembly.GetName().Name;
+                }
+                if (assembly == "Rocket.Unturned" && stackTrace.FrameCount > 1)
+                {
+                    source = stackTrace.GetFrame(2).GetMethod().Name;
+                    assembly = stackTrace.GetFrame(2).GetMethod().DeclaringType.Assembly.GetName().Name;
+                }
+                lastAssembly = assembly;
+
+                if (assembly != "") assembly += " >> ";
             }
-            lastAssembly = assembly;
-            ProcessInternalLog(ELogType.Exception, assembly + " >> Exception in " + source + ": " + ex);
+            catch (Exception)
+            {
+                Console.WriteLine("ouch...");
+            }
+
+            ProcessInternalLog(ELogType.Exception, assembly + "Exception in " + source + ": " + ex);
         }
 
         private static void ProcessInternalLog(ELogType type, string message)

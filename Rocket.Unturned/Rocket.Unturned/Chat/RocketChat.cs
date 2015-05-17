@@ -12,10 +12,15 @@ namespace Rocket.Unturned
     {
         public static void Say(string message, EChatMode chatmode = EChatMode.GLOBAL)
         {
+            Say(message, Color.white, chatmode);
+        }
+
+        public static void Say(string message,Color color, EChatMode chatmode = EChatMode.GLOBAL)
+        {
             Logger.Log("Broadcast: " + message);
             foreach (string m in wrapMessage(message))
             {
-                ChatManager.Instance.SteamChannel.send("tellChat", ESteamCall.OTHERS, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode, m });
+                ChatManager.Instance.SteamChannel.send("tellChat", ESteamCall.OTHERS, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode,color, m });
             }
         }
 

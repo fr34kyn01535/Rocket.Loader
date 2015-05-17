@@ -16,10 +16,9 @@ namespace Rocket.Core.Plugins
         private static List<Component> plugins = new List<Component>();
         private Dictionary<string, string> additionalLibraries = new Dictionary<string, string>();
 
-        private void Start()
-        {
+        private void Awake() {
 #if DEBUG
-            Logger.Log("RocketPluginManager > Start");
+            Logger.Log("RocketPluginManager > Awake");
 #endif
             AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs args)
             {
@@ -37,9 +36,17 @@ namespace Rocket.Core.Plugins
 
             additionalLibraries = loadAdditionalAssemblies(RocketBootstrap.Implementation.LibrariesFolder);
             pluginAssemblies = loadPluginAssemblies(RocketBootstrap.Implementation.PluginsFolder);
+
+        }
+
+        private void Start()
+        {
+#if DEBUG
+            Logger.Log("RocketPluginManager > Start");
+#endif
             List<Type> pluginImplemenations = RocketHelper.GetTypesFromInterface(pluginAssemblies, "IRocketPlugin");
 #if DEBUG
-          //  Logger.Log("Libraries: " + String.Join(", ", additionalLibraries.Select(a => a.Key).ToArray()));
+            //  Logger.Log("Libraries: " + String.Join(", ", additionalLibraries.Select(a => a.Key).ToArray()));
             Logger.Log("Plugins: " + String.Join(", ", pluginAssemblies.Select(a => a.GetName().Name).ToArray()));
             Logger.Log("Plugin classes: " + String.Join(", ", pluginImplemenations.Select(a => a.Name).ToArray()));
 #endif
