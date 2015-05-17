@@ -47,7 +47,7 @@ namespace Rocket.Core.Misc
         {
             try
             {
-                if (RocketSettingsManager.Settings.AutomaticShutdown.Interval > 0 && (DateTime.UtcNow - lastSaveTime).TotalSeconds > RocketSettingsManager.Settings.AutomaticShutdown.Interval)
+                if (RocketSettingsManager.Settings.AutomaticSaveInterval > 0 && (DateTime.UtcNow - lastSaveTime).TotalSeconds > RocketSettingsManager.Settings.AutomaticSaveInterval)
                 {
                     RocketEvents.triggerOnRocketSave();
                     Logger.Log("Server saved.");
