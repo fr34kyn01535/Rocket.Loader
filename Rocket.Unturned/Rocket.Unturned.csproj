@@ -78,11 +78,12 @@
     <Compile Include="Rocket.Unturned\Commands\CommandVanish.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandZ.cs" />
     <Compile Include="Rocket.Unturned\Commands\RocketCommandBase.cs" />
+    <Compile Include="Rocket.Unturned\Enumerations\InventoryGroup.cs" />
     <Compile Include="Rocket.Unturned\Permissions\RocketPermissions.cs" />
+    <Compile Include="Rocket.Unturned\Plugins\RocketPlugin.cs" />
     <Compile Include="Rocket.Unturned\Settings\ImplementationSettings.cs" />
     <Compile Include="Rocket.Unturned\Logging\Logger.cs" />
     <Compile Include="Rocket.Unturned\Commands\IRocketCommand.cs" />
-    <Compile Include="Rocket.Unturned\Plugins\RocketPlugin.cs" />
     <Compile Include="Rocket.Unturned\RocketUI.cs" />
     <Compile Include="Rocket.Unturned\Events\RocketServerEvents.cs" />
     <Compile Include="Rocket.Unturned\Extensions\PlayerInventoryExtension.cs" />

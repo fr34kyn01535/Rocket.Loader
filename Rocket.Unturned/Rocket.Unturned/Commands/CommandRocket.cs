@@ -52,7 +52,7 @@ namespace Rocket.Unturned.Commands
                         RocketChat.Say(caller, RocketTranslationManager.Translate("command_rocket_plugins_unloaded", String.Join(", ", plugins.Where(p => !p.Loaded).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
                         break;
                     case "reload":
-                        if (caller != null && !caller.HasPermission("rocket.reload")) return;
+                        if (caller!=null && !caller.HasPermission("rocket.reload")) return;
                             RocketChat.Say(caller, RocketTranslationManager.Translate("command_rocket_reload"));
                             RocketTranslationManager.Reload();
                             RocketSettingsManager.Reload();

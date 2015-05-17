@@ -1,6 +1,7 @@
 ﻿using Rocket.API;
 using Rocket.Core.Logging;
 using Rocket.Core.Misc;
+using Rocket.Core.Plugins;
 using Rocket.Core.Settings;
 using Rocket.Core.Translations;
 using Rocket.Unturned;
@@ -15,7 +16,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace Rocket.Core.Plugins
+namespace Rocket.Unturned.Plugins
 {
     public sealed class PluginManager : MonoBehaviour
     {
@@ -26,6 +27,9 @@ namespace Rocket.Core.Plugins
 #if DEBUG
             Logger.Log("PluginManager > Start");
 #endif
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(("Loading Rocket.Unturned " + Assembly.GetExecutingAssembly().GetName().Version.ToString()).PadRight(80, '.'));
+            Console.ForegroundColor = ConsoleColor.White;
             AddRocketPlayerComponents(Assembly.GetExecutingAssembly());
             RegisterCommands(Assembly.GetExecutingAssembly());
 
@@ -37,7 +41,7 @@ namespace Rocket.Core.Plugins
             SteamGameServer.SetKeyValue("maxprotectedslots", ((ImplementationSettings)RocketSettingsManager.Settings.Implementation).ReservedSlots.ToString());
             SteamGameServer.SetBotPlayerCount(1);
         }
-
+        
         internal static void RemoveRocketPlayerComponents(Assembly plugin)
         {
             try
@@ -56,9 +60,14 @@ namespace Rocket.Core.Plugins
         {
             try
             {
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 List<Type> playerComponents = RocketHelper.GetTypesFromParentClass(plugin, typeof(RocketPlayerComponent));
                 rocketPlayerComponents.AddRange(playerComponents);
-                Steam.Players.ForEach(p => p.Player.gameObject.AddComponent(playerComponents.GetType()));
+                Console.WriteLine("     Loading " + playerComponents.Count+" RocketPlayerComponents");
+                foreach (Type playerComponent in playerComponents)
+                {
+                    Steam.Players.ForEach(p => p.Player.gameObject.AddComponent(playerComponent.GetType()));
+                }
             }
             catch (Exception ex)
             {
@@ -94,27 +103,26 @@ namespace Rocket.Core.Plugins
                 assemblyName = command.GetType().Assembly.GetName().Name;
             }
 
-            List<Command> commandList = new List<Command>();
-            foreach (Command ccommand in Commander.Commands)
+            List<Command> commandList = Commander.Commands.ToList();
+            List<Command> filteredCommandList = commandList.Where(c => c.commandName.ToLower() != command.commandName.ToLower()).ToList();
+
+
+
+            if (commandList.Count() != filteredCommandList.Count())
             {
-                if (ccommand.commandName.ToLower().Equals(command.commandName.ToLower()))
-                {
-                    if (ccommand.GetType().Assembly.GetName().Name == "Assembly-CSharp")
-                    {
-                        Logger.LogWarning(assemblyName + "." + command.commandName + " overwrites built in command " + ccommand.commandName);
-                    }
-                    else
-                    {
-                        Logger.LogWarning("Already register command " + assemblyName + "." + command.commandName + " because it would overwrite " + ccommand.GetType().Assembly.GetName().Name + "." + ccommand.commandName);
-                        return;
-                    }
-                }
-                else
-                {
-                    commandList.Add(ccommand);
-                }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("     ~ /" +command.commandInfo);
             }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("     + /" + command.commandInfo);
+            }
+
+            Console.ForegroundColor = ConsoleColor.White;
+
             commandList.Add(command);
+
             Commander.Commands = commandList.ToArray();
         }
 

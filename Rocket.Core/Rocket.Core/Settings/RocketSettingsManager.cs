@@ -193,18 +193,6 @@ namespace Rocket.Core.Settings
 
         private object implementatonConfiguration = RocketBootstrap.Implementation.Configuration;
 
-        [XmlElement(ElementName = "AutomaticShutdown")]
-        public AutomaticShutdownSettingsSection AutomaticShutdown
-        {
-            get
-            {
-                return automaticShutdown;
-            }
-            set
-            {
-                automaticShutdown = value;
-            }
-        }
 
         [XmlElement(ElementName = "LanguageCode")]
         public string LanguageCode
@@ -242,6 +230,19 @@ namespace Rocket.Core.Settings
             set
             {
                 automaticSaveInterval = value; ;
+            }
+        }
+
+        [XmlElement(ElementName = "AutomaticShutdown")]
+        public AutomaticShutdownSettingsSection AutomaticShutdown
+        {
+            get
+            {
+                return automaticShutdown;
+            }
+            set
+            {
+                automaticShutdown = value;
             }
         }
 
@@ -284,7 +285,7 @@ namespace Rocket.Core.Settings
             }
         }
 
-        [XmlElement(ElementName = "Server")]
+        [XmlElement(ElementName = "Game")]
         public object Implementation
         {
             get
@@ -333,6 +334,7 @@ namespace Rocket.Core.Settings
                 }
                 else
                 {
+                    Settings = fallback;
                     serializer.Serialize(new StreamWriter(configFile), fallback);
                 }
             }

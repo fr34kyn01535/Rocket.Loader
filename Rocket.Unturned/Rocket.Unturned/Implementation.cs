@@ -1,8 +1,8 @@
 ﻿using Rocket.API;
 using Rocket.Core;
-using Rocket.Core.Plugins;
 using Rocket.Unturned.Events;
 using Rocket.Unturned.Logging;
+using Rocket.Unturned.Plugins;
 using Rocket.Unturned.Settings;
 using SDG;
 using System;
@@ -22,7 +22,7 @@ namespace Rocket.Unturned
         [Browsable(false)]
         public static void Launch()
         {
-            Instance = new GameObject().AddComponent<Implementation>();
+            new GameObject().AddComponent<Implementation>();
         }
 
         [Browsable(false)]
@@ -43,6 +43,7 @@ namespace Rocket.Unturned
 
         private void Awake()
         {
+            Instance = this;
 #if DEBUG
             Logger.Log("Implementation > Awake");
 #endif

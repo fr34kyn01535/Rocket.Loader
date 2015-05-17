@@ -1,6 +1,7 @@
 ﻿using Rocket.API;
 using Rocket.Core.Plugins;
 using Rocket.Core.Settings;
+using Rocket.Core.Tasks;
 using Rocket.Core.Translations;
 using Rocket.Unturned.Logging;
 using System;
@@ -21,14 +22,20 @@ namespace Rocket.Unturned.Plugins
 
         internal override void LoadPlugin()
         {
-            ReloadConfiguration();
+            try
+            {
+                ReloadConfiguration(); 
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Failed to load configuration: " + ex.ToString());
+            }
             base.LoadPlugin();
         }
 
-
         public void ReloadConfiguration()
         {
-            homeDirectory = Implementation.Instance.HomeFolder + "Plugins/" + (typeof(TConfiguration).Assembly.GetName().Name) + "/";
+            homeDirectory = Implementation.Instance.PluginsFolder + (typeof(TConfiguration).Assembly.GetName().Name) + "/";
             if (RocketSettingsManager.Settings.WebConfigurations.Enabled)
             {
                 try
@@ -42,7 +49,7 @@ namespace Rocket.Unturned.Plugins
             }
             else
             {
-                if (!Directory.Exists(HomeDirectory)) Directory.CreateDirectory(HomeDirectory);
+                if (!Directory.Exists(homeDirectory)) Directory.CreateDirectory(homeDirectory);
 
                 try
                 {
@@ -66,9 +73,18 @@ namespace Rocket.Unturned.Plugins
 
         public virtual Dictionary<string, string> DefaultTranslations { get { return new Dictionary<string, string>(); } }
 
+        public static void EnqueueTask(Action a)
+        {
+            RocketTaskManager.Enqueue(a);
+        }
+
         internal virtual void LoadPlugin()
         {
             DontDestroyOnLoad(transform.gameObject);
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine();
+            Console.WriteLine(("Loading " + GetType().Name +" "+ GetType().Assembly.GetName().Version.ToString()).PadRight(80, '.'));
+            Console.ForegroundColor = ConsoleColor.White;
             try
             {
                 PluginManager.AddRocketPlayerComponents(GetType().Assembly);
@@ -102,10 +118,12 @@ namespace Rocket.Unturned.Plugins
         public void ReloadTranslation()
         {
             string name = GetType().Assembly.GetName().Name;
-#if DEBUG
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
             int c = DefaultTranslations == null ? 0 : DefaultTranslations.Count;
-            Logger.Log("Loading " + c + " translations for " + name);
-#endif
+            Console.WriteLine("     Loading " + c + " translations");
+            Console.ForegroundColor = ConsoleColor.White;
+
             translations = RocketTranslationManager.LoadTranslation(name, DefaultTranslations);
         }
 
@@ -117,12 +135,12 @@ namespace Rocket.Unturned.Plugins
             loaded = false;
         }
 
-        internal void OnEnable()
+        public void OnEnable()
         {
             LoadPlugin();
         }
 
-        internal void OnDisable()
+        public void OnDisable()
         {
             UnloadPlugin();
         }
@@ -156,13 +174,13 @@ namespace Rocket.Unturned.Plugins
             }
         }
 
-        public void Load()
+        protected virtual void Load()
         {
 
         }
 
 
-        public void Unload()
+        protected virtual void Unload()
         {
 
         }

@@ -39,7 +39,7 @@ namespace Rocket.Unturned.Commands
             else
             {
                 RocketPlayer otherPlayer = RocketPlayer.FromName(command[0]);
-                if (otherPlayer != null && otherPlayer != caller)
+                if (otherPlayer != null)
                 {
                     otherPlayer.Heal(100);
                     otherPlayer.Bleeding = false;
@@ -50,7 +50,7 @@ namespace Rocket.Unturned.Commands
                     RocketChat.Say(caller, RocketTranslationManager.Translate("command_heal_success_me", otherPlayer.CharacterName));
                     
                     if(caller != null)
-                        RocketChat.Say(otherPlayer.CSteamID, RocketTranslationManager.Translate("command_heal_success_other", caller.CharacterName));
+                        RocketChat.Say(otherPlayer, RocketTranslationManager.Translate("command_heal_success_other", caller.CharacterName));
                 }
                 else
                 {

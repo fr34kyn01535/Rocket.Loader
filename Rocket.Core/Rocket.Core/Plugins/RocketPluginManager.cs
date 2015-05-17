@@ -16,7 +16,7 @@ namespace Rocket.Core.Plugins
         private static List<Component> plugins = new List<Component>();
         private Dictionary<string, string> additionalLibraries = new Dictionary<string, string>();
 
-        private void Awake()
+        private void Start()
         {
 #if DEBUG
             Logger.Log("RocketPluginManager > Start");
@@ -37,13 +37,20 @@ namespace Rocket.Core.Plugins
 
             additionalLibraries = loadAdditionalAssemblies(RocketBootstrap.Implementation.LibrariesFolder);
             pluginAssemblies = loadPluginAssemblies(RocketBootstrap.Implementation.PluginsFolder);
-
             List<Type> pluginImplemenations = RocketHelper.GetTypesFromInterface(pluginAssemblies, "IRocketPlugin");
-
+#if DEBUG
+          //  Logger.Log("Libraries: " + String.Join(", ", additionalLibraries.Select(a => a.Key).ToArray()));
+            Logger.Log("Plugins: " + String.Join(", ", pluginAssemblies.Select(a => a.GetName().Name).ToArray()));
+            Logger.Log("Plugin classes: " + String.Join(", ", pluginImplemenations.Select(a => a.Name).ToArray()));
+#endif
             foreach (Type plugin in pluginImplemenations)
             {
                 plugins.Add(RocketBootstrap.Instance.gameObject.AddComponent(plugin));
             }
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Done".PadRight(80, '.'));
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public static IRocketPlugin GetPlugin(string name) {
@@ -96,9 +103,8 @@ namespace Rocket.Core.Plugins
                 foreach (FileInfo library in pluginsLibraries)
                 {
                     Assembly assembly = Assembly.Load(File.ReadAllBytes(library.FullName));
-                    Logger.Log(assembly.GetName().Name + " Version: " + assembly.GetName().Version);
+                   // Logger.Log(assembly.GetName().Name + " Version: " + assembly.GetName().Version);
                     assemblies.Add(assembly);
-                    Debug.Break();
                 }
             }
             catch (Exception ex)

@@ -40,12 +40,12 @@ namespace Rocket.Unturned.Commands
             {
                 Logger.Log(RocketTranslationManager.Translate("command_duty_enable_console", caller.CharacterName));
                 RocketChat.Say(caller, RocketTranslationManager.Translate("command_duty_enable_private"));
-                caller.Admin(true,caller);
+                caller.Admin(true, caller);
             }
 
             RocketServerEvents.OnPlayerDisconnected += (RocketPlayer player) =>
             {
-                if (player == caller)
+                if (caller == player)
                 {
                     Logger.Log(RocketTranslationManager.Translate("command_duty_disable_console", player.CharacterName));
                     RocketChat.Say(caller, RocketTranslationManager.Translate("command_duty_disable_private"));

@@ -26,14 +26,28 @@ namespace Rocket.Unturned
                 Logger.Log(message);
              }
             else {
-                foreach (string m in wrapMessage(message))
-                {
-                    ChatManager.Instance.SteamChannel.send("tellChat", player.CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode, m });
-                }
+                Say(player.CSteamID, message,Color.white, chatmode);
+            }
+        }
+
+        public static void Say(RocketPlayer player, string message, Color color, EChatMode chatmode = EChatMode.SAY)
+        {
+            if (player == null)
+            {
+                Logger.Log(message);
+            }
+            else
+            {
+                Say(player.CSteamID, message, Color.white, chatmode);
             }
         }
 
         public static void Say(CSteamID CSteamID, string message, EChatMode chatmode = EChatMode.SAY)
+        {
+            Say(CSteamID, message, Color.white, chatmode);
+        }
+
+        public static void Say(CSteamID CSteamID, string message, Color color, EChatMode chatmode = EChatMode.SAY)
         {
             if (CSteamID == null || CSteamID.ToString() == "0")
             {
@@ -43,7 +57,7 @@ namespace Rocket.Unturned
             {
                 foreach (string m in wrapMessage(message))
                 {
-                    ChatManager.Instance.SteamChannel.send("tellChat", CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode, m });
+                    ChatManager.Instance.SteamChannel.send("tellChat", CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode,color, m });
                 }
             }
         }

@@ -23,9 +23,5 @@ namespace Rocket.API
         void ReloadTranslation();
 
         string Translate(string translationKey, params object[] placeholder);
-
-        void Load();
-
-        void Unload();
     }
 }

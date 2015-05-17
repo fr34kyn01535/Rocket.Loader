@@ -1,5 +1,6 @@
 ﻿using Rocket.API;
 using Rocket.Core.Logging;
+using Rocket.Unturned.Enumerations;
 using Rocket.Unturned.Player;
 using SDG;
 using Steamworks;
@@ -121,12 +122,12 @@ namespace Rocket.Unturned.Events
                         break;
                     default:
 #if DEBUG
-                        string o = "";
-                        foreach (object r in R)
-                        {
-                            o += r.ToString();
-                        }
-                        Logger.Log("Send+" + s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
+                       // string o = "";
+                       // foreach (object r in R)
+                       // {
+                       //     o += r.ToString();
+                       // }
+                       // Logger.Log("Send+" + s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
 #endif
                         break;
                 }
@@ -215,9 +216,6 @@ namespace Rocket.Unturned.Events
                 Logger.Log(ex);
             }
         }
-
-        public enum InventoryGroup { Primary = 0, Secondary = 1, Hands = 2, Backpack = 3, Vest = 4, Shirt = 5, Pants = 6, Storage = 7 };
-
 
         public delegate void PlayerInventoryUpdated(RocketPlayer player, InventoryGroup inventoryGroup, byte inventoryIndex, ItemJar P);
         public static event PlayerInventoryUpdated OnPlayerInventoryUpdated;
