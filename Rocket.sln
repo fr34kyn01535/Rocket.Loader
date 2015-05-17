@@ -13,6 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Loader", "Rocket.Loa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Unturned", "Rocket.Unturned\Rocket.Unturned.csproj", "{BADB74F6-90C0-40AF-865D-27795B50C469}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{74BDC6CC-BAF0-4205-83F7-4244A41EA255}"
+	ProjectSection(SolutionItems) = preProject
+		lib\Assembly-CSharp-firstpass.dll = lib\Assembly-CSharp-firstpass.dll
+		lib\Assembly-CSharp.dll = lib\Assembly-CSharp.dll
+		lib\UnityEngine.dll = lib\UnityEngine.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
