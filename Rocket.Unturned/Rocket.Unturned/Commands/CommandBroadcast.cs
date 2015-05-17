@@ -37,7 +37,6 @@ namespace Rocket.Unturned.Commands
             if(command.Length > 1){
                 c = RocketChat.GetColorFromName(command[1],c);
             }
-            c = new Color(215, 84, 44,100);
             RocketChat.Say(command[0], c);
         }
     }
