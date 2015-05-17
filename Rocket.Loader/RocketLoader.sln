@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketLoader", "RocketLoader.csproj", "{67CD3888-82BF-4D69-AE86-A9026018765C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67CD3888-82BF-4D69-AE86-A9026018765C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67CD3888-82BF-4D69-AE86-A9026018765C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67CD3888-82BF-4D69-AE86-A9026018765C}.Debug|x64.ActiveCfg = Debug|x64
+		{67CD3888-82BF-4D69-AE86-A9026018765C}.Debug|x64.Build.0 = Debug|x64
+		{67CD3888-82BF-4D69-AE86-A9026018765C}.Debug|x86.ActiveCfg = Debug|x86
+		{67CD3888-82BF-4D69-AE86-A9026018765C}.Debug|x86.Build.0 = Debug|x86
+		{67CD3888-82BF-4D69-AE86-A9026018765C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67CD3888-82BF-4D69-AE86-A9026018765C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67CD3888-82BF-4D69-AE86-A9026018765C}.Release|x64.ActiveCfg = Release|x64
+		{67CD3888-82BF-4D69-AE86-A9026018765C}.Release|x64.Build.0 = Release|x64
+		{67CD3888-82BF-4D69-AE86-A9026018765C}.Release|x86.ActiveCfg = Release|x86
+		{67CD3888-82BF-4D69-AE86-A9026018765C}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = RocketLoader.csproj
+	EndGlobalSection
+EndGlobal
