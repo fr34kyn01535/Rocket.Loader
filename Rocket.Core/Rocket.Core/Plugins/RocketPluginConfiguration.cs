@@ -12,12 +12,6 @@ namespace Rocket.Core.Plugins
 
     public static class RocketPluginConfiguration
     {
-        public static void Save(this IRocketPluginConfiguration configuration,string configurationFile)
-        {
-            string filename = String.Format(configurationFile, RocketBootstrap.Implementation.HomeFolder, configuration.GetType().Assembly.GetName().Name);
-            RocketPluginConfiguration.SaveConfiguration(configuration, filename);
-        }
-
         public static T LoadWebConfiguration<T>()
         {
             string target = RocketSettingsManager.Settings.WebConfigurations.Url;

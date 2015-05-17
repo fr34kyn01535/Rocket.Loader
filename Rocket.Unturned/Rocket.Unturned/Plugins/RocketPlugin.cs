@@ -13,10 +13,9 @@ namespace Rocket.Unturned.Plugins
 {
     public static class RocketPluginExtensions
     {
-
-        public static void Save(this IRocketPluginConfiguration configuration, string configurationFile)
+        public static void Save(this IRocketPluginConfiguration configuration)
         {
-            string filename = String.Format(configurationFile, Implementation.Instance.HomeFolder, configuration.GetType().Assembly.GetName().Name);
+            string filename = String.Format("{1}/{1}.config.xml", Implementation.Instance.PluginsFolder, configuration.GetType().Assembly.GetName().Name);
             RocketPluginConfiguration.SaveConfiguration(configuration, filename);
         }
     }

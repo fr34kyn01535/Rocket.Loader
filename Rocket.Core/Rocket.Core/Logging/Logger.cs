@@ -11,16 +11,16 @@ namespace Rocket.Core.Logging
 
         public static void Log(string message)
         {
+            if (message == null) return;
             string assembly = "";
             try
             {
-
                 System.Diagnostics.StackTrace stackTrace = new System.Diagnostics.StackTrace();
 
                 if (stackTrace.FrameCount != 0)
                     assembly = stackTrace.GetFrame(1).GetMethod().DeclaringType.Assembly.GetName().Name;
 
-                if ((assembly == "Rocket.Unturned" || assembly == "Assembly-CSharp") && stackTrace.FrameCount > 1)
+                if ((assembly == "Rocket.Unturned" || assembly == "Assembly-CSharp") && stackTrace.FrameCount > 2)
                 {
                     assembly = stackTrace.GetFrame(2).GetMethod().DeclaringType.Assembly.GetName().Name;
                 }
@@ -39,7 +39,7 @@ namespace Rocket.Core.Logging
             }
             catch (Exception)
             {
-                Console.WriteLine("ouch");
+                throw;
             }
             ProcessInternalLog(ELogType.Info, message);
         }
@@ -114,11 +114,13 @@ namespace Rocket.Core.Logging
 
         public static void LogWarning(string message)
         {
+            if (message == null) return;
             ProcessInternalLog(ELogType.Warning, message);
         }
 
         public static void LogError(string message)
         {
+            if (message == null) return;
             ProcessInternalLog(ELogType.Error, message);
         }
 
