@@ -79,6 +79,7 @@
     <Compile Include="Rocket.Unturned\Commands\CommandTphere.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandV.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandVanish.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandBroadcast.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandZ.cs" />
     <Compile Include="Rocket.Unturned\Commands\RocketCommandBase.cs" />
     <Compile Include="Rocket.Unturned\Enumerations\InventoryGroup.cs" />

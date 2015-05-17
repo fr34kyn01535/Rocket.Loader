@@ -304,6 +304,7 @@ namespace Rocket.Core.Settings
     {
         public static RocketSettings Settings;
 
+
         private void Awake()
         {
 #if DEBUG
@@ -329,7 +330,7 @@ namespace Rocket.Core.Settings
                     }
                     using (StreamWriter w = new StreamWriter(configFile))
                     {
-                        serializer.Serialize(w, new RocketSettings());
+                        serializer.Serialize(w, Settings);
                     }
                 }
                 else

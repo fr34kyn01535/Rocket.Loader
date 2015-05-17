@@ -13,6 +13,7 @@ namespace Rocket.Unturned.Permissions
 {
     public class RocketPermissions
     {
+        [EditorBrowsable(EditorBrowsableState.Never)]
 
         public static bool CheckPermissions(SteamPlayer player, string permission)
         {
@@ -28,6 +29,20 @@ namespace Rocket.Unturned.Permissions
 
             return player.IsAdmin;
         }
+
+        public static bool HasPermission(SteamPlayer player, string requestedPermission)
+        {
+            List<string> permissions = RocketPermissionsManager.GetPermissions(player.SteamPlayerID.CSteamID.ToString());
+
+            if (permissions.Where(p => p.ToLower() == requestedPermission || p.ToLower() == requestedPermission.Replace(".",".*") || p.StartsWith(requestedPermission + ".")).Count() != 0 || permissions.Contains("*"))
+            {
+                return true;
+            }
+
+            return player.IsAdmin;
+        }
+
+
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static bool CheckValid(ValidateAuthTicketResponse_t r)
