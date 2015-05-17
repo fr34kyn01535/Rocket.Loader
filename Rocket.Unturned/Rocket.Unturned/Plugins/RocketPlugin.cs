@@ -14,6 +14,12 @@ namespace Rocket.Unturned.Plugins
 
     public class RocketPlugin<TConfiguration> : RocketPlugin, IRocketPlugin<TConfiguration>
     {
+        public static void Save(this IRocketPluginConfiguration configuration, string configurationFile)
+        {
+            string filename = String.Format(configurationFile, Implementation.Instance.HomeFolder, configuration.GetType().Assembly.GetName().Name);
+            RocketPluginConfiguration.SaveConfiguration(configuration, filename);
+        }
+
         private TConfiguration configuration;
         public TConfiguration Configuration { get { return configuration; } set { configuration = value; } }
 

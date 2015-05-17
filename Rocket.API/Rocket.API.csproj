@@ -127,10 +127,5 @@
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
-    <CallTarget Targets="GenerateMonoSymbols" Condition=" Exists('$(OutputPath)\$(AssemblyName).pdb') " />
-  </Target>
-  <Target Name="GenerateMonoSymbols">
-    <Message Text="$(ProjectName) -&gt; $(TargetPath).mdb" Importance="High" />
-    <Exec Command="$(ProjectDir)lib\pdb2mdb.exe $(AssemblyName).dll" WorkingDirectory="$(MSBuildProjectDirectory)\$(OutputPath)" />
   </Target>
 </Project>
