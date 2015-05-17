@@ -32,6 +32,7 @@ namespace Rocket.Unturned.Events
                     Directory.Delete(Implementation.Instance.HomeFolder + "../Players/", true);
                 }
                 Logger.Log("Shutting down...");
+                SaveManager.save();
                 Steam.shutdown();
             };
             RocketEvents.OnRocketCommandTriggered += (string command, ref bool success) => { success = Commander.execute(new Steamworks.CSteamID(0), command); };
