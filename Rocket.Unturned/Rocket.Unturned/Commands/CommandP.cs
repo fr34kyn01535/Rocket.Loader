@@ -28,11 +28,6 @@ namespace Rocket.Unturned.Commands
 
         public void Execute(RocketPlayer caller, string[] command)
         {
-            foreach (string p in caller.Permissions)
-            {
-               Logger.Log("P:" + p);
-            }
-
             if (command.Length > 1)
             {
                 RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));

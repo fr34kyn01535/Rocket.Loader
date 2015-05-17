@@ -155,7 +155,7 @@ namespace Rocket.Unturned.Player
 
         public bool HasPermission(string permission)
         {
-            return RocketPermissions.CheckPermissions(this.Player.SteamChannel.SteamPlayer, permission);
+            return RocketPermissions.HasPermission(this.Player.SteamChannel.SteamPlayer, permission);
         }
 
         public void Kick(string reason)
