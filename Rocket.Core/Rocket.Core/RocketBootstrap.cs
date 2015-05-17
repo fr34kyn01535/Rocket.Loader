@@ -45,6 +45,7 @@ namespace Rocket.Core
                 gameObject.AddComponent<RocketTranslationManager>();
                 gameObject.AddComponent<RocketPermissionsManager>();
                 gameObject.AddComponent<RocketSettingsManager>();
+                gameObject.AddComponent<AutomaticShutdownWatchdog>();
             }
             catch (Exception e)
             {
