@@ -121,9 +121,9 @@ namespace Rocket.Unturned.Plugins
 
             Console.ForegroundColor = ConsoleColor.White;
 
-            commandList.Add(command);
+            filteredCommandList.Add(command);
 
-            Commander.Commands = commandList.ToArray();
+            Commander.Commands = filteredCommandList.ToArray();
         }
 
         private void onPlayerConnected(CSteamID id)
