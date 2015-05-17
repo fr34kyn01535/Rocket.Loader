@@ -10,6 +10,25 @@ namespace Rocket.Unturned
 {
     public sealed class RocketChat : MonoBehaviour
     {
+        public static Color GetColorByName(string colorName, Color fallback)
+        {
+            switch (colorName.Trim().ToLower())
+            {
+                case "black": return Color.black;
+                case "blue": return Color.blue;
+                case "clear": return Color.clear;
+                case "cyan": return Color.cyan;
+                case "gray": return Color.gray;
+                case "green": return Color.green;
+                case "grey": return Color.grey;
+                case "magenta": return Color.magenta;
+                case "red": return Color.red;
+                case "white": return Color.white;
+                case "yellow": return Color.yellow;
+            }
+            return fallback;
+        }
+
         public static void Say(string message)
         {
             Say(message, Color.white);
@@ -59,7 +78,7 @@ namespace Rocket.Unturned
                 Logger.Log(message);
             }
             else
-            {
+            {   
                 foreach (string m in wrapMessage(message))
                 {
                     ChatManager.Instance.SteamChannel.send("tellChat", CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)EChatMode.SAY,color, m });
