@@ -19,7 +19,7 @@ namespace VersionInfo
 
         private static string getRocketVersion()
         {
-            Assembly unturned = Assembly.Load(File.ReadAllBytes("Rocket.API.dll"));
+            Assembly unturned = Assembly.Load(File.ReadAllBytes("Rocket.Unturned.dll"));
             return unturned.GetName().Version.ToString();
         }
 
