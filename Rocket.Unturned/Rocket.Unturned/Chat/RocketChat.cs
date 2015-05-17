@@ -10,32 +10,32 @@ namespace Rocket.Unturned
 {
     public sealed class RocketChat : MonoBehaviour
     {
-        public static void Say(string message, EChatMode chatmode = EChatMode.GLOBAL)
+        public static void Say(string message)
         {
-            Say(message, Color.white, chatmode);
+            Say(message, Color.white);
         }
 
-        public static void Say(string message,Color color, EChatMode chatmode = EChatMode.GLOBAL)
+        public static void Say(string message,Color color)
         {
             Logger.Log("Broadcast: " + message);
             foreach (string m in wrapMessage(message))
             {
-                ChatManager.Instance.SteamChannel.send("tellChat", ESteamCall.OTHERS, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode,color, m });
+                ChatManager.Instance.SteamChannel.send("tellChat", ESteamCall.OTHERS, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)EChatMode.GLOBAL,color, m });
             }
         }
 
-        public static void Say(RocketPlayer player, string message, EChatMode chatmode = EChatMode.SAY)
+        public static void Say(RocketPlayer player, string message)
         {
             if (player == null)
             {
                 Logger.Log(message);
              }
             else {
-                Say(player.CSteamID, message,Color.white, chatmode);
+                Say(player.CSteamID, message, Color.white);
             }
         }
 
-        public static void Say(RocketPlayer player, string message, Color color, EChatMode chatmode = EChatMode.SAY)
+        public static void Say(RocketPlayer player, string message, Color color)
         {
             if (player == null)
             {
@@ -43,16 +43,16 @@ namespace Rocket.Unturned
             }
             else
             {
-                Say(player.CSteamID, message, Color.white, chatmode);
+                Say(player.CSteamID, message, Color.white);
             }
         }
 
-        public static void Say(CSteamID CSteamID, string message, EChatMode chatmode = EChatMode.SAY)
+        public static void Say(CSteamID CSteamID, string message)
         {
-            Say(CSteamID, message, Color.white, chatmode);
+            Say(CSteamID, message, Color.white);
         }
 
-        public static void Say(CSteamID CSteamID, string message, Color color, EChatMode chatmode = EChatMode.SAY)
+        public static void Say(CSteamID CSteamID, string message, Color color)
         {
             if (CSteamID == null || CSteamID.ToString() == "0")
             {
@@ -62,7 +62,7 @@ namespace Rocket.Unturned
             {
                 foreach (string m in wrapMessage(message))
                 {
-                    ChatManager.Instance.SteamChannel.send("tellChat", CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)chatmode,color, m });
+                    ChatManager.Instance.SteamChannel.send("tellChat", CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)EChatMode.SAY,color, m });
                 }
             }
         }
