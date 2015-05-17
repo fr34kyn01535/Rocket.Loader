@@ -3,6 +3,7 @@ using Rocket.Core.Logging;
 using Rocket.Unturned.Player;
 using SDG;
 using Steamworks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,8 +26,28 @@ namespace Rocket.Unturned
                 case "red": return Color.red;
                 case "white": return Color.white;
                 case "yellow": return Color.yellow;
+                case "rocket": return GetColorFromRGB(90, 206, 205);
             }
+
+            Color? color = GetColorFromHex(colorName);
+            if (color.HasValue) return color.Value;
+
             return fallback;
+        }
+
+        public static Color? GetColorFromHex(string hexString)
+        {
+            hexString = hexString.Replace("#", "");
+            if(hexString.Length ==3) hexString+=hexString;
+            int argb;
+            if (hexString.Length != 6 || !Int32.TryParse(hexString, System.Globalization.NumberStyles.HexNumber, null, out argb))
+            {
+                return null;
+            }
+            byte r = (byte)((argb >> 16) & 0xff);
+            byte g = (byte)((argb >> 8) & 0xff);
+            byte b = (byte)(argb & 0xff);
+            return GetColorFromRGB(r, g, b);
         }
 
         public static Color GetColorFromRGB(byte R,byte G,byte B,short A = 100)
