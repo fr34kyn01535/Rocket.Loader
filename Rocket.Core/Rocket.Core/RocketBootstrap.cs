@@ -47,7 +47,6 @@ namespace Rocket.Core
                 gameObject.AddComponent<RocketTranslationManager>();
                 gameObject.AddComponent<RocketPermissionsManager>();
                 gameObject.AddComponent<RocketSettingsManager>();
-                gameObject.AddComponent<AutomaticShutdownWatchdog>();
             }
             catch (Exception e)
             {
@@ -73,7 +72,7 @@ namespace Rocket.Core
 
         private void launchAutomaticShutdownWatchdog()
         {
-            if(RocketSettingsManager.Settings.AutomaticShutdown.Enabled)
+            if ((RocketSettingsManager.Settings.AutomaticShutdown.Enabled && RocketSettingsManager.Settings.AutomaticShutdown.Interval > 10) || RocketSettingsManager.Settings.AutomaticSaveInterval > 10)
                 gameObject.AddComponent<AutomaticShutdownWatchdog>();
         }
 

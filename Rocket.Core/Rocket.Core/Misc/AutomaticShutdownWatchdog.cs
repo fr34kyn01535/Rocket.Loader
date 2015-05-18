@@ -30,7 +30,7 @@ namespace Rocket.Core.Misc
         private void Start()
         {
 #if DEBUG
-            Logger.Log("AutomaticShutdownWatchdog > Awake");
+            Logger.Log("AutomaticShutdownWatchdog > Start");
 #endif
             DontDestroyOnLoad(transform.gameObject);
             Instance = this;
