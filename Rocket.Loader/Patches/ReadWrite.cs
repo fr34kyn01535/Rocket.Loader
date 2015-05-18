@@ -28,15 +28,10 @@ namespace Rocket.RocketLoader.Patches
 
         public void Apply()
         {
-            byte[] unturned, unturned_firstpass, other, other_firstpass;
+            byte[] unturned, unturned_firstpass, other, other_firstpass, other2, other2_firstpass;
             using (FileStream filestream = new FileStream("Assembly-CSharp.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 unturned = new byte[filestream.Length];
-            }
-
-            using (FileStream filestream = new FileStream("Assembly-CSharp-firstpass.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                unturned_firstpass = new byte[filestream.Length];
             }
 
             using (FileStream filestream = new FileStream("Other-Assembly-CSharp.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -44,12 +39,28 @@ namespace Rocket.RocketLoader.Patches
                 other = new byte[filestream.Length];
             }
 
+            using (FileStream filestream = new FileStream("Other2-Assembly-CSharp-firstpass.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                other2 = new byte[filestream.Length];
+            }
+
+
+            using (FileStream filestream = new FileStream("Assembly-CSharp-firstpass.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                unturned_firstpass = new byte[filestream.Length];
+            }
+
             using (FileStream filestream = new FileStream("Other-Assembly-CSharp-firstpass.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 other_firstpass = new byte[filestream.Length];
             }
 
-            byte[] combined = combine(new byte[][] { SHA1(unturned), SHA1(other), SHA1(unturned_firstpass), SHA1(other_firstpass) });
+            using (FileStream filestream = new FileStream("Other2-Assembly-CSharp-firstpass.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                other2_firstpass = new byte[filestream.Length];
+            }
+
+            byte[] combined = combine(new byte[][] { SHA1(unturned), SHA1(other), SHA1(other2), SHA1(unturned_firstpass), SHA1(other_firstpass), SHA1(other2_firstpass) });
 
             MethodDefinition getAssemblyHash = h.GetMethod("getAssemblyHash");
             getAssemblyHash.Body.Instructions.Clear();
