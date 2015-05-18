@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Rocket.RocketLoader.Patches
 {
-    public class Steam : Patch
+    public class Steam : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.Steam");
 

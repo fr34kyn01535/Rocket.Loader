@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader
 {
-    public interface Patch
+    public interface IPatch
     {
         void Apply();
     }

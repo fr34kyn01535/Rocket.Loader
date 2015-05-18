@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class ItemJar : Patch
+    public class ItemJar : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.ItemJar");
 

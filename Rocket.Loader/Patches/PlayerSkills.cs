@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class PlayerSkills : Patch
+    public class PlayerSkills : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.PlayerSkills");
 

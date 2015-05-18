@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class PlayerInventory : Patch
+    public class PlayerInventory : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.PlayerInventory");
 

@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class ZombieManager : Patch
+    public class ZombieManager : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.ZombieManager");
 

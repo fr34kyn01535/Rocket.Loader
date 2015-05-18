@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class ZombieRegion : Patch
+    public class ZombieRegion : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.ZombieRegion");
 

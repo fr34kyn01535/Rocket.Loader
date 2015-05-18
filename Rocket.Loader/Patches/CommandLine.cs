@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Rocket.RocketLoader.Patches
 {
-    internal class CommandLine : Patch
+    internal class CommandLine : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.CommandLine");
 

@@ -1,5 +1,8 @@
 ﻿using Rocket.Core.Permissions;
 using Rocket.Core.Settings;
+using Rocket.Unturned.Events;
+using Rocket.Unturned.Logging;
+using Rocket.Unturned.Player;
 using Rocket.Unturned.Settings;
 using SDG;
 using Steamworks;
@@ -8,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace Rocket.Unturned.Permissions
 {
@@ -42,6 +46,32 @@ namespace Rocket.Unturned.Permissions
             return player.IsAdmin;
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Color GetChatColor(CSteamID steamPlayer, byte chatModeByte, string message)
+        {
+            Color color = Color.white;
+            try
+            {
+                RocketPlayer player = RocketPlayer.FromCSteamID(steamPlayer);
+
+                if (player.IsAdmin) {
+                    color = Palette.Admin;
+                }else{
+                    string colorPermission = RocketPermissionsManager.GetPermissions(steamPlayer.ToString()).Where(permission => permission.ToLower().StartsWith("color.")).FirstOrDefault();
+                    if (color != null)
+                    {
+                        color = RocketChat.GetColorFromName(colorPermission.ToLower().Replace("color.", ""), Color.white);
+                    }
+                }
+
+                color = RocketPlayerEvents.firePlayerChatted(player, (EChatMode)chatModeByte, color, message);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return color;
+        }
 
 
         [EditorBrowsable(EditorBrowsableState.Never)]

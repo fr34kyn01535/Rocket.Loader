@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 namespace Rocket.RocketLoader.Patches
 {
-    public class Node : Patch
+    public class Node : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.Node");
 

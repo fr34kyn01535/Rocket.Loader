@@ -43,30 +43,24 @@ namespace Rocket.Unturned.Plugins
 
         public void ReloadConfiguration()
         {
-            homeDirectory = Implementation.Instance.PluginsFolder + (typeof(TConfiguration).Assembly.GetName().Name) + "/";
-            if (RocketSettingsManager.Settings.WebConfigurations.Enabled)
+            try
             {
-                try
+                homeDirectory = Implementation.Instance.PluginsFolder + (typeof(TConfiguration).Assembly.GetName().Name) + "/";
+                if (RocketSettingsManager.Settings.WebConfigurations.Enabled)
                 {
                     Configuration = RocketPluginConfiguration.LoadWebConfiguration<TConfiguration>();
                 }
-                catch (Exception ex)
+                else
                 {
-                    Logger.LogError("Failed to load configuration: " + ex.ToString());
+                    if (!Directory.Exists(homeDirectory)) Directory.CreateDirectory(homeDirectory);
+
+                    Configuration = RocketPluginConfiguration.LoadConfiguration<TConfiguration>(homeDirectory + (typeof(TConfiguration).Assembly.GetName().Name) + ".config.xml");
+
                 }
             }
-            else
+            catch (Exception ex)
             {
-                if (!Directory.Exists(homeDirectory)) Directory.CreateDirectory(homeDirectory);
-
-                try
-                {
-                    Configuration = RocketPluginConfiguration.LoadConfiguration<TConfiguration>(homeDirectory + (typeof(TConfiguration).Assembly.GetName().Name) + ".config.xml");
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError("Failed to load configuration: " + ex.ToString());
-                }
+                Logger.LogError("Failed to load configuration: " + ex.ToString());
             }
         }
     }

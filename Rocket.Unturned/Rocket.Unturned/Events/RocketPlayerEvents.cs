@@ -285,6 +285,15 @@ namespace Rocket.Unturned.Events
             }
         }
 
+        public delegate void PlayerChatted(RocketPlayer player, ref Color color, string message);
+        public static event PlayerChatted OnPlayerChatted;
+
+        internal static Color firePlayerChatted(RocketPlayer player, EChatMode chatMode, Color color, string msg)
+        {
+            if (OnPlayerChatted != null) OnPlayerChatted(player, ref color, msg);
+            return color;
+        }
+
 
     }
 }

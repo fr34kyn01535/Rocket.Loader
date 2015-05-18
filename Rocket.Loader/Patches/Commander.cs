@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class Commander : Patch
+    public class Commander : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.Commander");
 

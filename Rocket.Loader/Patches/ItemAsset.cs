@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class ItemAsset : Patch
+    public class ItemAsset : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.ItemAsset");
 

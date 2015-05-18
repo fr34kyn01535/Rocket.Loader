@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class Player : Patch
+    public class Player : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.Player");
 

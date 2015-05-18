@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class SteamCaller : Patch
+    public class SteamCaller : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.SteamCaller");
 

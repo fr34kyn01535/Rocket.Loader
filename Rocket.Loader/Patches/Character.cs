@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class Character : Patch
+    public class Character : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.Character");
 

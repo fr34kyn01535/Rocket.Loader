@@ -39,6 +39,8 @@ namespace Rocket.Core
             {
                 Instance = this;
                 Implementation = (IRocketImplementation)GetComponent(typeof(IRocketImplementation));
+				Debug.Break();
+				Debug.DebugBreak();
 
                 gameObject.AddComponent<RocketTaskManager>();
                 gameObject.AddComponent<RocketPluginManager>();

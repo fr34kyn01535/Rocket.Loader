@@ -108,7 +108,11 @@ namespace Rocket.Unturned.Player
             get { return player.Inventory; }
         }
 
-        public bool GiveItem(ushort itemId, byte amount, bool randomQuality = false)
+		public bool GiveItem(ushort itemId, byte amount)
+		{
+			return GiveItem(itemId,amount, false);
+		}
+        public bool GiveItem(ushort itemId, byte amount, bool randomQuality)
         {
             ItemAsset itemAsset = (ItemAsset)Assets.find(EAssetType.Item, itemId);
             if (itemAsset == null)
@@ -174,8 +178,12 @@ namespace Rocket.Unturned.Player
                 return player.SteamChannel.SteamPlayer.IsAdmin; 
             }
         }
+		
+		public void Admin(bool admin){
+			Admin (admin, null);
+		}
 
-        public void Admin(bool admin, RocketPlayer issuer = null)
+        public void Admin(bool admin, RocketPlayer issuer)
         {
             if (admin)
             {
@@ -355,7 +363,12 @@ namespace Rocket.Unturned.Player
             }
         }
 
-        public void Heal(byte amount, bool? bleeding = null, bool? broken = null)
+		public void Heal(byte amount)
+		{
+			Heal (amount, null, null);
+		}
+
+        public void Heal(byte amount, bool? bleeding , bool? broken)
         {
             player.PlayerLife.askHeal(amount, bleeding != null ? bleeding.Value : player.PlayerLife.Bleeding, broken != null ? broken.Value : player.PlayerLife.Broken);
         }

@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class SteamPlayerID : Patch
+    public class SteamPlayerID : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.SteamPlayerID");
 
