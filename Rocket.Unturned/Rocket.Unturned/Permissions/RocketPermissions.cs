@@ -58,7 +58,7 @@ namespace Rocket.Unturned.Permissions
                     color = Palette.Admin;
                 }else{
                     string colorPermission = RocketPermissionsManager.GetPermissions(steamPlayer.ToString()).Where(permission => permission.ToLower().StartsWith("color.")).FirstOrDefault();
-                    if (color != null)
+                    if (colorPermission != null)
                     {
                         color = RocketChat.GetColorFromName(colorPermission.ToLower().Replace("color.", ""), Color.white);
                     }
