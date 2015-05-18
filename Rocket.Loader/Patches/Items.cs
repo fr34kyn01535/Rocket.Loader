@@ -2,7 +2,7 @@
 
 namespace Rocket.RocketLoader.Patches
 {
-    public class Items : Patch
+    public class Items : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.Items");
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 namespace Rocket.RocketLoader.Patches
 {
-    public class LevelZombies : Patch
+    public class LevelZombies : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.LevelZombies");
 

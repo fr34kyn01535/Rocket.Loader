@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class StructureManager : Patch
+    public class StructureManager : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.StructureManager");
 

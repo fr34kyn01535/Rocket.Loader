@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Rocket.RocketLoader.Patches
 {
-    public class MenuUI : Patch
+    public class MenuUI : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.MenuUI");
 

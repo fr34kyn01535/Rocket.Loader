@@ -69,8 +69,8 @@ namespace Rocket.RocketLoader
                 }
 
                 var patches = from t in Assembly.GetExecutingAssembly().GetTypes()
-                              where t.GetInterfaces().Contains(typeof(Patch)) && t.GetConstructor(Type.EmptyTypes) != null
-                              select Activator.CreateInstance(t) as Patch;
+                              where t.GetInterfaces().Contains(typeof(IPatch)) && t.GetConstructor(Type.EmptyTypes) != null
+                              select Activator.CreateInstance(t) as IPatch;
 
                 foreach (var patch in patches)
                 {

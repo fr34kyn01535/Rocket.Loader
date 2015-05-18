@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 
 namespace Rocket.RocketLoader.Patches
 {
-    public class ReadWrite : Patch
+    public class ReadWrite : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.ReadWrite");
 

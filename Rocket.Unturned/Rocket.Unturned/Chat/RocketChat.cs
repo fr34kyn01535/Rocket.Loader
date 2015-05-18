@@ -49,8 +49,11 @@ namespace Rocket.Unturned
             byte b = (byte)(argb & 0xff);
             return GetColorFromRGB(r, g, b);
         }
-
-        public static Color GetColorFromRGB(byte R,byte G,byte B,short A = 100)
+		public static Color GetColorFromRGB(byte R,byte G,byte B)
+		{
+			return GetColorFromRGB (R, G, B, 100);
+		}
+        public static Color GetColorFromRGB(byte R,byte G,byte B,short A)
         {
             return new Color((1f / 255f) * R, (1f / 255f) * G, (1f / 255f) * B,(1f/100f) * A);
         }

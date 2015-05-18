@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class BarricadeManager : Patch
+    public class BarricadeManager : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.BarricadeManager");
 

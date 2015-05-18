@@ -45,11 +45,6 @@ namespace Rocket.Core.Plugins
             Logger.Log("RocketPluginManager > Start");
 #endif
             List<Type> pluginImplemenations = RocketHelper.GetTypesFromInterface(pluginAssemblies, "IRocketPlugin");
-#if DEBUG
-            //  Logger.Log("Libraries: " + String.Join(", ", additionalLibraries.Select(a => a.Key).ToArray()));
-            Logger.Log("Plugins: " + String.Join(", ", pluginAssemblies.Select(a => a.GetName().Name).ToArray()));
-            Logger.Log("Plugin classes: " + String.Join(", ", pluginImplemenations.Select(a => a.Name).ToArray()));
-#endif
             foreach (Type plugin in pluginImplemenations)
             {
                 plugins.Add(RocketBootstrap.Instance.gameObject.AddComponent(plugin));
@@ -60,19 +55,10 @@ namespace Rocket.Core.Plugins
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public static IRocketPlugin GetPlugin(string name) {
-            Assembly assembly = pluginAssemblies.Where(a => a.GetName().Name.ToLower().Contains(name.ToLower())).FirstOrDefault();
-            if (assembly == null) return null;
 
-            Type plugin = RocketHelper.GetTypesFromParentClass(assembly, typeof(IRocketPlugin)).FirstOrDefault();
-
-            return GetPlugin(plugin);
-        }
-
-        public static IRocketPlugin GetPlugin(Type plugin)
+        public static IRocketPlugin GetPlugin(string name)
         {
-            Component c = RocketBootstrap.Instance.gameObject.GetComponent(plugin);
-            return (c is IRocketPlugin) ? (IRocketPlugin)c : null;
+            return (IRocketPlugin)RocketBootstrap.Instance.gameObject.GetComponents(typeof(IRocketPlugin)).Where(c => c.GetType().Assembly.GetName().Name.ToLower().Contains(name.ToLower())).FirstOrDefault();
         }
 
         public static string[] GetPluginNames() {

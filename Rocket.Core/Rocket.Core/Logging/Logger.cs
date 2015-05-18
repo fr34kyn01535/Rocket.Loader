@@ -44,7 +44,7 @@ namespace Rocket.Core.Logging
             ProcessInternalLog(ELogType.Info, message);
         }
 
-        internal static string var_dump(object obj, int recursion = 0)
+        internal static string var_dump(object obj, int recursion)
         {
             StringBuilder result = new StringBuilder();
 

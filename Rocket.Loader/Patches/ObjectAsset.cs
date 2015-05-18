@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Rocket.RocketLoader.Patches
 {
-    internal class ObjectAsset : Patch
+    internal class ObjectAsset : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.ObjectAsset");
 

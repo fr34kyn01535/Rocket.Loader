@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class BarricadeRegion : Patch
+    public class BarricadeRegion : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.BarricadeRegion");
 

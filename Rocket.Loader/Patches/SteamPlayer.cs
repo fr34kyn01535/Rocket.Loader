@@ -2,7 +2,7 @@
 
 namespace Rocket.RocketLoader.Patches
 {
-    public class SteamPlayer : Patch
+    public class SteamPlayer : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.SteamPlayer");
 

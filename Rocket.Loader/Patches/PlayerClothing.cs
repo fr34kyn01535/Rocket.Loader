@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Patches
 {
-    public class PlayerClothing : Patch
+    public class PlayerClothing : IPatch
     {
         private PatchHelper h = new PatchHelper("SDG.PlayerClothing");
 

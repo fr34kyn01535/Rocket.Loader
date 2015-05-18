@@ -91,7 +91,12 @@ namespace Rocket.Unturned.Plugins
             Commander.Commands = Commander.Commands.Where(c => !(c is RocketCommandBase) || (c is RocketCommandBase && ((RocketCommandBase)c).Command.GetType().Assembly != assembly)).ToArray();
         }
 
-        private static void RegisterCommand(Command command, string originalAssemblyName = null)
+		private static void RegisterCommand(Command command)
+		{
+			RegisterCommand(command,null);
+		}
+
+        private static void RegisterCommand(Command command, string originalAssemblyName)
         {
             string assemblyName = "";
             if (originalAssemblyName != null)

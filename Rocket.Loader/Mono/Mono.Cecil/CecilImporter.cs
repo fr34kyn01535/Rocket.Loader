@@ -100,8 +100,11 @@ namespace Mono
             }
             return body;
         }
-
-        public TypeDefinition CreateImportedType(TypeDefinition targetType, string ns = "")
+		public TypeDefinition CreateImportedType(TypeDefinition targetType)
+		{
+			return CreateImportedType (targetType, "");
+		}
+        public TypeDefinition CreateImportedType(TypeDefinition targetType, string ns)
         {
             TypeDefinition declaringType = null;
             if (ns == "")

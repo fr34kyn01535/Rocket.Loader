@@ -119,43 +119,51 @@ namespace Rocket.Core.Permissions
 
         private static void loadPermissions(string permissionsFile)
         {
-            if (File.Exists(permissionsFile))
+            try
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(Permissions));
-                using (StreamReader reader = new StreamReader(permissionsFile))
+                if (File.Exists(permissionsFile))
                 {
-                    permissions = (Permissions)serializer.Deserialize(reader);
-
-                    if (permissions.Groups == null) permissions.Groups = new Group[0];
-                    if (String.IsNullOrEmpty(permissions.DefaultGroupId)) permissions.DefaultGroupId = "default";
-
-                    foreach (Group group in permissions.Groups)
+                    XmlSerializer serializer = new XmlSerializer(typeof(Permissions));
+                    using (StreamReader reader = new StreamReader(permissionsFile))
                     {
-                        foreach (string command in group.Commands)
+                        permissions = (Permissions)serializer.Deserialize(reader);
+
+                        if (permissions.Groups == null) permissions.Groups = new Group[0];
+                        if (String.IsNullOrEmpty(permissions.DefaultGroupId)) permissions.DefaultGroupId = "default";
+
+                        foreach (Group group in permissions.Groups)
                         {
-                            group.Commands[group.Commands.IndexOf(command)] = command.ToLower();
+                            foreach (string command in group.Commands)
+                            {
+                                group.Commands[group.Commands.IndexOf(command)] = command.ToLower();
+                            }
                         }
                     }
+                    using (StreamWriter streamWriter = new StreamWriter(permissionsFile))
+                    {
+                        serializer.Serialize(streamWriter, permissions);
+                    }
                 }
-                using (StreamWriter streamWriter = new StreamWriter(permissionsFile))
+                else
                 {
-                    serializer.Serialize(streamWriter, permissions);
-                }
-            }
-            else
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(Permissions));
-                using (TextWriter writer = new StreamWriter(permissionsFile))
-                {
-                    permissions = new Permissions();
+                    XmlSerializer serializer = new XmlSerializer(typeof(Permissions));
+                    using (TextWriter writer = new StreamWriter(permissionsFile))
+                    {
+                        permissions = new Permissions();
 
-                    permissions.DefaultGroupId = "default";
-                    permissions.Groups = new Group[] {
+                        permissions.DefaultGroupId = "default";
+                        permissions.Groups = new Group[] {
                             new Group("default","Guest",new List<string>(), null , new List<string>() { "p", "reward","balance","pay","rocket" }),
                             new Group("moderator","Moderator", new List<string>(),new List<string>() { "76561197960287930" }, new List<string>() { "p", "p.reload", "tp", "tphere","i","test" })
                         };
-                    serializer.Serialize(writer, permissions);
+                        serializer.Serialize(writer, permissions);
+                    }
                 }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Failed loading the permissions, check if the XML is not malformed: "+ex.ToString());
             }
         }
 
