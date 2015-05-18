@@ -20,9 +20,10 @@ namespace Rocket.RocketLoader.Patches
             return SHA1(array);
         }
 
+        static SHA1CryptoServiceProvider sha = new SHA1CryptoServiceProvider();
+
         public static byte[] SHA1(byte[] U)
         {
-            SHA1CryptoServiceProvider sha = new SHA1CryptoServiceProvider();
             return sha.ComputeHash(U);
         }
 
@@ -39,7 +40,7 @@ namespace Rocket.RocketLoader.Patches
                 other = new byte[filestream.Length];
             }
 
-            using (FileStream filestream = new FileStream("Other2-Assembly-CSharp-firstpass.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream filestream = new FileStream("Other2-Assembly-CSharp.dll", FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 other2 = new byte[filestream.Length];
             }
