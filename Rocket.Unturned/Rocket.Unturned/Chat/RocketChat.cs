@@ -60,7 +60,7 @@ namespace Rocket.Unturned
 
         public static void Say(string message)
         {
-            Say(message, Color.white);
+            Say(message, Palette.Server);
         }
 
         public static void Say(string message,Color color)
@@ -79,7 +79,7 @@ namespace Rocket.Unturned
                 Logger.Log(message);
              }
             else {
-                Say(player.CSteamID, message, Color.white);
+                Say(player.CSteamID, message, Palette.Server);
             }
         }
 
@@ -97,7 +97,7 @@ namespace Rocket.Unturned
 
         public static void Say(CSteamID CSteamID, string message)
         {
-            Say(CSteamID, message, Color.white);
+            Say(CSteamID, message, Palette.Server);
         }
 
         public static void Say(CSteamID CSteamID, string message, Color color)
