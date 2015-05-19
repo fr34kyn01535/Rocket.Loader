@@ -91,7 +91,7 @@ namespace Rocket.Unturned
             }
             else
             {
-                Say(player.CSteamID, message, Color.white);
+                Say(player.CSteamID, message, color);
             }
         }
 
