@@ -11,6 +11,7 @@ namespace Rocket.Core.Logging
     {
         public ELogType Severity;
         public string Message;
+        public bool RCON;
     }
 
     public class AsyncLoggerQueue
@@ -77,8 +78,13 @@ namespace Rocket.Core.Logging
             StreamWriter streamWriter = File.AppendText(RocketBootstrap.Implementation.HomeFolder + "Logs/" + "Rocket.log");
             streamWriter.WriteLine("[" + DateTime.Now + "] [" + entry.Severity.ToString() + "] " + entry.Message);
             streamWriter.Close();
-            if (RocketSettingsManager.Settings.RCON.Port > 1) 
+            if (entry.RCON && RocketSettingsManager.Settings.RCON.Enabled && !RocketSettingsManager.Settings.RCON.Minimal)
+            {
+#if DEBUG
+                Console.WriteLine("SENT "+entry.Message);
+#endif
                 RCONServer.broadcast(entry.Message);
+            }
         }
     }
 }
