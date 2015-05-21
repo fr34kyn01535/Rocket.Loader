@@ -58,6 +58,15 @@ namespace Rocket.Unturned.Events
                 RocketPlayerEvents instance = s.Player.transform.GetComponent<RocketPlayerEvents>();
                 RocketPlayer rp = RocketPlayer.FromSteamPlayer(s);
 
+#if LINUX
+                 string o = "";
+                 foreach (object r in R)
+                 {
+                     o += r.ToString();
+                 }
+                 Logger.Log("Send+" + s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
+#endif
+
                 switch (W)
                 {
                     case "tellBleeding":
