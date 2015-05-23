@@ -6,7 +6,7 @@
 
         public void Apply()
         {
-            h.UnlockFieldByType("Command[]", "Commands");
+            h.UnlockFieldByType("List<Command>", "Commands", 0);
         }
     }
 }
