@@ -183,7 +183,7 @@ namespace Rocket.Core.Logging
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             string m = "RocketRCON >> " + message;
-            ProcessLog(ELogType.Info, message);
+            ProcessLog(ELogType.Info, m, false);
             Console.WriteLine(m);
         }
 
@@ -193,9 +193,9 @@ namespace Rocket.Core.Logging
         }
 
 
-        private static void ProcessLog(ELogType type, string message)
+        private static void ProcessLog(ELogType type, string message,bool rcon = true)
         {
-            AsyncLoggerQueue.Current.Enqueue(new LogEntry() { Severity = type, Message = message });
+            AsyncLoggerQueue.Current.Enqueue(new LogEntry() { Severity = type, Message = message, RCON = rcon });
         }
 
     }

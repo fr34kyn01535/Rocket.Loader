@@ -311,6 +311,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="Unturned.ico" />
+    <None Include="Scripts\start.sh" />
+    <None Include="Scripts\update.sh" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

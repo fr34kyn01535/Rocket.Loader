@@ -25,15 +25,13 @@ namespace Rocket.RocketLoader.Patches
             h.UnlockFieldByType(typeof(bool), "IsServer", 9);
             
             h.UnlockFieldByType("List<SteamPlayer>", "Players");
-            h.UnlockFieldByType("ConsoleInput", "ConsoleInput");
-
             MethodDefinition reject = h.Type.Methods.AsEnumerable().Where(m => m.Parameters.Count == 2 &&
                  m.Parameters[0].ParameterType.Name == "CSteamID" &&
                  m.Parameters[1].ParameterType.Name == "ESteamRejection").FirstOrDefault();
             reject.Name = "Reject";
             reject.IsPublic = true;
 
-
+#if !LINUX
             MethodDefinition log = h.Type.Methods.AsEnumerable().Where(m => m.Parameters.Count == 2 &&
                  m.Parameters[0].ParameterType.Name == "String" &&
                  m.Parameters[1].ParameterType.Name == "ConsoleColor").FirstOrDefault();
@@ -45,7 +43,7 @@ namespace Rocket.RocketLoader.Patches
             log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnturnedAssembly.MainModule.Import(externalLog)));
             log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_1));
             log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_0));
-
+#endif
              
 
             //CheckValid
