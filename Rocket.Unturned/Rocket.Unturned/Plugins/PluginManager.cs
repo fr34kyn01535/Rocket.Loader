@@ -88,7 +88,14 @@ namespace Rocket.Unturned.Plugins
 
         internal static void UnregisterCommands(Assembly assembly)
         {
-            Commander.Commands = Commander.Commands.Where(c => !(c is RocketCommandBase) || (c is RocketCommandBase && ((RocketCommandBase)c).Command.GetType().Assembly != assembly)).ToArray();
+            List<Type> commands = RocketHelper.GetTypesFromInterface(assembly, "IRocketCommand");
+            foreach (Type command in commands)
+            {
+                IRocketCommand rocketCommand = (IRocketCommand)Activator.CreateInstance(command);
+                RocketCommandBase baseCommand = new RocketCommandBase(rocketCommand);
+                Commander.deregister((Command)(baseCommand));
+            }
+            //Commander.deregister(Commander.Commands.Where(c => (c is RocketCommandBase && ((RocketCommandBase)c).Command.GetType().Assembly == assembly)));
         }
 
 		private static void RegisterCommand(Command command)
@@ -126,9 +133,11 @@ namespace Rocket.Unturned.Plugins
 
             Console.ForegroundColor = ConsoleColor.White;
 
-            filteredCommandList.Add(command);
+            //filteredCommandList.Add(command);
 
-            Commander.Commands = filteredCommandList.ToArray();
+            //Commander.Commands = filteredCommandList.ToArray();
+
+            Commander.register(command);
         }
 
         private void onPlayerConnected(CSteamID id)
