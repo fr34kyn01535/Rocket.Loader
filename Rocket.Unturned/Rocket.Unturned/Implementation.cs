@@ -18,6 +18,7 @@ namespace Rocket.Unturned
     {
         public static RocketBootstrap Rocket;
         public static Implementation Instance;
+        public static RocketConsole Console;
 
         [Browsable(false)]
         public static void Launch()
@@ -28,24 +29,24 @@ namespace Rocket.Unturned
         [Browsable(false)]
         public static void Splash()
         {
-            Console.Clear();
+#if LINUX
+            Console = new GameObject().AddComponent<RocketConsole>();
+#endif
+            System.Console.Clear();
 #if DEBUG
             Logger.Log("Implementation > Splash");
 #endif
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("Rocket Unturned v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " for Unturned v" + Steam.Version + "\n");
+            System.Console.ForegroundColor = ConsoleColor.Cyan;
+            System.Console.WriteLine("Rocket Unturned v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " for Unturned v" + Steam.Version + "\n");
 
-           // Steam.OnServerHosted += () =>
-           // {
+            Steam.OnServerHosted += () =>
+            {
                 Launch();
-            //};
+            };
         }
 
         private void Awake()
         {
-#if LINUX
-            gameObject.AddComponent(typeof(RocketConsole));
-#endif
             Instance = this;
 #if DEBUG
             Logger.Log("Implementation > Awake");
