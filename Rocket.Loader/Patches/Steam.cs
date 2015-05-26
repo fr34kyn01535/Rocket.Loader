@@ -20,9 +20,12 @@ namespace Rocket.RocketLoader.Patches
             h.UnlockFieldByType(typeof(string), "InstanceName", 13);
             h.UnlockFieldByType(typeof(uint), "ServerPort", 1);
             h.UnlockFieldByType(typeof(byte), "MaxPlayers");
-            
+
             h.UnlockFieldByType(typeof(bool), "PvP", 4);
             h.UnlockFieldByType(typeof(bool), "IsServer", 9);
+
+            h.UnlockFieldByType("ConsoleInput", "ConsoleInput");
+            h.UnlockFieldByType("ConsoleOutput", "ConsoleOutput");
             
             h.UnlockFieldByType("List<SteamPlayer>", "Players");
             MethodDefinition reject = h.Type.Methods.AsEnumerable().Where(m => m.Parameters.Count == 2 &&

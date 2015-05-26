@@ -86,6 +86,7 @@
     <Compile Include="Rocket.Unturned\Enumerations\InventoryGroup.cs" />
     <Compile Include="Rocket.Unturned\Permissions\RocketPermissions.cs" />
     <Compile Include="Rocket.Unturned\Plugins\RocketPlugin.cs" />
+    <Compile Include="Rocket.Unturned\RocketConsole.cs" />
     <Compile Include="Rocket.Unturned\Settings\ImplementationSettings.cs" />
     <Compile Include="Rocket.Unturned\Logging\Logger.cs" />
     <Compile Include="Rocket.Unturned\Commands\IRocketCommand.cs" />

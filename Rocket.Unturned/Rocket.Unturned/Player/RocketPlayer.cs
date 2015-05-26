@@ -108,23 +108,9 @@ namespace Rocket.Unturned.Player
             get { return player.Inventory; }
         }
 
-		public bool GiveItem(ushort itemId, byte amount)
-		{
-			return GiveItem(itemId,amount, false);
-		}
-        public bool GiveItem(ushort itemId, byte amount, bool randomQuality)
+        public bool GiveItem(ushort itemId, byte amount)
         {
-            ItemAsset itemAsset = (ItemAsset)Assets.find(EAssetType.Item, itemId);
-            if (itemAsset == null)
-            {
-                return false;
-            }
-            for (int i = 0; i < amount; i++)
-            {
-                Item item = new Item(itemId, !randomQuality);
-                Inventory.forceAddItem(item, true);
-            }
-            return true;
+            return ItemTool.tryForceGiveItem(player,itemId,amount);
         }
 
         public bool GiveVehicle(ushort vehicleId)

@@ -80,7 +80,7 @@ namespace Rocket.Core
             if (RocketSettingsManager.Settings.RCON.Enabled)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Loading RocketRcon".PadRight(80, '.'));
+                Console.WriteLine("\n" + "Loading RocketRcon".PadRight(80, '.'));
                 int port = RocketSettingsManager.Settings.RCON.Port;
                 if (RocketSettingsManager.Settings.RCON.Minimal)
                 {
