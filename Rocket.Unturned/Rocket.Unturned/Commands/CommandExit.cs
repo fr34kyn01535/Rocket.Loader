@@ -1,26 +1,28 @@
 ﻿using Rocket.API;
 using Rocket.Core;
 using Rocket.Core.Translations;
+using Rocket.Unturned.Logging;
 using Rocket.Unturned.Player;
 using SDG;
+using System;
 
 namespace Rocket.Unturned.Commands
 {
-    public class CommandLag : IRocketCommand
+    public class CommandExit : IRocketCommand
     {
         public bool RunFromConsole
         {
-            get { return true; }
+            get { return false; }
         }
 
         public string Name
         {
-            get { return "lag"; }
+            get { return "exit"; }
         }
 
         public string Help
         {
-            get { return "Shows the servers TPS";}
+            get { return "Exit the game without cooldown";}
         }
 
         public string Syntax
@@ -30,8 +32,7 @@ namespace Rocket.Unturned.Commands
 
         public void Execute(RocketPlayer caller, string[] command)
         {
-            RocketChat.Say(caller, RocketTranslationManager.Translate("command_tps_tps", RocketBootstrap.TPS));
-            RocketChat.Say(caller, RocketTranslationManager.Translate("command_tps_running_since", RocketBootstrap.Started.ToString()));
+            Steam.kick(caller.CSteamID, "");
         }
     }
 }

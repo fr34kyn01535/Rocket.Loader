@@ -88,14 +88,9 @@ namespace Rocket.Unturned.Plugins
 
         internal static void UnregisterCommands(Assembly assembly)
         {
-            List<Type> commands = RocketHelper.GetTypesFromInterface(assembly, "IRocketCommand");
-            foreach (Type command in commands)
-            {
-                IRocketCommand rocketCommand = (IRocketCommand)Activator.CreateInstance(command);
-                RocketCommandBase baseCommand = new RocketCommandBase(rocketCommand);
-                Commander.deregister((Command)(baseCommand));
+            foreach(Command c in Commander.Commands.Where(c => (c is RocketCommandBase && ((RocketCommandBase)c).Command.GetType().Assembly == assembly)).ToList()){
+                Commander.deregister(c);
             }
-            //Commander.deregister(Commander.Commands.Where(c => (c is RocketCommandBase && ((RocketCommandBase)c).Command.GetType().Assembly == assembly)));
         }
 
 		private static void RegisterCommand(Command command)
@@ -123,19 +118,15 @@ namespace Rocket.Unturned.Plugins
             if (commandList.Count() != filteredCommandList.Count())
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("     ~ /" +command.commandInfo);
+                Console.WriteLine("     ~ /" +command.commandName +" - " +command.commandHelp);
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("     + /" + command.commandInfo);
+                Console.WriteLine("     + /" + command.commandName + " - " + command.commandHelp);
             }
 
             Console.ForegroundColor = ConsoleColor.White;
-
-            //filteredCommandList.Add(command);
-
-            //Commander.Commands = filteredCommandList.ToArray();
 
             Commander.register(command);
         }

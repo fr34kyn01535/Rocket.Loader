@@ -81,7 +81,7 @@ namespace Rocket.Core.Logging
             if (entry.RCON && RocketSettingsManager.Settings.RCON.Enabled && !RocketSettingsManager.Settings.RCON.Minimal)
             {
 #if DEBUG
-                Console.WriteLine("SENT "+entry.Message);
+                //Console.WriteLine("SENT "+entry.Message);
 #endif
                 RCONServer.broadcast(entry.Message);
             }

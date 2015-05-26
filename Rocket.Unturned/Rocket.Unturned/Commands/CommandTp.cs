@@ -27,6 +27,11 @@ namespace Rocket.Unturned.Commands
             get { return "Teleports you to another player or location";}
         }
 
+        public string Syntax
+        {
+            get { return "<player | place>"; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             if (command.Length != 1)

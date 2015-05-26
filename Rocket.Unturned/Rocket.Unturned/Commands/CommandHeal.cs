@@ -24,6 +24,11 @@ namespace Rocket.Unturned.Commands
             get { return "Heals yourself or somebody else";}
         }
 
+        public string Syntax
+        {
+            get { return "[player]"; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             if (caller != null && command.Length != 1)

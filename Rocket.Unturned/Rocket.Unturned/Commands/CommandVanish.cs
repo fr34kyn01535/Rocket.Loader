@@ -25,6 +25,11 @@ namespace Rocket.Unturned.Commands
             get { return "Are we rushing in or are we goin' sneaky beaky like?";}
         }
 
+        public string Syntax
+        {
+            get { return ""; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             if (caller.Features.VanishMode)

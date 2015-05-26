@@ -25,6 +25,11 @@ namespace Rocket.Unturned.Commands
             get { return "Gives yourself an vehicle";}
         }
 
+        public string Syntax
+        {
+            get { return "<id>"; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             if (command.Length != 1)
@@ -33,12 +38,18 @@ namespace Rocket.Unturned.Commands
                 return;
             }
 
-            ushort id = 0;
+            ushort? id = command.GetUInt16Parameter(0);
 
-            string itemString = command[0].ToString();
-
-            if (!ushort.TryParse(itemString, out id))
+            if (!id.HasValue)
             {
+                string itemString = command.GetStringParameter(0);
+
+                if (itemString == null)
+                {
+                    RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));
+                    return;
+                }
+
                 Asset[] assets = SDG.Assets.find(EAssetType.Vehicle);
                 foreach (VehicleAsset ia in assets)
                 {
@@ -47,18 +58,13 @@ namespace Rocket.Unturned.Commands
                         id = ia.Id;
                         break;
                     }
-                }
-                if (String.IsNullOrEmpty(itemString.Trim()) || id == 0)
-                {
-                    RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));
-                    return;
-                }
+                } 
             }
 
-            Asset a = SDG.Assets.find(EAssetType.Vehicle, id);
+            Asset a = SDG.Assets.find(EAssetType.Vehicle, id.Value);
             string assetName = ((VehicleAsset)a).Name;
 
-            if (VehicleTool.giveVehicle(caller.Player, id))
+            if (VehicleTool.giveVehicle(caller.Player, id.Value))
             {
                 Logger.Log(RocketTranslationManager.Translate("command_v_giving_console", caller.CharacterName, id));
                 RocketChat.Say(caller, RocketTranslationManager.Translate("command_v_giving_private", assetName, id));
