@@ -18,7 +18,7 @@ namespace Rocket.Unturned
 
     public class RocketConsole : MonoBehaviour
     {
-         protected void Load()
+         private void Awake()
          {
              FileStream fileStream = new FileStream("console", FileMode.Create);
              StreamWriter streamWriter = new StreamWriter(fileStream, System.Text.Encoding.ASCII)
