@@ -26,6 +26,11 @@ namespace Rocket.Unturned.Commands
             get { return "Shows the direction you are facing"; }
         }
 
+        public string Syntax
+        {
+            get { return "[direction]"; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             float currentDirection = caller.Rotation;

@@ -26,18 +26,23 @@ namespace Rocket.Unturned.Commands
             get { return "Broadcast a message"; }
         }
 
+        public string Syntax
+        {
+            get { return "<message> [color]"; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
-             if (command.Length == 0)
+            string message = command.GetStringParameter(0);
+            Color? color = command.GetColorParameter(1);
+
+            if (message == null)
             {
                 RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));
                 return;
             }
-            Color c = Color.green;
-            if(command.Length > 1){
-                c = RocketChat.GetColorFromName(command[1],c);
-            }
-            RocketChat.Say(command[0], c);
+
+            RocketChat.Say(message, (color.HasValue) ? (Color)color : Color.green);
         }
     }
 }

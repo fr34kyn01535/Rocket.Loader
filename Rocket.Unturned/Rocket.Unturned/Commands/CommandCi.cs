@@ -25,6 +25,11 @@ namespace Rocket.Unturned.Commands
             get { return "Clears your inventory"; }
         }
 
+        public string Syntax
+        {
+            get { return "[player]"; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             if (command.Length == 0)

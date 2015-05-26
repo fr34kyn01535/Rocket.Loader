@@ -26,6 +26,11 @@ namespace Rocket.Unturned.Commands
             get { return "Admin yourself, promise you will not abuse it ;)";}
         }
 
+        public string Syntax
+        {
+            get { return ""; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             if (caller.IsAdmin)

@@ -25,6 +25,11 @@ namespace Rocket.Unturned.Commands
             get { return "Gives yourself an item";}
         }
 
+        public string Syntax
+        {
+            get { return "<id> [amount]"; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             if (command.Length == 0 || command.Length > 2)

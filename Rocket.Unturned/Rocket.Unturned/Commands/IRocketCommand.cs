@@ -11,6 +11,7 @@ namespace Rocket.Unturned.Commands
         bool RunFromConsole { get; }
         string Name { get; }
         string Help { get; }
-        void Execute(RocketPlayer caller, string[] command); //TODO: Make caller nullable
+        string Syntax { get; }
+        void Execute(RocketPlayer caller, string[] command); 
     }
 }

@@ -33,6 +33,11 @@ namespace Rocket.Unturned.Commands
             get { return "About us :)";}
         }
 
+        public string Syntax
+        {
+            get { return "[plugins | reload] [reload | unload | load] [plugin]"; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             if (command.Length == 0)

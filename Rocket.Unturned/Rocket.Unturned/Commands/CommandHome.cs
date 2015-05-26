@@ -25,6 +25,11 @@ namespace Rocket.Unturned.Commands
             get { return "Teleports you to your last bed";}
         }
 
+        public string Syntax
+        {
+            get { return ""; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             Vector3 pos;

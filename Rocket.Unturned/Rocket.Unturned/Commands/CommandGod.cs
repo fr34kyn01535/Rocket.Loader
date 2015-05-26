@@ -25,6 +25,11 @@ namespace Rocket.Unturned.Commands
             get { return "Cause you ain't givin a shit";}
         }
 
+        public string Syntax
+        {
+            get { return ""; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             if (caller.Features.GodMode)

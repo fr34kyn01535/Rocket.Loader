@@ -26,6 +26,11 @@ namespace Rocket.Unturned.Commands
             get { return "Shows you the SteamID64 of a player";}
         }
 
+        public string Syntax
+        {
+            get { return "<player>"; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             if (command.Length!=1)

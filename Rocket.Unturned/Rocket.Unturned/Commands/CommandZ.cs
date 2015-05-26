@@ -25,6 +25,11 @@ namespace Rocket.Unturned.Commands
             get { return "Gives yourself a zombie";}
         }
 
+        public string Syntax
+        {
+            get { return "<amount>"; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             byte amount = 0;

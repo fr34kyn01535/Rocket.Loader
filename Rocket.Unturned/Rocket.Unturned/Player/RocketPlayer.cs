@@ -115,7 +115,7 @@ namespace Rocket.Unturned.Player
         public bool GiveItem(ushort itemId, byte amount, bool randomQuality)
         {
             ItemAsset itemAsset = (ItemAsset)Assets.find(EAssetType.Item, itemId);
-            if (itemAsset == null || itemAsset.Cosmetic)
+            if (itemAsset == null)
             {
                 return false;
             }

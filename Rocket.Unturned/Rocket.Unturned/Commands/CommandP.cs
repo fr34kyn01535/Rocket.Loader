@@ -26,6 +26,11 @@ namespace Rocket.Unturned.Commands
             get { return "Lists permissions";}
         }
 
+        public string Syntax
+        {
+            get { return ""; }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             if (command.Length > 1)
