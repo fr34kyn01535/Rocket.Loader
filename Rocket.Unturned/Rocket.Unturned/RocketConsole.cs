@@ -18,18 +18,19 @@ namespace Rocket.Unturned
 
     public class RocketConsole : MonoBehaviour
     {
+        FileStream fileStream = null;
         private void Awake()
         {
             try
             {
-                using (FileStream fileStream = new FileStream("console", FileMode.Create))
+                fileStream = new FileStream("console", FileMode.Create);
+
+                StreamWriter streamWriter = new StreamWriter(fileStream, System.Text.Encoding.ASCII)
                 {
-                    StreamWriter streamWriter = new StreamWriter(fileStream, System.Text.Encoding.ASCII)
-                    {
-                        AutoFlush = true
-                    };
-                    Console.SetOut(streamWriter);
-                }
+                    AutoFlush = true
+                };
+
+                Console.SetOut(streamWriter);
 
                 readingThread = new Thread(new ThreadStart(DoRead));
                 readingThread.Start();
@@ -39,7 +40,15 @@ namespace Rocket.Unturned
                 Logger.Log("Error: " + ex.ToString());
             }
 
-         }
+        }
+
+        private void Destroy() {
+            if (fileStream != null)
+            {
+                fileStream.Close();
+                fileStream.Dispose();
+            }
+        }
 
         private static Thread readingThread;
 
