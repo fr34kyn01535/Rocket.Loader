@@ -35,18 +35,18 @@ namespace Rocket.Unturned
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Rocket Unturned v" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + " for Unturned v" + Steam.Version + "\n");
 
-            Steam.OnServerHosted += () =>
-            {
+           // Steam.OnServerHosted += () =>
+           // {
                 Launch();
-            };
+            //};
         }
 
         private void Awake()
         {
-            Instance = this;
 #if LINUX
             gameObject.AddComponent(typeof(RocketConsole));
 #endif
+            Instance = this;
 #if DEBUG
             Logger.Log("Implementation > Awake");
 #endif

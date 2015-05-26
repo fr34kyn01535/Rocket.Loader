@@ -22,12 +22,14 @@ namespace Rocket.Unturned
         {
             try
             {
-                FileStream fileStream = new FileStream("console", FileMode.Create);
-                StreamWriter streamWriter = new StreamWriter(fileStream, System.Text.Encoding.ASCII)
+                using (FileStream fileStream = new FileStream("console", FileMode.Create))
                 {
-                    AutoFlush = true
-                };
-                Console.SetOut(streamWriter);
+                    StreamWriter streamWriter = new StreamWriter(fileStream, System.Text.Encoding.ASCII)
+                    {
+                        AutoFlush = true
+                    };
+                    Console.SetOut(streamWriter);
+                }
 
                 readingThread = new Thread(new ThreadStart(DoRead));
                 readingThread.Start();
