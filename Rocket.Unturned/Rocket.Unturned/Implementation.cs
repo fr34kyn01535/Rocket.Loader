@@ -44,12 +44,15 @@ namespace Rocket.Unturned
         private void Awake()
         {
             Instance = this;
+#if LINUX
+            gameObject.AddComponent(typeof(RocketConsole));
+#endif
 #if DEBUG
             Logger.Log("Implementation > Awake");
 #endif
             createDirectories();
             moveLibrariesDirectory();
-
+            
             gameObject.AddComponent(typeof(RocketServerEvents));
             gameObject.AddComponent(typeof(PluginManager));
             
