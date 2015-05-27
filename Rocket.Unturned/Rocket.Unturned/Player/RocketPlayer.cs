@@ -370,5 +370,15 @@ namespace Rocket.Unturned.Player
             player.PlayerLife.askDamage(amount, direction, cause, limb, damageDealer, out playerKill);
             return playerKill;
         }
+
+        public bool IsPro
+        {
+            get
+            {
+                return player.SteamChannel.SteamPlayer.IsPro;
+            }
+
+        }
+
     }
 }

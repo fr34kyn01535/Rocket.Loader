@@ -53,14 +53,15 @@ namespace Rocket.Unturned.Permissions
             try
             {
                 RocketPlayer player = RocketPlayer.FromCSteamID(steamPlayer);
-
+                if (player.IsPro)
+                    color = Palette.Pro;
                 if (player.IsAdmin) {
                     color = Palette.Admin;
                 }else{
                     string colorPermission = RocketPermissionsManager.GetPermissions(steamPlayer.ToString()).Where(permission => permission.ToLower().StartsWith("color.")).FirstOrDefault();
                     if (colorPermission != null)
                     {
-                        color = RocketChat.GetColorFromName(colorPermission.ToLower().Replace("color.", ""), Color.white);
+                        color = RocketChat.GetColorFromName(colorPermission.ToLower().Replace("color.", ""), color);
                     }
                 }
 
