@@ -23,7 +23,7 @@ namespace Rocket.RocketLoader.Patches
                 process.Body.GetILProcessor().InsertBefore(process.Body.Instructions[8], Instruction.Create(OpCodes.Ldarg_1));
             }
 
-
+#if INTERNAL
             MethodDefinition getChatColor = RocketLoader.APIAssembly.MainModule.GetType("Rocket.Unturned.Permissions.RocketPermissions").Methods.AsEnumerable().Where(m => m.Name == "GetChatColor").FirstOrDefault();
             MethodDefinition askChat = h.GetMethod("askChat");
             if (askChat != null)
@@ -34,7 +34,7 @@ namespace Rocket.RocketLoader.Patches
                 askChat.Body.GetILProcessor().InsertBefore(askChat.Body.Instructions[132], Instruction.Create(OpCodes.Ldarg_2)); //EChatMode chatMode
                 askChat.Body.GetILProcessor().InsertBefore(askChat.Body.Instructions[132], Instruction.Create(OpCodes.Ldarg_1)); //CSteamID steamPlayer  
             }
-
+#endif
         }
     }
 }
