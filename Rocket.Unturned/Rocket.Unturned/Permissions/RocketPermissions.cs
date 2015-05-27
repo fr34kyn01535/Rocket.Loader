@@ -53,8 +53,6 @@ namespace Rocket.Unturned.Permissions
             try
             {
                 RocketPlayer player = RocketPlayer.FromCSteamID(steamPlayer);
-                if (player.IsPro)
-                    color = Palette.Pro;
                 if (player.IsAdmin) {
                     color = Palette.Admin;
                 }else{
