@@ -264,6 +264,7 @@
     <Compile Include="Patches\Palette.cs" />
     <Compile Include="Patches\ObjectAsset.cs" />
     <Compile Include="Patches\MenuUI.cs" />
+    <Compile Include="Patches\StructureRegion.cs" />
     <Compile Include="Patches\StructureManager.cs" />
     <Compile Include="Patches\Character.cs" />
     <Compile Include="Patches\CommandLine.cs" />

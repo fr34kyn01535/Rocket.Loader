@@ -6,8 +6,7 @@
 
         public void Apply()
         {
-            h.UnlockFieldByType("List<Transform>", "Structures");
-            h.UnlockFieldByType("List<StructureData>", "StructureDatas");
+            h.UnlockFieldByType("StructureRegion[,]", "StructureRegions");
             h.UnlockFieldByType("StructureManager", "Instance");
         }
     }

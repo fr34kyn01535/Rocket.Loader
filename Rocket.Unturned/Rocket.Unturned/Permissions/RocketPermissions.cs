@@ -72,7 +72,6 @@ namespace Rocket.Unturned.Permissions
             return color;
         }
 
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static bool CheckValid(ValidateAuthTicketResponse_t r)
         {
@@ -82,7 +81,6 @@ namespace Rocket.Unturned.Permissions
             }
             return true;
         }
-
 
         private static bool checkReservedSlotSpace(CSteamID cSteamID)
         {
