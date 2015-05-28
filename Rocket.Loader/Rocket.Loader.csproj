@@ -39,7 +39,8 @@
     <StartupObject>Rocket.RocketLoader.RocketLoader</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Unturned.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>True</DebugSymbols>
@@ -263,12 +264,6 @@
     <Compile Include="Patch.cs" />
     <Compile Include="RocketLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="mscorlib.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Content Include="Unturned.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
