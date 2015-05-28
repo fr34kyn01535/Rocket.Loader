@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5FF8D3F2-F404-4154-83A8-698229515863}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rocket.Loader.Unturned</RootNamespace>
+    <AssemblyName>Rocket.Loader.Unturned</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
+    <OutputPath>..\..\..\..\Desktop\Unturned\Unturned_Data\Managed\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Patches\Asset.cs" />
+    <Compile Include="Patches\BarricadeManager.cs" />
+    <Compile Include="Patches\BarricadeRegion.cs" />
+    <Compile Include="Patches\Character.cs" />
+    <Compile Include="Patches\ChatManager.cs" />
+    <Compile Include="Patches\Command.cs" />
+    <Compile Include="Patches\Commander.cs" />
+    <Compile Include="Patches\CommandLine.cs" />
+    <Compile Include="Patches\InventorySearch.cs" />
+    <Compile Include="Patches\Item.cs" />
+    <Compile Include="Patches\ItemAsset.cs" />
+    <Compile Include="Patches\ItemJar.cs" />
+    <Compile Include="Patches\Items.cs" />
+    <Compile Include="Patches\LevelNodes.cs" />
+    <Compile Include="Patches\LevelZombies.cs" />
+    <Compile Include="Patches\MenuUI.cs" />
+    <Compile Include="Patches\Node.cs" />
+    <Compile Include="Patches\NodeLocation.cs" />
+    <Compile Include="Patches\ObjectAsset.cs" />
+    <Compile Include="Patches\Palette.cs" />
+    <Compile Include="Patches\Player.cs" />
+    <Compile Include="Patches\PlayerClothing.cs" />
+    <Compile Include="Patches\PlayerEquipment.cs" />
+    <Compile Include="Patches\PlayerInventory.cs" />
+    <Compile Include="Patches\PlayerLife.cs" />
+    <Compile Include="Patches\PlayerSkills.cs" />
+    <Compile Include="Patches\PlayerStance.cs" />
+    <Compile Include="Patches\ReadWrite.cs" />
+    <Compile Include="Patches\Steam.cs" />
+    <Compile Include="Patches\SteamCaller.cs" />
+    <Compile Include="Patches\SteamChannel.cs" />
+    <Compile Include="Patches\SteamChannelMethod.cs" />
+    <Compile Include="Patches\SteamPlayer.cs" />
+    <Compile Include="Patches\SteamPlayerID.cs" />
+    <Compile Include="Patches\StructureManager.cs" />
+    <Compile Include="Patches\StructureRegion.cs" />
+    <Compile Include="Patches\VehicleAsset.cs" />
+    <Compile Include="Patches\VehicleManager.cs" />
+    <Compile Include="Patches\ZombieManager.cs" />
+    <Compile Include="Patches\ZombieRegion.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Rocket.Loader\Rocket.Loader.csproj">
+      <Project>{67cd3888-82bf-4d69-ae86-a9026018765c}</Project>
+      <Name>Rocket.Loader</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

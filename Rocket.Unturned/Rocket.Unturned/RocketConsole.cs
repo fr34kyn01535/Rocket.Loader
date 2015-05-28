@@ -39,7 +39,6 @@ namespace Rocket.Unturned
             {
                 Logger.Log("Error: " + ex.ToString());
             }
-
         }
 
         private void Destroy() {

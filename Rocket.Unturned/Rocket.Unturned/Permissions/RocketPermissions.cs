@@ -53,8 +53,6 @@ namespace Rocket.Unturned.Permissions
             try
             {
                 RocketPlayer player = RocketPlayer.FromCSteamID(steamPlayer);
-                if (player.IsPro)
-                    color = Palette.Pro;
                 if (player.IsAdmin) {
                     color = Palette.Admin;
                 }else{
@@ -74,7 +72,6 @@ namespace Rocket.Unturned.Permissions
             return color;
         }
 
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static bool CheckValid(ValidateAuthTicketResponse_t r)
         {
@@ -84,7 +81,6 @@ namespace Rocket.Unturned.Permissions
             }
             return true;
         }
-
 
         private static bool checkReservedSlotSpace(CSteamID cSteamID)
         {

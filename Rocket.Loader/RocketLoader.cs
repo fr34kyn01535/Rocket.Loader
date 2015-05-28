@@ -8,7 +8,8 @@ namespace Rocket.RocketLoader
 {
     public class RocketLoader
     {
-        public static AssemblyDefinition UnturnedAssembly, LoaderAssembly, APIAssembly;
+        public static AssemblyDefinition UnityAssemblyDefinition, APIAssemblyDefinition, PatchAssemblyDefinition;
+        public static Assembly PatchAssembly;
 
         private static void Main(string[] args)
         {
@@ -16,11 +17,17 @@ namespace Rocket.RocketLoader
             {
                 Console.WriteLine("RocketLoader Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
+
+                string apiAssemblyName = args[0]; //"Rocket.Unturned.dll";
+                string unityAssemblyName = args[1]; //"Assembly-CSharp.dll";
+                string patchAssemblyName = args[2]; //"Rocket.Loader.Unturned.dll";
+                
                 try
                 {
-                    UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
-                    APIAssembly = AssemblyDefinition.ReadAssembly("Rocket.Unturned.dll");
-                    LoaderAssembly = AssemblyDefinition.ReadAssembly(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                    PatchAssembly = Assembly.Load(File.ReadAllBytes(patchAssemblyName));
+                    PatchAssemblyDefinition = AssemblyDefinition.ReadAssembly(patchAssemblyName);
+                    UnityAssemblyDefinition = AssemblyDefinition.ReadAssembly(unityAssemblyName);
+                    APIAssemblyDefinition = AssemblyDefinition.ReadAssembly(apiAssemblyName);
                 }
                 catch (Exception e)
                 {
@@ -32,12 +39,14 @@ namespace Rocket.RocketLoader
                     Environment.Exit(1);
                 }
 
+
+
                 if (isPatched())
                 {
-                    if (File.Exists("Assembly-CSharp.dll.bak"))
+                    if (File.Exists(unityAssemblyName + ".original"))
                     {
-                        File.Copy("Assembly-CSharp.dll.bak", "Assembly-CSharp.dll", true);
-                        UnturnedAssembly = AssemblyDefinition.ReadAssembly("Assembly-CSharp.dll");
+                        File.Copy(unityAssemblyName + ".original", unityAssemblyName, true);
+                        UnityAssemblyDefinition = AssemblyDefinition.ReadAssembly(unityAssemblyName);
                     }
 
                     if (isPatched())
@@ -52,15 +61,11 @@ namespace Rocket.RocketLoader
                 }
                 else
                 {
-                    Console.WriteLine("Backing up Assembly-CSharp.dll");
-                    File.Copy("Assembly-CSharp.dll", "Assembly-CSharp.dll.bak", true);
+                    Console.WriteLine("Backing up "+unityAssemblyName);
+                    File.Copy(unityAssemblyName, unityAssemblyName + ".original", true);
                 }
 
-                var patches = from t in Assembly.GetExecutingAssembly().GetTypes()
-                              where t.GetInterfaces().Contains(typeof(IPatch)) && t.GetConstructor(Type.EmptyTypes) != null
-                              select Activator.CreateInstance(t) as IPatch;
-
-                foreach (var patch in patches)
+                foreach (var patch in PatchAssembly.GetTypes().Where(t => t.BaseType.FullName == "Rocket.RocketLoader.Patch").Select(t => Activator.CreateInstance(t) as Patch)) 
                 {
                     try
                     {
@@ -76,17 +81,8 @@ namespace Rocket.RocketLoader
                     }
                 }
 
-                UnturnedAssembly.Write("Assembly-CSharp.dll");
-
-                if (!(args.Count() == 1 && args[0] == "silent"))
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Your game was successfully patched");
-#if DEBUG
-                    Console.ReadLine();
-#endif
-                    Environment.Exit(0);
-                }
+                UnityAssemblyDefinition.MainModule.Types.Add(new TypeDefinition("Rocket.RocketLoader", "Patched", new Mono.Cecil.TypeAttributes()));
+                UnityAssemblyDefinition.Write(unityAssemblyName);
             }
             catch (Exception ex)
             {
@@ -101,13 +97,7 @@ namespace Rocket.RocketLoader
 
         private static bool isPatched()
         {
-            MethodDefinition splash = RocketLoader.UnturnedAssembly.MainModule.GetType("SDG.CommandLine").Methods.AsEnumerable().Where(m => m.Name.ToLower() == "getcommands").FirstOrDefault();
-
-            if (splash.Body.Instructions[0].ToString().Contains("Splash"))
-            {
-                return true;
-            }
-            return false;
+            return RocketLoader.UnityAssemblyDefinition.MainModule.GetType("Rocket.RocketLoader", "Patched") != null;
         }
     }
 }
