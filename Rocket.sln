@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionInfo", "VersionInfo\VersionInfo.csproj", "{622A21A1-B699-4D06-B2F2-2D01A02755E7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Core", "Rocket.Core\Rocket.Core.csproj", "{7A9D652F-DC18-45FD-8964-DBAAD6384C3D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.API", "Rocket.API\Rocket.API.csproj", "{C362DF2F-1336-4932-AADC-4F2074FEDB64}"
@@ -38,22 +36,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Local|Any CPU.ActiveCfg = Local|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Local|Any CPU.Build.0 = Local|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Local|x64.ActiveCfg = Local|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Local|x86.ActiveCfg = Local|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Lokal|Any CPU.ActiveCfg = Release|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Lokal|Any CPU.Build.0 = Release|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Lokal|x64.ActiveCfg = Release|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Lokal|x86.ActiveCfg = Release|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Release|x64.ActiveCfg = Release|Any CPU
-		{622A21A1-B699-4D06-B2F2-2D01A02755E7}.Release|x86.ActiveCfg = Release|Any CPU
 		{7A9D652F-DC18-45FD-8964-DBAAD6384C3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7A9D652F-DC18-45FD-8964-DBAAD6384C3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A9D652F-DC18-45FD-8964-DBAAD6384C3D}.Debug|x64.ActiveCfg = Debug|Any CPU
