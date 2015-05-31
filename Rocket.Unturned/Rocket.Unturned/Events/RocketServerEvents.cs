@@ -48,7 +48,7 @@ namespace Rocket.Unturned.Events
 
         private static void onPlayerDisconnected(CSteamID r)
         {
-            RocketEvents.TryTrigger<PlayerDisconnected>(OnPlayerDisconnected);
+            RocketEvents.TryTrigger<PlayerDisconnected>(OnPlayerDisconnected,RocketPlayer.FromCSteamID(r));
         }
 
         public delegate void PlayerConnected(RocketPlayer player);
@@ -56,7 +56,7 @@ namespace Rocket.Unturned.Events
 
         internal static void firePlayerConnected(RocketPlayer player)
         {
-            RocketEvents.TryTrigger<PlayerConnected>(OnPlayerConnected);
+            RocketEvents.TryTrigger<PlayerConnected>(OnPlayerConnected,player);
         }
 
         public delegate void ServerShutdown();

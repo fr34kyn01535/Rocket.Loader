@@ -59,7 +59,6 @@ namespace Rocket.Unturned.Events
                 if (s == null || s.Player == null || s.Player.transform == null || R == null) return;
                 RocketPlayerEvents instance = s.Player.transform.GetComponent<RocketPlayerEvents>();
                 RocketPlayer rp = RocketPlayer.FromSteamPlayer(s);
-
 #if LINUX
                  string o = "";
                  foreach (object r in R)
@@ -71,7 +70,6 @@ namespace Rocket.Unturned.Events
                 if (W.StartsWith("tellWear")) {
                     RocketEvents.TryTrigger<PlayerWear>(OnPlayerWear, rp, Enum.Parse(typeof(Wearables), W.Replace("tellWear", "")), (ushort)R[0], R.Count() > 1 ? (byte?)R[1] : null);
                 }
-
                 switch (W)
                 {
                     case "tellBleeding":
