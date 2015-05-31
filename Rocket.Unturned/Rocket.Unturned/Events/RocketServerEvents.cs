@@ -8,6 +8,8 @@ using SDG;
 using Steamworks;
 using System.IO;
 using UnityEngine;
+using System.Linq;
+using System;
 
 namespace Rocket.Unturned.Events
 {
@@ -46,14 +48,7 @@ namespace Rocket.Unturned.Events
 
         private static void onPlayerDisconnected(CSteamID r)
         {
-            try
-            {
-                if (OnPlayerDisconnected != null) OnPlayerDisconnected(RocketPlayer.FromCSteamID(r));
-            }
-            catch (System.Exception ex)
-            {
-                Logger.Log(ex);
-            }
+            RocketEvents.TryTrigger<PlayerDisconnected>(OnPlayerDisconnected);
         }
 
         public delegate void PlayerConnected(RocketPlayer player);
@@ -61,7 +56,7 @@ namespace Rocket.Unturned.Events
 
         internal static void firePlayerConnected(RocketPlayer player)
         {
-            if (OnPlayerConnected != null) OnPlayerConnected(player);
+            RocketEvents.TryTrigger<PlayerConnected>(OnPlayerConnected);
         }
 
         public delegate void ServerShutdown();
@@ -69,14 +64,7 @@ namespace Rocket.Unturned.Events
 
         private static void onServerShutdown()
         {
-            try
-            {
-                if (OnServerShutdown != null) OnServerShutdown();
-            }
-            catch (System.Exception ex)
-            {
-                Logger.Log(ex);
-            }
+            RocketEvents.TryTrigger<ServerShutdown>(OnServerShutdown);
         }
     }
 }

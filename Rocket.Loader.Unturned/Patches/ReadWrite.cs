@@ -108,7 +108,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
 
             //TODO fix this shit
 
-            foreach (Instruction i in getAssemblyHash.Body.Instructions)
+            foreach (Instruction i in newgetAssemblyHash.Body.Instructions)
             {
                 if (i.OpCode.Name.ToLower().Equals("stloc.0"))
                     flag1 = true;

@@ -114,8 +114,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Scripts\start.sh" />
-    <None Include="Scripts\update.sh" />
+    <None Include="Scripts\Linux\start.sh" />
+    <None Include="Scripts\Linux\update.sh" />
+    <None Include="Scripts\Windows\start.bat" />
+    <None Include="Scripts\Windows\update.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
