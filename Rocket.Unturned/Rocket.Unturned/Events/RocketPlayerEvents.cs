@@ -69,7 +69,7 @@ namespace Rocket.Unturned.Events
                  Logger.Log("Send+" + s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
 #endif
                 if (W.StartsWith("tellWear")) {
-                    RocketEvents.TryTrigger<PlayerInventoryAdded>(OnPlayerWear, rp, Enum.Parse(typeof(Wearables),W.Replace("tellWear", "")), (ushort)R[0], (byte)R[1]);
+                    RocketEvents.TryTrigger<PlayerWear>(OnPlayerWear, rp, Enum.Parse(typeof(Wearables), W.Replace("tellWear", "")), (ushort)R[0], R.Count() > 1 ? (byte?)R[1] : null);
                 }
 
                 switch (W)
@@ -283,7 +283,7 @@ namespace Rocket.Unturned.Events
         }
 
         public enum Wearables { Hat = 0, Mask = 1, Vest = 2, Pants = 3, Shirt = 4, Glasses = 5, Backpack = 6};
-        public delegate void PlayerWear(RocketPlayer player, Wearables wear, ushort id, byte quality);
+        public delegate void PlayerWear(RocketPlayer player, Wearables wear, ushort id, byte? quality);
         public static event PlayerWear OnPlayerWear;
 
     }
