@@ -1,4 +1,5 @@
 ﻿using Rocket.API;
+using Rocket.Core.Events;
 using Rocket.Core.Logging;
 using Rocket.Unturned.Enumerations;
 using Rocket.Unturned.Player;
@@ -7,6 +8,7 @@ using Steamworks;
 using System;
 using System.ComponentModel;
 using UnityEngine;
+using System.Linq;
 
 namespace Rocket.Unturned.Events
 {
@@ -66,77 +68,75 @@ namespace Rocket.Unturned.Events
                  }
                  Logger.Log("Send+" + s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
 #endif
+                if (W.StartsWith("tellWear")) {
+                    RocketEvents.TryTrigger<PlayerInventoryAdded>(OnPlayerWear, rp, Enum.Parse(typeof(Wearables),W.Replace("tellWear", "")), (ushort)R[0], (byte)R[1]);
+                }
 
                 switch (W)
                 {
                     case "tellBleeding":
-                        if (OnPlayerUpdateBleeding != null) OnPlayerUpdateBleeding(rp, (bool)R[0]);
-                        if (instance.OnUpdateBleeding != null) instance.OnUpdateBleeding(rp, (bool)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateBleeding>(OnPlayerUpdateBleeding, rp, (bool)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateBleeding>(instance.OnUpdateBleeding, rp, (bool)R[0]);
                         break;
                     case "tellBroken":
-                        if (OnPlayerUpdateBroken != null) OnPlayerUpdateBroken(rp, (bool)R[0]);
-                        if (instance.OnUpdateBroken != null) instance.OnUpdateBroken(rp, (bool)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateBroken>(OnPlayerUpdateBroken,rp, (bool)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateBroken>(instance.OnUpdateBroken, rp, (bool)R[0]);
                         break;
                     case "tellPosition":
-                        if (OnPlayerUpdatePosition != null) OnPlayerUpdatePosition(rp, (Vector3)R[0]);
-                        if (instance.OnUpdatePosition != null) instance.OnUpdatePosition(rp, (Vector3)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdatePosition>(OnPlayerUpdatePosition,rp, (Vector3)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdatePosition>(instance.OnUpdatePosition, rp, (Vector3)R[0]);
                         break;
                     case "tellLife":
-                        if (OnPlayerUpdateLife != null) OnPlayerUpdateLife(rp, (byte)R[0]);
-                        if (instance.OnUpdateLife != null) instance.OnUpdateLife(rp, (byte)R[0]);
-                        break;
-                    case "tellDead":
-                        if (OnPlayerDead != null) OnPlayerDead(rp, (Vector3)R[0]);
-                        if (instance.OnDead != null) instance.OnDead(rp, (Vector3)R[0]);
-                        break;
-                    case "tellDeath":
-                        if (OnPlayerDeath != null) OnPlayerDeath(rp, (EDeathCause)(byte)R[0], (ELimb)(byte)R[1], new CSteamID(ulong.Parse(R[2].ToString())));
-                        if (instance.OnDeath != null) instance.OnDeath(rp, (EDeathCause)(byte)R[0], (ELimb)(byte)R[1], new CSteamID(ulong.Parse(R[2].ToString())));
+                        RocketEvents.TryTrigger<PlayerUpdateLife>(OnPlayerUpdateLife,rp, (byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateLife>(instance.OnUpdateLife, rp, (byte)R[0]);
                         break;
                     case "tellFood":
-                        if (OnPlayerUpdateFood != null) OnPlayerUpdateFood(rp, (byte)R[0]);
-                        if (instance.OnUpdateFood != null) instance.OnUpdateFood(rp, (byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateFood>(OnPlayerUpdateFood,rp, (byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateFood>(instance.OnUpdateFood,rp, (byte)R[0]);
                         break;
                     case "tellHealth":
-                        if (OnPlayerUpdateHealth != null) OnPlayerUpdateHealth(rp, (byte)R[0]);
-                        if (instance.OnUpdateHealth != null) instance.OnUpdateHealth(rp, (byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateHealth>(OnPlayerUpdateHealth,rp, (byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateHealth>(instance.OnUpdateHealth,rp, (byte)R[0]);
                         break;
                     case "tellVirus":
-                        if (OnPlayerUpdateVirus != null) OnPlayerUpdateVirus(rp, (byte)R[0]);
-                        if (instance.OnUpdateVirus != null) instance.OnUpdateVirus(rp, (byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateVirus>(OnPlayerUpdateVirus,rp, (byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateVirus>(instance.OnUpdateVirus,rp, (byte)R[0]);
                         break;
                     case "tellWater":
-                        if (OnPlayerUpdateWater != null) OnPlayerUpdateWater(rp, (byte)R[0]);
-                        if (instance.OnUpdateWater != null) instance.OnUpdateWater(rp, (byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateWater>(OnPlayerUpdateWater,rp, (byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateWater>(instance.OnUpdateWater,rp, (byte)R[0]);
                         break;
                     case "tellStance":
-                        if (OnPlayerUpdateStance != null) OnPlayerUpdateStance(rp, (byte)R[0]);
-                        if (instance.OnUpdateStance != null) instance.OnUpdateStance(rp, (byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateStance>(OnPlayerUpdateStance,rp, (byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateStance>(instance.OnUpdateStance, rp, (byte)R[0]);
                         break;
                     case "tellGesture":
-                        if (OnPlayerUpdateGesture != null) OnPlayerUpdateGesture(rp, (PlayerGesture)Enum.Parse(typeof(PlayerGesture), R[0].ToString()));
-                        if (instance.OnUpdateGesture != null) instance.OnUpdateGesture(rp, (PlayerGesture)Enum.Parse(typeof(PlayerGesture), R[0].ToString()));
-                        break;
-                    case "tellRevive":
-                        if (OnPlayerRevive != null) OnPlayerRevive(rp, (Vector3)R[0], (byte)R[1]);
-                        if (instance.OnRevive != null) instance.OnRevive(rp, (Vector3)R[0], (byte)R[1]);
+                        RocketEvents.TryTrigger<PlayerUpdateGesture>(OnPlayerUpdateGesture,rp, (PlayerGesture)Enum.Parse(typeof(PlayerGesture), R[0].ToString()));
+                        RocketEvents.TryTrigger<PlayerUpdateGesture>(instance.OnUpdateGesture, rp, (PlayerGesture)Enum.Parse(typeof(PlayerGesture), R[0].ToString()));
                         break;
                     case "tellStat":
-                        if (OnPlayerUpdateStat != null) OnPlayerUpdateStat(rp, (EPlayerStat)(byte)R[0]);
-                        if (instance.OnUpdateStat != null) instance.OnUpdateStat(rp, (EPlayerStat)(byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateStat>(OnPlayerUpdateStat, rp, (EPlayerStat)(byte)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateStat>(instance.OnUpdateStat, rp, (EPlayerStat)(byte)R[0]);
                         break;
                     case "tellExperience":
-                        if (OnPlayerUpdateExperience != null) OnPlayerUpdateExperience(rp, (uint)R[0]);
-                        if (instance.OnUpdateExperience != null) instance.OnUpdateExperience(rp, (uint)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateExperience>(OnPlayerUpdateExperience, rp, (uint)R[0]);
+                        RocketEvents.TryTrigger<PlayerUpdateExperience>(instance.OnUpdateExperience, rp, (uint)R[0]);
+                        break;
+                    case "tellRevive":
+                        RocketEvents.TryTrigger<PlayerRevive>(OnPlayerRevive,rp, (Vector3)R[0], (byte)R[1]);
+                        RocketEvents.TryTrigger<PlayerRevive>(instance.OnRevive, rp, (Vector3)R[0], (byte)R[1]);
+                        break;
+                    case "tellDead":
+                        RocketEvents.TryTrigger<PlayerDead>(OnPlayerDead, rp, (Vector3)R[0]);
+                        RocketEvents.TryTrigger<PlayerDead>(instance.OnDead, rp, (Vector3)R[0]);
+                        break;
+                    case "tellDeath":
+                        RocketEvents.TryTrigger<PlayerDeath>(OnPlayerDeath, rp, (EDeathCause)(byte)R[0], (ELimb)(byte)R[1], new CSteamID(ulong.Parse(R[2].ToString())));
+                        RocketEvents.TryTrigger<PlayerDeath>(instance.OnDeath, rp, (EDeathCause)(byte)R[0], (ELimb)(byte)R[1], new CSteamID(ulong.Parse(R[2].ToString())));
                         break;
                     default:
 #if DEBUG
-                       // string o = "";
-                       // foreach (object r in R)
-                       // {
-                       //     o += r.ToString();
-                       // }
-                       // Logger.Log("Send+" + s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + o);
+                        Logger.Log("Send+" + s.SteamPlayerID.CSteamID.ToString() + ": " + W + " - " + String.Join(",",R.Select(e => e.ToString()).ToArray()));
 #endif
                         break;
                 }
@@ -215,15 +215,8 @@ namespace Rocket.Unturned.Events
 
         private void onUpdateStamina(byte stamina)
         {
-            try
-            {
-                if (OnPlayerUpdateStamina != null) OnPlayerUpdateStamina(Player, stamina);
-                if (OnUpdateStamina != null) OnUpdateStamina(Player, stamina);
-            }
-            catch (System.Exception ex)
-            {
-                Logger.Log(ex);
-            }
+            RocketEvents.TryTrigger<PlayerUpdateStamina>(OnPlayerUpdateStamina, Player, stamina);
+            RocketEvents.TryTrigger<PlayerUpdateStamina>(OnUpdateStamina, Player, stamina);
         }
 
         public delegate void PlayerInventoryUpdated(RocketPlayer player, InventoryGroup inventoryGroup, byte inventoryIndex, ItemJar P);
@@ -232,15 +225,8 @@ namespace Rocket.Unturned.Events
 
         private void onInventoryUpdated(byte E, byte O, ItemJar P)
         {
-            try
-            {
-                if (OnPlayerInventoryUpdated != null) OnPlayerInventoryUpdated(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), O, P);
-                if (OnInventoryUpdated != null) OnInventoryUpdated(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), O, P);
-            }
-            catch (System.Exception ex)
-            {
-                Logger.Log(ex);
-            }
+            RocketEvents.TryTrigger<PlayerInventoryUpdated>(OnPlayerInventoryUpdated, Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), O, P);
+            RocketEvents.TryTrigger<PlayerInventoryUpdated>(OnInventoryUpdated, Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), O, P);
         }
 
         public delegate void PlayerInventoryResized(RocketPlayer player, InventoryGroup inventoryGroup, byte O, byte U);
@@ -249,15 +235,8 @@ namespace Rocket.Unturned.Events
 
         private void onInventoryResized(byte E, byte M, byte U)
         {
-            try
-            {
-                if (OnPlayerInventoryResized != null) OnPlayerInventoryResized(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), M, U);
-                if (OnInventoryResized != null) OnInventoryResized(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), M, U);
-            }
-            catch (System.Exception ex)
-            {
-                Logger.Log(ex);
-            }
+            RocketEvents.TryTrigger<PlayerInventoryResized>(OnPlayerInventoryResized, Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), M, U);
+            RocketEvents.TryTrigger<PlayerInventoryResized>(OnInventoryResized, Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), M, U);
         }
 
         public delegate void PlayerInventoryRemoved(RocketPlayer player, InventoryGroup inventoryGroup, byte inventoryIndex, ItemJar P);
@@ -266,15 +245,8 @@ namespace Rocket.Unturned.Events
 
         private void onInventoryRemoved(byte E, byte y, ItemJar f)
         {
-            try
-            {
-                if (OnPlayerInventoryRemoved != null) OnPlayerInventoryRemoved(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), y, f);
-                if (OnInventoryRemoved != null) OnInventoryRemoved(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), y, f);
-            }
-            catch (System.Exception ex)
-            {
-                Logger.Log(ex);
-            }
+            RocketEvents.TryTrigger<PlayerInventoryRemoved>(OnPlayerInventoryRemoved, Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), y, f);
+            RocketEvents.TryTrigger<PlayerInventoryRemoved>(OnInventoryRemoved, Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), y, f);
         }
 
         public delegate void PlayerInventoryAdded(RocketPlayer player, InventoryGroup inventoryGroup, byte inventoryIndex, ItemJar P);
@@ -283,15 +255,8 @@ namespace Rocket.Unturned.Events
 
         private void onInventoryAdded(byte E, byte u, ItemJar J)
         {
-            try
-            {
-                if (OnPlayerInventoryAdded != null) OnPlayerInventoryAdded(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), u, J);
-                if (OnInventoryAdded != null) OnInventoryAdded(Player, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), u, J);
-            }
-            catch (System.Exception ex)
-            {
-                Logger.Log(ex);
-            }
+            RocketEvents.TryTrigger<PlayerInventoryAdded>(OnPlayerInventoryAdded, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), u, J);
+            RocketEvents.TryTrigger<PlayerInventoryAdded>(OnInventoryAdded, (InventoryGroup)Enum.Parse(typeof(InventoryGroup), E.ToString()), u, J);
         }
 
         public delegate void PlayerChatted(RocketPlayer player, ref Color color, string message);
@@ -299,10 +264,27 @@ namespace Rocket.Unturned.Events
 
         internal static Color firePlayerChatted(RocketPlayer player, EChatMode chatMode, Color color, string msg)
         {
-            if (OnPlayerChatted != null) OnPlayerChatted(player, ref color, msg);
+            if (OnPlayerChatted != null)
+            {
+                foreach (var handler in OnPlayerChatted.GetInvocationList().Cast<PlayerChatted>())
+                {
+                    try
+                    {
+                        handler(player, ref color, msg);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogException(ex);
+                    }
+                }
+            }
+
             return color;
         }
 
+        public enum Wearables { Hat = 0, Mask = 1, Vest = 2, Pants = 3, Shirt = 4, Glasses = 5, Backpack = 6};
+        public delegate void PlayerWear(RocketPlayer player, Wearables wear, ushort id, byte quality);
+        public static event PlayerWear OnPlayerWear;
 
     }
 }

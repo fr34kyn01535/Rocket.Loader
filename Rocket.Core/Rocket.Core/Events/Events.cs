@@ -1,9 +1,27 @@
 ﻿using Rocket.Core.Logging;
+using System;
+using System.Linq;
 
 namespace Rocket.Core.Events
 {
     public static class RocketEvents
     {
+        public static void TryTrigger<T>(MulticastDelegate theDelegate, params object[] args)
+        {
+            if (theDelegate == null) return;
+            foreach (var handler in theDelegate.GetInvocationList().Cast<T>())
+            {
+                try
+                {
+                    theDelegate.DynamicInvoke(args);
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogException(ex);
+                }
+            }
+        }
+
         public delegate void RocketSaved();
         public static event RocketSaved OnRocketSave;
 
