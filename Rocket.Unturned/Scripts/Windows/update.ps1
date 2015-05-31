@@ -8,8 +8,8 @@ param(
    [Parameter(Mandatory=$True,valueFromPipeline=$true)]
 	[string]$steamPassword
 )
-$STEAMCMD_HOME = "steamcmd"
-$UNTURNED_HOME = "unturned"
+$STEAMCMD_HOME = "./steamcmd"
+$UNTURNED_HOME = "./unturned"
 
 New-Item -ItemType Directory -Force -Path $STEAMCMD_HOME
 New-Item -ItemType Directory -Force -Path $UNTURNED_HOME
