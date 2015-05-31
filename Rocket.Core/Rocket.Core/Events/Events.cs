@@ -17,7 +17,7 @@ namespace Rocket.Core.Events
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogException(ex);
+                    Logger.LogError("Error in Event "+theDelegate.GetType().Name+": "+ex.ToString());
                 }
             }
         }
