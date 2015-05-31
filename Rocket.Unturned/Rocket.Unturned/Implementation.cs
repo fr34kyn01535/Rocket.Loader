@@ -2,6 +2,7 @@
 using Rocket.Core;
 using Rocket.Unturned.Events;
 using Rocket.Unturned.Logging;
+using Rocket.Unturned.Permissions;
 using Rocket.Unturned.Plugins;
 using Rocket.Unturned.Settings;
 using SDG;
@@ -53,10 +54,10 @@ namespace Rocket.Unturned
 #endif
             createDirectories();
             moveLibrariesDirectory();
-            
+
             gameObject.AddComponent(typeof(RocketServerEvents));
             gameObject.AddComponent(typeof(PluginManager));
-            
+            gameObject.AddComponent(typeof(RocketPermissions));
             Rocket = gameObject.AddComponent<RocketBootstrap>();
         }
 
