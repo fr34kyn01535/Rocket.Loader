@@ -34,6 +34,12 @@ namespace Rocket.Unturned.Commands
             return (array.Length <= index || !UInt16.TryParse(array[index].ToString(), out output)) ? null : (ushort?)output;
         }
 
+        public static float? GetFloatParameter(this string[] array, int index)
+        {
+            float output;
+            return (array.Length <= index || !float.TryParse(array[index].ToString(), out output)) ? null : (float?)output;
+        }
+
         public static RocketPlayer GetRocketPlayerParameter(this string[] array, int index)
         {
             return (array.Length <= index) ? null : RocketPlayer.FromName(array[index]);
