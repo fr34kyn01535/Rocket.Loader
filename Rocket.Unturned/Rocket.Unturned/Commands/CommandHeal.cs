@@ -4,6 +4,7 @@ using Rocket.Core.Translations;
 using Rocket.Unturned.Player;
 using SDG;
 using System;
+using System.Collections.Generic;
 
 namespace Rocket.Unturned.Commands
 {
@@ -27,6 +28,11 @@ namespace Rocket.Unturned.Commands
         public string Syntax
         {
             get { return "[player]"; }
+        }
+
+        public List<string> Aliases
+        {
+            get { return new List<string>(); }
         }
 
         public void Execute(RocketPlayer caller, string[] command)

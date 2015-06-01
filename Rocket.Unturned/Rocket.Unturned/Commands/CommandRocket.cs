@@ -38,6 +38,11 @@ namespace Rocket.Unturned.Commands
             get { return "[plugins | reload] [reload | unload | load] [plugin]"; }
         }
 
+        public List<string> Aliases
+        {
+            get { return new List<string>(); }
+        }
+
         public void Execute(RocketPlayer caller, string[] command)
         {
             if (command.Length == 0)

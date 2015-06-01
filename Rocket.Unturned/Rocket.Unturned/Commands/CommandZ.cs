@@ -5,6 +5,7 @@ using Rocket.Unturned.Logging;
 using Rocket.Unturned.Player;
 using SDG;
 using System;
+using System.Collections.Generic;
 
 namespace Rocket.Unturned.Commands
 {
@@ -28,6 +29,11 @@ namespace Rocket.Unturned.Commands
         public string Syntax
         {
             get { return "<amount>"; }
+        }
+
+        public List<string> Aliases
+        {
+            get { return new List<string>(); }
         }
 
         public void Execute(RocketPlayer caller, string[] command)

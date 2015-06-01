@@ -81,8 +81,11 @@ namespace Rocket.Unturned.Plugins
             foreach (Type command in commands)
             {
                 IRocketCommand rocketCommand = (IRocketCommand)Activator.CreateInstance(command);
-                RocketCommandBase baseCommand = new RocketCommandBase(rocketCommand);
-                RegisterCommand((Command)(baseCommand), command.Assembly.GetName().Name);
+                RegisterCommand((Command)(new RocketCommandBase(rocketCommand)));
+                foreach (string alias in rocketCommand.Aliases)
+                {
+                    RegisterCommand((Command)(new RocketAliasBase(rocketCommand, alias)));
+                }
             }
         }
 
@@ -93,32 +96,16 @@ namespace Rocket.Unturned.Plugins
             }
         }
 
-		private static void RegisterCommand(Command command)
-		{
-			RegisterCommand(command,null);
-		}
-
-        private static void RegisterCommand(Command command, string originalAssemblyName)
+        private static void RegisterCommand(Command command)
         {
-            string assemblyName = "";
-            if (originalAssemblyName != null)
-            {
-                assemblyName = originalAssemblyName;
-            }
-            else
-            {
-                assemblyName = command.GetType().Assembly.GetName().Name;
-            }
+            string assemblyName = command.GetType().Assembly.GetName().Name;
 
-            List<Command> commandList = Commander.Commands.ToList();
-            List<Command> filteredCommandList = commandList.Where(c => c.commandName.ToLower() != command.commandName.ToLower()).ToList();
+            List<Command> existingCommand = Commander.Commands.Where(c => c.commandName.ToLower() == command.commandName.ToLower()).ToList();
 
-
-
-            if (commandList.Count() != filteredCommandList.Count())
+            if (existingCommand.Count() != 0)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("     ~ /" +command.commandName +" - " +command.commandHelp);
+                Console.WriteLine("     ~ /" + command.commandName + " - " + command.commandHelp);
             }
             else
             {

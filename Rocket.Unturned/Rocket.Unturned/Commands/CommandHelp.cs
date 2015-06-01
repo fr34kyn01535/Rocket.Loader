@@ -7,6 +7,7 @@ using Rocket.Unturned.Logging;
 using Rocket.Unturned.Player;
 using SDG;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -32,6 +33,11 @@ namespace Rocket.Unturned.Commands
         public string Syntax
         {
             get { return "[command]"; }
+        }
+
+        public List<string> Aliases
+        {
+            get { return new List<string>(); }
         }
 
         public void Execute(RocketPlayer caller, string[] command)

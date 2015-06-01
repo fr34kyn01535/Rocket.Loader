@@ -12,6 +12,8 @@ namespace Rocket.Unturned.Commands
         string Name { get; }
         string Help { get; }
         string Syntax { get; }
+        List<string> Aliases { get; }
+
         void Execute(RocketPlayer caller, string[] command); 
     }
 }
