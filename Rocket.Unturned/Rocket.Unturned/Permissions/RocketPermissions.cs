@@ -22,7 +22,7 @@ namespace Rocket.Unturned.Permissions
         }
 
         private void handleChat(SteamPlayer steamPlayer, EChatMode chatMode, ref Color incomingColor, string message){
-            Color color = Color.white;
+            Color color = incomingColor;
             try
             {
                 RocketPlayer player = RocketPlayer.FromSteamPlayer(steamPlayer);
@@ -32,7 +32,7 @@ namespace Rocket.Unturned.Permissions
                 }
                 else
                 {
-                    string colorPermission = RocketPermissionsManager.GetPermissions(steamPlayer.ToString()).Where(permission => permission.ToLower().StartsWith("color.")).FirstOrDefault();
+                    string colorPermission = RocketPermissionsManager.GetPermissions(player.CSteamID.ToString()).Where(permission => permission.ToLower().StartsWith("color.")).FirstOrDefault();
                     if (colorPermission != null)
                     {
                         color = RocketChat.GetColorFromName(colorPermission.ToLower().Replace("color.", ""), color);
