@@ -1,5 +1,6 @@
 ﻿using Rocket.Core.Permissions;
 using Rocket.Core.Settings;
+using Rocket.Unturned.Commands;
 using Rocket.Unturned.Events;
 using Rocket.Unturned.Logging;
 using Rocket.Unturned.Player;
@@ -60,6 +61,15 @@ namespace Rocket.Unturned.Permissions
             if (permissions.Where(p => p.ToLower() == requestedPermission || p.StartsWith(requestedPermission + ".")).Count() != 0 || permissions.Contains("*"))
             {
                 return true;
+            }
+
+            RocketAliasBase alias = Commander.Commands.Where(c => c.commandName.ToLower() == requestedPermission && c is RocketAliasBase).Cast<RocketAliasBase>().ToList().FirstOrDefault();
+            if (alias != null)
+            {
+                if (permissions.Where(p => p.ToLower() == alias.Command.Name.ToLower() || p.StartsWith(alias.Command.Name.ToLower() + ".")).Count() != 0)
+                {
+                    return true;
+                }
             }
 
             return player.IsAdmin;
