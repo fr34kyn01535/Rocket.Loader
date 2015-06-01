@@ -153,7 +153,7 @@ namespace Rocket.Core.Permissions
 
                         permissions.DefaultGroupId = "default";
                         permissions.Groups = new Group[] {
-                            new Group("default","Guest",new List<string>(), null , new List<string>() { "p", "reward","balance","pay","rocket" }),
+                            new Group("default","Guest",new List<string>(), null , new List<string>() { "p", "reward","balance","pay","rocket","color.white" }),
                             new Group("moderator","Moderator", new List<string>(),new List<string>() { "76561197960287930" }, new List<string>() { "p", "p.reload", "tp", "tphere","i","test" })
                         };
                         serializer.Serialize(writer, permissions);
