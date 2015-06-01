@@ -9,15 +9,15 @@ namespace Rocket.Core.Events
         public static void TryTrigger<T>(MulticastDelegate theDelegate, params object[] args)
         {
             if (theDelegate == null) return;
-            foreach (var handler in theDelegate.GetInvocationList().Cast<T>())
+            foreach (Delegate handler in theDelegate.GetInvocationList())
             {
                 try
                 {
-                    theDelegate.DynamicInvoke(args);
+                    handler.DynamicInvoke(args);
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError("Error in Event "+theDelegate.GetType().Name+": "+ex.ToString());
+                    Logger.LogError("Error in Event " + handler.GetType().Name + ": " + ex.ToString());
                 }
             }
         }
