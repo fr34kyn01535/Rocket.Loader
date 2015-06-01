@@ -15,8 +15,39 @@ using UnityEngine;
 
 namespace Rocket.Unturned.Permissions
 {
-    public class RocketPermissions
+    public class RocketPermissions : MonoBehaviour
     {
+        private void Awake() { 
+            SDG.ChatManager.OnChatted+= handleChat;
+        }
+
+        private void handleChat(SteamPlayer steamPlayer, EChatMode chatMode, ref Color incomingColor, string message){
+            Color color = Color.white;
+            try
+            {
+                RocketPlayer player = RocketPlayer.FromSteamPlayer(steamPlayer);
+                if (player.IsAdmin)
+                {
+                    color = Palette.Admin;
+                }
+                else
+                {
+                    string colorPermission = RocketPermissionsManager.GetPermissions(steamPlayer.ToString()).Where(permission => permission.ToLower().StartsWith("color.")).FirstOrDefault();
+                    if (colorPermission != null)
+                    {
+                        color = RocketChat.GetColorFromName(colorPermission.ToLower().Replace("color.", ""), color);
+                    }
+                }
+
+                color = RocketPlayerEvents.firePlayerChatted(player, chatMode, color, message);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            incomingColor = color;
+        }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
 
         public static bool CheckPermissions(SteamPlayer player, string permission)
@@ -44,32 +75,6 @@ namespace Rocket.Unturned.Permissions
             }
 
             return player.IsAdmin;
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static Color GetChatColor(CSteamID steamPlayer, byte chatModeByte, string message)
-        {
-            Color color = Color.white;
-            try
-            {
-                RocketPlayer player = RocketPlayer.FromCSteamID(steamPlayer);
-                if (player.IsAdmin) {
-                    color = Palette.Admin;
-                }else{
-                    string colorPermission = RocketPermissionsManager.GetPermissions(steamPlayer.ToString()).Where(permission => permission.ToLower().StartsWith("color.")).FirstOrDefault();
-                    if (colorPermission != null)
-                    {
-                        color = RocketChat.GetColorFromName(colorPermission.ToLower().Replace("color.", ""), color);
-                    }
-                }
-
-                color = RocketPlayerEvents.firePlayerChatted(player, (EChatMode)chatModeByte, color, message);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogException(ex);
-            }
-            return color;
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

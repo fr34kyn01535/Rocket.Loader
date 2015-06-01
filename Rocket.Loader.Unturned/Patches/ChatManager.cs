@@ -12,6 +12,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
             UnlockFieldByType("Chat[]", "ChatLog");
             UnlockFieldByType(typeof(string[]), "ChatFilter");
             UnlockFieldByType("ChatManager", "Instance");
+            UnlockFieldByType("Chatted", "OnChatted");
 
             MethodDefinition checkPermissions = RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.Permissions.RocketPermissions").Methods.AsEnumerable().Where(m => m.Name == "CheckPermissions").FirstOrDefault();
             MethodDefinition process = GetMethod("process");
@@ -22,16 +23,16 @@ namespace Rocket.RocketLoader.Unturned.Patches
                 process.Body.GetILProcessor().InsertBefore(process.Body.Instructions[8], Instruction.Create(OpCodes.Ldarg_1));
             }
 
-            MethodDefinition getChatColor = RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.Permissions.RocketPermissions").Methods.AsEnumerable().Where(m => m.Name == "GetChatColor").FirstOrDefault();
-            MethodDefinition askChat = GetMethod("askChat");
-            if (askChat != null)
-            {
-                askChat.Body.GetILProcessor().InsertBefore(askChat.Body.Instructions[132], Instruction.Create(OpCodes.Stloc_2));
-                askChat.Body.GetILProcessor().InsertBefore(askChat.Body.Instructions[132], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(getChatColor)));
-                askChat.Body.GetILProcessor().InsertBefore(askChat.Body.Instructions[132], Instruction.Create(OpCodes.Ldarg_3)); //string message
-                askChat.Body.GetILProcessor().InsertBefore(askChat.Body.Instructions[132], Instruction.Create(OpCodes.Ldarg_2)); //EChatMode chatMode
-                askChat.Body.GetILProcessor().InsertBefore(askChat.Body.Instructions[132], Instruction.Create(OpCodes.Ldarg_1)); //CSteamID steamPlayer  
-            }
+            //MethodDefinition getChatColor = RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.Permissions.RocketPermissions").Methods.AsEnumerable().Where(m => m.Name == "GetChatColor").FirstOrDefault();
+            //MethodDefinition askChat = GetMethod("askChat");
+            //if (askChat != null)
+            //{
+            //    askChat.Body.GetILProcessor().InsertBefore(askChat.Body.Instructions[132], Instruction.Create(OpCodes.Stloc_2));
+            //    askChat.Body.GetILProcessor().InsertBefore(askChat.Body.Instructions[132], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(getChatColor)));
+            //    askChat.Body.GetILProcessor().InsertBefore(askChat.Body.Instructions[132], Instruction.Create(OpCodes.Ldarg_3)); //string message
+            //    askChat.Body.GetILProcessor().InsertBefore(askChat.Body.Instructions[132], Instruction.Create(OpCodes.Ldarg_2)); //EChatMode chatMode
+            //    askChat.Body.GetILProcessor().InsertBefore(askChat.Body.Instructions[132], Instruction.Create(OpCodes.Ldarg_1)); //CSteamID steamPlayer  
+            //}
         }
     }
 }
