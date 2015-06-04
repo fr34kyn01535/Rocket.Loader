@@ -107,6 +107,11 @@ namespace Rocket.Unturned.Plugins
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("     ~ /" + command.commandName + " - " + command.commandHelp);
             }
+            else if (command is RocketAliasBase)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("     * /" + command.commandName + " - " + command.commandHelp);
+            }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
