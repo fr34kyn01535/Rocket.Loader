@@ -74,7 +74,7 @@
     <Compile Include="Rocket.Unturned\Commands\CommandLag.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandP.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandRocket.cs" />
-    <Compile Include="Rocket.Unturned\Commands\CommandTest.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandEffect.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandTp.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandTphere.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandExit.cs" />
