@@ -68,7 +68,7 @@ namespace Rocket.Unturned.Player
                 Player.Bleeding = false;
                 Player.Broken = false;
             }
-           RocketServerEvents.firePlayerConnected(Player);
+            RocketServerEvents.firePlayerConnected(Player);
         }
 
         private void e_OnPlayerUpdateVirus(RocketPlayer player, byte virus)

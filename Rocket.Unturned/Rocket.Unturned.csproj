@@ -85,6 +85,7 @@
     <Compile Include="Rocket.Unturned\Commands\CommandZ.cs" />
     <Compile Include="Rocket.Unturned\Commands\RocketAliasBase.cs" />
     <Compile Include="Rocket.Unturned\Commands\RocketCommandBase.cs" />
+    <Compile Include="Rocket.Unturned\Effects\RocketEffectManager.cs" />
     <Compile Include="Rocket.Unturned\Enumerations\InventoryGroup.cs" />
     <Compile Include="Rocket.Unturned\Permissions\RocketPermissions.cs" />
     <Compile Include="Rocket.Unturned\Plugins\RocketPlugin.cs" />

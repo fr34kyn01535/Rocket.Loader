@@ -102,6 +102,10 @@ namespace Rocket.Unturned.Player
         {
             return CSteamID.ToString();
         }
+        
+        public void TriggerEffect(ushort effectID){
+            EffectManager.Instance.SteamChannel.send("tellEffectPoint", CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { effectID, player.transform.position });
+        }
 
         public PlayerInventory Inventory
         {

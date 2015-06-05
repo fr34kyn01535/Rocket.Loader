@@ -127,7 +127,7 @@ namespace Rocket.Unturned.Plugins
         {
             RocketPlayer player = RocketPlayer.FromCSteamID(id);
 #if DEBUG
-            Logger.Log("Adding PlayerComponents");
+
 #endif
             foreach (Type component in rocketPlayerComponents)
             {

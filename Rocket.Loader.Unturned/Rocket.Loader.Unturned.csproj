@@ -66,6 +66,7 @@
     <Compile Include="Patches\NodeLocation.cs" />
     <Compile Include="Patches\ObjectAsset.cs" />
     <Compile Include="Patches\Palette.cs" />
+    <Compile Include="Patches\EffectAsset.cs" />
     <Compile Include="Patches\Player.cs" />
     <Compile Include="Patches\PlayerClothing.cs" />
     <Compile Include="Patches\PlayerEquipment.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Patches\SteamCaller.cs" />
     <Compile Include="Patches\SteamChannel.cs" />
     <Compile Include="Patches\SteamChannelMethod.cs" />
+    <Compile Include="Patches\EffectManager.cs" />
     <Compile Include="Patches\SteamPlayer.cs" />
     <Compile Include="Patches\SteamPlayerID.cs" />
     <Compile Include="Patches\StructureManager.cs" />

@@ -58,6 +58,7 @@ namespace Rocket.Unturned
             gameObject.AddComponent(typeof(RocketServerEvents));
             gameObject.AddComponent(typeof(PluginManager));
             gameObject.AddComponent(typeof(RocketPermissions));
+            gameObject.AddComponent(typeof(RocketEffectManager));
             Rocket = gameObject.AddComponent<RocketBootstrap>();
         }
 
