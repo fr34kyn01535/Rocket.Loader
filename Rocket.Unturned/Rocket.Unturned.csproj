@@ -63,9 +63,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Rocket.Unturned\Chat\RocketChat.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandUnadmin.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandCi.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandCompass.cs" />
-    <Compile Include="Rocket.Unturned\Commands\CommandDuty.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandAdmin.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandGod.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandHeal.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandHome.cs" />
