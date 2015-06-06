@@ -137,12 +137,12 @@ namespace Rocket.Unturned.Plugins
             loaded = false;
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             LoadPlugin();
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             UnloadPlugin();
         }

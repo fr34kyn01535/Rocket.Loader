@@ -110,7 +110,7 @@ namespace Rocket.Unturned.Plugins
             else if (command is RocketAliasBase)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("     * /" + command.commandName + " - " + command.commandHelp);
+                Console.WriteLine("         Alias: /" + command.commandName);
             }
             else
             {

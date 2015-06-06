@@ -14,12 +14,11 @@ namespace Rocket.Unturned.Events
 {
     public sealed class RocketPlayerEvents : RocketPlayerComponent
     {
-        private new void Awake()
+        private new void Start()
         {
 #if DEBUG
-            Logger.Log("RocketPlayerEvents > Awake");
+            Logger.Log("RocketPlayerEvents > Start");
 #endif
-            base.Awake();
 
             Player.Player.PlayerLife.OnUpdateStamina += onUpdateStamina;
 

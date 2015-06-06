@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rocket.Core\Misc\SettingsWatcher.cs" />
     <Compile Include="Rocket.Core\Events\Events.cs" />
     <Compile Include="Rocket.Core\Plugins\RocketPluginConfiguration.cs" />
     <Compile Include="Rocket.Core\Plugins\RocketPluginManager.cs" />

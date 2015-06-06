@@ -12,7 +12,7 @@ namespace Rocket.Unturned.Player
             get { return player; }
         }
 
-        public void Awake()
+        private void Awake()
         {
             player = RocketPlayer.FromPlayer(gameObject.transform.GetComponent<SDG.Player>());
             DontDestroyOnLoad(transform.gameObject);

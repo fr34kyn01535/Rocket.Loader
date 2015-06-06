@@ -188,6 +188,7 @@ namespace Rocket.Core.Settings
         private WebPermissionsSettingsSection webPermissions = new WebPermissionsSettingsSection();
 
         private bool enableJoinLeaveMessages = false;
+        private bool enableSettingsWatcher = true;
         private string languageCode = "en";
         private int automaticSaveInterval = 300;
 
@@ -204,6 +205,20 @@ namespace Rocket.Core.Settings
             set
             {
                 languageCode = value;
+            }
+        }
+
+
+        [XmlElement(ElementName = "EnableSettingsWatcher")]
+        public bool EnableSettingsWatcher
+        {
+            get
+            {
+                return enableSettingsWatcher;
+            }
+            set
+            {
+                enableSettingsWatcher = value;
             }
         }
 
@@ -314,23 +329,26 @@ namespace Rocket.Core.Settings
         }
 
 
-        public static void Reload()
+        public static void Reload(bool writeAgain = true)
         {
             try
             {
                 RocketSettings fallback = new RocketSettings();
                 Type[] types = {fallback.Implementation.GetType()};
                 XmlSerializer serializer = new XmlSerializer(typeof(RocketSettings), types);
-                string configFile = Path.Combine(RocketBootstrap.Implementation.HomeFolder, "Rocket.config.xml");
+                string configFile = Path.Combine(RocketBootstrap.Implementation.HomeFolder, RocketBootstrap.SettingsFile);
                 if (File.Exists(configFile))
                 {
                     using (StreamReader r = new StreamReader(configFile))
                     {
                         Settings = (RocketSettings)serializer.Deserialize(r);
                     }
-                    using (StreamWriter w = new StreamWriter(configFile))
+                    if (writeAgain)
                     {
-                        serializer.Serialize(w, Settings);
+                        using (StreamWriter w = new StreamWriter(configFile))
+                        {
+                            serializer.Serialize(w, Settings);
+                        }
                     }
                 }
                 else

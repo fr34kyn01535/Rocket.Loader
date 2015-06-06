@@ -35,7 +35,7 @@ namespace Rocket.Unturned.Commands
 
         public string Syntax
         {
-            get { return "[plugins | reload] [reload | unload | load] [plugin]"; }
+            get { return "<plugins | reload> | <reload | unload | load> <plugin>"; }
         }
 
         public List<string> Aliases
@@ -67,6 +67,11 @@ namespace Rocket.Unturned.Commands
                             RocketTranslationManager.Reload();
                             RocketSettingsManager.Reload();
                             RocketPermissionsManager.Reload();
+                            foreach (IRocketPlugin plugin in RocketPluginManager.GetPlugins())
+                            {
+                                ((RocketPlugin)plugin).UnloadPlugin();
+                                ((RocketPlugin)plugin).LoadPlugin();
+                            }
                         break;
                 }
             }

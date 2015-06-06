@@ -30,6 +30,9 @@ namespace Rocket.Core
         private int frames = 0;
         private float timeleft;
 
+        public static readonly string PermissionFile = "Permissions.config.xml";
+        public static readonly string SettingsFile = "Rocket.config.xml";
+
         private void Awake()
         {
 #if DEBUG
@@ -47,6 +50,7 @@ namespace Rocket.Core
                 gameObject.AddComponent<RocketTranslationManager>();
                 gameObject.AddComponent<RocketPermissionsManager>();
                 gameObject.AddComponent<RocketSettingsManager>();
+                
             }
             catch (Exception e)
             {
@@ -62,6 +66,7 @@ namespace Rocket.Core
             {
                 launchAutomaticShutdownWatchdog();
                 launchRCON();
+                launchSettingsWatcher();
             }
             catch (Exception e)
             {
@@ -90,6 +95,14 @@ namespace Rocket.Core
                 {
                     RCONServer.Listen(port);
                 }
+            }
+        }
+
+        private void launchSettingsWatcher()
+        {
+            if (RocketSettingsManager.Settings.EnableSettingsWatcher)
+            {
+                gameObject.AddComponent<SettingsWatcher>();
             }
         }
 

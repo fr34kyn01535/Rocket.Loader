@@ -63,7 +63,7 @@ namespace Rocket.Core.Permissions
             }
         }
 
-        public static void Reload()
+        public static void Reload(bool writeAgain = true)
         {
             if (RocketSettingsManager.Settings.WebPermissions.Enabled)
             {
@@ -71,7 +71,7 @@ namespace Rocket.Core.Permissions
             }
             else
             {
-                loadPermissions(RocketBootstrap.Implementation.ConfigurationFolder + "Permissions.config.xml");
+                loadPermissions(RocketBootstrap.Implementation.ConfigurationFolder + RocketBootstrap.PermissionFile, writeAgain);
             }
         }
 
@@ -117,7 +117,7 @@ namespace Rocket.Core.Permissions
             updatedWebPermissions = true;
         }
 
-        private static void loadPermissions(string permissionsFile)
+        private static void loadPermissions(string permissionsFile,bool writeAgain = false)
         {
             try
             {
@@ -127,21 +127,15 @@ namespace Rocket.Core.Permissions
                     using (StreamReader reader = new StreamReader(permissionsFile))
                     {
                         permissions = (Permissions)serializer.Deserialize(reader);
-
                         if (permissions.Groups == null) permissions.Groups = new Group[0];
                         if (String.IsNullOrEmpty(permissions.DefaultGroupId)) permissions.DefaultGroupId = "default";
-
-                        foreach (Group group in permissions.Groups)
-                        {
-                            foreach (string command in group.Commands)
-                            {
-                                group.Commands[group.Commands.IndexOf(command)] = command.ToLower();
-                            }
-                        }
                     }
-                    using (StreamWriter streamWriter = new StreamWriter(permissionsFile))
+                    if (writeAgain)
                     {
-                        serializer.Serialize(streamWriter, permissions);
+                        using (StreamWriter streamWriter = new StreamWriter(permissionsFile))
+                        {
+                            serializer.Serialize(streamWriter, permissions);
+                        }
                     }
                 }
                 else
@@ -239,6 +233,29 @@ namespace Rocket.Core.Permissions
             }
 
             return p.Distinct().ToList();
+        }
+
+        public static bool SetGroup(string player, string groupName)
+        {
+            bool added = false;
+            foreach (Group g in permissions.Groups)
+            {
+                if (g.Members.Contains(player))
+                {
+                    g.Members.Remove(player);
+                }
+                if (g.Id.ToLower() == groupName.ToLower())
+                {
+                    g.Members.Add(player);
+                    added = true;
+                }
+            }
+            if (added)
+            {
+                SavePermissions(RocketBootstrap.Implementation.ConfigurationFolder + RocketBootstrap.PermissionFile);
+                return true;
+            }
+            return false;
         }
     }
 
