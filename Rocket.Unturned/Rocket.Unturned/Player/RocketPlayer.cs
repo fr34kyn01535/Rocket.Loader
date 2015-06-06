@@ -50,8 +50,8 @@ namespace Rocket.Unturned.Player
             return (this.CSteamID.ToString() == p.CSteamID.ToString());
         }
 
-        public Component GetComponent<T>() {
-            return Player.GetComponent(typeof(T));    
+        public T GetComponent<T>() {
+            return (T)(object)Player.GetComponent(typeof(T));
         }
 
         private RocketPlayer(SDG.Player p)
