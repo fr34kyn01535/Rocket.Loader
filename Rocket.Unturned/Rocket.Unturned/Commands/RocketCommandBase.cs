@@ -22,6 +22,12 @@ namespace Rocket.Unturned.Commands
             return (array.Length <= index || !Int32.TryParse(array[index].ToString(), out output)) ? null : (int?)output;
         }
 
+        public static uint? GetUInt32Parameter(this string[] array, int index)
+        {
+            uint output;
+            return (array.Length <= index || !uint.TryParse(array[index].ToString(), out output)) ? null : (uint?)output;
+        }
+
         public static byte? GetByteParameter(this string[] array, int index)
         {
             byte output;
