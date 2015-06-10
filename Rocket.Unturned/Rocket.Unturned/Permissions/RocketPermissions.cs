@@ -125,7 +125,7 @@ namespace Rocket.Unturned.Permissions
                             return true;
                         }
                     }
-                    Steam.Reject(cSteamID, ESteamRejection);
+                    Steam.Reject(cSteamID,ESteamRejection.SERVER_FULL);
                     return false;
                 }
                 return true;
