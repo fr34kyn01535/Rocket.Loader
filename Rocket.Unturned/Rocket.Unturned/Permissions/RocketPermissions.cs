@@ -94,6 +94,14 @@ namespace Rocket.Unturned.Permissions
             {
                 return false;
             }
+
+            ESteamRejection? reason = null;
+            RocketServerEvents.firePlayerConnect(r.m_SteamID,ref reason);
+            if(reason != null){
+                Steam.Reject(r.m_SteamID, reason.Value);
+                return false;
+            }
+
             return true;
         }
 
@@ -117,7 +125,7 @@ namespace Rocket.Unturned.Permissions
                             return true;
                         }
                     }
-                    Steam.Reject(cSteamID, ESteamRejection.SERVER_FULL);
+                    Steam.Reject(cSteamID, ESteamRejection);
                     return false;
                 }
                 return true;

@@ -56,7 +56,28 @@ namespace Rocket.Unturned.Events
 
         internal static void firePlayerConnected(RocketPlayer player)
         {
-            RocketEvents.TryTrigger<PlayerConnected>(OnPlayerConnected,player);
+            RocketEvents.TryTrigger<PlayerConnected>(OnPlayerConnected, player);
+        }
+
+        public delegate void PlayerConnect(CSteamID player, ref ESteamRejection? rejection);
+        public static event PlayerConnect OnPlayerConnect;
+
+        internal static void firePlayerConnect(CSteamID player,ref ESteamRejection? rejection)
+        {
+            if (OnPlayerConnect != null)
+            {
+                foreach (var handler in OnPlayerConnect.GetInvocationList().Cast<PlayerConnect>())
+                {
+                    try
+                    {
+                        handler(player, ref rejection);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogException(ex);
+                    }
+                }
+            }
         }
 
         public delegate void ServerShutdown();
