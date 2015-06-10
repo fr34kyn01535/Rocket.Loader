@@ -6,7 +6,7 @@ namespace Rocket.Core.Logging
     public static partial class Logger
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void ExternalLog(string message, ConsoleColor color)
+        public static void ExternalLog(object message, ConsoleColor color)
         {
             ELogType severity;
             switch (color)
@@ -21,7 +21,7 @@ namespace Rocket.Core.Logging
                     severity = ELogType.Info;
                     break;
             }
-            ProcessLog(severity, message);
+            ProcessLog(severity, message.ToString());
         }
     }
 }

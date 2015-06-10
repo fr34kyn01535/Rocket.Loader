@@ -35,7 +35,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
 
 #if !LINUX
             MethodDefinition log = Type.Methods.AsEnumerable().Where(m => m.Parameters.Count == 2 &&
-                 m.Parameters[0].ParameterType.Name == "String" &&
+                 m.Parameters[0].ParameterType.Name == "Object" &&
                  m.Parameters[1].ParameterType.Name == "ConsoleColor").FirstOrDefault();
             log.Name = "Log";
             log.IsPublic = true;
