@@ -63,15 +63,14 @@ namespace Rocket.Unturned.Player
         {
             SDG.Player p = null;
             ulong id = 0;
-            if(ulong.TryParse(name,out id))
-                if (id > 76561197960265728)
-                {
-                    p = PlayerTool.getPlayer(new CSteamID(id));
-                }
-                else
-                {
-                    p = PlayerTool.getPlayer(name);
-                }
+            if (ulong.TryParse(name, out id) && id > 76561197960265728)
+            {
+                p = PlayerTool.getPlayer(new CSteamID(id));
+            }
+            else
+            {
+                p = PlayerTool.getPlayer(name);
+            }
             if (p == null) return null;
             return new RocketPlayer(p);
         }
