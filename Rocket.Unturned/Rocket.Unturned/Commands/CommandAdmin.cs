@@ -50,6 +50,7 @@ namespace Rocket.Unturned.Commands
 
                 if (!player.IsAdmin)
                 {
+                    RocketChat.Say(caller, "Successfully admined "+player.CharacterName);
                     player.Admin(true);
                 }
             }   
