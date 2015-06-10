@@ -122,10 +122,10 @@ namespace Rocket.Unturned.Player
             return VehicleTool.giveVehicle(player, vehicleId);
         }
 
-        public void GiveZombie(byte amount)
-        {
-            ZombieTool.giveZombie(player,amount);
-        }
+        //public void GiveZombie(byte amount)
+        //{
+        //    ZombieTool.giveZombie(player,amount);
+        //}
 
         public CSteamID SteamGroupID
         {
