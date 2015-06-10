@@ -66,7 +66,7 @@ namespace Rocket.Core.Plugins
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError("An error occured while loading the configuration: " + ex.ToString());// The old version was backuped and a new version was created: " + ex.ToString());
+                    Logger.LogError("An error occured while loading the configuration "+ filename +": " + ex.ToString());// The old version was backuped and a new version was created: " + ex.ToString());
                     return (T)Activator.CreateInstance(typeof(T));
                 }
             }
