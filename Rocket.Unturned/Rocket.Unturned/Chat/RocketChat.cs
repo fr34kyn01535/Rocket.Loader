@@ -104,7 +104,9 @@ namespace Rocket.Unturned
         {
             if (CSteamID == null || CSteamID.ToString() == "0")
             {
-                Logger.Log(message);
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine(message);
+                Logger.Log(message,false);
             }
             else
             {   

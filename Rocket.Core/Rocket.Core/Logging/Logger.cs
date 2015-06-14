@@ -9,7 +9,7 @@ namespace Rocket.Core.Logging
     {
         private static string lastAssembly = "";
 
-        public static void Log(string message)
+        public static void Log(string message, bool writeToConsole = true)
         {
             if (message == null) return;
             string assembly = "";
@@ -41,7 +41,7 @@ namespace Rocket.Core.Logging
             {
                 throw;
             }
-            ProcessInternalLog(ELogType.Info, message);
+            ProcessInternalLog(ELogType.Info, message, writeToConsole);
         }
 
         internal static string var_dump(object obj, int recursion)
@@ -158,25 +158,28 @@ namespace Rocket.Core.Logging
             ProcessInternalLog(ELogType.Exception, assembly + "Exception in " + source + ": " + ex);
         }
 
-        private static void ProcessInternalLog(ELogType type, string message)
+        private static void ProcessInternalLog(ELogType type, string message, bool doWriteToConsole = true)
         {
-            if (type == ELogType.Error || type == ELogType.Exception)
+            if (doWriteToConsole)
             {
+                if (type == ELogType.Error || type == ELogType.Exception)
+                {
 
-               // Debug.LogError(message);
-                writeToConsole(message, ConsoleColor.Red);
+                    // Debug.LogError(message);
+                    writeToConsole(message, ConsoleColor.Red);
+                }
+                else if (type == ELogType.Warning)
+                {
+                    //  Debug.LogWarning(message);
+                    writeToConsole(message, ConsoleColor.Yellow);
+                }
+                else
+                {
+                    //Debug.Log(message);
+                    writeToConsole(message, ConsoleColor.White);
+                }
+                ProcessLog(type, message);
             }
-            else if (type == ELogType.Warning)
-            {
-              //  Debug.LogWarning(message);
-                writeToConsole(message, ConsoleColor.Yellow);
-            }
-            else
-            {
-                //Debug.Log(message);
-                writeToConsole(message, ConsoleColor.White);
-            }
-            ProcessLog(type,message);
         }
 
         internal static void logRCON(string message)
