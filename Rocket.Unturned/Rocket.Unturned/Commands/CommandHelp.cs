@@ -69,7 +69,7 @@ namespace Rocket.Unturned.Commands
             }
             else
             {
-                Command cmd = Commander.Commands.Where(c => c.commandName.ToLower() == command[0]).FirstOrDefault();
+                Command cmd = Commander.Commands.Where(c => (String.Compare(c.commandName, command[0], true) == 0)).FirstOrDefault();
                 if (cmd != null)
                 {
                     string commandName = cmd.commandName;

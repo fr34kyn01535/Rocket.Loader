@@ -103,6 +103,7 @@
     <Compile Include="Rocket.Unturned\Player\RocketPlayerFeatures.cs" />
     <Compile Include="Rocket.Unturned\Plugins\PluginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rocket.Unturned\Util\ItemHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rocket.API\Rocket.API.csproj">

@@ -100,7 +100,7 @@ namespace Rocket.Unturned.Plugins
         {
             string assemblyName = command.GetType().Assembly.GetName().Name;
 
-            List<Command> existingCommand = Commander.Commands.Where(c => c.commandName.ToLower() == command.commandName.ToLower()).ToList();
+            List<Command> existingCommand = Commander.Commands.Where(c => (String.Compare(c.commandName, command.commandName, true) == 0)).ToList();
 
             if (existingCommand.Count() != 0)
             {

@@ -126,6 +126,11 @@ namespace Rocket.Unturned.Player
             return ItemTool.tryForceGiveItem(player,itemId,amount);
         }
 
+        public bool GiveItem(Item item)
+        {
+            return player.Inventory.tryAddItem(item, false);
+        }
+
         public bool GiveVehicle(ushort vehicleId)
         {
             return VehicleTool.giveVehicle(player, vehicleId);

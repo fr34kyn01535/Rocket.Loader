@@ -5,7 +5,9 @@ using Rocket.Unturned.Logging;
 using Rocket.Unturned.Player;
 using SDG;
 using System;
+using System.Linq;
 using System.Collections.Generic;
+using Rocket.Unturned.Util;
 
 namespace Rocket.Unturned.Commands
 {
@@ -51,14 +53,8 @@ namespace Rocket.Unturned.Commands
 
             if (!ushort.TryParse(itemString, out id))
             {
-                Asset[] assets = SDG.Assets.find(EAssetType.Item);
-                foreach (ItemAsset ia in assets)
-                {
-                    if(ia != null && ia.Name != null && ia.Name.ToLower().Contains(itemString.ToLower())){
-                        id = ia.Id;
-                        break;
-                    }
-                }
+                ItemAsset asset = ItemHelper.GetItemAssetByName(itemString.ToLower());
+                if (asset != null) id = asset.Id;
                 if (String.IsNullOrEmpty(itemString.Trim()) || id == 0)
                 {
                     RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));

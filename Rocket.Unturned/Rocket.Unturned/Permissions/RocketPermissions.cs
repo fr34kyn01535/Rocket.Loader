@@ -58,7 +58,7 @@ namespace Rocket.Unturned.Permissions
 
             List<string> permissions = RocketPermissionsManager.GetPermissions(player.SteamPlayerID.CSteamID.ToString());
 
-            if (permissions.Where(p => p.ToLower() == requestedPermission || p.StartsWith(requestedPermission + ".")).Count() != 0 || permissions.Contains("*"))
+            if (permissions.Where(p => p.ToLower() == requestedPermission || p.ToLower().StartsWith(requestedPermission + ".")).Count() != 0 || permissions.Contains("*"))
             {
                 return true;
             }
@@ -66,7 +66,7 @@ namespace Rocket.Unturned.Permissions
             RocketAliasBase alias = Commander.Commands.Where(c => c.commandName.ToLower() == requestedPermission && c is RocketAliasBase).Cast<RocketAliasBase>().ToList().FirstOrDefault();
             if (alias != null)
             {
-                if (permissions.Where(p => p.ToLower() == alias.Command.Name.ToLower() || p.StartsWith(alias.Command.Name.ToLower() + ".")).Count() != 0)
+                if (permissions.Where(p => (String.Compare(p, alias.Command.Name,true) == 0) || p.StartsWith(alias.Command.Name.ToLower() + ".")).Count() != 0)
                 {
                     return true;
                 }

@@ -186,8 +186,8 @@ namespace Rocket.Core.Permissions
             List<string> allgroups = new List<string>();
             foreach (string g in parentGroups)
             {
-                Group group = permissions.Groups.Where(gr => gr.Id.ToLower() == g.ToLower()).FirstOrDefault();
-                if (group != null && currentGroup.ToLower() != group.Id.ToLower())
+                Group group = permissions.Groups.Where(gr => (String.Compare(gr.Id, g, true) == 0)).FirstOrDefault();
+                if (group != null && (String.Compare(currentGroup, group.Id, true) != 0))
                 {
                     allgroups.Add(group.Id);
                     allgroups.AddRange(getParentGroups(group.ParentGroups, currentGroup));
@@ -200,7 +200,7 @@ namespace Rocket.Core.Permissions
         public static List<Group> GetGroups(string userID, bool includeParentGroups)
         {
             List<Group> groups = permissions.Groups.Where(g => g.Members.Contains(userID)).ToList(); // Get my Groups
-            Group defaultGroup = permissions.Groups.Where(g => g.Id.ToLower() == permissions.DefaultGroupId.ToLower()).FirstOrDefault();
+            Group defaultGroup = permissions.Groups.Where(g => (String.Compare(g.Id, permissions.DefaultGroupId, true) == 0)).FirstOrDefault();
             if (defaultGroup != null) groups.Add(defaultGroup);
 
             if (includeParentGroups)
@@ -244,7 +244,8 @@ namespace Rocket.Core.Permissions
                 {
                     g.Members.Remove(player);
                 }
-                if (g.Id.ToLower() == groupName.ToLower())
+
+                if (String.Compare(g.Id, groupName, true) == 0)
                 {
                     g.Members.Add(player);
                     added = true;
