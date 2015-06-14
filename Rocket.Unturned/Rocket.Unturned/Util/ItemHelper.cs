@@ -8,8 +8,8 @@ using SDG;
 namespace Rocket.Unturned.Util
 {
     public class Attachment{
-        public ushort AttachmentId;
-        public byte Durability;
+        public ushort AttachmentId = 0;
+        public byte Durability = 100;
         public Attachment(ushort attachmentId, byte durability){
             AttachmentId = attachmentId;
             Durability = durability;
@@ -31,11 +31,11 @@ namespace Rocket.Unturned.Util
             return (ItemAsset)asset;
         }
 
-        public static Item AssembleItem(ushort itemId, byte clipsize, Attachment sight, Attachment tactical, Attachment grip, Attachment barrel, Attachment magazine, EFiremode firemode = EFiremode.SAFETY, byte amount = 1, byte durability = 255)
+        public static Item AssembleItem(ushort itemId, byte clipsize, Attachment sight, Attachment tactical, Attachment grip, Attachment barrel, Attachment magazine, EFiremode firemode = EFiremode.SAFETY, byte amount = 1, byte durability = 100)
         {
             byte[] metadata = new byte[18];
 
-            if (sight != null)
+            if (sight != null && sight.AttachmentId != 0)
             {
                 byte[] sightBytes = BitConverter.GetBytes(sight.AttachmentId);
                 metadata[0] = sightBytes[0];
@@ -43,7 +43,7 @@ namespace Rocket.Unturned.Util
                 metadata[13] = sight.Durability;
             }
 
-            if (tactical != null)
+            if (tactical != null && tactical.AttachmentId != 0)
             {
                 byte[] tacticalBytes = BitConverter.GetBytes(tactical.AttachmentId);
                 metadata[2] = tacticalBytes[0];
@@ -51,7 +51,7 @@ namespace Rocket.Unturned.Util
                 metadata[14] = tactical.Durability;
             }
 
-            if (grip != null)
+            if (grip != null && grip.AttachmentId != 0)
             {
                 byte[] gripBytes = BitConverter.GetBytes(grip.AttachmentId);
                 metadata[4] = gripBytes[0];
@@ -59,7 +59,7 @@ namespace Rocket.Unturned.Util
                 metadata[15] = grip.Durability;
             }
 
-            if (barrel != null)
+            if (barrel != null && barrel.AttachmentId != 0)
             {
                 byte[] barrelBytes = BitConverter.GetBytes(barrel.AttachmentId);
                 metadata[6] = barrelBytes[0];
@@ -67,7 +67,7 @@ namespace Rocket.Unturned.Util
                 metadata[16] = barrel.Durability;
             }
 
-            if (magazine != null)
+            if (magazine != null && magazine.AttachmentId != 0)
             {
                 byte[] magazineBytes = BitConverter.GetBytes(magazine.AttachmentId);
                 metadata[8] = magazineBytes[0];
@@ -82,7 +82,7 @@ namespace Rocket.Unturned.Util
             return AssembleItem(itemId,amount,durability,metadata);
         }
 
-        public static Item AssembleItem(ushort itemId, byte amount = 1, byte durability = 255, byte[] metadata = null)
+        public static Item AssembleItem(ushort itemId, byte amount = 1, byte durability = 100, byte[] metadata = null)
         {
             return new Item(itemId, amount, durability, (metadata == null ? new byte[0] : metadata));
         }
