@@ -65,7 +65,10 @@ namespace Rocket.Unturned
 
         public static void Say(string message,Color color)
         {
-            Logger.Log("Broadcast: " + message);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+            Logger.Log("Broadcast: " + message,false);
             foreach (string m in wrapMessage(message))
             {
                 ChatManager.Instance.SteamChannel.send("tellChat", ESteamCall.OTHERS, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { CSteamID.Nil, (byte)EChatMode.GLOBAL,color, m });
@@ -74,20 +77,17 @@ namespace Rocket.Unturned
        
         public static void Say(RocketPlayer player, string message)
         {
-            if (player == null)
-            {
-                Logger.Log(message);
-             }
-            else {
-                Say(player.CSteamID, message, Palette.Server);
-            }
+            Say(player, message, Palette.Server);
         }
 
         public static void Say(RocketPlayer player, string message, Color color)
         {
             if (player == null)
             {
-                Logger.Log(message);
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine(message);
+                Console.ForegroundColor = ConsoleColor.White;
+                Logger.Log(message,false);
             }
             else
             {
