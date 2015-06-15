@@ -44,19 +44,9 @@ namespace Rocket.Unturned.Commands
             float i = -100;
             foreach (RocketEffect plane in RocketEffectManager.GetEffectsByType("Plane")) //Get all planes marked as RocketEffect Airdrop
             {
-                spawnPlane(plane, caller, i, 75, 300);
+                spawnPlane(plane, caller, i, command.GetFloatParameter(0).Value, command.GetFloatParameter(1).Value);
                 i = i + 50;
             }
-
-            RocketEffect plane1001 = RocketEffectManager.GetEffectsById(1001); //Get RocketEffect with the id 1001
-            if (plane1001 != null) //Plane located, workshop content correctly installed
-            {
-                spawnPlane(plane1001, caller, i, 75, 300);
-            }
-            else {
-                Logger.LogError("plane1001 not found!");
-            }
-
         }
 
         /// <summary>

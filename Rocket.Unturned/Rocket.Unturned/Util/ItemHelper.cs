@@ -77,7 +77,7 @@ namespace Rocket.Unturned.Util
 
             metadata[10] = clipsize;
             metadata[11] = (byte)firemode;
-            metadata[12] = 1;
+            metadata[12] = (byte)1;
 
             return AssembleItem(itemId,amount,durability,metadata);
         }

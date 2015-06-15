@@ -32,31 +32,31 @@ namespace Rocket.Unturned
                 // And send to the player the update to their clothing.
                 p.SteamChannel.send("tellClothing", ESteamCall.ALL, ESteamPacket.UPDATE_UDP_BUFFER, new object[]
                 {
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
+                    (byte)0,
+                    (byte)0,
+                    (byte)0,
+                    (byte)0,
+                    (byte)0,
+                    (byte)0,
+                    (byte)0,
+                    (byte)0,
+                    (byte)0,
+                    (byte)0,
+                    (byte)0,
+                    (byte)0,
+                    (byte)0,
+                    (byte)0
                 });
                 p.SteamChannel.send("tellSlot", ESteamCall.ALL, ESteamPacket.UPDATE_TCP_BUFFER, new object[]
 		        {
-			        0,
-			        0,
+			        (byte)0,
+			        (byte)0,
 			        new byte[0]
 		        });
                 p.SteamChannel.send("tellSlot", ESteamCall.ALL, ESteamPacket.UPDATE_TCP_BUFFER, new object[]
 		        {
-			        1,
-			        0,
+			        (byte)1,
+			        (byte)0,
 			        new byte[0]
 		        });
             }
