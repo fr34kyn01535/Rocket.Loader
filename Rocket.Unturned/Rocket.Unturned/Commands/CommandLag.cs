@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Rocket.Unturned.Commands
 {
-    public class CommandLag : IRocketCommand
+    public class CommandTps : IRocketCommand
     {
         public bool RunFromConsole
         {
@@ -16,7 +16,7 @@ namespace Rocket.Unturned.Commands
 
         public string Name
         {
-            get { return "lag"; }
+            get { return "tps"; }
         }
 
         public string Help
