@@ -11,63 +11,80 @@ using UnityEngine;
 
 namespace Rocket.Unturned
 {
-    public enum EffectEventTypes { Join = 1 , Die = 2};
+
+    public class RocketEffect
+    {
+        public RocketEffect(string type, ushort effectID, bool global)
+        {
+            this.Type = type;
+            this.EffectID = effectID;
+            this.Global = global;
+        }
+        public string Type;
+        public ushort EffectID;
+        public bool Global;
+
+        public void Trigger(RocketPlayer player)
+        {
+            if (!Global)
+            {
+                EffectManager.Instance.SteamChannel.send("tellEffectPoint", player.CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, player.Player.transform.position });
+            }
+            else
+            {
+                EffectManager.Instance.E.send("tellEffectPoint", ESteamCall.CLIENTS, player.Player.transform.position, 1024, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, player.Player.transform.position });
+            }
+        }
+
+        public void Trigger(Vector3 position)
+        {
+            EffectManager.Instance.E.send("tellEffectPoint", ESteamCall.CLIENTS, position, 1024, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, position });
+        }
+    }
 
     public class RocketEffectManager : MonoBehaviour
     {
+        private static readonly string joinEffect = "Rocket:Join";
+        private static readonly string dieEffect = "Rocket:Die";
+
         public void Start(){
             RocketServerEvents.OnPlayerConnected += (RocketPlayer player) =>
             {
-                foreach (EffectEvent effect in getEffectsByEvent(EffectEventTypes.Join))
+                foreach (RocketEffect effect in GetEffectsByType(joinEffect))
                 {
-                    TriggerEffect(effect.EffectID, player, effect.Global);
+                    effect.Trigger(player);
                 }
             };
             RocketPlayerEvents.OnPlayerDeath += (RocketPlayer player, EDeathCause cause, ELimb limb, CSteamID murderer) => {
-                foreach (EffectEvent effect in getEffectsByEvent(EffectEventTypes.Die))
+                foreach (RocketEffect effect in GetEffectsByType(dieEffect))
                 {
-                    TriggerEffect(effect.EffectID, player, effect.Global);
+                    effect.Trigger(player);
                 }
             };
         }
 
-        public void TriggerEffect(ushort effectID,RocketPlayer player,bool global){
-            if(!global){
-                EffectManager.Instance.SteamChannel.send("tellEffectPoint", player.CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { effectID, player.Player.transform.position });
-            }else{
-                EffectManager.Instance.E.send("tellEffectPoint", ESteamCall.CLIENTS, player.Player.transform.position,1024, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { effectID, player.Player.transform.position });
-            }
-        }
 
-        private List<EffectEvent> getEffectsByEvent(EffectEventTypes e)
+        public static RocketEffect GetEffectsById(ushort id)
         {
-            return effects.Where(k => k.Type == e).ToList();
+            return effects.Where(k => k.EffectID == id).FirstOrDefault();
         }
 
-        private static List<EffectEvent> effects = new List<EffectEvent>();
+        public static List<RocketEffect> GetEffectsByType(string type)
+        {
+            return effects.Where(k => k.Type == type).ToList();
+        }
+
+        private static List<RocketEffect> effects = new List<RocketEffect>();
 
         public static void RegisterRocketEffect(Bundle b, Data q, ushort k)
         {
-            short s = q.readInt16("RocketEffect");
-            if (s != 0){
+            string s = q.readString("RocketEffect");
+            if (!String.IsNullOrEmpty(s)){
                 bool global = q.readBoolean("Global");
-
-                effects.Add(new EffectEvent((EffectEventTypes)s, k, global));
+                effects.Add(new RocketEffect(s, k, global));
             }
         }
     
-        private class EffectEvent
-        {
-            public EffectEvent(EffectEventTypes type, ushort effectID, bool global)
-            {
-                this.Type = type;
-                this.EffectID = effectID;
-                this.Global = global;
-            }
-            public EffectEventTypes Type;
-            public ushort EffectID;
-            public bool Global;
-        }
 
     }
 

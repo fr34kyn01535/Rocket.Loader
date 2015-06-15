@@ -11,7 +11,6 @@ using System.Collections.Generic;
 
 namespace Rocket.Unturned.Commands
 {
-#if DEBUG
     public class CommandEffect : IRocketCommand
     {
         public bool RunFromConsole
@@ -50,5 +49,4 @@ namespace Rocket.Unturned.Commands
             caller.TriggerEffect(id.Value);
         }
     }
-#endif
 }
