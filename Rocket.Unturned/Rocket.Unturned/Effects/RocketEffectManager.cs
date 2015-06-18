@@ -32,13 +32,13 @@ namespace Rocket.Unturned
             }
             else
             {
-                EffectManager.Instance.E.send("tellEffectPoint", ESteamCall.CLIENTS, player.Player.transform.position, 1024, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, player.Player.transform.position });
+                EffectManager.Instance.SteamChannel.send("tellEffectPoint", ESteamCall.CLIENTS, player.Player.transform.position, 1024, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, player.Player.transform.position });
             }
         }
 
         public void Trigger(Vector3 position)
         {
-            EffectManager.Instance.E.send("tellEffectPoint", ESteamCall.CLIENTS, position, 1024, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, position });
+            EffectManager.Instance.SteamChannel.send("tellEffectPoint", ESteamCall.CLIENTS, position, 1024, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, position });
         }
     }
 
