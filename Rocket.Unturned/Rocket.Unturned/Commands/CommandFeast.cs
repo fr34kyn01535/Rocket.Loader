@@ -42,8 +42,10 @@ namespace Rocket.Unturned.Commands
         public void Execute(RocketPlayer caller, string[] command)
         {
             float i = -100;
+            Console.WriteLine("Spawned Planes");
             foreach (RocketEffect plane in RocketEffectManager.GetEffectsByType("Plane")) //Get all planes marked as RocketEffect Airdrop
             {
+                Console.WriteLine(plane.EffectID);
                 spawnPlane(plane, caller, i, command.GetFloatParameter(0).Value, command.GetFloatParameter(1).Value);
                 i = i + 50;
             }
