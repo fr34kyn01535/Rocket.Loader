@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.InventorySearch")]
+    [Class("SDG.Unturned.InventorySearch")]
     public class InventorySearch : Patch
     {
         public override void Apply()

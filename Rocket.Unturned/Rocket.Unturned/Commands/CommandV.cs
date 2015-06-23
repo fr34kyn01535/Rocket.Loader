@@ -3,7 +3,7 @@ using Rocket.Core;
 using Rocket.Core.Translations;
 using Rocket.Unturned.Logging;
 using Rocket.Unturned.Player;
-using SDG;
+using SDG.Unturned;
 using System;
 using System.Collections.Generic;
 
@@ -56,7 +56,7 @@ namespace Rocket.Unturned.Commands
                     return;
                 }
 
-                Asset[] assets = SDG.Assets.find(EAssetType.Vehicle);
+                Asset[] assets = SDG.Unturned.Assets.find(EAssetType.Vehicle);
                 foreach (VehicleAsset ia in assets)
                 {
                     if (ia != null && ia.Name != null && ia.Name.ToLower().Contains(itemString.ToLower()))
@@ -67,7 +67,7 @@ namespace Rocket.Unturned.Commands
                 } 
             }
 
-            Asset a = SDG.Assets.find(EAssetType.Vehicle, id.Value);
+            Asset a = SDG.Unturned.Assets.find(EAssetType.Vehicle, id.Value);
             string assetName = ((VehicleAsset)a).Name;
 
             if (VehicleTool.giveVehicle(caller.Player, id.Value))

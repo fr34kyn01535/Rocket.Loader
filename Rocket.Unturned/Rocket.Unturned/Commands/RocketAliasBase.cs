@@ -1,7 +1,7 @@
 ﻿using Rocket.API;
 using Rocket.Core.Logging;
 using Rocket.Unturned.Player;
-using SDG;
+using SDG.Unturned;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;

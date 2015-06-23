@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.VehicleAsset")]
+    [Class("SDG.Unturned.VehicleAsset")]
     public class VehicleAsset : Patch
     {
         public override void Apply()

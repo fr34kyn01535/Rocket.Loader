@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.BarricadeManager")]
+    [Class("SDG.Unturned.BarricadeManager")]
     public class BarricadeManager : Patch
     {
         public override void Apply()

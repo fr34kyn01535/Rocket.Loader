@@ -2,7 +2,7 @@
 
 namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.SteamPlayer")]
+    [Class("SDG.Unturned.SteamPlayer")]
     public class SteamPlayer : Patch
     {
         public override void Apply()

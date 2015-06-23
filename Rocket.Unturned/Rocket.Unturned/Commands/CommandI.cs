@@ -3,7 +3,7 @@ using Rocket.Core;
 using Rocket.Core.Translations;
 using Rocket.Unturned.Logging;
 using Rocket.Unturned.Player;
-using SDG;
+using SDG.Unturned;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -62,7 +62,7 @@ namespace Rocket.Unturned.Commands
                 }
             }
 
-            Asset a = SDG.Assets.find(EAssetType.Item,id);
+            Asset a = SDG.Unturned.Assets.find(EAssetType.Item,id);
             string assetName = ((ItemAsset)a).Name;
 
             if (command.Length == 2 && !byte.TryParse(command[1].ToString(), out amount))

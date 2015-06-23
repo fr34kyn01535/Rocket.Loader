@@ -1,4 +1,4 @@
-﻿using SDG;
+﻿using SDG.Unturned;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -16,8 +16,8 @@ namespace Rocket.Unturned.Player
 
     public sealed class RocketPlayer 
     {
-        private SDG.Player player;
-        public SDG.Player Player
+        private SDG.Unturned.Player player;
+        public SDG.Unturned.Player Player
         {
             get { return player; }
         }
@@ -54,14 +54,14 @@ namespace Rocket.Unturned.Player
             return (T)(object)Player.GetComponent(typeof(T));
         }
 
-        private RocketPlayer(SDG.Player p)
+        private RocketPlayer(SDG.Unturned.Player p)
         {
             player = p;
         }
 
         public static RocketPlayer FromName(string name)
         {
-            SDG.Player p = null;
+            SDG.Unturned.Player p = null;
             ulong id = 0;
             if (ulong.TryParse(name, out id) && id > 76561197960265728)
             {
@@ -87,7 +87,7 @@ namespace Rocket.Unturned.Player
             }
         }
 
-        public static RocketPlayer FromPlayer(SDG.Player player)
+        public static RocketPlayer FromPlayer(SDG.Unturned.Player player)
         {
             return new RocketPlayer(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID);
         }

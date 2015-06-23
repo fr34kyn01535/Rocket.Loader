@@ -2,7 +2,7 @@
 
 namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.EffectManager")]
+    [Class("SDG.Unturned.EffectManager")]
     public class EffectManager : Patch
     {
         public override void Apply()

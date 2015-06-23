@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.ChatManager")]
+    [Class("SDG.Unturned.ChatManager")]
     public class ChatManager : Patch
     {
         public override void Apply()

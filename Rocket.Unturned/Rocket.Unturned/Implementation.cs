@@ -5,7 +5,7 @@ using Rocket.Unturned.Logging;
 using Rocket.Unturned.Permissions;
 using Rocket.Unturned.Plugins;
 using Rocket.Unturned.Settings;
-using SDG;
+using SDG.Unturned;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

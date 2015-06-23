@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.SteamCaller")]
+    [Class("SDG.Unturned.SteamCaller")]
     public class SteamCaller : Patch
     {
         public override void Apply()

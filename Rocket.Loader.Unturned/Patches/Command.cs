@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.Command")]
+    [Class("SDG.Unturned.Command")]
     public class Command : Patch
     {
         public override void Apply()

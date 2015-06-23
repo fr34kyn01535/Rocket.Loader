@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.ObjectAsset")]
+    [Class("SDG.Unturned.ObjectAsset")]
     internal class ObjectAsset : Patch
     {
         public override void Apply()

@@ -1,5 +1,5 @@
 ﻿using Rocket.API;
-using SDG;
+using SDG.Unturned;
 using UnityEngine;
 
 namespace Rocket.Unturned.Player
@@ -14,7 +14,7 @@ namespace Rocket.Unturned.Player
 
         private void Awake()
         {
-            player = RocketPlayer.FromPlayer(gameObject.transform.GetComponent<SDG.Player>());
+            player = RocketPlayer.FromPlayer(gameObject.transform.GetComponent<SDG.Unturned.Player>());
             DontDestroyOnLoad(transform.gameObject);
         }
     }

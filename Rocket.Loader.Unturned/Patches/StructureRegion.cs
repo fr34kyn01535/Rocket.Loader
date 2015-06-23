@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.StructureRegion")]
+    [Class("SDG.Unturned.StructureRegion")]
     public class StructureRegion : Patch
     {
         public override void Apply()

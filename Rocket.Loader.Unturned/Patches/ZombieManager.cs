@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.ZombieManager")]
+    [Class("SDG.Unturned.ZombieManager")]
     public class ZombieManager : Patch
     {
         public override void Apply()

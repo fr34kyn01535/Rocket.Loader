@@ -5,7 +5,7 @@ using Rocket.Unturned.Events;
 using Rocket.Unturned.Logging;
 using Rocket.Unturned.Player;
 using Rocket.Unturned.Settings;
-using SDG;
+using SDG.Unturned;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace Rocket.Unturned.Permissions
     public class RocketPermissions : MonoBehaviour
     {
         private void Awake() { 
-            SDG.ChatManager.OnChatted+= handleChat;
+            SDG.Unturned.ChatManager.OnChatted+= handleChat;
         }
 
         private void handleChat(SteamPlayer steamPlayer, EChatMode chatMode, ref Color incomingColor, string message){

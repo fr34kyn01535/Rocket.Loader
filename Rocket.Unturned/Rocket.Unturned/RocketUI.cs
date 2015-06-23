@@ -1,5 +1,5 @@
 ﻿using Rocket.Unturned.Logging;
-using SDG;
+using SDG.Unturned;
 using System;
 using System.IO;
 using UnityEngine;
@@ -26,8 +26,6 @@ namespace Rocket.Unturned
             Logger.Log("RocketUI > Awake");
 #endif
             DontDestroyOnLoad(base.gameObject);
-            Screen.lockCursor = false;
-            Screen.showCursor = true;
             Camera.main.transform.position = new Vector3(0, 1, 1);
             Camera.main.transform.rotation = new Quaternion(0, 5, 0, 0);
 
@@ -86,10 +84,12 @@ namespace Rocket.Unturned
                 try
                 {
                     ushort id = ((Asset)asset).Id;
-                    Texture2D t = ItemTool.getIcon(id, 100,new byte[0], asset);
-                    byte[] bytes = t.EncodeToPNG();
-                    string filename = "Images/" + id + ".png";
-                    System.IO.File.WriteAllBytes(filename, bytes);
+                    ItemTool.getIcon(id, 100, new byte[0], (Texture2D t) =>
+                    {
+                        byte[] bytes = t.EncodeToPNG();
+                        string filename = "Images/" + id + ".png";
+                        System.IO.File.WriteAllBytes(filename, bytes);
+                    });
                 }
                 catch (Exception ex)
                 {

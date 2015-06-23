@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.SteamChannel")]
+    [Class("SDG.Unturned.SteamChannel")]
     public class SteamChannel : Patch
     {
         public override void Apply()

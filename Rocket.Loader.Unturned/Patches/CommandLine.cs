@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.CommandLine")]
+    [Class("SDG.Unturned.CommandLine")]
     internal class CommandLine : Patch
     {
         public override void Apply()

@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.Palette")]
+    [Class("SDG.Unturned.Palette")]
     public class Palette : Patch
     {
         public override void Apply()

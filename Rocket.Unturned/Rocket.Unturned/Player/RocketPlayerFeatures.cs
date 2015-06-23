@@ -1,5 +1,5 @@
 ﻿using Rocket.Unturned.Events;
-using SDG;
+using SDG.Unturned;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

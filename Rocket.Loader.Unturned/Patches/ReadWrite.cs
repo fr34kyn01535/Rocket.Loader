@@ -6,7 +6,7 @@
 
 //namespace Rocket.RocketLoader.Unturned.Patches
 //{
-//    [Class("SDG.ReadWrite")]
+//    [Class("SDG.Unturned.ReadWrite")]
 //    public class ReadWrite : Patch
 //    {
 //        public static byte[] combine(params byte[][] r)

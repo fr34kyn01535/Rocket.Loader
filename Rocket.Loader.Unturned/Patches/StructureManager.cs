@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.StructureManager")]
+    [Class("SDG.Unturned.StructureManager")]
     public class StructureManager : Patch
     {
         public override void Apply()

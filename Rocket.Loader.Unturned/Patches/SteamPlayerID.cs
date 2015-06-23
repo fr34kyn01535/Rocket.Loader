@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.SteamPlayerID")]
+    [Class("SDG.Unturned.SteamPlayerID")]
     public class SteamPlayerID : Patch
     {
         public override void Apply()

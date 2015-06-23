@@ -8,7 +8,7 @@ using Rocket.Unturned;
 using Rocket.Unturned.Commands;
 using Rocket.Unturned.Player;
 using Rocket.Unturned.Settings;
-using SDG;
+using SDG.Unturned;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -33,8 +33,8 @@ namespace Rocket.Unturned.Plugins
             AddRocketPlayerComponents(Assembly.GetExecutingAssembly());
             RegisterCommands(Assembly.GetExecutingAssembly());
 
-            SDG.Steam.OnServerConnected += onPlayerConnected;
-            SDG.Steam.OnServerDisconnected += onPlayerDisconnected;
+            SDG.Unturned.Steam.OnServerConnected += onPlayerConnected;
+            SDG.Unturned.Steam.OnServerDisconnected += onPlayerDisconnected;
 
             SteamGameServer.SetKeyValue("rocket", Assembly.GetExecutingAssembly().GetName().Version.ToString());
             SteamGameServer.SetKeyValue("rocketplugins", String.Join(",", RocketPluginManager.GetPluginNames()));
@@ -146,7 +146,7 @@ namespace Rocket.Unturned.Plugins
         private void onPlayerDisconnected(CSteamID id)
         {
             if(RocketSettingsManager.Settings.EnableJoinLeaveMessages){
-                SDG.Player player = PlayerTool.getPlayer(id);
+                SDG.Unturned.Player player = PlayerTool.getPlayer(id);
                 Rocket.Unturned.RocketChat.Say(RocketTranslationManager.Translate("rocket_leave_public", player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
             }
         }

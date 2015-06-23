@@ -4,7 +4,7 @@ using Rocket.Core.Permissions;
 using Rocket.Core.Translations;
 using Rocket.Unturned.Logging;
 using Rocket.Unturned.Player;
-using SDG;
+using SDG.Unturned;
 using System;
 using System.Collections.Generic;
 

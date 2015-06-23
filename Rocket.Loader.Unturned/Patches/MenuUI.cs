@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.MenuUI")]
+    [Class("SDG.Unturned.MenuUI")]
     public class MenuUI : Patch
     {
         public override void Apply()

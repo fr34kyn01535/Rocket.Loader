@@ -2,7 +2,7 @@
 
 namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.Item")]
+    [Class("SDG.Unturned.Item")]
     public class Item : Patch
     {
         public override void Apply()

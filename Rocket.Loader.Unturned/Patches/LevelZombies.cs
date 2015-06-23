@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.LevelZombies")]
+    [Class("SDG.Unturned.LevelZombies")]
     public class LevelZombies : Patch
     {
         public override void Apply()

@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.PlayerClothing")]
+    [Class("SDG.Unturned.PlayerClothing")]
     public class PlayerClothing : Patch
     {
         public override void Apply()

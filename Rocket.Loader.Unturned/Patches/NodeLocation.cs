@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.NodeLocation")]
+    [Class("SDG.Unturned.NodeLocation")]
     public class NodeLocation : Patch
     {
         public override void Apply()

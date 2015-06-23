@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.EffectAsset")]
+    [Class("SDG.Unturned.EffectAsset")]
     public class EffectAsset : Patch
     {
         public override void Apply()

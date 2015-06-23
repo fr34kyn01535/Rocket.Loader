@@ -1,5 +1,5 @@
 ﻿using Rocket.Unturned.Logging;
-using SDG;
+using SDG.Unturned;
 using System;
 
 namespace Rocket.Unturned
@@ -10,7 +10,7 @@ namespace Rocket.Unturned
         {
             try
             {
-                SDG.Player p = inventory.transform.GetComponent<SDG.Player>();
+                SDG.Unturned.Player p = inventory.transform.GetComponent<SDG.Unturned.Player>();
                 p.Equipment.dequip();
                 for (byte a = 7; (a >= 0 && a <= 7); a--)
                 {

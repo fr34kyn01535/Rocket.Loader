@@ -6,15 +6,14 @@ using System.Text;
 namespace Rocket.Unturned
 {
     using System;
-    using Rocket.Unturned.Plugins;
-    using Rocket.Unturned.Logging;
     using System.IO;
     using System.Diagnostics;
     using System.Threading;
     using System.Runtime.InteropServices;
     using UnityEngine;
     using System.ComponentModel;
-    using SDG;
+    using SDG.Unturned;
+    using Rocket.Unturned.Logging;
 
     public class RocketConsole : MonoBehaviour
     {

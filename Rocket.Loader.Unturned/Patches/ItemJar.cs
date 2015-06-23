@@ -1,6 +1,6 @@
 ﻿namespace Rocket.RocketLoader.Unturned.Patches
 {
-    [Class("SDG.ItemJar")]
+    [Class("SDG.Unturned.ItemJar")]
     public class ItemJar : Patch
     {
         public override void Apply()
