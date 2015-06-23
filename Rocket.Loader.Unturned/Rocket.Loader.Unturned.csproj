@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Patches\Asset.cs" />
+    
     <Compile Include="Patches\BarricadeManager.cs" />
     <Compile Include="Patches\BarricadeRegion.cs" />
     <Compile Include="Patches\Character.cs" />
