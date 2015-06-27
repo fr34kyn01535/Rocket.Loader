@@ -70,12 +70,9 @@ namespace Rocket.Unturned.Commands
             }
             else
             {
-
                 RocketPlayer othercaller = RocketPlayer.FromName(command[0]);
                 if (othercaller != null && othercaller != caller)
                 {
-                    Vector3 d1 = othercaller.Player.transform.position;
-                    Vector3 vector31 = othercaller.Player.transform.rotation.eulerAngles;
                     caller.Teleport(othercaller);
                     Logger.Log(RocketTranslationManager.Translate("command_tp_teleport_console", caller.CharacterName, othercaller.CharacterName));
                     RocketChat.Say(caller, RocketTranslationManager.Translate("command_tp_teleport_private", othercaller.CharacterName));

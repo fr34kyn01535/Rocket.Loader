@@ -209,12 +209,20 @@ namespace Rocket.Unturned.Player
         public void Teleport(RocketPlayer target)
         {
             Vector3 d1 = target.player.transform.position;
+            if (Features.GodMode)
+            {
+                d1.y = -3;
+            }
             Vector3 vector31 = target.player.transform.rotation.eulerAngles;
             player.sendTeleport(d1, MeasurementTool.angleToByte(vector31.y));
         }
 
         public void Teleport(Vector3 position ,float rotation)
         {
+            if (Features.GodMode)
+            {
+                position.y = -3;
+            }
             player.sendTeleport(position, MeasurementTool.angleToByte(rotation));
         }
 
