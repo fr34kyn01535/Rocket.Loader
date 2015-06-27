@@ -2,13 +2,30 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Rocket.Core.Tasks
 {
+    public class RocketTask{
+        public string Name;
+        public Action Action;
+        public int Delay;
+        public int? Interval;
+        public DateTime DueTime;
+        public RocketTask(string name,Action action,int delay,int? interval)
+        {
+            Name = name;
+            Action = action;
+            Delay = delay;
+            Interval = interval;
+            DueTime = DateTime.Now.AddMilliseconds(delay);
+        }
+    }
+
     public sealed class RocketTaskManager : MonoBehaviour
     {
-        private static RocketTaskManager Instance; 
-        private Queue<Action> work = new Queue<Action>();
+        private static RocketTaskManager Instance;
+        private List<RocketTask> work = new List<RocketTask>();
 
         private void Awake()
         {
@@ -18,16 +35,29 @@ namespace Rocket.Core.Tasks
             Instance = this;
         }
 
-        public static void Enqueue(Action a)
+        public static void Enqueue(Action action, string name = "", int delay = 0, int? interval = null)
         {
-            if (a != null) RocketTaskManager.Instance.enqueue(a);
+            RocketTaskManager.Instance.enqueue(new RocketTask(name, action, delay, interval));
         }
 
-        private void enqueue(Action a)
+        public static void Dequeue(string name)
+        {
+            RocketTaskManager.Instance.dequeue(name);
+        }
+
+        private void dequeue(string name)
         {
             lock (work)
             {
-                work.Enqueue(a);
+                work.RemoveAll(w => w.Name == name);
+            }
+        }
+
+        private void enqueue(RocketTask task)
+        {
+            lock (work)
+            {
+                work.Add(task);
             }
         }
 
@@ -37,18 +67,28 @@ namespace Rocket.Core.Tasks
             {
                 lock (work)
                 {
-                    foreach (var a in work)
+                    for(int i = 0;i<work.Count;i++)
                     {
                         try
                         {
-                            a();
+                            RocketTask task  = work[i];
+                            if(task.DueTime > DateTime.Now){
+                                task.Action();
+                                if (task.Interval.HasValue)
+                                {
+                                    task.DueTime = DateTime.Now.AddMilliseconds(task.Interval.Value);
+                                }
+                                else
+                                {
+                                    work.RemoveAt(i);
+                                }
+                            }
                         }
                         catch (System.Exception ex)
                         {
                             Logger.Log(ex);
                         }
                     }
-                    work.Clear();
                 }
             }
         }

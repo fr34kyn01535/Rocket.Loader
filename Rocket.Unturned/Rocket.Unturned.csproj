@@ -64,7 +64,6 @@
   <ItemGroup>
     <Compile Include="Rocket.Unturned\Chat\RocketChat.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandClear.cs" />
-    <Compile Include="Rocket.Unturned\Commands\CommandFeast.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandUnadmin.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandCi.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandCompass.cs" />
@@ -122,6 +121,7 @@
   <ItemGroup>
     <None Include="Scripts\Linux\start.sh" />
     <None Include="Scripts\Linux\update.sh" />
+    <None Include="Scripts\Windows\MyFirstRocketServer.bat" />
     <None Include="Scripts\Windows\start.bat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
