@@ -242,7 +242,7 @@ namespace Rocket.Unturned.Player
 
         public bool Teleport(string nodeName)
         {
-            Node node = LevelNodes.Nodes.Where(n => n.NodeType == ENodeType.Location && ((NodeLocation)n).Name.ToLower().Contains(nodeName)).FirstOrDefault();
+            Node node = LevelNodes.Nodes.Where(n => n.NodeType == ENodeType.LOCATION && ((NodeLocation)n).Name.ToLower().Contains(nodeName)).FirstOrDefault();
             if (node != null)
             {
                 Vector3 c = node.Position + new Vector3(0f, 0.5f, 0f);

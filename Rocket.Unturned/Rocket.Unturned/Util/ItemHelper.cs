@@ -21,12 +21,12 @@ namespace Rocket.Unturned.Util
         public static ItemAsset GetItemAssetByName(string name)
         {
             if (String.IsNullOrEmpty(name)) return null;
-            return SDG.Unturned.Assets.find(EAssetType.Item).Cast<ItemAsset>().Where(i => i.Name != null && i.Name.ToLower().Contains(name.ToLower())).FirstOrDefault();
+            return SDG.Unturned.Assets.find(EAssetType.ITEM).Cast<ItemAsset>().Where(i => i.Name != null && i.Name.ToLower().Contains(name.ToLower())).FirstOrDefault();
         }
 
         public static ItemAsset GetItemAssetById(ushort id)
         {
-            Asset asset = SDG.Unturned.Assets.find(EAssetType.Item, id);
+            Asset asset = SDG.Unturned.Assets.find(EAssetType.ITEM, id);
             if (asset == null) return null;
             return (ItemAsset)asset;
         }

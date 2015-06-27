@@ -56,7 +56,7 @@ namespace Rocket.Unturned.Commands
                     return;
                 }
 
-                Asset[] assets = SDG.Unturned.Assets.find(EAssetType.Vehicle);
+                Asset[] assets = SDG.Unturned.Assets.find(EAssetType.VEHICLE);
                 foreach (VehicleAsset ia in assets)
                 {
                     if (ia != null && ia.Name != null && ia.Name.ToLower().Contains(itemString.ToLower()))
@@ -67,7 +67,7 @@ namespace Rocket.Unturned.Commands
                 } 
             }
 
-            Asset a = SDG.Unturned.Assets.find(EAssetType.Vehicle, id.Value);
+            Asset a = SDG.Unturned.Assets.find(EAssetType.VEHICLE, id.Value);
             string assetName = ((VehicleAsset)a).Name;
 
             if (VehicleTool.giveVehicle(caller.Player, id.Value))

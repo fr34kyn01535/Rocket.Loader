@@ -62,7 +62,7 @@ namespace Rocket.Unturned.Commands
                 }
             }
 
-            Asset a = SDG.Unturned.Assets.find(EAssetType.Item,id);
+            Asset a = SDG.Unturned.Assets.find(EAssetType.ITEM,id);
             string assetName = ((ItemAsset)a).Name;
 
             if (command.Length == 2 && !byte.TryParse(command[1].ToString(), out amount))

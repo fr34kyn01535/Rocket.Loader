@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Rocket.Unturned\Chat\RocketChat.cs" />
+    <Compile Include="Rocket.Unturned\Commands\CommandClear.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandFeast.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandUnadmin.cs" />
     <Compile Include="Rocket.Unturned\Commands\CommandCi.cs" />

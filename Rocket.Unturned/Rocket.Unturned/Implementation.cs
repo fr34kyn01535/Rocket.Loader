@@ -145,7 +145,8 @@ namespace Rocket.Unturned
                     {"command_rocket_reload","Reloading Rocket"},
                     {"command_p_group_not_found","Group not found"},
                     {"command_p_group_assigned","{0} was assigned to the group {1}"},
-                    {"command_rocket_plugin_not_found","Plugin {0} not found"}
+                    {"command_rocket_plugin_not_found","Plugin {0} not found"},
+                    {"command_clear_success","You successfully cleared {0} items"}
                 };
             }
         }
