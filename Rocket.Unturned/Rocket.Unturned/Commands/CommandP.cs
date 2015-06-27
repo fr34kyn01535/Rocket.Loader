@@ -51,7 +51,7 @@ namespace Rocket.Unturned.Commands
                 RocketChat.Say(caller, RocketTranslationManager.Translate("command_p_groups_private", player.CharacterName+"s", String.Join(", ", RocketPermissionsManager.GetDisplayGroups(player.CSteamID.ToString()))));
                 RocketChat.Say(caller, RocketTranslationManager.Translate("command_p_permissions_private", player.CharacterName+"s", String.Join(", ", RocketPermissionsManager.GetPermissions(player.CSteamID.ToString()).ToArray())));
             }
-            else if (command.Length == 2 && player != null && !String.IsNullOrEmpty(groupName))
+            else if (command.Length == 2 && player != null && !String.IsNullOrEmpty(groupName) && player.HasPermission("p.set"))
             {
                 if (RocketPermissionsManager.SetGroup(player.CSteamID.ToString(), groupName))
                 {
