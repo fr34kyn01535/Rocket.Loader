@@ -55,6 +55,7 @@
     <Compile Include="Patches\Commander.cs" />
     <Compile Include="Patches\CommandLine.cs" />
     <Compile Include="Patches\InventorySearch.cs" />
+    <Compile Include="Patches\ItemManager.cs" />
     <Compile Include="Patches\Item.cs" />
     <Compile Include="Patches\ItemAsset.cs" />
     <Compile Include="Patches\ItemJar.cs" />
