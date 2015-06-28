@@ -79,10 +79,8 @@ namespace Rocket.Unturned
         public static void RegisterRocketEffect(Bundle b, Data q, ushort k)
         {
             string s = q.readString("RocketEffect");
-            if (!String.IsNullOrEmpty(s)){
-                bool global = q.readBoolean("Global");
-                effects.Add(new RocketEffect(s, k, global));
-            }
+            bool global = q.readBoolean("Global");
+            effects.Add(new RocketEffect(s, k, global));
         }
     
 

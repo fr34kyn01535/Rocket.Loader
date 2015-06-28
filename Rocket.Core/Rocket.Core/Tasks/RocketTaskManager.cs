@@ -72,8 +72,22 @@ namespace Rocket.Core.Tasks
                         try
                         {
                             RocketTask task  = work[i];
-                            if(task.DueTime > DateTime.Now){
-                                task.Action();
+                            if(task.DueTime < DateTime.Now){
+                                try
+                                {
+                                    task.Action();
+                                }
+                                catch (Exception ex)
+                                {
+                                    if (String.IsNullOrEmpty(task.Name))
+                                    {
+                                        Logger.LogError("Error while executing anonymous action: " + ex.ToString());
+                                    }
+                                    else
+                                    {
+                                        Logger.LogError("Error while executing named action " + task.Name + ": " + ex.ToString());
+                                    }
+                                }
                                 if (task.Interval.HasValue)
                                 {
                                     task.DueTime = DateTime.Now.AddMilliseconds(task.Interval.Value);
