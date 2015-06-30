@@ -88,13 +88,16 @@ namespace Rocket.Core.Tasks
                                         Logger.LogError("Error while executing named action " + task.Name + ": " + ex.ToString());
                                     }
                                 }
-                                if (task.Interval.HasValue)
+                                finally
                                 {
-                                    task.DueTime = DateTime.Now.AddMilliseconds(task.Interval.Value);
-                                }
-                                else
-                                {
-                                    work.RemoveAt(i);
+                                    if (task.Interval.HasValue)
+                                    {
+                                        task.DueTime = DateTime.Now.AddMilliseconds(task.Interval.Value);
+                                    }
+                                    else
+                                    {
+                                        work.RemoveAt(i);
+                                    }
                                 }
                             }
                         }

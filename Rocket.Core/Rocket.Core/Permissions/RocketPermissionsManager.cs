@@ -117,6 +117,25 @@ namespace Rocket.Core.Permissions
             updatedWebPermissions = true;
         }
 
+        internal static T Deserialize<T>(string fromSomewhere)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            using (StreamReader reader = new StreamReader(fromSomewhere))
+            {
+                return (T)serializer.Deserialize(reader);
+            }
+        }
+
+
+        internal static void Serialize(object whatever,string toSomewhere)
+        {
+            XmlSerializer serializer = new XmlSerializer(whatever.GetType());
+            using (TextWriter writer = new StreamWriter(toSomewhere))
+            {
+                serializer.Serialize(writer, whatever);
+            }
+        }
+
         private static void loadPermissions(string permissionsFile,bool writeAgain = false)
         {
             try
@@ -127,8 +146,6 @@ namespace Rocket.Core.Permissions
                     using (StreamReader reader = new StreamReader(permissionsFile))
                     {
                         permissions = (Permissions)serializer.Deserialize(reader);
-                        if (permissions.Groups == null) permissions.Groups = new Group[0];
-                        if (String.IsNullOrEmpty(permissions.DefaultGroupId)) permissions.DefaultGroupId = "default";
                     }
                     if (writeAgain)
                     {
