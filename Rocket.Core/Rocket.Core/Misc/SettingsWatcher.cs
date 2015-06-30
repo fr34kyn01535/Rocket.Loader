@@ -10,9 +10,9 @@ using UnityEngine;
 
 namespace Rocket.Core.Misc
 {
-    public class SettingsWatcher : MonoBehaviour
+    internal class SettingsWatcher : MonoBehaviour
     {
-        public void Start()
+        private void Start()
         {
 #if DEBUG
             Logger.Log("SettingsWatcher > Awake");

@@ -89,9 +89,9 @@ namespace Rocket.Unturned.Plugins
             Console.ForegroundColor = ConsoleColor.White;
             try
             {
+                ReloadTranslation();
                 PluginManager.AddRocketPlayerComponents(GetType().Assembly);
                 PluginManager.RegisterCommands(GetType().Assembly);
-                ReloadTranslation();
             }
             catch (Exception ex)
             {

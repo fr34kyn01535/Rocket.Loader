@@ -45,7 +45,7 @@ namespace Rocket.Unturned.Player
         }
 
 
-        public void FixedUpdate()
+        private void FixedUpdate()
         {
             if (this.vanishMode)
             {

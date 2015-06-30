@@ -14,14 +14,12 @@ namespace Rocket.Unturned.Events
 {
     public sealed class RocketPlayerEvents : RocketPlayerComponent
     {
-        private new void Start()
+        private void Start()
         {
 #if DEBUG
             Logger.Log("RocketPlayerEvents > Start");
 #endif
-
             Player.Player.PlayerLife.OnUpdateStamina += onUpdateStamina;
-
             Player.Player.Inventory.OnInventoryAdded += onInventoryAdded;
             Player.Player.Inventory.OnInventoryRemoved += onInventoryRemoved;
             Player.Player.Inventory.OnInventoryResized += onInventoryResized;
