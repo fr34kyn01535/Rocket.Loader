@@ -12,8 +12,8 @@ namespace Rocket.Unturned
     using System.Runtime.InteropServices;
     using UnityEngine;
     using System.ComponentModel;
-    using SDG.Unturned;
     using Rocket.Unturned.Logging;
+    using SDG.Unturned;
 
     public class RocketConsole : MonoBehaviour
     {
@@ -22,7 +22,7 @@ namespace Rocket.Unturned
         {
             try
             {
-                fileStream = new FileStream("console", FileMode.Create);
+                fileStream = new FileStream(Steam.InstanceName+".console", FileMode.Create);
 
                 StreamWriter streamWriter = new StreamWriter(fileStream, System.Text.Encoding.ASCII)
                 {
@@ -55,8 +55,16 @@ namespace Rocket.Unturned
             string x;
             do
             {
+                try
+                {
                 x = Console.ReadLine();
-                if (Steam.ConsoleInput.onInputText != null && x.Trim().Length != 0) Steam.ConsoleInput.onInputText(x);
+                if (x != null && Steam.ConsoleInput != null && Steam.ConsoleInput.onInputText != null && x.Trim().Length != 0) Steam.ConsoleInput.onInputText(x);
+
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogException(ex);
+                }
             }
             while (true);
         }
