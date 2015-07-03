@@ -22,7 +22,7 @@ namespace Rocket.Unturned
         {
             try
             {
-                fileStream = new FileStream(Steam.InstanceName+".console", FileMode.Create);
+                fileStream = new FileStream(Steam.InstanceName+".console", FileMode.Create,FileAccess.Write,FileShare.ReadWrite);
 
                 StreamWriter streamWriter = new StreamWriter(fileStream, System.Text.Encoding.ASCII)
                 {
