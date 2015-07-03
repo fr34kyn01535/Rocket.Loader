@@ -3,7 +3,7 @@
 # Syntax: update.sh <steam username> <steam password>
 # Author: fr34kyn01535
 # Note: To make sure Steam Guard is not bugging you better create a new Steam account and disable Steam Guard
-# Install the prerequisites for Unturned 3 on Linux with apt-get install libglu1-mesa:i386 libxcursor1:i386 libxrandr2:i386
+# Install the prerequisites for Unturned 3 on Linux with apt-get install libglu1-mesa libxcursor1 libxrandr2 unzip 
 
 STEAM_USERNAME=$1
 STEAM_PASSWORD=$2
