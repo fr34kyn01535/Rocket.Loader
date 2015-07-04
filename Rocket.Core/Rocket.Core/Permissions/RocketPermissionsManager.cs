@@ -32,7 +32,7 @@ namespace Rocket.Core.Permissions
                     WebClient wc = new WebClient();
                     wc.DownloadStringCompleted += wc_DownloadStringCompleted;
                     string target = RocketSettingsManager.Settings.WebPermissions.Url;
-                    Logger.Log("Updating WebPermissions from " + target);
+                    //Logger.Log("Updating WebPermissions from " + target);
                     if (target.Contains("?"))
                     {
                         target += "&";
