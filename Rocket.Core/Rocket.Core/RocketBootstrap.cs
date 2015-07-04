@@ -66,7 +66,7 @@ namespace Rocket.Core
             {
                 launchAutomaticShutdownWatchdog();
                 launchRCON();
-                launchSettingsWatcher();
+                //launchSettingsWatcher();
             }
             catch (Exception e)
             {
@@ -98,13 +98,13 @@ namespace Rocket.Core
             }
         }
 
-        private void launchSettingsWatcher()
-        {
-            if (RocketSettingsManager.Settings.EnableSettingsWatcher)
-            {
-                gameObject.AddComponent<SettingsWatcher>();
-            }
-        }
+        //private void launchSettingsWatcher()
+        //{
+        //    if (RocketSettingsManager.Settings.EnableSettingsWatcher)
+        //    {
+        //        gameObject.AddComponent<SettingsWatcher>();
+        //    }
+        //}
 
         private void Update()
         {
