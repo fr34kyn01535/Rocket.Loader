@@ -188,7 +188,7 @@ namespace Rocket.Core.Settings
         private WebPermissionsSettingsSection webPermissions = new WebPermissionsSettingsSection();
 
         private bool enableJoinLeaveMessages = false;
-        //private bool enableSettingsWatcher = true;
+        private bool enableSettingsWatcher = false;
         private string languageCode = "en";
         private int automaticSaveInterval = 300;
 
@@ -209,18 +209,18 @@ namespace Rocket.Core.Settings
         }
 
 
-        //[XmlElement(ElementName = "EnableSettingsWatcher")]
-        //public bool EnableSettingsWatcher
-        //{
-        //    get
-        //    {
-        //        return enableSettingsWatcher;
-        //    }
-        //    set
-        //    {
-        //        enableSettingsWatcher = value;
-        //    }
-        //}
+        [XmlElement(ElementName = "EnableSettingsWatcher")]
+        public bool EnableSettingsWatcher
+        {
+            get
+            {
+                return enableSettingsWatcher;
+            }
+            set
+            {
+                enableSettingsWatcher = value;
+            }
+        }
 
         [XmlElement(ElementName = "EnableJoinLeaveMessages")]
         public bool EnableJoinLeaveMessages

@@ -32,6 +32,7 @@ namespace Rocket.Core.Permissions
                     WebClient wc = new WebClient();
                     wc.DownloadStringCompleted += wc_DownloadStringCompleted;
                     string target = RocketSettingsManager.Settings.WebPermissions.Url;
+                    Logger.Log("Updating WebPermissions from " + target);
                     if (target.Contains("?"))
                     {
                         target += "&";
@@ -42,7 +43,6 @@ namespace Rocket.Core.Permissions
                     }
 
                     wc.DownloadStringAsync(new Uri(target + "instance=" + instanceName + "&request=" + Guid.NewGuid()));
-                    Logger.Log("Updating WebPermissions from " + target);
                 }
                 catch (Exception ex)
                 {
