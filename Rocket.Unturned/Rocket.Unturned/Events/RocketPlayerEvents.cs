@@ -56,7 +56,7 @@ namespace Rocket.Unturned.Events
                 if (s == null || s.Player == null || s.Player.transform == null || R == null) return;
                 RocketPlayerEvents instance = s.Player.transform.GetComponent<RocketPlayerEvents>();
                 RocketPlayer rp = RocketPlayer.FromSteamPlayer(s);
-#if LINUX
+#if DEBUG
                  string o = "";
                  foreach (object r in R)
                  {
