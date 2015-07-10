@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using Rocket.API;
-using UnityEngine;
 
 namespace Rocket.Core.RCON
 {
@@ -18,19 +16,12 @@ namespace Rocket.Core.RCON
         public TcpClient Client;
         public bool Authenticated;
         public bool Interactive;
-        private Thread thread;
 
         public RCONConnection(TcpClient client)
         {
             this.Client = client;
             Authenticated = false;
             Interactive = true;
-        }
-
-        public void StartThread(ThreadStart toDo)
-        {
-            thread = new Thread(toDo);
-            thread.Start();
         }
 
         public void Send(string command, bool nonewline = false)
@@ -53,11 +44,10 @@ namespace Rocket.Core.RCON
         public void Close()
         {
             this.Client.Close();
-            this.thread.Abort();
             return;
         }
 
         public string Address { get { return this.Client.Client.RemoteEndPoint.ToString(); } }
     }
-    
+
 }
