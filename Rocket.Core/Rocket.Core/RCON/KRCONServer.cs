@@ -82,8 +82,8 @@ namespace Rocket.Core.RCON
                         if (command.Split(' ')[1] == password)
                         {
                             newclient.Authenticated = true;
-                            newclient.Send("Success: You have logged in!\r\n");
-                            Logger.Log("Client has logged in!");
+                            //newclient.Send("Success: You have logged in!\r\n");
+                            //Logger.Log("Client has logged in!");
                             continue;
                         }
                         else
