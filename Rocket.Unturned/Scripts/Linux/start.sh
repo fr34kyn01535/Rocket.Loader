@@ -7,4 +7,15 @@ INSTANCE_NAME=$1
 UNTURNED_HOME="./unturned"
 
 ulimit -n 2048
-$UNTURNED_HOME/Unturned.x86 -nographics -batchmode -logfile "$UNTURNED_HOME/unturned.log" +secureserver/$INSTANCE_NAME & disown && tail -f "$UNTURNED_HOME/unturned.log"
+cd $UNTURNED_HOME
+if [ ! -f $UNTURNED_HOME/RocketLauncher.exe ]; then
+	if [ -f "RocketLauncher.exe" ]; then
+		mv RocketLauncher.exe $UNTURNED_HOME/RocketLauncher.exe
+	fi
+fi
+
+if [ -f $UNTURNED_HOME/RocketLauncher.exe ]; then
+	mono RocketLauncher.exe $UNTURNED_HOME
+else
+	echo "RocketLauncher not found"
+fi
