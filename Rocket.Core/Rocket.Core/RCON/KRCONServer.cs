@@ -21,7 +21,6 @@ namespace Rocket.Core.RCON
         private static List<RCONConnection> clients = new List<RCONConnection>();
         private Thread thread;
         private TcpListener listener;
-
         internal static RCONServer Instance;
 
 
@@ -56,6 +55,10 @@ namespace Rocket.Core.RCON
                         if (command == "") break;
                         command = command.TrimEnd(new[] { '\n', '\r', ' ' });
                         if (command == "quit") break;
+                        if (command == "ia") {
+                            newclient.Send("Toggled interactive mode");
+                            newclient.Interactive = !newclient.Interactive;
+                        }
                         if (command == "") continue;
                         if (command == "login")
                         {

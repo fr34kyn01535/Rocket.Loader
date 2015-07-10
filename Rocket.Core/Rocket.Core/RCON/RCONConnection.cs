@@ -17,12 +17,14 @@ namespace Rocket.Core.RCON
     {
         public TcpClient Client;
         public bool Authenticated;
+        public bool Interactive;
         private Thread thread;
 
         public RCONConnection(TcpClient client)
         {
             this.Client = client;
             Authenticated = false;
+            Interactive = true;
         }
 
         public void StartThread(ThreadStart toDo)
@@ -33,11 +35,14 @@ namespace Rocket.Core.RCON
 
         public void Send(string command, bool nonewline = false)
         {
-            if (nonewline == true)
-                RCONServer.Send(Client, command);
-            else
-                RCONServer.Send(Client, command + (!command.Contains('\n') ? "\r\n" : ""));
-            return;
+            if (Interactive)
+            {
+                if (nonewline == true)
+                    RCONServer.Send(Client, command);
+                else
+                    RCONServer.Send(Client, command + (!command.Contains('\n') ? "\r\n" : ""));
+                return;
+            }
         }
 
         public string Read()
