@@ -21,6 +21,7 @@ namespace Rocket.Core.RCON
         private bool exiting = false;
         private static string password = "";
         internal static RCONServer Instance;
+        private Thread waitingThread;
 
 
         internal static void Listen(short port, string password)
@@ -36,13 +37,17 @@ namespace Rocket.Core.RCON
 
            // Logger.Log("Waiting for new connection...");
 
-            while (!exiting)
+            waitingThread = new Thread(() =>
             {
-                RCONConnection newclient = new RCONConnection(listener.AcceptTcpClient());
-                clients.Add(newclient);
-                newclient.Send("RocketRcon v" + Assembly.GetExecutingAssembly().GetName().Version + "\r\n");
-                ThreadPool.QueueUserWorkItem(handleConnection, newclient);
-            }
+                while (!exiting)
+                {
+                    RCONConnection newclient = new RCONConnection(listener.AcceptTcpClient());
+                    clients.Add(newclient);
+                    newclient.Send("RocketRcon v" + Assembly.GetExecutingAssembly().GetName().Version + "\r\n");
+                    ThreadPool.QueueUserWorkItem(handleConnection, newclient);
+                }
+            });
+            waitingThread.Start();
         }
 
         private static void handleConnection(object obj)
@@ -130,6 +135,7 @@ namespace Rocket.Core.RCON
         ~RCONServer()
         {
             exiting = true;
+            waitingThread.Abort();
             foreach (RCONConnection leclient in clients)
             {
                 leclient.Send("Good bye!");
