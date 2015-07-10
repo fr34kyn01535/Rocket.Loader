@@ -61,6 +61,8 @@
     <Compile Include="Rocket.Core\Plugins\RocketPluginConfiguration.cs" />
     <Compile Include="Rocket.Core\Plugins\RocketPluginManager.cs" />
     <Compile Include="Rocket.Core\Permissions\RocketPermissionsManager.cs" />
+    <Compile Include="Rocket.Core\RCON\KRCONServer.cs" />
+    <Compile Include="Rocket.Core\RCON\RCONConnection.cs" />
     <Compile Include="Rocket.Core\RocketBootstrap.cs" />
     <Compile Include="Rocket.Core\Logging\AsyncLoggerQueue.cs" />
     <Compile Include="Rocket.Core\Logging\ELogType.cs" />

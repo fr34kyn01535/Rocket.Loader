@@ -86,14 +86,14 @@ namespace Rocket.Core
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("\n" + "Loading RocketRcon".PadRight(80, '.'));
-                int port = RocketSettingsManager.Settings.RCON.Port;
+                short port = RocketSettingsManager.Settings.RCON.Port;
                 if (RocketSettingsManager.Settings.RCON.Minimal)
                 {
                     MinimalRconServer.Listen(port);
                 }
                 else
                 {
-                    RCONServer.Listen(port);
+                    RCONServer.Listen(port,RocketSettingsManager.Settings.RCON.Password);
                 }
             }
         }

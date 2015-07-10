@@ -10,7 +10,7 @@ namespace Rocket.Core.Settings
     public sealed class RCONSettingsSection {
 
         private string password = "changeme";
-        private int port = 0;
+        private short port = 0;
         private bool enabled = false;
         private bool minimal = false;
 
@@ -55,7 +55,7 @@ namespace Rocket.Core.Settings
         }
 
         [XmlAttribute(AttributeName = "Port")]
-        public int Port
+        public short Port
         {
             get
             {

@@ -83,7 +83,7 @@ namespace Rocket.Core.Logging
 #if DEBUG
                 //Console.WriteLine("SENT "+entry.Message);
 #endif
-                RCONServer.broadcast(entry.Message);
+                RCONServer.Broadcast(entry.Message);
             }
         }
     }
