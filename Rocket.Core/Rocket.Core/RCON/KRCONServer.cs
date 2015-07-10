@@ -11,31 +11,25 @@ using System.Xml.Serialization;
 using System.Reflection;
 using Rocket.Core.Logging;
 using Rocket.Core.Events;
+using UnityEngine;
+using Rocket.Core.Settings;
 
 namespace Rocket.Core.RCON
 {
-    public class RCONServer
+    public class RCONServer : MonoBehaviour
     {
         private static List<RCONConnection> clients = new List<RCONConnection>();
         private TcpListener listener;
         private bool exiting = false;
-        private static string password = "";
         internal static RCONServer Instance;
         private Thread waitingThread;
 
-
-        internal static void Listen(short port, string password)
+        public void Awake()
         {
-            Instance = new RCONServer(port, password);
-        }
-
-        public RCONServer(short port, string password)
-        {
-            RCONServer.password = password;
-            listener = new TcpListener(IPAddress.Any, port);
+            listener = new TcpListener(IPAddress.Any, RocketSettingsManager.Settings.RCON.Port);
             listener.Start();
 
-           // Logger.Log("Waiting for new connection...");
+            // Logger.Log("Waiting for new connection...");
 
             waitingThread = new Thread(() =>
             {
@@ -84,7 +78,8 @@ namespace Rocket.Core.RCON
                     }
                     else
                     {
-                        if (command.Split(' ')[1] == password)
+
+                        if (command.Split(' ')[1] == RocketSettingsManager.Settings.RCON.Password)
                         {
                             newclient.Authenticated = true;
                             //newclient.Send("Success: You have logged in!\r\n");
@@ -110,7 +105,7 @@ namespace Rocket.Core.RCON
                     newclient.Send("Error: You have not logged in yet!\r\n");
                     continue;
                 }
-                if (command!="ia")
+                if (command != "ia")
                     Logger.Log("Client has executed command \"" + command + "\"");
                 RocketEvents.triggerOnRocketCommandTriggered(command);
                 command = "";
@@ -132,18 +127,11 @@ namespace Rocket.Core.RCON
             }
         }
 
-        ~RCONServer()
+        private void OnDestroy()
         {
             exiting = true;
             waitingThread.Abort();
-            foreach (RCONConnection leclient in clients)
-            {
-                leclient.Send("Good bye!");
-                Thread.Sleep(150);
-                leclient.Close();
-            }
-            clients.Clear();
-            this.listener.Stop();
+            listener.Stop();
         }
 
         public static string Read(TcpClient client)
