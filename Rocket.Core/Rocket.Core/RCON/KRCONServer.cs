@@ -58,7 +58,7 @@ namespace Rocket.Core.RCON
                 if (command == "quit") break;
                 if (command == "ia")
                 {
-                    newclient.Send("Toggled interactive mode");
+                    //newclient.Send("Toggled interactive mode");
                     newclient.Interactive = !newclient.Interactive;
                 }
                 if (command == "") continue;
