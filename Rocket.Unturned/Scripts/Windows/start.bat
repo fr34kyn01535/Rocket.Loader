@@ -1,4 +1,4 @@
-@ECHO OFF
+@ECHO OFF 
 REM This script starts a Unturned 3 server on Windows machines
 REM Syntax: start.bat <instance name>
 REM Author: fr34kyn01535
