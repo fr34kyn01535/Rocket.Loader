@@ -34,7 +34,7 @@ namespace Rocket.Core.RCON
             listener = new TcpListener(IPAddress.Any, port);
             listener.Start();
 
-            Logger.Log("Waiting for new connection...");
+           // Logger.Log("Waiting for new connection...");
 
             while (!exiting)
             {
@@ -105,7 +105,8 @@ namespace Rocket.Core.RCON
                     newclient.Send("Error: You have not logged in yet!\r\n");
                     continue;
                 }
-                Logger.Log("Client has executed command \"" + command + "\"");
+                if (command!="ia")
+                    Logger.Log("Client has executed command \"" + command + "\"");
                 RocketEvents.triggerOnRocketCommandTriggered(command);
                 command = "";
             }
