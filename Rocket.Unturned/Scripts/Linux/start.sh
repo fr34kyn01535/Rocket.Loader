@@ -10,25 +10,25 @@
 #libglu1-mesa libxcursor1 libxrandr2 libc6:i386 libgl1-mesa-glx:i386 libxcursor1:i386 libxrandr2:i386 # 32/64 bit prerequisites for unity3d
 
 INSTANCE_NAME=$1
-LAUNCHER="./unturned/RocketLauncher"
+UNTURNED_HOME="./unturned/"
+RocketLauncher="RocketLauncher"
 
-if [ ! -f $LAUNCHER ]; then #Well, somebody can't configure bash scripts...
+if [ ! -f $UNTURNED_HOME$RocketLauncher ]; then #Well, somebody can't configure bash scripts...
 	if [ -f ../../../install_304930.vdf ]; then 
-		LAUNCHER="../../../RocketLauncher"
-		if [ ! -f $LAUNCHER ]; then
+		UNTURNED_HOME="../../../"
+		if [ ! -f $UNTURNED_HOME$RocketLauncher ]; then
 			if [ -f RocketLauncher ]; then
-				mv RocketLauncher $LAUNCHER
+				mv RocketLauncher $UNTURNED_HOME$RocketLauncher
 			fi
 		fi
 	fi
 fi
 
-ulimit -n 2048
 
-if [ -f $LAUNCHER ]; then
-	mono $LAUNCHER $UNTURNED_HOME
+if [ -f $UNTURNED_HOME$RocketLauncher ]; then
+	cd $UNTURNED_HOME
+	ulimit -n 2048
+	mono RocketLauncher $UNTURNED_HOME
 else
 	echo "RocketLauncher not found"
 fi
-
-
