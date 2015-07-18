@@ -79,13 +79,13 @@ namespace Rocket.Unturned.Commands
                 }
                 else
                 {
-                    Node item = LevelNodes.Nodes.Where(n => n.NodeType == ENodeType.LOCATION && ((NodeLocation)n).Name.ToLower().Contains(command[0].ToLower())).FirstOrDefault();
+                    Node item = LevelNodes.Nodes.Where(n => n.NodeType == ENodeType.LOCATION && ((LocationNode)n).Name.ToLower().Contains(command[0].ToLower())).FirstOrDefault();
                     if (item != null)
                     {
                         Vector3 c = item.Position + new Vector3(0f, 0.5f, 0f);
                         caller.Teleport(c, MeasurementTool.angleToByte(caller.Rotation));
-                        Logger.Log(RocketTranslationManager.Translate("command_tp_teleport_console", caller.CharacterName, ((NodeLocation)item).Name));
-                        RocketChat.Say(caller, RocketTranslationManager.Translate("command_tp_teleport_private", ((NodeLocation)item).Name));
+                        Logger.Log(RocketTranslationManager.Translate("command_tp_teleport_console", caller.CharacterName, ((LocationNode)item).Name));
+                        RocketChat.Say(caller, RocketTranslationManager.Translate("command_tp_teleport_private", ((LocationNode)item).Name));
                     }
                     else
                     {

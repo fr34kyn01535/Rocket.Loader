@@ -61,6 +61,7 @@
     <Compile Include="Patches\Items.cs" />
     <Compile Include="Patches\LevelNodes.cs" />
     <Compile Include="Patches\LevelZombies.cs" />
+    <Compile Include="Patches\LocationNode.cs" />
     <Compile Include="Patches\MenuUI.cs" />
     <Compile Include="Patches\Node.cs" />
     <Compile Include="Patches\ObjectAsset.cs" />

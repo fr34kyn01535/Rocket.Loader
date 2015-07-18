@@ -17,7 +17,7 @@ namespace Rocket.RocketLoader
             {
                 Console.WriteLine("RocketLoader Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
-
+                
                 string apiAssemblyName = args[0]; //"Rocket.Unturned.dll";
                 string unityAssemblyName = args[1]; //"Assembly-CSharp.dll";
                 string patchAssemblyName = args[2]; //"Rocket.Loader.Unturned.dll";
