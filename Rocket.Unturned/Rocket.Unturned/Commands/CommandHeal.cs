@@ -1,9 +1,4 @@
-﻿using Rocket.API;
-using Rocket.Core;
-using Rocket.Core.Translations;
-using Rocket.Unturned.Player;
-using SDG.Unturned;
-using System;
+﻿using Rocket.Unturned.Player;
 using System.Collections.Generic;
 
 namespace Rocket.Unturned.Commands
@@ -35,7 +30,7 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>(); }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
             if (caller != null && command.Length != 1)
             {
@@ -45,11 +40,11 @@ namespace Rocket.Unturned.Commands
                 caller.Infection = 0;
                 caller.Hunger = 0;
                 caller.Thirst = 0;
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_heal_success"));
+                RocketChat.Say(caller, U.Translate("command_heal_success"));
             }
             else
             {
-                RocketPlayer otherPlayer = RocketPlayer.FromName(command[0]);
+                UnturnedPlayer otherPlayer = UnturnedPlayer.FromName(command[0]);
                 if (otherPlayer != null)
                 {
                     otherPlayer.Heal(100);
@@ -58,14 +53,14 @@ namespace Rocket.Unturned.Commands
                     otherPlayer.Infection = 0;
                     otherPlayer.Hunger = 0;
                     otherPlayer.Thirst = 0;
-                    RocketChat.Say(caller, RocketTranslationManager.Translate("command_heal_success_me", otherPlayer.CharacterName));
+                    RocketChat.Say(caller, U.Translate("command_heal_success_me", otherPlayer.CharacterName));
                     
                     if(caller != null)
-                        RocketChat.Say(otherPlayer, RocketTranslationManager.Translate("command_heal_success_other", caller.CharacterName));
+                        RocketChat.Say(otherPlayer, U.Translate("command_heal_success_other", caller.CharacterName));
                 }
                 else
                 {
-                    RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_target_player_not_found"));
+                    RocketChat.Say(caller, U.Translate("command_generic_target_player_not_found"));
                 }
             }
         }

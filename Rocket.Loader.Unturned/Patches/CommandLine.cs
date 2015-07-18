@@ -9,7 +9,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
     {
         public override void Apply()
         {
-            MethodDefinition splash = RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.Implementation").Methods.AsEnumerable().Where(m => m.Name == "Splash").FirstOrDefault();
+            MethodDefinition splash = GetInterfaceMethod("Splash");
             MethodDefinition getCommands = GetMethod("getCommands");
             getCommands.Body.GetILProcessor().InsertBefore(getCommands.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(splash)));
         }

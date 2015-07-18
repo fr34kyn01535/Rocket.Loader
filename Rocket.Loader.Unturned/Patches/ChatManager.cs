@@ -14,7 +14,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
             UnlockFieldByType("ChatManager", "Instance");
             UnlockFieldByType("Chatted", "OnChatted");
 
-            MethodDefinition checkPermissions = RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.Permissions.RocketPermissions").Methods.AsEnumerable().Where(m => m.Name == "CheckPermissions").FirstOrDefault();
+            MethodDefinition checkPermissions = GetInterfaceMethod("CheckPermissions");
             MethodDefinition process = GetMethod("process");
             if (process != null)
             {

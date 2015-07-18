@@ -1,5 +1,7 @@
-﻿using Rocket.Unturned.Events;
-using Rocket.Unturned.Logging;
+﻿using Rocket.API;
+using Rocket.Core;
+using Rocket.Unturned.Events;
+using Rocket.Core.Logging;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using Steamworks;
@@ -24,38 +26,38 @@ namespace Rocket.Unturned
         public ushort EffectID;
         public bool Global;
 
-        public void Trigger(RocketPlayer player)
+        public void Trigger(UnturnedPlayer player)
         {
             if (!Global)
             {
-                EffectManager.Instance.SteamChannel.send("tellEffectPoint", player.CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, player.Player.transform.position });
+                SDG.Unturned.EffectManager.Instance.SteamChannel.send("tellEffectPoint", player.CSteamID, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, player.Player.transform.position });
             }
             else
             {
-                EffectManager.Instance.SteamChannel.send("tellEffectPoint", ESteamCall.CLIENTS, player.Player.transform.position, 1024, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, player.Player.transform.position });
+                SDG.Unturned.EffectManager.Instance.SteamChannel.send("tellEffectPoint", ESteamCall.CLIENTS, player.Player.transform.position, 1024, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, player.Player.transform.position });
             }
         }
 
         public void Trigger(Vector3 position)
         {
-            EffectManager.Instance.SteamChannel.send("tellEffectPoint", ESteamCall.CLIENTS, position, 1024, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, position });
+            SDG.Unturned.EffectManager.Instance.SteamChannel.send("tellEffectPoint", ESteamCall.CLIENTS, position, 1024, ESteamPacket.UPDATE_UDP_BUFFER, new object[] { EffectID, position });
         }
     }
 
-    public class RocketEffectManager : MonoBehaviour
+    public class EffectManager : MonoBehaviour
     {
         private static readonly string joinEffect = "Rocket:Join";
         private static readonly string dieEffect = "Rocket:Die";
 
         public void Start(){
-            RocketServerEvents.OnPlayerConnected += (RocketPlayer player) =>
-            {
-                foreach (RocketEffect effect in GetEffectsByType(joinEffect))
-                {
-                    effect.Trigger(player);
-                }
-            };
-            RocketPlayerEvents.OnPlayerDeath += (RocketPlayer player, EDeathCause cause, ELimb limb, CSteamID murderer) => {
+            U.Events.OnPlayerConnected += (UnturnedPlayer player) =>
+             {
+                 foreach (RocketEffect effect in GetEffectsByType(joinEffect))
+                 {
+                     effect.Trigger((UnturnedPlayer)player);
+                 }
+             };
+            UnturnedPlayerEvents.OnPlayerDeath += (UnturnedPlayer player, EDeathCause cause, ELimb limb, CSteamID murderer) => {
                 foreach (RocketEffect effect in GetEffectsByType(dieEffect))
                 {
                     effect.Trigger(player);
@@ -76,7 +78,7 @@ namespace Rocket.Unturned
 
         private static List<RocketEffect> effects = new List<RocketEffect>();
 
-        public static void RegisterRocketEffect(Bundle b, Data q, ushort k)
+        internal static void RegisterRocketEffect(Bundle b, Data q, ushort k)
         {
             string s = q.readString("RocketEffect");
             bool global = q.readBoolean("Global");

@@ -1,9 +1,5 @@
-﻿using Rocket.API;
-using Rocket.Core;
-using Rocket.Core.Translations;
-using Rocket.Unturned.Player;
+﻿using Rocket.Unturned.Player;
 using SDG.Unturned;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,19 +32,19 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>(); }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
             Vector3 pos;
             byte rot;
             if (!BarricadeManager.tryGetBed(caller.CSteamID, out pos, out rot))
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_bed_no_bed_found_private"));
+                RocketChat.Say(caller, U.Translate("command_bed_no_bed_found_private"));
             }
             else
             {
                 if (caller.Stance == EPlayerStance.DRIVING || caller.Stance == EPlayerStance.SITTING)
                 {
-                    RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_teleport_while_driving_error"));
+                    RocketChat.Say(caller, U.Translate("command_generic_teleport_while_driving_error"));
                 }
                 else
                 {

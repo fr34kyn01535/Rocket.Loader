@@ -1,10 +1,5 @@
-﻿using Rocket.API;
-using Rocket.Core;
-using Rocket.Core.Translations;
-using Rocket.Unturned.Logging;
-using Rocket.Unturned.Player;
+﻿using Rocket.Unturned.Player;
 using SDG.Unturned;
-using System;
 using System.Collections.Generic;
 
 namespace Rocket.Unturned.Commands
@@ -36,7 +31,7 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>(); }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
             Steam.kick(caller.CSteamID, "");
         }

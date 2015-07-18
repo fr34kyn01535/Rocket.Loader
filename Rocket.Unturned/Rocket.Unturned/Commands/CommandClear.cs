@@ -1,10 +1,4 @@
 ﻿using SDG.Unturned;
-using System;
-using UnityEngine;
-using System.Linq;
-using Rocket.API;
-using Rocket.Core;
-using Rocket.Core.Translations;
 using Rocket.Unturned.Player;
 using System.Collections.Generic;
 
@@ -37,7 +31,7 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>(); }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
             int itemCount = 0;
             for (int i = 0; i< ItemManager.ItemRegions.GetLength(0); i++)
@@ -53,7 +47,7 @@ namespace Rocket.Unturned.Commands
                     }
                 }
             }
-            RocketChat.Say(caller, RocketTranslationManager.Translate("command_clear_success", itemCount));
+            RocketChat.Say(caller, U.Translate("command_clear_success", itemCount));
         }
     }
 }

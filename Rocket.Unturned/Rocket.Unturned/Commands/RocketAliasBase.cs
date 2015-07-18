@@ -38,7 +38,7 @@ namespace Rocket.Unturned.Commands
 
             try
             {
-                Command.Execute(RocketPlayer.FromCSteamID(caller), collection);
+                Command.Execute(UnturnedPlayer.FromCSteamID(caller), collection);
             }
             catch (Exception ex)
             {

@@ -1,9 +1,4 @@
-﻿using SDG.Unturned;
-using System;
-using Rocket.API;
-using Rocket.Unturned.Logging;
-using Rocket.Core;
-using Rocket.Core.Translations;
+﻿using Rocket.Core.Logging;
 using Rocket.Unturned.Player;
 using System.Collections.Generic;
 
@@ -36,7 +31,7 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>() { "clearinventory" }; }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
             if (command.Length == 0)
             {
@@ -44,24 +39,24 @@ namespace Rocket.Unturned.Commands
                 {
                     Logger.Log("Something went wrong removing " + caller.CharacterName + "'s clothing!");
                 }
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_clear_private"));
+                RocketChat.Say(caller, U.Translate("command_clear_private"));
             }
             else
             {
                 if (caller != null && !caller.HasPermission("ci.others")) return;
-                RocketPlayer player = RocketPlayer.FromName(command[0]);
+                UnturnedPlayer player = UnturnedPlayer.FromName(command[0]);
                 if (player == null)
                 {
-                    RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_failed_find_player"));
+                    RocketChat.Say(caller, U.Translate("command_generic_failed_find_player"));
                     return;
                 }
                 if (!player.Inventory.Clear())
                 {
-                    RocketChat.Say(caller, RocketTranslationManager.Translate("command_clear_error", player.CharacterName + "'s"));
+                    RocketChat.Say(caller, U.Translate("command_clear_error", player.CharacterName + "'s"));
                     return;
                 }
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_clear_other_success", player.CharacterName + "'s"));
-                RocketChat.Say(player, RocketTranslationManager.Translate("command_clear_other", caller.CharacterName));
+                RocketChat.Say(caller, U.Translate("command_clear_other_success", player.CharacterName + "'s"));
+                RocketChat.Say(player, U.Translate("command_clear_other", caller.CharacterName));
             }
         }
     }

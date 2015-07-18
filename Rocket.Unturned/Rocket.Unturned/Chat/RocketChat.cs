@@ -1,9 +1,11 @@
-﻿using Rocket.API;
+﻿using Rocket.Core;
 using Rocket.Core.Logging;
+using Rocket.Unturned.Events;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using Steamworks;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +13,39 @@ namespace Rocket.Unturned
 {
     public sealed class RocketChat : MonoBehaviour
     {
+        public void Awake()
+        {
+            SDG.Unturned.ChatManager.OnChatted += handleChat;
+        }
+
+        private void handleChat(SteamPlayer steamPlayer, EChatMode chatMode, ref Color incomingColor, string message)
+        {
+            Color color = incomingColor;
+            try
+            {
+                UnturnedPlayer player = UnturnedPlayer.FromSteamPlayer(steamPlayer);
+                if (player.IsAdmin)
+                {
+                    color = Palette.Admin;
+                }
+                else
+                {
+                    string colorPermission = R.Permissions.GetPermissions(player).Where(permission => permission.ToLower().StartsWith("color.")).FirstOrDefault();
+                    if (colorPermission != null)
+                    {
+                        color = GetColorFromName(colorPermission.ToLower().Replace("color.", ""), color);
+                    }
+                }
+
+                color = UnturnedPlayerEvents.firePlayerChatted(player, chatMode, color, message);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            incomingColor = color;
+        }
+
         public static Color GetColorFromName(string colorName, Color fallback)
         {
             switch (colorName.Trim().ToLower())
@@ -65,9 +100,9 @@ namespace Rocket.Unturned
 
         public static void Say(string message,Color color)
         {
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.White;
+            System.Console.ForegroundColor = ConsoleColor.Gray;
+            System.Console.WriteLine(message);
+            System.Console.ForegroundColor = ConsoleColor.White;
             Logger.Log("Broadcast: " + message,false);
             foreach (string m in wrapMessage(message))
             {
@@ -75,18 +110,18 @@ namespace Rocket.Unturned
             }
         }
        
-        public static void Say(RocketPlayer player, string message)
+        public static void Say(UnturnedPlayer player, string message)
         {
             Say(player, message, Palette.Server);
         }
 
-        public static void Say(RocketPlayer player, string message, Color color)
+        public static void Say(UnturnedPlayer player, string message, Color color)
         {
             if (player == null)
             {
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine(message);
-                Console.ForegroundColor = ConsoleColor.White;
+                System.Console.ForegroundColor = ConsoleColor.Gray;
+                System.Console.WriteLine(message);
+                System.Console.ForegroundColor = ConsoleColor.White;
                 Logger.Log(message,false);
             }
             else
@@ -104,8 +139,8 @@ namespace Rocket.Unturned
         {
             if (CSteamID == null || CSteamID.ToString() == "0")
             {
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine(message);
+                System.Console.ForegroundColor = ConsoleColor.Gray;
+                System.Console.WriteLine(message);
                 Logger.Log(message,false);
             }
             else

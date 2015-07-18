@@ -1,18 +1,12 @@
 ﻿using SDG.Unturned;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
-using UnityEngine;
 using System.Linq;
 using Rocket.API;
-using Rocket.Core;
-using Rocket.Core.Settings;
 using Rocket.Core.Plugins;
-using Rocket.Core.Permissions;
-using Rocket.Core.Translations;
-using Rocket.Unturned.Plugins;
 using Rocket.Unturned.Player;
+using Rocket.Core;
 
 namespace Rocket.Unturned.Commands
 {
@@ -43,7 +37,9 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>(); }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public object RocketCore { get; private set; }
+
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
             if (command.Length == 0)
             {
@@ -57,74 +53,69 @@ namespace Rocket.Unturned.Commands
                 switch (command[0].ToLower()) {
                     case "plugins":
                         if (caller != null && !caller.HasPermission("rocket.plugins")) return;
-                        List<IRocketPlugin> plugins = RocketPluginManager.GetPlugins();
-                        RocketChat.Say(caller, RocketTranslationManager.Translate("command_rocket_plugins_loaded", String.Join(", ", plugins.Where(p => p.Loaded).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
-                        RocketChat.Say(caller, RocketTranslationManager.Translate("command_rocket_plugins_unloaded", String.Join(", ", plugins.Where(p => !p.Loaded).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
+                        List<IRocketPlugin> plugins = RocketPluginManager.Plugins;
+                        RocketChat.Say(caller, U.Translate("command_rocket_plugins_loaded", String.Join(", ", plugins.Where(p => p.State == PluginState.Loaded).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
+                        RocketChat.Say(caller, U.Translate("command_rocket_plugins_unloaded", String.Join(", ", plugins.Where(p => p.State == PluginState.Unloaded).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
+                        RocketChat.Say(caller, U.Translate("command_rocket_plugins_failure", String.Join(", ", plugins.Where(p => p.State == PluginState.Failure).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
+                        RocketChat.Say(caller, U.Translate("command_rocket_plugins_cancelled", String.Join(", ", plugins.Where(p => p.State == PluginState.Cancelled).Select(p => p.GetType().Assembly.GetName().Name).ToArray())));
                         break;
                     case "reload":
                         if (caller!=null && !caller.HasPermission("rocket.reload")) return;
-                            RocketChat.Say(caller, RocketTranslationManager.Translate("command_rocket_reload"));
-                            RocketTranslationManager.Reload();
-                            RocketSettingsManager.Reload();
-                            RocketPermissionsManager.Reload();
-                            foreach (IRocketPlugin plugin in RocketPluginManager.GetPlugins())
-                            {
-                                ((RocketPlugin)plugin).UnloadPlugin();
-                                ((RocketPlugin)plugin).LoadPlugin();
-                            }
+                            RocketChat.Say(caller, U.Translate("command_rocket_reload"));
+                            R.Reload();
                         break;
                 }
             }
 
             if (command.Length == 2)
             {
-                RocketPlugin p = (RocketPlugin)RocketPluginManager.GetPlugin(command[1]);
+                RocketPlugin p = (RocketPlugin)RocketPluginManager.Plugins.Where(pl => pl.Name.ToLower().Contains(command[1])).FirstOrDefault();
                 if (p != null)
                 {
                     switch (command[0].ToLower())
                     {
                         case "reload":
                             if (caller != null && !caller.HasPermission("rocket.reloadplugin")) return;
-                            if (p.Loaded)
+                            if (p.State == PluginState.Loaded)
                             {
-                                RocketChat.Say(caller, RocketTranslationManager.Translate("command_rocket_reload_plugin", p.GetType().Assembly.GetName().Name));
-                                p.UnloadPlugin();
-                                p.LoadPlugin();
+                                RocketChat.Say(caller, U.Translate("command_rocket_reload_plugin", p.GetType().Assembly.GetName().Name));
+                                p.ForceUnload();
+                                p.ForceLoad();
                             }
                             else
                             {
-                                RocketChat.Say(caller, RocketTranslationManager.Translate("command_rocket_not_loaded", p.GetType().Assembly.GetName().Name));
+                                RocketChat.Say(caller, U.Translate("command_rocket_not_loaded", p.GetType().Assembly.GetName().Name));
                             }
                             break;
                         case "unload":
                             if (caller != null && !caller.HasPermission("rocket.unloadplugin")) return;
-                            if (p.Loaded)
+                            if (p.State == PluginState.Loaded)
                             {
-                                RocketChat.Say(caller, RocketTranslationManager.Translate("command_rocket_unload_plugin", p.GetType().Assembly.GetName().Name));
-                                p.UnloadPlugin();
+                                RocketChat.Say(caller, U.Translate("command_rocket_unload_plugin", p.GetType().Assembly.GetName().Name));
+                                p.ForceUnload();
                             }
                             else
                             {
-                                RocketChat.Say(caller, RocketTranslationManager.Translate("command_rocket_not_loaded", p.GetType().Assembly.GetName().Name));
+                                RocketChat.Say(caller, U.Translate("command_rocket_not_loaded", p.GetType().Assembly.GetName().Name));
                             }
                             break;
                         case "load":
                             if (caller != null && !caller.HasPermission("rocket.loadplugin")) return;
-                            if (!p.Loaded)
+                            if (p.State != PluginState.Loaded)
                             {
-                                RocketChat.Say(caller, RocketTranslationManager.Translate("command_rocket_load_plugin", p.GetType().Assembly.GetName().Name));
-                                p.LoadPlugin();
+                                RocketChat.Say(caller, U.Translate("command_rocket_load_plugin", p.GetType().Assembly.GetName().Name));
+                                p.ForceLoad();
                             }
                             else
                             {
-                                RocketChat.Say(caller, RocketTranslationManager.Translate("command_rocket_already_loaded", p.GetType().Assembly.GetName().Name));
+                                RocketChat.Say(caller, U.Translate("command_rocket_already_loaded", p.GetType().Assembly.GetName().Name));
                             }
                             break;
                     }
                 }
                 else
                 {
-                    RocketChat.Say(caller, RocketTranslationManager.Translate("command_rocket_plugin_not_found", command[1]));
+                    RocketChat.Say(caller, U.Translate("command_rocket_plugin_not_found", command[1]));
                 }
             }
 

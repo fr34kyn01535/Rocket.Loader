@@ -1,10 +1,6 @@
-﻿using Rocket.API;
-using Rocket.Core;
-using Rocket.Core.Translations;
-using Rocket.Unturned.Logging;
+﻿using Rocket.Core.Logging;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
-using System;
 using System.Collections.Generic;
 
 namespace Rocket.Unturned.Commands
@@ -36,11 +32,11 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>(); }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
             if (command.Length != 1)
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));
+                RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
@@ -52,7 +48,7 @@ namespace Rocket.Unturned.Commands
 
                 if (itemString == null)
                 {
-                    RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));
+                    RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                     return;
                 }
 
@@ -72,12 +68,12 @@ namespace Rocket.Unturned.Commands
 
             if (VehicleTool.giveVehicle(caller.Player, id.Value))
             {
-                Logger.Log(RocketTranslationManager.Translate("command_v_giving_console", caller.CharacterName, id));
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_v_giving_private", assetName, id));
+                Logger.Log(U.Translate("command_v_giving_console", caller.CharacterName, id));
+                RocketChat.Say(caller, U.Translate("command_v_giving_private", assetName, id));
             }
             else
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_v_giving_failed_private", assetName, id));
+                RocketChat.Say(caller, U.Translate("command_v_giving_failed_private", assetName, id));
             }
         }
     }

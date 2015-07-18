@@ -1,10 +1,4 @@
-﻿using Rocket.API;
-using Rocket.Core;
-using Rocket.Core.Translations;
-using Rocket.Unturned.Logging;
-using Rocket.Unturned.Player;
-using SDG.Unturned;
-using System;
+﻿using Rocket.Unturned.Player;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,14 +31,14 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>(); }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
             string message = command.GetStringParameter(0);
             Color? color = command.GetColorParameter(1);
 
             if (message == null)
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));
+                RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
 

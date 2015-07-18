@@ -13,7 +13,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
             UnlockFieldByType("SteamChannelMethod[]", "Methods");
 
             //SEND
-            MethodDefinition sendInstruction = RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.Events.RocketPlayerEvents").Methods.AsEnumerable().Where(m => m.Name == "TriggerSend").FirstOrDefault();
+            MethodDefinition sendInstruction = GetInterfaceMethod("TriggerSend");
 
             MethodDefinition send = Type.Methods.AsEnumerable().Where(m => m.Parameters.Count == 4 &&
                  m.Parameters[0].ParameterType.Name == "String" &&
@@ -33,7 +33,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
             send.Body.GetILProcessor().InsertBefore(send.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_0));
 
             //RECEIVE
-            MethodDefinition receiveInstruction = RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.Events.RocketPlayerEvents").Methods.AsEnumerable().Where(m => m.Name == "TriggerReceive").FirstOrDefault();
+            MethodDefinition receiveInstruction = GetInterfaceMethod("TriggerReceive");
             MethodDefinition receive = Type.Methods.AsEnumerable().Where(m => m.Name=="receive").FirstOrDefault();
             int i = 30;
             receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(receiveInstruction)));

@@ -1,10 +1,5 @@
-﻿using Rocket.API;
-using Rocket.Core;
-using Rocket.Core.Permissions;
-using Rocket.Core.Translations;
-using Rocket.Unturned.Logging;
+﻿using Rocket.Core;
 using Rocket.Unturned.Player;
-using SDG.Unturned;
 using System;
 using System.Collections.Generic;
 
@@ -37,33 +32,33 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>() { "permissions" }; }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
-            RocketPlayer player = command.GetRocketPlayerParameter(0);
+            UnturnedPlayer player = command.GetUnturnedPlayerParameter(0);
             string groupName = command.GetStringParameter(1);
 
             if (command.Length == 0)
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_p_groups_private", "Your", String.Join(", ", RocketPermissionsManager.GetDisplayGroups(caller.CSteamID.ToString()))));
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_p_permissions_private", "Your", String.Join(", ", RocketPermissionsManager.GetPermissions(caller.CSteamID.ToString()).ToArray())));
+                RocketChat.Say(caller, U.Translate("command_p_groups_private", "Your", string.Join(", ", Core.R.Permissions.GetDisplayGroups(caller))));
+                RocketChat.Say(caller, U.Translate("command_p_permissions_private", "Your", string.Join(", ", Core.R.Permissions.GetPermissions(caller).ToArray())));
             }
             else if(command.Length == 1 && player != null) {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_p_groups_private", player.CharacterName+"s", String.Join(", ", RocketPermissionsManager.GetDisplayGroups(player.CSteamID.ToString()))));
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_p_permissions_private", player.CharacterName+"s", String.Join(", ", RocketPermissionsManager.GetPermissions(player.CSteamID.ToString()).ToArray())));
+                RocketChat.Say(caller, U.Translate("command_p_groups_private", player.CharacterName+"s", string.Join(", ", Core.R.Permissions.GetDisplayGroups(player))));
+                RocketChat.Say(caller, U.Translate("command_p_permissions_private", player.CharacterName+"s", string.Join(", ", Core.R.Permissions.GetPermissions(player).ToArray())));
             }
             else if (command.Length == 2 && player != null && !String.IsNullOrEmpty(groupName) && player.HasPermission("p.set"))
             {
-                if (RocketPermissionsManager.SetGroup(player.CSteamID.ToString(), groupName))
+                if (Core.R.Permissions.SetGroup(player, groupName))
                 {
-                    RocketChat.Say(caller, RocketTranslationManager.Translate("command_p_group_assigned", player.CharacterName, groupName));
+                    RocketChat.Say(caller, U.Translate("command_p_group_assigned", player.CharacterName, groupName));
                 }
                 else {
-                    RocketChat.Say(caller, RocketTranslationManager.Translate("command_p_group_not_found"));
+                    RocketChat.Say(caller, U.Translate("command_p_group_not_found"));
                 }
             }
             else
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));
+                RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
 

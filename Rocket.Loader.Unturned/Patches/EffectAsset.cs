@@ -16,7 +16,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
             UnlockFieldByType(typeof(float), "Lifetime");
 
             //RECEIVE
-            MethodDefinition receiveInstruction = RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.RocketEffectManager").Methods.AsEnumerable().Where(m => m.Name == "RegisterRocketEffect").FirstOrDefault();
+            MethodDefinition receiveInstruction = GetInterfaceMethod("RegisterRocketEffect");
             MethodDefinition receive = Type.Methods.AsEnumerable().Where(m => m.Name == ".ctor").FirstOrDefault();
             int i = receive.Body.Instructions.Count - 3;
             receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(receiveInstruction)));

@@ -1,11 +1,7 @@
-﻿using Rocket.API;
-using Rocket.Core;
-using Rocket.Core.Translations;
-using Rocket.Unturned.Logging;
+﻿using Rocket.Core.Logging;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using Rocket.Unturned.Util;
 
@@ -38,11 +34,11 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>() { "item" }; }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
             if (command.Length == 0 || command.Length > 2)
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));
+                RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
@@ -57,7 +53,7 @@ namespace Rocket.Unturned.Commands
                 if (asset != null) id = asset.Id;
                 if (String.IsNullOrEmpty(itemString.Trim()) || id == 0)
                 {
-                    RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));
+                    RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                     return;
                 }
             }
@@ -67,18 +63,18 @@ namespace Rocket.Unturned.Commands
 
             if (command.Length == 2 && !byte.TryParse(command[1].ToString(), out amount))
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));
+                RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
             if (caller.GiveItem(id, amount))
             {
-                Logger.Log(RocketTranslationManager.Translate("command_i_giving_console",caller.CharacterName, id, amount));
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_i_giving_private", amount, assetName, id));
+                Logger.Log(U.Translate("command_i_giving_console",caller.CharacterName, id, amount));
+                RocketChat.Say(caller, U.Translate("command_i_giving_private", amount, assetName, id));
             }
             else
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_i_giving_failed_private", amount, assetName, id));
+                RocketChat.Say(caller, U.Translate("command_i_giving_failed_private", amount, assetName, id));
             }
         }
     }

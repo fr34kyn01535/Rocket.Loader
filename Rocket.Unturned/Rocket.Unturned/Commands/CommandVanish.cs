@@ -1,10 +1,5 @@
-﻿using Rocket.API;
-using Rocket.Core;
-using Rocket.Core.Translations;
-using Rocket.Unturned.Logging;
+﻿using Rocket.Core.Logging;
 using Rocket.Unturned.Player;
-using SDG.Unturned;
-using System;
 using System.Collections.Generic;
 
 namespace Rocket.Unturned.Commands
@@ -36,18 +31,18 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>(); }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
             if (caller.Features.VanishMode)
             {
-                Logger.Log(RocketTranslationManager.Translate("command_vanish_disable_console", caller.CharacterName));
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_vanish_disable_private"));
+                Logger.Log(U.Translate("command_vanish_disable_console", caller.CharacterName));
+                RocketChat.Say(caller, U.Translate("command_vanish_disable_private"));
                 caller.Features.VanishMode = false;
             }
             else
             {
-                Logger.Log(RocketTranslationManager.Translate("command_vanish_enable_console", caller.CharacterName));
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_vanish_enable_private"));
+                Logger.Log(U.Translate("command_vanish_enable_console", caller.CharacterName));
+                RocketChat.Say(caller, U.Translate("command_vanish_enable_private"));
                 caller.Features.VanishMode = true;
             }
         }

@@ -1,6 +1,5 @@
 ﻿using Mono.Cecil;
 using Mono.Cecil.Cil;
-using System.Linq;
 
 namespace Rocket.RocketLoader.Unturned.Patches
 {
@@ -12,8 +11,8 @@ namespace Rocket.RocketLoader.Unturned.Patches
             RemoveMethod("Update");
             RemoveMethod("OnGUI");
 
-           MethodDefinition start = GetMethod("Start");
-           MethodDefinition Instantiate = RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.RocketUI").Methods.AsEnumerable().Where(m => m.Name == "Instantiate").FirstOrDefault();
+           MethodDefinition start = GetMethod("Start"); 
+            MethodDefinition Instantiate = GetInterfaceMethod("InstantiateUI"); 
             start.Body.GetILProcessor().InsertBefore(start.Body.Instructions[0],Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(Instantiate)));
         }
     }

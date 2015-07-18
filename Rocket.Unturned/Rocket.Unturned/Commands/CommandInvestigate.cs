@@ -4,7 +4,6 @@ using UnityEngine;
 using System.Linq;
 using Rocket.API;
 using Rocket.Core;
-using Rocket.Core.Translations;
 using Rocket.Unturned.Player;
 using System.Collections.Generic;
 
@@ -37,22 +36,22 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>(); }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
             if (command.Length!=1)
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));
+                RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
             SteamPlayer otherPlayer = PlayerTool.getSteamPlayer(command[0]);
             if (otherPlayer != null && (caller == null || otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.ToString()))
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_investigate_private", otherPlayer.SteamPlayerID.CharacterName, otherPlayer.SteamPlayerID.CSteamID.ToString()));
+                RocketChat.Say(caller, U.Translate("command_investigate_private", otherPlayer.SteamPlayerID.CharacterName, otherPlayer.SteamPlayerID.CSteamID.ToString()));
             }
             else
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_failed_find_player"));
+                RocketChat.Say(caller, U.Translate("command_generic_failed_find_player"));
             }
         }
     }

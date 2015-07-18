@@ -1,12 +1,4 @@
-﻿using SDG.Unturned;
-using System;
-using UnityEngine;
-using System.Linq;
-using Rocket.Unturned.Logging;
-using Rocket.Core;
-using Rocket.API;
-using Rocket.Core.Translations;
-using Rocket.Unturned.Player;
+﻿using Rocket.Unturned.Player;
 using System.Collections.Generic;
 
 namespace Rocket.Unturned.Commands
@@ -38,12 +30,12 @@ namespace Rocket.Unturned.Commands
             get { return new List<string>(); }
         }
 
-        public void Execute(RocketPlayer caller, string[] command)
+        public void Execute(UnturnedPlayer caller, string[] command)
         {
             ushort? id = command.GetUInt16Parameter(0);
             if (id == null)
             {
-                RocketChat.Say(caller, RocketTranslationManager.Translate("command_generic_invalid_parameter"));
+                RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
             caller.TriggerEffect(id.Value);
