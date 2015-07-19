@@ -23,10 +23,8 @@ namespace Rocket.Core
 
         private void Awake()
         {
-            Instance = this;
-            Implementation = (IRocketImplementation)GetComponent(typeof(IRocketImplementation));
-
             Environment.Initialize();
+            Implementation = (IRocketImplementation)GetComponent(typeof(IRocketImplementation));
 
             Settings = new XMLFileAsset<RocketSettings>(Environment.SettingsFile);
             Translation = new XMLFileAsset<RocketTranslations>(String.Format(Environment.TranslationFile, Settings.Instance.LanguageCode));
@@ -34,7 +32,8 @@ namespace Rocket.Core
             Plugins = gameObject.TryAddComponent<RocketPluginManager>();
         }
 
-        private void Start(){
+        private void Start()
+        {
             gameObject.TryAddComponent<AutomaticShutdownWatchdog>();
             gameObject.TryAddComponent<RCONServer>();
         }

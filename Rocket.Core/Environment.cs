@@ -22,12 +22,12 @@ namespace Rocket.Core
         public static readonly string LogsDirectory = "Logs";
 
         public static readonly string SettingsFile = "Rocket.config.xml";
-        public static readonly string TranslationFile = "Rocket.{1}.translation.xml";
+        public static readonly string TranslationFile = "Rocket.{0}.translation.xml";
         public static readonly string LogFile = "Logs/Rocket.log";
         public static readonly string PermissionFile = "Permissions.config.xml";
 
-        public static readonly string PluginTranslationFileTemplate = "Plugins/{1}/{1}.{2}.translation.xml";
-        public static readonly string PluginConfigurationFileTemplate = "Plugins/{1}/{1}.configuration.xml";
+        public static readonly string PluginTranslationFileTemplate = "Plugins/{0}/{0}.{1}.translation.xml";
+        public static readonly string PluginConfigurationFileTemplate = "Plugins/{0}/{0}.configuration.xml";
 
         public static readonly string WebConfigurationTemplate = "{0}?configuration={1}&instance{2}";
     }

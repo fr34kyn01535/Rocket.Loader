@@ -30,6 +30,11 @@ namespace Rocket.API.Collections
             return translations.GetEnumerator();
         }
 
+        public void Add(Object o)
+        {
+            translations.Add((TranslationListEntry)o);
+        }
+
         public void Add(string key, string value)
         {
             translations.Add(new TranslationListEntry(key, value));

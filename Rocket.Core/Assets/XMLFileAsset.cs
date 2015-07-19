@@ -12,7 +12,10 @@ namespace Rocket.Core.Assets
 
         public XMLFileAsset(string file, XmlRootAttribute attr = null)
         {
-            serializer = new XmlSerializer(typeof(T), attr);
+            if (attr != null)
+                serializer = new XmlSerializer(typeof(T), attr);
+            else
+                serializer = new XmlSerializer(typeof(T));
             this.file = file;
             Load();
         }
@@ -22,12 +25,12 @@ namespace Rocket.Core.Assets
             try
             {
                 string directory = Path.GetDirectoryName(file);
-                if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+                if (!String.IsNullOrEmpty(directory) && !Directory.Exists(directory)) Directory.CreateDirectory(directory);
                 using (StreamWriter writer = new StreamWriter(file))
                 {
                     if(instance == null)
                     {
-                        this.instance = Activator.CreateInstance<T>();
+                        instance = Activator.CreateInstance<T>();
                     }
                     this.instance = instance;
                     serializer.Serialize(writer,instance);
