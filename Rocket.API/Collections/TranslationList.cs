@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace Rocket.API.Collections
 {
+    [Serializable]
+    [XmlType(AnonymousType = false, IncludeInSchema = true,TypeName = "Translation")]
     public class TranslationListEntry
     {
         [XmlAttribute]
@@ -19,13 +20,22 @@ namespace Rocket.API.Collections
             Id = id;
             Value = value;
         }
+        public TranslationListEntry() { }
     }
 
-    public class TranslationList : System.Collections.IEnumerable
+    [XmlRoot("Translations")]
+    [XmlType(AnonymousType = false, IncludeInSchema = true, TypeName = "Translation")]
+    [Serializable]
+    public class TranslationList : IEnumerable<TranslationListEntry>
     {
-        private List<TranslationListEntry> translations = new List<TranslationListEntry>();
+        public TranslationList() { }
+        protected List<TranslationListEntry> translations = new List<TranslationListEntry>();
 
-        public IEnumerator GetEnumerator()
+        public IEnumerator<TranslationListEntry> GetEnumerator()
+        {
+            return translations.GetEnumerator();
+        }
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return translations.GetEnumerator();
         }
@@ -77,5 +87,6 @@ namespace Rocket.API.Collections
             }
             return value;
         }
+
     }
 }

@@ -8,6 +8,7 @@ using Rocket.Core.Misc;
 using Rocket.Core.Assets;
 using Rocket.API.Extensions;
 using Rocket.Core.Serialization;
+using Rocket.API.Collections;
 
 namespace Rocket.Core
 {
@@ -17,9 +18,15 @@ namespace Rocket.Core
         public static IRocketImplementation Implementation;
 
         public static XMLFileAsset<RocketSettings> Settings;
-        public static XMLFileAsset<RocketTranslations> Translation;
+        public static XMLFileAsset<TranslationList> Translation;
         public static RocketPermissionsManager Permissions;
         public static RocketPluginManager Plugins;
+
+        private static readonly TranslationList defaultTranslations = new TranslationList(){
+                {"rocket_join_public","{0} connected to the server" },
+                {"rocket_leave_public","{0} disconnected from the server"},
+                {"rocket_restart_warning_public","This server will be restarted in 30 seconds"}
+        };
 
         private void Awake()
         {
@@ -27,7 +34,7 @@ namespace Rocket.Core
             Implementation = (IRocketImplementation)GetComponent(typeof(IRocketImplementation));
 
             Settings = new XMLFileAsset<RocketSettings>(Environment.SettingsFile);
-            Translation = new XMLFileAsset<RocketTranslations>(String.Format(Environment.TranslationFile, Settings.Instance.LanguageCode));
+            Translation = new XMLFileAsset<TranslationList>(String.Format(Environment.TranslationFile, Settings.Instance.LanguageCode), new Type[]{ typeof(TranslationList), typeof(TranslationListEntry) }, defaultTranslations);
             Permissions = gameObject.TryAddComponent<RocketPermissionsManager>();
             Plugins = gameObject.TryAddComponent<RocketPluginManager>();
         }

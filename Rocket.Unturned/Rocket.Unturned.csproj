@@ -103,7 +103,6 @@
     <Compile Include="Player\UnturnedPlayerFeatures.cs" />
     <Compile Include="Plugins\PluginUnturnedPlayerComponentManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialisation\UnturnedTranslations.cs" />
     <Compile Include="Serialisation\UnturnedSettings.cs" />
     <Compile Include="Items\Items.cs" />
   </ItemGroup>

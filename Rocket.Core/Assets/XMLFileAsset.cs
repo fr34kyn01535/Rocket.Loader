@@ -9,14 +9,13 @@ namespace Rocket.Core.Assets
     {
         private XmlSerializer serializer;
         private string file;
+        T defaultInstance;
 
-        public XMLFileAsset(string file, XmlRootAttribute attr = null)
+        public XMLFileAsset(string file, Type[] extraTypes = null, T defaultInstance = null)
         {
-            if (attr != null)
-                serializer = new XmlSerializer(typeof(T), attr);
-            else
-                serializer = new XmlSerializer(typeof(T));
+            serializer = new XmlSerializer(typeof(T), extraTypes);
             this.file = file;
+            this.defaultInstance = defaultInstance;
             Load();
         }
 
@@ -30,7 +29,14 @@ namespace Rocket.Core.Assets
                 {
                     if(instance == null)
                     {
-                        instance = Activator.CreateInstance<T>();
+                        if (defaultInstance == null)
+                        {
+                            instance = Activator.CreateInstance<T>();
+                        }
+                        else
+                        {
+                            instance = defaultInstance;
+                        }
                     }
                     this.instance = instance;
                     serializer.Serialize(writer,instance);

@@ -15,7 +15,6 @@ namespace Rocket.Core.RCON
         private static List<RCONConnection> clients = new List<RCONConnection>();
         private TcpListener listener;
         private bool exiting = false;
-        internal static RCONServer Instance;
         private Thread waitingThread;
 
         public void Awake()

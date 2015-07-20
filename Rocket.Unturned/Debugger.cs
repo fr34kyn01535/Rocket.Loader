@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace Rocket.Unturned
@@ -10,6 +11,12 @@ namespace Rocket.Unturned
 
         public void Awake()
         {
+            if(Process.GetProcessesByName("devenv").Length == 0)
+            {
+                U.Initialize();
+                Destroy(this);
+                return;
+            }
             DontDestroyOnLoad(gameObject);
             maxPlayers = SDG.Unturned.Steam.MaxPlayers;
             SDG.Unturned.Steam.MaxPlayers = 0;

@@ -15,9 +15,6 @@ namespace Rocket.Core.Plugins
         private IAsset<TConfiguration> configuration;
         public IAsset<TConfiguration> Configuration { get { return configuration; } }
 
-        private string homeDirectory;
-        public string HomeDirectory { get { return HomeDirectory; } }
-
         internal override void LoadPlugin()
         {
             if (Core.R.Settings.Instance.WebConfigurations.Enabled)
@@ -41,7 +38,7 @@ namespace Rocket.Core.Plugins
         public delegate void PluginLoading(IRocketPlugin plugin, ref bool cancelLoading);
         public static event PluginLoading OnPluginLoading;
 
-        private IAsset<TranslationList> translations;
+        private XMLFileAsset<TranslationList> translations;
         public IAsset<TranslationList> Translations { get { return translations; } }
 
         private PluginState state = PluginState.Unloaded;
@@ -61,6 +58,14 @@ namespace Rocket.Core.Plugins
             }
         }
 
+        public TranslationList DefaultTranslations
+        {
+            get
+            {
+                return new TranslationList();
+            }
+        }
+
         public void ForceLoad()
         {
             LoadPlugin();
@@ -74,7 +79,7 @@ namespace Rocket.Core.Plugins
         internal virtual void LoadPlugin()
         {
             DontDestroyOnLoad(transform.gameObject);
-
+            translations = new XMLFileAsset<TranslationList>(String.Format(Environment.PluginTranslationFileTemplate,Name,R.Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, DefaultTranslations);
             try
             {
                 Load();

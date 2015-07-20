@@ -1,7 +1,6 @@
 ﻿using Rocket.Core.Extensions;
 using Rocket.Core.Logging;
 using Rocket.Unturned.Commands;
-using Rocket.Core.Logging;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using Steamworks;

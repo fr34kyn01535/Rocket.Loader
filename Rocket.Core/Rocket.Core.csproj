@@ -82,7 +82,6 @@
     <Compile Include="Serialisation\RocketPermissionsGroup.cs" />
     <Compile Include="Serialisation\RocketPermissions.cs" />
     <Compile Include="Serialisation\RocketSettings.cs" />
-    <Compile Include="Serialisation\RocketTranslations.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rocket.API\Rocket.API.csproj">
