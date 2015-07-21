@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Rocket.Core.Plugins
 {
-    public class RocketPlugin<TConfiguration> : RocketPlugin, IRocketPlugin<TConfiguration> where TConfiguration : class
+    public class RocketPlugin<TConfiguration> : RocketPlugin, IRocketPlugin<TConfiguration> where TConfiguration : class, IRocketPluginConfiguration
     {
         private IAsset<TConfiguration> configuration;
         public IAsset<TConfiguration> Configuration { get { return configuration; } }

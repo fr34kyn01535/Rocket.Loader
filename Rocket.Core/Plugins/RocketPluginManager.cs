@@ -4,10 +4,8 @@ using Rocket.Core.Misc;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using Rocket.API.Extensions;
 using Rocket.Core.Extensions;
 
 namespace Rocket.Core.Plugins
