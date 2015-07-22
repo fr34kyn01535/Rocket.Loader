@@ -52,7 +52,8 @@ namespace Rocket.Unturned.Effects
                      effect.Trigger((UnturnedPlayer)player);
                  }
              };
-            UnturnedPlayerEvents.OnPlayerDeath += (UnturnedPlayer player, EDeathCause cause, ELimb limb, CSteamID murderer) => {
+            UnturnedPlayerEvents.OnPlayerDeath += (UnturnedPlayer player, EDeathCause cause, ELimb limb, CSteamID murderer) => 
+            {
                 foreach (UnturnedEffect effect in GetEffectsByType(dieEffect))
                 {
                     effect.Trigger(player);
