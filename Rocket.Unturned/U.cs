@@ -123,7 +123,7 @@ namespace Rocket.Unturned
 
             Steam.OnServerHosted += () =>
             {
-#if DEBUG
+#if DEBUG && !LINUX
                 rocketGameObject.TryAddComponent<Debugger>();
 
 #else
