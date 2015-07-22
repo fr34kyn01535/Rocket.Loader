@@ -60,6 +60,14 @@ namespace Rocket.Unturned.Player
             }
         }
 
+        public float Ping
+        {
+            get
+            {
+                return player.SteamChannel.SteamPlayer.ping;
+            }
+        }
+
         public bool Equals(UnturnedPlayer p)
         {
             if ((object)p == null)
