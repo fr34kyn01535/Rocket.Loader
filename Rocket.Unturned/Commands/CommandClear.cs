@@ -3,6 +3,7 @@ using Rocket.Unturned.Player;
 using System.Collections.Generic;
 using Rocket.API;
 using System;
+using Rocket.Unturned.Chat;
 
 namespace Rocket.Unturned.Commands
 {
@@ -57,7 +58,7 @@ namespace Rocket.Unturned.Commands
                     }
                 }
             }
-            RocketChat.Say(caller, U.Translate("command_clear_success", itemCount));
+            UnturnedChat.Say(caller, U.Translate("command_clear_success", itemCount));
         }
     }
 }

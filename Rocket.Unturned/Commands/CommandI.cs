@@ -4,6 +4,8 @@ using SDG.Unturned;
 using System;
 using System.Collections.Generic;
 using Rocket.API;
+using Rocket.Unturned.Chat;
+using Rocket.Unturned.Items;
 
 namespace Rocket.Unturned.Commands
 {
@@ -44,7 +46,7 @@ namespace Rocket.Unturned.Commands
             UnturnedPlayer player = (UnturnedPlayer)caller;
             if (command.Length == 0 || command.Length > 2)
             {
-                RocketChat.Say(player, U.Translate("command_generic_invalid_parameter"));
+                UnturnedChat.Say(player, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
@@ -59,7 +61,7 @@ namespace Rocket.Unturned.Commands
                 if (asset != null) id = asset.Id;
                 if (String.IsNullOrEmpty(itemString.Trim()) || id == 0)
                 {
-                    RocketChat.Say(player, U.Translate("command_generic_invalid_parameter"));
+                    UnturnedChat.Say(player, U.Translate("command_generic_invalid_parameter"));
                     return;
                 }
             }
@@ -69,18 +71,18 @@ namespace Rocket.Unturned.Commands
 
             if (command.Length == 2 && !byte.TryParse(command[1].ToString(), out amount))
             {
-                RocketChat.Say(player, U.Translate("command_generic_invalid_parameter"));
+                UnturnedChat.Say(player, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
             if (player.GiveItem(id, amount))
             {
                 Logger.Log(U.Translate("command_i_giving_console", player.DisplayName, id, amount));
-                RocketChat.Say(player, U.Translate("command_i_giving_private", amount, assetName, id));
+                UnturnedChat.Say(player, U.Translate("command_i_giving_private", amount, assetName, id));
             }
             else
             {
-                RocketChat.Say(player, U.Translate("command_i_giving_failed_private", amount, assetName, id));
+                UnturnedChat.Say(player, U.Translate("command_i_giving_failed_private", amount, assetName, id));
             }
         }
     }

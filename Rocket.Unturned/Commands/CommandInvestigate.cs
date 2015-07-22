@@ -2,6 +2,7 @@
 using System;
 using Rocket.API;
 using System.Collections.Generic;
+using Rocket.Unturned.Chat;
 
 namespace Rocket.Unturned.Commands
 {
@@ -41,18 +42,18 @@ namespace Rocket.Unturned.Commands
         {
             if (command.Length!=1)
             {
-                RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
+                UnturnedChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
             SteamPlayer otherPlayer = PlayerTool.getSteamPlayer(command[0]);
             if (otherPlayer != null && (caller == null || otherPlayer.SteamPlayerID.CSteamID.ToString() != caller.ToString()))
             {
-                RocketChat.Say(caller, U.Translate("command_investigate_private", otherPlayer.SteamPlayerID.CharacterName, otherPlayer.SteamPlayerID.CSteamID.ToString()));
+                UnturnedChat.Say(caller, U.Translate("command_investigate_private", otherPlayer.SteamPlayerID.CharacterName, otherPlayer.SteamPlayerID.CSteamID.ToString()));
             }
             else
             {
-                RocketChat.Say(caller, U.Translate("command_generic_failed_find_player"));
+                UnturnedChat.Say(caller, U.Translate("command_generic_failed_find_player"));
             }
         }
     }

@@ -5,6 +5,7 @@ using Rocket.Core.Logging;
 using Rocket.Unturned.Player;
 using System.Collections.Generic;
 using Rocket.API;
+using Rocket.Unturned.Chat;
 
 namespace Rocket.Unturned.Commands
 {
@@ -45,13 +46,13 @@ namespace Rocket.Unturned.Commands
             UnturnedPlayer player = (UnturnedPlayer)caller;
             if (command.Length != 1 && command.Length != 3)
             {
-                RocketChat.Say(player, U.Translate("command_generic_invalid_parameter"));
+                UnturnedChat.Say(player, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
             if (player.Stance == EPlayerStance.DRIVING || player.Stance == EPlayerStance.SITTING)
             {
-                RocketChat.Say(player, U.Translate("command_generic_teleport_while_driving_error"));
+                UnturnedChat.Say(player, U.Translate("command_generic_teleport_while_driving_error"));
                 return;
             }
 
@@ -69,7 +70,7 @@ namespace Rocket.Unturned.Commands
             {
                 player.Teleport(new Vector3((float)x, (float)y, (float)z), MeasurementTool.angleToByte(player.Rotation));
                 Logger.Log(U.Translate("command_tp_teleport_console", player.CharacterName, (float)x + "," + (float)y + "," + (float)z));
-                RocketChat.Say(player, U.Translate("command_tp_teleport_private", (float)x + "," + (float)y + "," + (float)z));
+                UnturnedChat.Say(player, U.Translate("command_tp_teleport_private", (float)x + "," + (float)y + "," + (float)z));
             }
             else
             {
@@ -78,7 +79,7 @@ namespace Rocket.Unturned.Commands
                 {
                     player.Teleport(otherplayer);
                     Logger.Log(U.Translate("command_tp_teleport_console", player.CharacterName, otherplayer.CharacterName));
-                    RocketChat.Say(player, U.Translate("command_tp_teleport_private", otherplayer.CharacterName));
+                    UnturnedChat.Say(player, U.Translate("command_tp_teleport_private", otherplayer.CharacterName));
                 }
                 else
                 {
@@ -88,11 +89,11 @@ namespace Rocket.Unturned.Commands
                         Vector3 c = item.Position + new Vector3(0f, 0.5f, 0f);
                         player.Teleport(c, MeasurementTool.angleToByte(player.Rotation));
                         Logger.Log(U.Translate("command_tp_teleport_console", player.CharacterName, ((NodeLocation)item).Name));
-                        RocketChat.Say(player, U.Translate("command_tp_teleport_private", ((NodeLocation)item).Name));
+                        UnturnedChat.Say(player, U.Translate("command_tp_teleport_private", ((NodeLocation)item).Name));
                     }
                     else
                     {
-                        RocketChat.Say(player, U.Translate("command_tp_failed_find_destination"));
+                        UnturnedChat.Say(player, U.Translate("command_tp_failed_find_destination"));
                     }
                 }
             }

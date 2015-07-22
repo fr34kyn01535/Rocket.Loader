@@ -78,7 +78,7 @@ namespace Rocket.Core.Plugins
 
         internal virtual void LoadPlugin()
         {
-            DontDestroyOnLoad(transform.gameObject);
+            Console.WriteLine("Loading "+Name);
             translations = new XMLFileAsset<TranslationList>(String.Format(Environment.PluginTranslationFileTemplate,Name,R.Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, DefaultTranslations);
             try
             {
@@ -129,6 +129,7 @@ namespace Rocket.Core.Plugins
 
         internal virtual void UnloadPlugin(PluginState state = PluginState.Unloaded)
         {
+            Console.WriteLine("Unloading " + Name);
             OnPluginUnloading.TryInvoke(this);
             Unload();
             this.state = state;

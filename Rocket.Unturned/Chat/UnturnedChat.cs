@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rocket.API;
 
-namespace Rocket.Unturned
+namespace Rocket.Unturned.Chat
 {
-    public sealed class RocketChat : MonoBehaviour
+    public sealed class UnturnedChat : MonoBehaviour
     {
         public void Awake()
         {

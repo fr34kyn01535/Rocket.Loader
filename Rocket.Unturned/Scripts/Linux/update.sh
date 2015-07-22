@@ -20,4 +20,4 @@ if [ ! -f "steamcmd.sh" ]; then
 	rm steamcmd_linux.tar.gz
 fi
 
-./steamcmd.sh +login $STEAM_USERNAME $STEAM_PASSWORD +force_install_dir ../unturned +app_update 304930 validate -beta preview -betapassword OPERATIONMAPLELEAF +exit
+./steamcmd.sh +login $STEAM_USERNAME $STEAM_PASSWORD +force_install_dir ../unturned +app_update 304930 validate +exit

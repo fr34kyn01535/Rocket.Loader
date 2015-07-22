@@ -30,6 +30,7 @@ namespace Rocket.Core
 
         private void Awake()
         {
+            Instance = this;
             Environment.Initialize();
             Implementation = (IRocketImplementation)GetComponent(typeof(IRocketImplementation));
 

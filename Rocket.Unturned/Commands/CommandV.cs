@@ -1,5 +1,6 @@
 ﻿using Rocket.API;
 using Rocket.Core.Logging;
+using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using System.Collections.Generic;
@@ -43,7 +44,7 @@ namespace Rocket.Unturned.Commands
             UnturnedPlayer player = (UnturnedPlayer)caller;
             if (command.Length != 1)
             {
-                RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
+                UnturnedChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
 
@@ -55,7 +56,7 @@ namespace Rocket.Unturned.Commands
 
                 if (itemString == null)
                 {
-                    RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
+                    UnturnedChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                     return;
                 }
 
@@ -76,11 +77,11 @@ namespace Rocket.Unturned.Commands
             if (VehicleTool.giveVehicle(player.Player, id.Value))
             {
                 Logger.Log(U.Translate("command_v_giving_console", player.CharacterName, id));
-                RocketChat.Say(caller, U.Translate("command_v_giving_private", assetName, id));
+                UnturnedChat.Say(caller, U.Translate("command_v_giving_private", assetName, id));
             }
             else
             {
-                RocketChat.Say(caller, U.Translate("command_v_giving_failed_private", assetName, id));
+                UnturnedChat.Say(caller, U.Translate("command_v_giving_failed_private", assetName, id));
             }
         }
     }

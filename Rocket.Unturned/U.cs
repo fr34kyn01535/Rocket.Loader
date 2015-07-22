@@ -1,15 +1,18 @@
 ﻿using Rocket.API;
 using Rocket.API.Collections;
 using Rocket.API.Extensions;
+using Rocket.Core;
 using Rocket.Core.Assets;
 using Rocket.Core.Logging;
 using Rocket.Core.Plugins;
+using Rocket.Unturned.Effects;
 using Rocket.Unturned.Events;
 using Rocket.Unturned.Plugins;
 using Rocket.Unturned.Serialisation;
 using SDG.Unturned;
 using Steamworks;
 using System;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -76,8 +79,10 @@ namespace Rocket.Unturned
                 { "command_compass_northeast","NE"},
                 { "command_compass_southwest","SW"},
                 { "command_compass_southeast","SE"},
-                { "command_rocket_plugins_loaded","Plugins loaded: {0}"},
-                { "command_rocket_plugins_unloaded","Plugins unloaded: {0}"},
+                { "command_rocket_plugins_loaded","Loaded: {0}"},
+                { "command_rocket_plugins_unloaded","Unloaded: {0}"},
+                { "command_rocket_plugins_failure","Failure: {0}"},
+                { "command_rocket_plugins_cancelled","Cancelled: {0}"},
                 { "command_rocket_reload_plugin","Reloading {0}"},
                 { "command_rocket_not_loaded","The plugin {0} is not loaded"},
                 { "command_rocket_unload_plugin","Unloading {0}"},
@@ -144,7 +149,7 @@ namespace Rocket.Unturned
             Settings = new XMLFileAsset<UnturnedSettings>(Environment.SettingsFile);
             Translations = new XMLFileAsset<TranslationList>(String.Format(Environment.TranslationFile, Core.R.Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) },defaultTranslations);
             Events = gameObject.TryAddComponent<UnturnedEvents>();
-            gameObject.TryAddComponent<EffectManager>();
+            gameObject.TryAddComponent<UnturnedEffectManager>();
 
             RocketPlugin.OnPluginLoading += (IRocketPlugin plugin, ref bool cancelLoading) =>
             {
@@ -167,6 +172,11 @@ namespace Rocket.Unturned
             };
 
             PluginCommandManager.RegisterFromAssembly(Assembly.GetExecutingAssembly());
+
+            R.Plugins.OnPluginsLoaded += () =>
+            {
+                SteamGameServer.SetKeyValue("rocketplugins", String.Join(",", RocketPluginManager.Plugins.Select(p => p.Name).ToArray()));
+            };
 
             SteamGameServer.SetKeyValue("rocket", Assembly.GetExecutingAssembly().GetName().Version.ToString());
             SteamGameServer.SetBotPlayerCount(1);

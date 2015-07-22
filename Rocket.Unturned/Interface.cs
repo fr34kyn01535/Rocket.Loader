@@ -1,4 +1,5 @@
-﻿using Rocket.Unturned.Events;
+﻿using Rocket.Unturned.Effects;
+using Rocket.Unturned.Events;
 using Rocket.Unturned.Permissions;
 using SDG.Unturned;
 using Steamworks;
@@ -57,7 +58,7 @@ namespace Rocket.Unturned
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static void RegisterRocketEffect(Bundle b, Data q, ushort k)
         {
-            EffectManager.RegisterRocketEffect(b, q, k);
+            UnturnedEffectManager.RegisterRocketEffect(b, q, k);
         }
 
         [Browsable(false)]

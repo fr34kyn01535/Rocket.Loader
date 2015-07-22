@@ -1,4 +1,5 @@
 ﻿using Rocket.API;
+using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using System.Collections.Generic;
 
@@ -61,7 +62,7 @@ namespace Rocket.Unturned.Commands
                         currentDirection = 270;
                         break;
                     default:
-                        RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
+                        UnturnedChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                         return;
                 }
                 player.Teleport(player.Position, currentDirection);
@@ -102,7 +103,7 @@ namespace Rocket.Unturned.Commands
                 directionName = U.Translate("command_compass_north");
             }
 
-            RocketChat.Say(caller, U.Translate("command_compass_facing_private", directionName));
+            UnturnedChat.Say(caller, U.Translate("command_compass_facing_private", directionName));
         }
     }
 }

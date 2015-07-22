@@ -2,6 +2,7 @@
 using Rocket.Unturned.Player;
 using System.Collections.Generic;
 using System;
+using Rocket.Unturned.Chat;
 
 namespace Rocket.Unturned.Commands
 {
@@ -46,7 +47,7 @@ namespace Rocket.Unturned.Commands
             ushort? id = command.GetUInt16Parameter(0);
             if (id == null)
             {
-                RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
+                UnturnedChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                 return;
             }
             player.TriggerEffect(id.Value);

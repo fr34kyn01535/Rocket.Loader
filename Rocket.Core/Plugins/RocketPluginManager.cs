@@ -34,6 +34,10 @@ namespace Rocket.Core.Plugins
                 }
                 return null;
             };
+        }
+
+        private void Start()
+        {
             loadPlugins();
         }
 

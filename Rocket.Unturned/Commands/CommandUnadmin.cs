@@ -1,5 +1,6 @@
 ﻿using Rocket.API;
 using Rocket.Core;
+using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using System.Collections.Generic;
 
@@ -44,13 +45,13 @@ namespace Rocket.Unturned.Commands
                 UnturnedPlayer player = command.GetUnturnedPlayerParameter(0);
                 if (player == null)
                 {
-                    RocketChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
+                    UnturnedChat.Say(caller, U.Translate("command_generic_invalid_parameter"));
                     return;
                 }
 
                 if (player.IsAdmin)
                 {
-                    RocketChat.Say(caller, "Successfully unadmined " + player.CharacterName);
+                    UnturnedChat.Say(caller, "Successfully unadmined " + player.CharacterName);
                     player.Admin(false);
                 }
             }

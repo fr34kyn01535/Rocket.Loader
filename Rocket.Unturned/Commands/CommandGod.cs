@@ -3,6 +3,7 @@ using Rocket.Core.Logging;
 using System.Collections.Generic;
 using System;
 using Rocket.Unturned.Player;
+using Rocket.Unturned.Chat;
 
 namespace Rocket.Unturned.Commands
 {
@@ -47,13 +48,13 @@ namespace Rocket.Unturned.Commands
             if (player.Features.GodMode)
             {
                 Logger.Log(U.Translate("command_god_disable_console", player.CharacterName));
-                RocketChat.Say(caller, U.Translate("command_god_disable_private"));
+                UnturnedChat.Say(caller, U.Translate("command_god_disable_private"));
                 player.Features.GodMode = false;
             }
             else
             {
                 Logger.Log(U.Translate("command_god_enable_console", player.CharacterName));
-                RocketChat.Say(caller, U.Translate("command_god_enable_private"));
+                UnturnedChat.Say(caller, U.Translate("command_god_enable_private"));
                 player.Features.GodMode = true;
             }
         }

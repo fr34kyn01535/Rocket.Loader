@@ -2,6 +2,7 @@
 using Rocket.Unturned.Player;
 using System.Collections.Generic;
 using System;
+using Rocket.Unturned.Chat;
 
 namespace Rocket.Unturned.Commands
 {
@@ -51,7 +52,7 @@ namespace Rocket.Unturned.Commands
                 player.Infection = 0;
                 player.Hunger = 0;
                 player.Thirst = 0;
-                RocketChat.Say(player, U.Translate("command_heal_success"));
+                UnturnedChat.Say(player, U.Translate("command_heal_success"));
             }
             else
             {
@@ -64,14 +65,14 @@ namespace Rocket.Unturned.Commands
                     otherPlayer.Infection = 0;
                     otherPlayer.Hunger = 0;
                     otherPlayer.Thirst = 0;
-                    RocketChat.Say(caller, U.Translate("command_heal_success_me", otherPlayer.CharacterName));
+                    UnturnedChat.Say(caller, U.Translate("command_heal_success_me", otherPlayer.CharacterName));
                     
                     if(caller != null)
-                        RocketChat.Say(otherPlayer, U.Translate("command_heal_success_other", caller.DisplayName));
+                        UnturnedChat.Say(otherPlayer, U.Translate("command_heal_success_other", caller.DisplayName));
                 }
                 else
                 {
-                    RocketChat.Say(caller, U.Translate("command_generic_target_player_not_found"));
+                    UnturnedChat.Say(caller, U.Translate("command_generic_target_player_not_found"));
                 }
             }
         }

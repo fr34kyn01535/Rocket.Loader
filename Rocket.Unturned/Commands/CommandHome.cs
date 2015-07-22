@@ -1,4 +1,5 @@
 ﻿using Rocket.API;
+using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using System.Collections.Generic;
@@ -45,13 +46,13 @@ namespace Rocket.Unturned.Commands
             byte rot;
             if (!BarricadeManager.tryGetBed(player.CSteamID, out pos, out rot))
             {
-                RocketChat.Say(caller, U.Translate("command_bed_no_bed_found_private"));
+                UnturnedChat.Say(caller, U.Translate("command_bed_no_bed_found_private"));
             }
             else
             {
                 if (player.Stance == EPlayerStance.DRIVING || player.Stance == EPlayerStance.SITTING)
                 {
-                    RocketChat.Say(caller, U.Translate("command_generic_teleport_while_driving_error"));
+                    UnturnedChat.Say(caller, U.Translate("command_generic_teleport_while_driving_error"));
                 }
                 else
                 {

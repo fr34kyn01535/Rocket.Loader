@@ -63,7 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chat\RocketChat.cs" />
+    <Compile Include="Chat\UnturnedChat.cs" />
     <Compile Include="Commands\CommandAdmin.cs" />
     <Compile Include="Commands\CommandBroadcast.cs" />
     <Compile Include="Commands\CommandClear.cs" />
@@ -86,7 +86,7 @@
     <Compile Include="Commands\UnturnedAliasBase.cs" />
     <Compile Include="Commands\UnturnedCommandBase.cs" />
     <Compile Include="Debugger.cs" />
-    <Compile Include="Effects\RocketEffectManager.cs" />
+    <Compile Include="Effects\UnturnedEffectManager.cs" />
     <Compile Include="Enumerations\InventoryGroup.cs" />
     <Compile Include="Events\UnturnedPlayerEvents.cs" />
     <Compile Include="Events\UnturnedEvents.cs" />
@@ -104,7 +104,7 @@
     <Compile Include="Plugins\PluginUnturnedPlayerComponentManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialisation\UnturnedSettings.cs" />
-    <Compile Include="Items\Items.cs" />
+    <Compile Include="Items\UnturnedItems.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rocket.API\Rocket.API.csproj">

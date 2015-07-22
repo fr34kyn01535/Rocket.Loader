@@ -121,7 +121,7 @@ namespace Rocket.Core.Misc
         public static List<Assembly> LoadAssembliesFromDirectory(string directory, string extension = "*.dll")
         {
             List<Assembly> assemblies = new List<Assembly>();
-            IEnumerable<FileInfo> pluginsLibraries = new DirectoryInfo(directory).GetFiles(extension, SearchOption.TopDirectoryOnly).Where(f => f.Extension == extension);
+            IEnumerable<FileInfo> pluginsLibraries = new DirectoryInfo(directory).GetFiles(extension, SearchOption.TopDirectoryOnly);
 
             foreach (FileInfo library in pluginsLibraries)
             {

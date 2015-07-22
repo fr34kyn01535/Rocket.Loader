@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using SDG.Unturned;
 
-
-namespace Rocket.Unturned
+namespace Rocket.Unturned.Items
 {
     public class Attachment{
         public ushort AttachmentId = 0;
