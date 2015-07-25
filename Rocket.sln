@@ -15,13 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Unturned", "Rocket.U
 		{C362DF2F-1336-4932-AADC-4F2074FEDB64} = {C362DF2F-1336-4932-AADC-4F2074FEDB64}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{74BDC6CC-BAF0-4205-83F7-4244A41EA255}"
-	ProjectSection(SolutionItems) = preProject
-		lib\Assembly-CSharp-firstpass.dll = lib\Assembly-CSharp-firstpass.dll
-		lib\Assembly-CSharp.dll = lib\Assembly-CSharp.dll
-		lib\UnityEngine.dll = lib\UnityEngine.dll
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Loader.Unturned", "Rocket.Loader.Unturned\Rocket.Loader.Unturned.csproj", "{5FF8D3F2-F404-4154-83A8-698229515863}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Unturned.RocketLauncher", "Rocket.Unturned.RocketLauncher\Rocket.Unturned.RocketLauncher.csproj", "{0F68CF17-C7C9-41BF-8F76-4DAF1D5146B4}"
