@@ -35,7 +35,7 @@
     <DocumentationFile>bin\RocketAPI.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
-    <OutputPath>..\..\..\..\Desktop\Unturned\Unturned_Data\Managed</OutputPath>
+    <OutputPath>$(UNTURNED_HOME)\Unturned_Data\Managed\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <DebugType>full</DebugType>
     <WarningLevel>4</WarningLevel>
@@ -80,7 +80,8 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Local (
+    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)Rocket.Unturned\lib\
+if $(ConfigurationName) == Local (
 $(SolutionDir)dev\pdb2mdb.exe $(TargetPath)
 )</PostBuildEvent>
   </PropertyGroup>

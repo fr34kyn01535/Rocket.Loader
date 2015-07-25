@@ -12,10 +12,11 @@ namespace Rocket.Unturned.Plugins
 {
     public sealed class PluginCommandManager : MonoBehaviour
     {
-        private Assembly assembly = Assembly.GetExecutingAssembly();
-
+        private Assembly assembly;
         private void OnEnable()
         {
+            IRocketPlugin plugin = GetComponent<IRocketPlugin>();
+            assembly = plugin.GetType().Assembly;
             RegisterFromAssembly(assembly);
         }
 

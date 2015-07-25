@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using System.Linq;
 using Rocket.Core.Extensions;
 
 namespace Rocket.Core.Plugins
@@ -16,8 +17,8 @@ namespace Rocket.Core.Plugins
         public event PluginsLoaded OnPluginsLoaded;
 
         private static List<Assembly> pluginAssemblies;
-        private static List<IRocketPlugin> plugins = new List<IRocketPlugin>();
-        public static List<IRocketPlugin> Plugins { get { return plugins; } }
+        private static List<GameObject> plugins = new List<GameObject>();
+        public static List<IRocketPlugin> Plugins { get { return plugins.Select(g => g.GetComponent<IRocketPlugin>()).Where(p => p != null).ToList<IRocketPlugin>(); } }
         private Dictionary<string, string> libraries = new Dictionary<string, string>();
 
         private void Awake() {
@@ -46,9 +47,11 @@ namespace Rocket.Core.Plugins
             libraries = RocketHelper.GetAssembliesFromDirectory(Environment.LibrariesDirectory);
             pluginAssemblies = RocketHelper.LoadAssembliesFromDirectory(Environment.PluginsDirectory);
             List<Type> pluginImplemenations = RocketHelper.GetTypesFromInterface(pluginAssemblies, "IRocketPlugin");
-            foreach (Type plugin in pluginImplemenations)
+            foreach (Type pluginType in pluginImplemenations)
             {
-                plugins.Add((IRocketPlugin)R.Instance.gameObject.AddComponent(plugin));
+                GameObject plugin = new GameObject(pluginType.Name, pluginType);
+                DontDestroyOnLoad(plugin);
+                plugins.Add(plugin);
             }
             OnPluginsLoaded.TryInvoke();
         }
@@ -56,7 +59,7 @@ namespace Rocket.Core.Plugins
         private void unloadPlugins() {
             for(int i = plugins.Count; i > 0; i--)
             {
-                Destroy((Component)plugins[i]);
+                Destroy(plugins[i]);
             }
             plugins.Clear();
         }

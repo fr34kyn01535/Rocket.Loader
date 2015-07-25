@@ -105,7 +105,7 @@ namespace Rocket.Core.Misc
         public static Dictionary<string, string> GetAssembliesFromDirectory(string directory, string extension = "*.dll")
         {
             Dictionary<string, string> l = new Dictionary<string, string>();
-            IEnumerable<FileInfo> libraries = new DirectoryInfo(directory).GetFiles(extension, SearchOption.AllDirectories).Where(f => f.Extension == extension);
+            IEnumerable<FileInfo> libraries = new DirectoryInfo(directory).GetFiles(extension, SearchOption.AllDirectories);
             foreach (FileInfo library in libraries)
             {
                 try

@@ -31,7 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
-    <OutputPath>..\..\..\..\Desktop\Unturned\Unturned_Data\Managed\</OutputPath>
+    <OutputPath>$(UNTURNED_HOME)\Unturned_Data\Managed\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>True</Optimize>
     <DebugType>full</DebugType>
@@ -85,14 +85,14 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rocket.API\Rocket.API.csproj">
-      <Project>{C362DF2F-1336-4932-AADC-4F2074FEDB64}</Project>
+      <Project>{c362df2f-1336-4932-aadc-4f2074fedb64}</Project>
       <Name>Rocket.API</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Local (
+    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)Rocket.Unturned\lib\
+if $(ConfigurationName) == Local (
 $(SolutionDir)dev\pdb2mdb.exe $(TargetPath)
 )</PostBuildEvent>
   </PropertyGroup>

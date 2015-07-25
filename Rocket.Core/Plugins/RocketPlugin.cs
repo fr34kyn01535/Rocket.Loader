@@ -58,7 +58,7 @@ namespace Rocket.Core.Plugins
             }
         }
 
-        public TranslationList DefaultTranslations
+        public virtual TranslationList DefaultTranslations
         {
             get
             {

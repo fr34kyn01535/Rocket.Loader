@@ -1,12 +1,10 @@
 ﻿using SDG.Unturned;
 using Steamworks;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Rocket.Unturned.Events;
 using Rocket.API;
-using Rocket.Core;
 
 namespace Rocket.Unturned.Player
 {
