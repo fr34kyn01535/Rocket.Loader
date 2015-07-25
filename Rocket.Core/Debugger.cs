@@ -1,23 +1,22 @@
 ﻿using System;
-using System.Diagnostics;
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using HWND = System.IntPtr;
 using System.Text;
 
-namespace Rocket.Unturned
+#if !LINUX
+namespace Rocket.Core
 {
     public class Debugger : MonoBehaviour
     {
 
-        public static IDictionary<HWND, string> GetOpenWindows()
+        public static IDictionary<IntPtr, string> GetOpenWindows()
         {
-            HWND shellWindow = GetShellWindow();
-            Dictionary<HWND, string> windows = new Dictionary<HWND, string>();
+            IntPtr shellWindow = GetShellWindow();
+            Dictionary<IntPtr, string> windows = new Dictionary<IntPtr, string>();
 
-            EnumWindows(delegate (HWND hWnd, int lParam)
+            EnumWindows(delegate (IntPtr hWnd, int lParam)
             {
                 if (hWnd == shellWindow) return true;
                 if (!IsWindowVisible(hWnd)) return true;
@@ -36,36 +35,33 @@ namespace Rocket.Unturned
             return windows;
         }
 
-        private delegate bool EnumWindowsProc(HWND hWnd, int lParam);
+        private delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
 
         [DllImport("USER32.DLL")]
         private static extern bool EnumWindows(EnumWindowsProc enumFunc, int lParam);
 
         [DllImport("USER32.DLL")]
-        private static extern int GetWindowText(HWND hWnd, StringBuilder lpString, int nMaxCount);
+        private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
         [DllImport("USER32.DLL")]
-        private static extern int GetWindowTextLength(HWND hWnd);
+        private static extern int GetWindowTextLength(IntPtr hWnd);
 
         [DllImport("USER32.DLL")]
-        private static extern bool IsWindowVisible(HWND hWnd);
+        private static extern bool IsWindowVisible(IntPtr hWnd);
 
         [DllImport("USER32.DLL")]
         private static extern IntPtr GetShellWindow();
 
         private DateTime lastUpdate = DateTime.Now;
-        private byte maxPlayers;
 
         public void Awake()
         {
             if (GetOpenWindows().Where(k => k.Value == "Select Unity Instance").Count() == 0)
             {
-                U.Initialize();
+                R.Instance.Initialize();
                 Destroy(this);
                 return;
             }
-            maxPlayers = SDG.Unturned.Steam.MaxPlayers;
-            SDG.Unturned.Steam.MaxPlayers = 0;
             Console.Write("Waiting for debugger...");
         }
 
@@ -80,10 +76,10 @@ namespace Rocket.Unturned
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 Console.WriteLine("\nDebugger found, continuing...");
-                SDG.Unturned.Steam.MaxPlayers = maxPlayers;
-                U.Initialize();
+                R.Instance.Initialize();
                 Destroy(this);
             }
         }
     }
 }
+#endif

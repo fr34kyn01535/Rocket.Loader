@@ -9,11 +9,15 @@ using Rocket.Core.Assets;
 using Rocket.API.Extensions;
 using Rocket.Core.Serialization;
 using Rocket.API.Collections;
+using Rocket.Core.Extensions;
 
 namespace Rocket.Core
 {
     public class R : MonoBehaviour
     {
+        public delegate void RockedInitialized();
+        public static event RockedInitialized OnRockedInitialized;
+
         public static R Instance;
         public static IRocketImplementation Implementation;
 
@@ -32,18 +36,27 @@ namespace Rocket.Core
         {
             Instance = this;
             Environment.Initialize();
-            Implementation = (IRocketImplementation)GetComponent(typeof(IRocketImplementation));
 
-            Settings = new XMLFileAsset<RocketSettings>(Environment.SettingsFile);
-            Translation = new XMLFileAsset<TranslationList>(String.Format(Environment.TranslationFile, Settings.Instance.LanguageCode), new Type[]{ typeof(TranslationList), typeof(TranslationListEntry) }, defaultTranslations);
-            Permissions = gameObject.TryAddComponent<RocketPermissionsManager>();
-            Plugins = gameObject.TryAddComponent<RocketPluginManager>();
+            #if DEBUG
+                gameObject.TryAddComponent<Debugger>();
+            #else
+                Initialize();
+            #endif
         }
 
-        private void Start()
+        internal void Initialize()
         {
-            gameObject.TryAddComponent<AutomaticShutdownWatchdog>();
-            gameObject.TryAddComponent<RCONServer>();
+            Implementation.OnRocketImplementationInitialized += () => {
+                gameObject.TryAddComponent<AutomaticShutdownWatchdog>();
+                gameObject.TryAddComponent<RCONServer>();
+            };
+
+            Implementation = (IRocketImplementation)GetComponent(typeof(IRocketImplementation));
+            Settings = new XMLFileAsset<RocketSettings>(Environment.SettingsFile);
+            Translation = new XMLFileAsset<TranslationList>(String.Format(Environment.TranslationFile, Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, defaultTranslations);
+            Permissions = gameObject.TryAddComponent<RocketPermissionsManager>();
+            Plugins = gameObject.TryAddComponent<RocketPluginManager>();
+            OnRockedInitialized.TryInvoke();
         }
 
         public static void Reload()
