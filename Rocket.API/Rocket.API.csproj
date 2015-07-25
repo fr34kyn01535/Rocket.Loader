@@ -68,11 +68,6 @@
     <Compile Include="IRocketPluginConfiguration.cs" />
     <Compile Include="IRocketPlayer.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="LICENSE">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
