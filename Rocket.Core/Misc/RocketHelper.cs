@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rocket.Core.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -126,7 +127,14 @@ namespace Rocket.Core.Misc
             foreach (FileInfo library in pluginsLibraries)
             {
                 Assembly assembly = Assembly.Load(File.ReadAllBytes(library.FullName));
-                assemblies.Add(assembly);
+
+                if (GetTypesFromInterface(assembly, "IRocketPlugin").Count == 1){
+                    assemblies.Add(assembly);
+                }
+                else
+                {
+                    Logger.LogError("Invalid plugin assembly: "+assembly.GetName().Name);
+                }
             }
             return assemblies;
         }
