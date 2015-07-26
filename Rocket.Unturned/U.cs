@@ -173,7 +173,7 @@ namespace Rocket.Unturned
 
             R.Plugins.OnPluginsLoaded += () =>
             {
-                SteamGameServer.SetKeyValue("rocketplugins", String.Join(",", RocketPluginManager.Plugins.Select(p => p.Name).ToArray()));
+                SteamGameServer.SetKeyValue("rocketplugins", String.Join(",", R.Plugins.GetPlugins().Select(p => p.Name).ToArray()));
             };
 
             SteamGameServer.SetKeyValue("rocket", Assembly.GetExecutingAssembly().GetName().Version.ToString());

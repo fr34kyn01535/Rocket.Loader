@@ -18,8 +18,13 @@ namespace Rocket.Core.Plugins
 
         private static List<Assembly> pluginAssemblies;
         private static List<GameObject> plugins = new List<GameObject>();
-        public static List<IRocketPlugin> Plugins { get { return plugins.Select(g => g.GetComponent<IRocketPlugin>()).Where(p => p != null).ToList<IRocketPlugin>(); } }
+        internal static List<IRocketPlugin> Plugins { get { return plugins.Select(g => g.GetComponent<IRocketPlugin>()).Where(p => p != null).ToList<IRocketPlugin>(); } }
         private Dictionary<string, string> libraries = new Dictionary<string, string>();
+
+        public List<IRocketPlugin> GetPlugins()
+        {
+            return Plugins;
+        }
 
         private void Awake() {
             AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs args)
@@ -59,7 +64,7 @@ namespace Rocket.Core.Plugins
         private void unloadPlugins() {
             for(int i = plugins.Count; i > 0; i--)
             {
-                Destroy(plugins[i]);
+                Destroy(plugins[i-1]);
             }
             plugins.Clear();
         }
