@@ -110,7 +110,7 @@ namespace Rocket.Unturned
         }
 
 #if LINUX
-        public UnturnedConsole Console;
+        public static UnturnedConsole Console;
 #endif
 
         internal static void Splash()
@@ -118,7 +118,7 @@ namespace Rocket.Unturned
             rocketGameObject = new GameObject("Rocket");
             DontDestroyOnLoad(rocketGameObject);
 #if LINUX
-            Console = new GameObject().AddComponent<UnturnedConsole>();
+            Console = rocketGameObject.AddComponent<UnturnedConsole>();
 #endif
             System.Console.Clear();
             System.Console.ForegroundColor = ConsoleColor.Cyan;
