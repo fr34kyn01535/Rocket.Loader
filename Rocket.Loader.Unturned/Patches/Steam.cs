@@ -40,16 +40,16 @@ namespace Rocket.RocketLoader.Unturned.Patches
             log.Name = "Log";
             log.IsPublic = true;
 
-            MethodDefinition externalLog = RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.Logging.Logger").Methods.AsEnumerable().Where(m => m.Name == "ExternalLog").FirstOrDefault();
+            MethodDefinition externalLog = GetInterfaceMethod("ExternalLog");
 
             log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(externalLog)));
             log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_1));
             log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_0));
 #endif
-             
+
 
             //CheckValid
-            MethodDefinition checkValid = RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.Permissions.RocketPermissions").Methods.AsEnumerable().Where(m => m.Name == "CheckValid").FirstOrDefault();
+            MethodDefinition checkValid = GetInterfaceMethod("CheckValid");
             MethodDefinition check = Type.Methods.AsEnumerable().Where(m => m.Parameters.Count == 1 && m.Parameters[0].ParameterType.Name == "ValidateAuthTicketResponse_t").FirstOrDefault();
 
             FieldDefinition field = check.Parameters[0].ParameterType.Resolve().Fields.Where(f => f.FieldType.Name == "CSteamID").FirstOrDefault();

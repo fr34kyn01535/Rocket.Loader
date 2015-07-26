@@ -46,6 +46,11 @@ namespace Rocket.RocketLoader
             }
         }
 
+        public MethodDefinition GetInterfaceMethod(string name)
+        {
+            return RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.Interface").Methods.AsEnumerable().Where(m => m.Name == name).FirstOrDefault();
+        }
+
         public MethodDefinition GetMethod(string name)
         {
             return Type.Methods.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefault();

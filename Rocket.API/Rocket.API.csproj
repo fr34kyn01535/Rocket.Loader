@@ -35,11 +35,13 @@
     <DocumentationFile>bin\RocketAPI.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
-    <OutputPath>..\..\..\..\Desktop\Unturned\Unturned_Data\Managed</OutputPath>
+    <OutputPath>$(UNTURNED_HOME)\Unturned_Data\Managed\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
-    <DebugType>none</DebugType>
+    <DebugType>full</DebugType>
     <WarningLevel>4</WarningLevel>
     <Optimize>False</Optimize>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,21 +51,22 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\lib\UnityEngine.dll</HintPath>
+      <HintPath>..\Rocket.Unturned\lib\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Rocket.API\ImplementationSettings.cs" />
-    <Compile Include="Rocket.API\IRocketImplementation.cs" />
-    <Compile Include="Rocket.API\IRocketPlugin.cs" />
-    <Compile Include="Rocket.API\IRocketPluginConfiguration.cs" />
+    <Compile Include="Extensions\GameObjectExtension.cs" />
+    <Compile Include="IAsset.cs" />
+    <Compile Include="IRocketCommand.cs" />
+    <Compile Include="IRocketImplementationEvents.cs" />
+    <Compile Include="IRocketImplementation.cs" />
+    <Compile Include="ConsolePlayer.cs" />
+    <Compile Include="IRocketPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LICENSE">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Compile Include="Collections\TranslationList.cs" />
+    <Compile Include="IRocketPluginConfiguration.cs" />
+    <Compile Include="IRocketPlayer.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -72,8 +75,10 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)Rocket.Unturned\lib\
+if $(ConfigurationName) == Local (
+$(SolutionDir)dev\pdb2mdb.exe $(TargetPath)
+)</PostBuildEvent>
   </PropertyGroup>
   <Target Name="BeforeBuild">
   </Target>
