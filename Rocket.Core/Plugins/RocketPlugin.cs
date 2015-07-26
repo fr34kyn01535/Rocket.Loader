@@ -24,7 +24,7 @@ namespace Rocket.Core.Plugins
             }
             else
             {
-                configuration = new XMLFileAsset<TConfiguration>(string.Format(Core.Environment.PluginConfigurationFileTemplate, Name));
+                configuration = new XMLFileAsset<TConfiguration>(string.Format(Core.Environment.PluginConfigurationFileTemplate, Name,Name));
             }
             base.LoadPlugin();
         }
