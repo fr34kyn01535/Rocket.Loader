@@ -14,10 +14,10 @@ namespace Rocket.Core.Serialisation
         [XmlElement("DefaultGroupId")]
         public string DefaultGroupId = "default";
 
-        [XmlElement("Groups")]
-        [XmlArrayItem("Group")]
+        [XmlArray("Groups")]
+        [XmlArrayItem(ElementName = "Group")]
         public RocketPermissionsGroup[] Groups = new RocketPermissionsGroup[] {
-            new RocketPermissionsGroup("default","Guest",new List<string>(), null , new List<string>() { "p", "reward","balance","pay","rocket","color.white" }),
+            new RocketPermissionsGroup("default","Guest",new List<string>(), new List<string>() , new List<string>() { "p", "reward","balance","pay","rocket","color.white" }),
             new RocketPermissionsGroup("vip","VIP", new List<string>(),new List<string>() { "76561198016438091" }, new List<string>() { "color.FF9900" })
         };
     }

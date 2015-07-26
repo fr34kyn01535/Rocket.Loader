@@ -26,15 +26,15 @@ namespace Rocket.Core.Serialisation
         [XmlElement("DisplayName")]
         public string DisplayName;
 
-        [XmlElement("Members")]
+        [XmlArray("Members")]
         [XmlArrayItem(ElementName = "Member")]
         public List<string> Members;
 
-        [XmlElement("Commands")]
+        [XmlArray("Commands")]
         [XmlArrayItem(ElementName = "Command")]
         public List<string> Commands;
 
-        [XmlElement("ParentGroups")]
+        [XmlArray("ParentGroups")]
         [XmlArrayItem(ElementName = "ParentGroup")]
         public List<string> ParentGroups;
     }

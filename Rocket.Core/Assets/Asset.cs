@@ -23,11 +23,6 @@ namespace Rocket.Core.Assets
             }
         }
 
-        public void Reload(AssetLoaded<T> callback = null)
-        {
-            Unload((asset) => { asset.Load(callback, true); });
-        }
-
         public virtual T Save(T instance = null)
         {
             return instance;
@@ -35,12 +30,16 @@ namespace Rocket.Core.Assets
 
         public virtual void Load(AssetLoaded<T> callback = null, bool update = false)
         {
-
+            callback(this);
+        }
+        public virtual void Reload()
+        {
+            Load(null, true);
         }
 
         public virtual void Unload(AssetUnloaded<T> callback = null)
         {
-
+            callback(this);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rocket.Core.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -13,9 +14,6 @@ namespace Rocket.Core.Utils
 
         private static List<Action> actions = new List<Action>();
         private static List<DelayedQueueItem> delayed = new List<DelayedQueueItem>();
-
-        private static List<DelayedQueueItem> currentDelayed = new List<DelayedQueueItem>();
-        private static List<Action> currentActions = new List<Action>();
 
         public struct DelayedQueueItem
         {
@@ -63,8 +61,9 @@ namespace Rocket.Core.Utils
             {
                 ((Action)action)();
             }
-            catch
+            catch(Exception ex)
             {
+                Logger.LogException(ex,"Error while running action");
             }
             finally
             {
@@ -79,11 +78,11 @@ namespace Rocket.Core.Utils
 
         private void FixedUpdate()
         {
-            if (awake) return;
+            if (!awake) return;
 
+            List<Action> currentActions = new List<Action>();
             lock (actions)
             {
-                currentActions.Clear();
                 currentActions.AddRange(actions);
                 actions.Clear();
             }
@@ -91,17 +90,19 @@ namespace Rocket.Core.Utils
             {
                 a();
             }
+
+            List<DelayedQueueItem> currentDelayed = new List<DelayedQueueItem>();
             lock (delayed)
             {
-                currentDelayed.Clear();
                 currentDelayed.AddRange(delayed.Where(d => d.time <= Time.time));
                 foreach (var item in currentDelayed)
                     delayed.Remove(item);
             }
-            foreach (var delayed in currentDelayed)
+            foreach (DelayedQueueItem item in currentDelayed)
             {
-                delayed.action();
+                item.action();
             }
+
         }
     }
 }

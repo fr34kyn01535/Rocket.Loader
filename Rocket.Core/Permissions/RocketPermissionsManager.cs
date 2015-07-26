@@ -10,12 +10,13 @@ namespace Rocket.Core.Permissions
 {
     public sealed class RocketPermissionsManager : MonoBehaviour
     {
-        private Asset<RocketPermissions> permissions;
+        private Asset<RocketPermissions> permissions = null;
 
         private void Start()
         {
             if (R.Settings.Instance.WebPermissions.Enabled)
             {
+                lastWebPermissionsUpdate = DateTime.Now;
                 permissions = new WebXMLFileAsset<RocketPermissions>(R.Settings.Instance.WebPermissions.Url + "?instance=" + R.Implementation.InstanceId);
                 updateWebPermissions = true;
             }
@@ -23,18 +24,21 @@ namespace Rocket.Core.Permissions
             {
                 permissions = new XMLFileAsset<RocketPermissions>(Environment.PermissionFile);
             }
-            Reload();
         }
         
         private bool updateWebPermissions = false;
-        private DateTime lastWebPermissionsUpdate = DateTime.MinValue;
+        private DateTime lastWebPermissionsUpdate;
 
         private void FixedUpdate()
         {
             if (updateWebPermissions && R.Settings.Instance.WebPermissions.Interval > 0 && (DateTime.Now - lastWebPermissionsUpdate) > TimeSpan.FromSeconds(R.Settings.Instance.WebPermissions.Interval))
             {
+                lastWebPermissionsUpdate = DateTime.Now;
                 updateWebPermissions = false;
-                permissions.Reload(new AssetLoaded<RocketPermissions>((IAsset<RocketPermissions> asset)=> { updateWebPermissions = true; }));
+                permissions.Load((IAsset<RocketPermissions> asset)=> {
+                    updateWebPermissions = true;
+                    Console.WriteLine(asset.Instance.Groups.Length);
+                },true);
             }
         }
 

@@ -9,6 +9,8 @@ namespace Rocket.Core.Assets
     {
         private XmlSerializer serializer;
         private string url;
+        RocketWebClient webclient = new RocketWebClient();
+        private bool waiting = false;
 
         public WebXMLFileAsset(string url = null, XmlRootAttribute attr = null, AssetLoaded<T> callback = null)
         {
@@ -21,15 +23,14 @@ namespace Rocket.Core.Assets
         {
             try
             {
-                if (instance != null && !update)
+                if ((instance != null && !update) || waiting)
                 {
                     if (callback != null) { callback(this); }
                     return;
                 }
                 if (!String.IsNullOrEmpty(url))
                 {
-                    RocketWebClient webclient = new RocketWebClient();
-                    
+                    waiting = true;
                     webclient.DownloadStringCompleted += (object sender, System.Net.DownloadStringCompletedEventArgs e) =>
                     {
                         RocketDispatcher.QueueOnMainThread(() =>
@@ -41,6 +42,7 @@ namespace Rocket.Core.Assets
                                 if (callback != null)
                                     callback(this);
                             }
+                            waiting = false;
                         });
                     };
                     webclient.DownloadStringAsync(new Uri(url));
