@@ -118,7 +118,7 @@ namespace Rocket.Unturned
             rocketGameObject = new GameObject("Rocket");
             DontDestroyOnLoad(rocketGameObject);
 #if LINUX
-            Console = new GameObject().AddComponent<RocketConsole>();
+            Console = new GameObject().AddComponent<UnturnedConsole>();
 #endif
             System.Console.Clear();
             System.Console.ForegroundColor = ConsoleColor.Cyan;
