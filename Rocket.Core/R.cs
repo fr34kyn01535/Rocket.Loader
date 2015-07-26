@@ -4,7 +4,7 @@ using Rocket.Core.RCON;
 using Rocket.API;
 using Rocket.Core.Plugins;
 using Rocket.Core.Permissions;
-using Rocket.Core.Misc;
+using Rocket.Core.Utils;
 using Rocket.Core.Assets;
 using Rocket.API.Extensions;
 using Rocket.Core.Serialization;
@@ -49,11 +49,12 @@ namespace Rocket.Core
         internal void Initialize()
         {
             Implementation.OnRocketImplementationInitialized += () => {
+                gameObject.TryAddComponent<RocketDispatcher>();
                 gameObject.TryAddComponent<AutomaticShutdownWatchdog>();
                 gameObject.TryAddComponent<RCONServer>();
-            };
+            }; 
 
-            Settings = new XMLFileAsset<RocketSettings>(Environment.SettingsFile);
+             Settings = new XMLFileAsset<RocketSettings>(Environment.SettingsFile);
             Translation = new XMLFileAsset<TranslationList>(String.Format(Environment.TranslationFile, Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, defaultTranslations);
             Permissions = gameObject.TryAddComponent<RocketPermissionsManager>();
             Plugins = gameObject.TryAddComponent<RocketPluginManager>();

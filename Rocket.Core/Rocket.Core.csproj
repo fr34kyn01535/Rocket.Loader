@@ -73,10 +73,11 @@
     <Compile Include="Logging\AsyncLoggerQueue.cs" />
     <Compile Include="Logging\ELogType.cs" />
     <Compile Include="Logging\Logger.cs" />
-    <Compile Include="Misc\AutomaticShutdownWatchdog.cs" />
-    <Compile Include="Misc\RocketHelper.cs" />
+    <Compile Include="Utils\AutomaticShutdownWatchdog.cs" />
+    <Compile Include="Utils\RocketDispatcher.cs" />
+    <Compile Include="Utils\RocketHelper.cs" />
     <Compile Include="Environment.cs" />
-    <Compile Include="Misc\RocketWebClient.cs">
+    <Compile Include="Utils\RocketWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Serialisation\RocketPermissionsGroup.cs" />

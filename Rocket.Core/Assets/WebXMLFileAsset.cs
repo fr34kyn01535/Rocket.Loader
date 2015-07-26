@@ -1,4 +1,4 @@
-﻿using Rocket.Core.Misc;
+﻿using Rocket.Core.Utils;
 using System;
 using System.IO;
 using System.Xml.Serialization;
@@ -10,11 +10,11 @@ namespace Rocket.Core.Assets
         private XmlSerializer serializer;
         private string url;
 
-        public WebXMLFileAsset(string url = null, XmlRootAttribute attr = null)
+        public WebXMLFileAsset(string url = null, XmlRootAttribute attr = null, AssetLoaded<T> callback = null)
         {
             serializer = new XmlSerializer(typeof(T), attr);
             this.url = url;
-            Load();
+            Load(callback);
         }
 
         public override void Load(AssetLoaded<T> callback = null, bool update = false)
@@ -29,20 +29,25 @@ namespace Rocket.Core.Assets
                 if (!String.IsNullOrEmpty(url))
                 {
                     RocketWebClient webclient = new RocketWebClient();
+                    
                     webclient.DownloadStringCompleted += (object sender, System.Net.DownloadStringCompletedEventArgs e) =>
                     {
-                        using (StringReader reader = new StringReader(e.Result))
+                        RocketDispatcher.QueueOnMainThread(() =>
                         {
-                            instance = (T)serializer.Deserialize(reader);
-                            callback(this);
-                        }
+                            using (StringReader reader = new StringReader(e.Result))
+                            {
+                                instance = (T)serializer.Deserialize(reader);
+
+                                if (callback != null)
+                                    callback(this);
+                            }
+                        });
                     };
+                    webclient.DownloadStringAsync(new Uri(url));
                 }else
                 {
                     throw new ArgumentNullException("WebXMLFileAsset url is blank");
                 }
-                if (callback != null)
-                    callback(this);
             }
             catch (Exception ex)
             {

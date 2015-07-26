@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Rocket.Core.Misc
+namespace Rocket.Core.Utils
 {
     internal class AutomaticShutdownWatchdog : MonoBehaviour
     {

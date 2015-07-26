@@ -20,13 +20,13 @@ namespace Rocket.Core.Plugins
             if (Core.R.Settings.Instance.WebConfigurations.Enabled)
             {
                 string url = string.Format(Environment.WebConfigurationTemplate, Core.R.Settings.Instance.WebConfigurations.Url, Name, R.Implementation.InstanceId);
-                configuration = new WebXMLFileAsset<TConfiguration>(url);
+                configuration = new WebXMLFileAsset<TConfiguration>(url, null, (IAsset<TConfiguration> asset) => { base.LoadPlugin(); });
             }
             else
             {
                 configuration = new XMLFileAsset<TConfiguration>(string.Format(Core.Environment.PluginConfigurationFileTemplate, Name,Name));
+                base.LoadPlugin();
             }
-            base.LoadPlugin();
         }
     }
 

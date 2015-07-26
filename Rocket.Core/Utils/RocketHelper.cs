@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Rocket.Core.Misc
+namespace Rocket.Core.Utils
 {
     public static class RocketHelper
     {
