@@ -35,6 +35,8 @@ namespace Rocket.Core
         private void Awake()
         {
             Instance = this;
+            Implementation = (IRocketImplementation)GetComponent(typeof(IRocketImplementation));
+
             Environment.Initialize();
 
             #if DEBUG
@@ -51,7 +53,6 @@ namespace Rocket.Core
                 gameObject.TryAddComponent<RCONServer>();
             };
 
-            Implementation = (IRocketImplementation)GetComponent(typeof(IRocketImplementation));
             Settings = new XMLFileAsset<RocketSettings>(Environment.SettingsFile);
             Translation = new XMLFileAsset<TranslationList>(String.Format(Environment.TranslationFile, Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, defaultTranslations);
             Permissions = gameObject.TryAddComponent<RocketPermissionsManager>();
