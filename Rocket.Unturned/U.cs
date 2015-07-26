@@ -110,7 +110,7 @@ namespace Rocket.Unturned
         }
 
 #if LINUX
-        public Console Console;
+        public UnturnedConsole Console;
 #endif
 
         internal static void Splash()
