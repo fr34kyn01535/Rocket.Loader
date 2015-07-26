@@ -65,6 +65,11 @@ namespace Rocket.Core.Plugins
                 return new TranslationList();
             }
         }
+        
+        public string Translate(string translationKey, params object[] placeholder)
+        {
+            return Translations.Instance.Translate(translationKey,placeholder);
+        }
 
         public void ForceLoad()
         {
