@@ -37,7 +37,6 @@ namespace Rocket.Core.Permissions
                 updateWebPermissions = false;
                 permissions.Load((IAsset<RocketPermissions> asset)=> {
                     updateWebPermissions = true;
-                    Console.WriteLine(asset.Instance.Groups.Length);
                 },true);
             }
         }
