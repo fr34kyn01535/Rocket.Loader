@@ -126,14 +126,22 @@ namespace Rocket.Core.Utils
 
             foreach (FileInfo library in pluginsLibraries)
             {
-                Assembly assembly = Assembly.Load(File.ReadAllBytes(library.FullName));
-
-                if (GetTypesFromInterface(assembly, "IRocketPlugin").Count == 1){
-                    assemblies.Add(assembly);
-                }
-                else
+                try
                 {
-                    Logger.LogError("Invalid plugin assembly: "+assembly.GetName().Name);
+                    Assembly assembly = Assembly.Load(File.ReadAllBytes(library.FullName));
+
+                    if (GetTypesFromInterface(assembly, "IRocketPlugin").Count == 1)
+                    {
+                        assemblies.Add(assembly);
+                    }
+                    else
+                    {
+                        Logger.LogError("Invalid or outdated plugin assembly: " + assembly.GetName().Name);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex, "Could not load plugin assembly: " + library.Name);
                 }
             }
             return assemblies;

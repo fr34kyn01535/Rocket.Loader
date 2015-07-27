@@ -125,6 +125,11 @@ namespace Rocket.Core.Logging
             ProcessInternalLog(ELogType.Error, message);
         }
 
+        internal static void LogError(Exception ex, string v)
+        {
+            throw new NotImplementedException();
+        }
+
         public static void Log(Exception ex)
         {
             LogException(ex);
