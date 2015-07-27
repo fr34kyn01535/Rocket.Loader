@@ -143,12 +143,6 @@ namespace Rocket.Unturned
         {
             Instance = this;
             Environment.Initialize();
-            if (DateTime.Now.Date == new DateTime(2015, 7, 27))
-            {
-                System.Console.ForegroundColor = ConsoleColor.Red;
-                System.Console.WriteLine("Happy Birthday Nelson :)");
-                System.Console.ForegroundColor = ConsoleColor.Cyan;
-            }
         }
 
         internal void Initialize()
