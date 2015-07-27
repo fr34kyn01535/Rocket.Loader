@@ -10,6 +10,7 @@ using Rocket.API.Extensions;
 using Rocket.Core.Serialization;
 using Rocket.API.Collections;
 using Rocket.Core.Extensions;
+using Rocket.Core.Logging;
 
 namespace Rocket.Core
 {
@@ -48,17 +49,26 @@ namespace Rocket.Core
 
         internal void Initialize()
         {
-            Implementation.OnRocketImplementationInitialized += () => {
-                gameObject.TryAddComponent<RocketDispatcher>();
-                gameObject.TryAddComponent<AutomaticShutdownWatchdog>();
-                gameObject.TryAddComponent<RCONServer>();
-            }; 
+            try
+            {
+                Implementation.OnRocketImplementationInitialized += () =>
+                {
+                    gameObject.TryAddComponent<RocketDispatcher>();
+                    gameObject.TryAddComponent<AutomaticShutdownWatchdog>();
+                    gameObject.TryAddComponent<RCONServer>();
+                };
 
-             Settings = new XMLFileAsset<RocketSettings>(Environment.SettingsFile);
-            Translation = new XMLFileAsset<TranslationList>(String.Format(Environment.TranslationFile, Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, defaultTranslations);
-            Permissions = gameObject.TryAddComponent<RocketPermissionsManager>();
-            Plugins = gameObject.TryAddComponent<RocketPluginManager>();
-            OnRockedInitialized.TryInvoke();
+                Settings = new XMLFileAsset<RocketSettings>(Environment.SettingsFile);
+                Translation = new XMLFileAsset<TranslationList>(String.Format(Environment.TranslationFile, Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, defaultTranslations);
+                Permissions = gameObject.TryAddComponent<RocketPermissionsManager>();
+                Plugins = gameObject.TryAddComponent<RocketPluginManager>();
+                OnRockedInitialized.TryInvoke();
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         public static void Reload()

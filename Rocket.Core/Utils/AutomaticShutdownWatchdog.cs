@@ -15,7 +15,6 @@ namespace Rocket.Core.Utils
         }
 
         private DateTime? shutdownTime = null;
-        private DateTime lastSaveTime;
         private bool shutdown = false;
         public static AutomaticShutdownWatchdog Instance;
         private bool started = false;
@@ -27,9 +26,8 @@ namespace Rocket.Core.Utils
             if (R.Settings.Instance.AutomaticShutdown.Enabled)
             {
                 shutdownTime = startedTime.ToUniversalTime().AddSeconds(R.Settings.Instance.AutomaticShutdown.Interval);
-                Logger.Log("The server will automaticly shutdown in " + R.Settings.Instance.AutomaticShutdown.Interval + " seconds (" + shutdownTime.ToString() + " UTC)");
+                Logger.Log("This server will automaticly shutdown in " + R.Settings.Instance.AutomaticShutdown.Interval + " seconds (" + shutdownTime.ToString() + " UTC)");
             }
-            lastSaveTime = DateTime.UtcNow;
             started = true;
         }
 
