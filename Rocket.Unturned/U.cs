@@ -217,7 +217,9 @@ namespace Rocket.Unturned
 
         public void Execute(IRocketPlayer player, string command)
         {
-            Commander.execute(new CSteamID(ulong.Parse(command)), command);
+            ulong i = 0;
+            UInt64.TryParse(player.Id, out i);
+            Commander.execute(new CSteamID(i), command);
         }
 
         public string InstanceId

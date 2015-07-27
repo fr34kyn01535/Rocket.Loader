@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Rocket.Core.Logging;
 using UnityEngine;
+using Rocket.API;
 
 namespace Rocket.Core.RCON
 {
@@ -39,76 +40,84 @@ namespace Rocket.Core.RCON
 
         private static void handleConnection(object obj)
         {
-            RCONConnection newclient = (RCONConnection)obj;
-            string command = "";
-            while (newclient.Client.Client.Connected)
+            try
             {
-                Thread.Sleep(100);
-                command = newclient.Read();
-                if (command == "") break;
-                command = command.TrimEnd('\n', '\r', ' ');
-                if (command == "quit") break;
-                if (command == "ia")
+                RCONConnection newclient = (RCONConnection)obj;
+                string command = "";
+                while (newclient.Client.Client.Connected)
                 {
-                    //newclient.Send("Toggled interactive mode");
-                    newclient.Interactive = !newclient.Interactive;
-                }
-                if (command == "") continue;
-                if (command == "login")
-                {
-                    if (newclient.Authenticated)
-                        newclient.Send("Notice: You are already logged in!\r\n");
-                    else
-                        newclient.Send("Syntax: login <password>");
-                    continue;
-                }
-                if (command.Split(' ').Length > 1 && command.Split(' ')[0] == "login")
-                {
-                    if (newclient.Authenticated)
+                    Thread.Sleep(100);
+                    command = newclient.Read();
+                    if (command == "") break;
+                    command = command.TrimEnd('\n', '\r', ' ');
+                    if (command == "quit") break;
+                    if (command == "ia")
                     {
-                        newclient.Send("Notice: You are already logged in!\r\n");
+                        //newclient.Send("Toggled interactive mode");
+                        newclient.Interactive = !newclient.Interactive;
+                    }
+                    if (command == "") continue;
+                    if (command == "login")
+                    {
+                        if (newclient.Authenticated)
+                            newclient.Send("Notice: You are already logged in!\r\n");
+                        else
+                            newclient.Send("Syntax: login <password>");
                         continue;
                     }
-                    else
+                    if (command.Split(' ').Length > 1 && command.Split(' ')[0] == "login")
                     {
-
-                        if (command.Split(' ')[1] == R.Settings.Instance.RCON.Password)
+                        if (newclient.Authenticated)
                         {
-                            newclient.Authenticated = true;
-                            //newclient.Send("Success: You have logged in!\r\n");
-                            //Logger.Log("Client has logged in!");
+                            newclient.Send("Notice: You are already logged in!\r\n");
                             continue;
                         }
                         else
                         {
-                            newclient.Send("Error: Invalid password!\r\n");
-                            Logger.Log("Client has failed to log in.");
-                            break;
+
+                            if (command.Split(' ')[1] == R.Settings.Instance.RCON.Password)
+                            {
+                                newclient.Authenticated = true;
+                                //newclient.Send("Success: You have logged in!\r\n");
+                                //Logger.Log("Client has logged in!");
+                                continue;
+                            }
+                            else
+                            {
+                                newclient.Send("Error: Invalid password!\r\n");
+                                Logger.Log("Client has failed to log in.");
+                                break;
+                            }
                         }
                     }
+
+                    if (command == "set")
+                    {
+                        newclient.Send("Syntax: set [option] [value]");
+                        continue;
+                    }
+                    if (!newclient.Authenticated)
+                    {
+                        newclient.Send("Error: You have not logged in yet!\r\n");
+                        continue;
+                    }
+                    if (command != "ia")
+                        Logger.Log("Client has executed command \"" + command + "\"");
+                    R.Implementation.Execute(new ConsolePlayer(), command);
+                    command = "";
                 }
 
-                if (command == "set")
-                {
-                    newclient.Send("Syntax: set [option] [value]");
-                    continue;
-                }
-                if (!newclient.Authenticated)
-                {
-                    newclient.Send("Error: You have not logged in yet!\r\n");
-                    continue;
-                }
-                if (command != "ia")
-                    Logger.Log("Client has executed command \"" + command + "\"");
-                R.Implementation.Execute(null,command);
-                command = "";
+                clients.Remove(newclient);
+                newclient.Send("Good bye!");
+                Thread.Sleep(1500);
+                Logger.Log("Client has disconnected! (IP: " + newclient.Client.Client.RemoteEndPoint + ")");
+                newclient.Close();
+
             }
-
-            clients.Remove(newclient);
-            newclient.Send("Good bye!");
-            Thread.Sleep(1500);
-            Logger.Log("Client has disconnected! (IP: " + newclient.Client.Client.RemoteEndPoint + ")");
-            newclient.Close();
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         public static void Broadcast(string message)
