@@ -21,12 +21,12 @@ namespace Rocket.Core.Logging
                 if (stackTrace.FrameCount != 0)
                     assembly = stackTrace.GetFrame(1).GetMethod().DeclaringType.Assembly.GetName().Name;
 
-                if ((assembly.StartsWith("Rocket.") || assembly == "Assembly-CSharp") && stackTrace.FrameCount > 2)
+                if ((assembly.StartsWith("Rocket.") || assembly == "Assembly-CSharp" || assembly == "UnityEngine") && stackTrace.FrameCount > 2)
                 {
                     assembly = stackTrace.GetFrame(2).GetMethod().DeclaringType.Assembly.GetName().Name;
                 }
 
-                if (assembly == "" || assembly == typeof(Logger).Assembly.GetName().Name || assembly == lastAssembly || assembly.StartsWith("Rocket.") || assembly == "Assembly-CSharp")
+                if (assembly == "" || assembly == typeof(Logger).Assembly.GetName().Name || assembly == lastAssembly || assembly.StartsWith("Rocket.") || assembly == "Assembly-CSharp" || assembly == "UnityEngine")
                 {
                     assembly = "";
                 }
