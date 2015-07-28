@@ -102,49 +102,5 @@ namespace Rocket.Core.Utils
             }
             return allTypes;
         }
-
-        public static Dictionary<string, string> GetAssembliesFromDirectory(string directory, string extension = "*.dll")
-        {
-            Dictionary<string, string> l = new Dictionary<string, string>();
-            IEnumerable<FileInfo> libraries = new DirectoryInfo(directory).GetFiles(extension, SearchOption.AllDirectories);
-            foreach (FileInfo library in libraries)
-            {
-                try
-                {
-                    AssemblyName name = AssemblyName.GetAssemblyName(library.FullName);
-                    l.Add(name.FullName, library.FullName);
-                }
-                catch { }
-            }
-            return l;
-        }
-
-        public static List<Assembly> LoadAssembliesFromDirectory(string directory, string extension = "*.dll")
-        {
-            List<Assembly> assemblies = new List<Assembly>();
-            IEnumerable<FileInfo> pluginsLibraries = new DirectoryInfo(directory).GetFiles(extension, SearchOption.TopDirectoryOnly);
-
-            foreach (FileInfo library in pluginsLibraries)
-            {
-                try
-                {
-                    Assembly assembly = Assembly.Load(File.ReadAllBytes(library.FullName));
-
-                    if (GetTypesFromInterface(assembly, "IRocketPlugin").Count == 1)
-                    {
-                        assemblies.Add(assembly);
-                    }
-                    else
-                    {
-                        Logger.LogError("Invalid or outdated plugin assembly: " + assembly.GetName().Name);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex, "Could not load plugin assembly: " + library.Name);
-                }
-            }
-            return assemblies;
-        }
     }
 }

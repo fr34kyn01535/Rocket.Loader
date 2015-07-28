@@ -32,7 +32,7 @@ namespace Rocket.Core.Plugins
                 string file;
                 if (libraries.TryGetValue(args.Name, out file))
                 {
-                    return Assembly.Load(File.ReadAllBytes(file));
+                    return Assembly.LoadFile(file);
                 }
                 else
                 {
@@ -49,8 +49,8 @@ namespace Rocket.Core.Plugins
 
         private void loadPlugins()
         {
-            libraries = RocketHelper.GetAssembliesFromDirectory(Environment.LibrariesDirectory);
-            pluginAssemblies = RocketHelper.LoadAssembliesFromDirectory(Environment.PluginsDirectory);
+            libraries = GetAssembliesFromDirectory(Environment.LibrariesDirectory);
+            pluginAssemblies = LoadAssembliesFromDirectory(Environment.PluginsDirectory);
             List<Type> pluginImplemenations = RocketHelper.GetTypesFromInterface(pluginAssemblies, "IRocketPlugin");
             foreach (Type pluginType in pluginImplemenations)
             {
@@ -73,6 +73,50 @@ namespace Rocket.Core.Plugins
         {
             unloadPlugins();
             loadPlugins();
+        }
+
+        public static Dictionary<string, string> GetAssembliesFromDirectory(string directory, string extension = "*.dll")
+        {
+            Dictionary<string, string> l = new Dictionary<string, string>();
+            IEnumerable<FileInfo> libraries = new DirectoryInfo(directory).GetFiles(extension, SearchOption.AllDirectories);
+            foreach (FileInfo library in libraries)
+            {
+                try
+                {
+                    AssemblyName name = AssemblyName.GetAssemblyName(library.FullName);
+                    l.Add(name.FullName, library.FullName);
+                }
+                catch { }
+            }
+            return l;
+        }
+
+        public static List<Assembly> LoadAssembliesFromDirectory(string directory, string extension = "*.dll")
+        {
+            List<Assembly> assemblies = new List<Assembly>();
+            IEnumerable<FileInfo> pluginsLibraries = new DirectoryInfo(directory).GetFiles(extension, SearchOption.TopDirectoryOnly);
+
+            foreach (FileInfo library in pluginsLibraries)
+            {
+                try
+                {
+                    Assembly assembly = Assembly.LoadFile(library.FullName);
+
+                    if (RocketHelper.GetTypesFromInterface(assembly, "IRocketPlugin").Count == 1)
+                    {
+                        assemblies.Add(assembly);
+                    }
+                    else
+                    {
+                        Logger.LogError("Invalid or outdated plugin assembly: " + assembly.GetName().Name);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex, "Could not load plugin assembly: " + library.Name);
+                }
+            }
+            return assemblies;
         }
     }
 }
