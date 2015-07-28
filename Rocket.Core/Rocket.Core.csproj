@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Debugger.cs" />
     <Compile Include="Extensions\IRocketPlayerExtension.cs" />
+    <Compile Include="Extensions\MonoBehaviourExtension.cs" />
     <Compile Include="Plugins\RocketPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Assets\Asset.cs" />
