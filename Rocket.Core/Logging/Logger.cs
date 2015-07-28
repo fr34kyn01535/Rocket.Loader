@@ -25,7 +25,6 @@ namespace Rocket.Core.Logging
                 {
                     assembly = stackTrace.GetFrame(2).GetMethod().DeclaringType.Assembly.GetName().Name;
                 }
-
                 if (assembly == "" || assembly == typeof(Logger).Assembly.GetName().Name || assembly == lastAssembly || assembly.StartsWith("Rocket.") || assembly == "Assembly-CSharp" || assembly == "UnityEngine")
                 {
                     assembly = "";
