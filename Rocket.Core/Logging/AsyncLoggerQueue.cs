@@ -66,8 +66,7 @@ namespace Rocket.Core.Logging
             }
         }
         private void processLog(LogEntry entry) {
-            if (!Directory.Exists(Environment.LogFile)) return;
-            StreamWriter streamWriter = File.AppendText(Environment.LogFile);
+            StreamWriter streamWriter = File.AppendText(Path.Combine(Environment.LogsDirectory, Environment.LogFile));
             streamWriter.WriteLine("[" + DateTime.Now + "] [" + entry.Severity.ToString() + "] " + entry.Message);
             streamWriter.Close();
             if (entry.RCON && R.Settings.Instance.RCON.Enabled)

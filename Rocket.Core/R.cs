@@ -38,8 +38,6 @@ namespace Rocket.Core
             Instance = this;
             Implementation = (IRocketImplementation)GetComponent(typeof(IRocketImplementation));
 
-            Environment.Initialize();
-
             #if DEBUG
                 gameObject.TryAddComponent<Debugger>();
             #else
@@ -49,6 +47,7 @@ namespace Rocket.Core
 
         internal void Initialize()
         {
+            Environment.Initialize();
             try
             {
                 Implementation.OnRocketImplementationInitialized += () =>
