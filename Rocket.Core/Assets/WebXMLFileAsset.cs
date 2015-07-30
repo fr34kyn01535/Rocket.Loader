@@ -1,4 +1,5 @@
-﻿using Rocket.Core.Utils;
+﻿using Rocket.Core.Logging;
+using Rocket.Core.Utils;
 using System;
 using System.IO;
 using System.Xml.Serialization;
@@ -19,7 +20,7 @@ namespace Rocket.Core.Assets
             Load(callback);
         }
 
-        public override void Load(AssetLoaded<T> callback = null, bool update = false)
+        public override void Load(AssetLoaded<T> callback = null, bool update = true)
         {
             try
             {
@@ -30,6 +31,7 @@ namespace Rocket.Core.Assets
                 }
                 if (!String.IsNullOrEmpty(url))
                 {
+                    Logger.Log(String.Format("Updating WebXMLFileAsset {0} from {1}",typeof(T).GetType().Name,url));
                     waiting = true;
                     webclient.DownloadStringCompleted += (object sender, System.Net.DownloadStringCompletedEventArgs e) =>
                     {
