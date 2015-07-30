@@ -31,7 +31,7 @@ namespace Rocket.Core.Assets
                 }
                 if (!String.IsNullOrEmpty(url))
                 {
-                    Logger.Log(String.Format("Updating WebXMLFileAsset {0} from {1}",typeof(T).GetType().Name,url));
+                    Logger.Log(String.Format("Updating WebXMLFileAsset {0} from {1}",typeof(T).Name,url));
                     waiting = true;
                     webclient.DownloadStringCompleted += (object sender, System.Net.DownloadStringCompletedEventArgs e) =>
                     {
