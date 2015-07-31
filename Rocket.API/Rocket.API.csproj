@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\GameObjectExtension.cs" />
+    <Compile Include="IDefaultable.cs" />
     <Compile Include="IAsset.cs" />
     <Compile Include="IRocketCommand.cs" />
     <Compile Include="IRocketImplementationEvents.cs" />

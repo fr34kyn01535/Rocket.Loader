@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace Rocket.Core.Assets
 {
-    public class XMLFileAsset<T> : Asset<T> where T : class
+    public class XMLFileAsset<T> : Asset<T> where T : class, IDefaultable
     {
         private XmlSerializer serializer;
         private string file;
@@ -16,7 +16,6 @@ namespace Rocket.Core.Assets
             serializer = new XmlSerializer(typeof(T), extraTypes);
             this.file = file;
             this.defaultInstance = defaultInstance;
-            Load();
         }
 
         public override T Save(T instance = null)
@@ -32,6 +31,7 @@ namespace Rocket.Core.Assets
                         if (defaultInstance == null)
                         {
                             instance = Activator.CreateInstance<T>();
+                            instance.LoadDefaults();
                         }
                         else
                         {
@@ -45,7 +45,7 @@ namespace Rocket.Core.Assets
             }
             catch (Exception ex)
             {
-                throw new Exception(String.Format("Failed to serialize configuration file: {0}", file), ex);
+                throw new Exception(String.Format("Failed to serialize XMLFileAsset: {0}", file), ex);
             }
         }
 
@@ -65,16 +65,13 @@ namespace Rocket.Core.Assets
                         instance = (T)serializer.Deserialize(reader);
                     }
                 }
-                else
-                {
-                    Save();
-                }
+                Save(instance);
                 if(callback != null)
                     callback(this);
             }
             catch (Exception ex)
             {
-                throw new Exception(String.Format("Failed to deserialize configuration file: {0}", file), ex);
+                throw new Exception(String.Format("Failed to deserialize XMLFileAsset: {0}", file), ex);
             }
         }
         

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rocket.Core.Assets;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace Rocket.API.Collections
     [XmlRoot("Translations")]
     [XmlType(AnonymousType = false, IncludeInSchema = true, TypeName = "Translation")]
     [Serializable]
-    public class TranslationList : IEnumerable<TranslationListEntry>
+    public class TranslationList : IDefaultable, IEnumerable<TranslationListEntry>
     {
         public TranslationList() { }
         protected List<TranslationListEntry> translations = new List<TranslationListEntry>();
@@ -88,5 +89,9 @@ namespace Rocket.API.Collections
             return value;
         }
 
+        public virtual void LoadDefaults()
+        {
+            
+        }
     }
 }

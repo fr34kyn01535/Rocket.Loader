@@ -1,4 +1,8 @@
-﻿namespace Rocket.API
+﻿using Rocket.Core.Assets;
+
+namespace Rocket.API
 {
-    public interface IRocketPluginConfiguration{}
+    public interface IRocketPluginConfiguration : IDefaultable
+    {
+    }
 }

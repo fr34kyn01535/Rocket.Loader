@@ -1,4 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using Rocket.Core.Assets;
+using System.Xml.Serialization;
+using System;
 
 namespace Rocket.Core.Serialization
 {
@@ -38,20 +40,30 @@ namespace Rocket.Core.Serialization
         public string Url = "";
     }
 
-    public sealed class RocketSettings{
+    public sealed class RocketSettings : IDefaultable
+    {
         [XmlElement("RCON")]
-        public RemoteConsole RCON = new RemoteConsole();
+        public RemoteConsole RCON;
 
         [XmlElement("AutomaticShutdown")]
-        public AutomaticShutdown AutomaticShutdown = new AutomaticShutdown();
+        public AutomaticShutdown AutomaticShutdown;
 
         [XmlElement("WebConfigurations")]
-        public WebConfigurations WebConfigurations = new WebConfigurations();
+        public WebConfigurations WebConfigurations;
 
         [XmlElement("WebPermissions")]
-        public WebPermissions WebPermissions = new WebPermissions();
+        public WebPermissions WebPermissions;
 
         [XmlElement("LanguageCode")]
-        public string LanguageCode = "en";
+        public string LanguageCode;
+
+        public void LoadDefaults()
+        {
+            RCON = new RemoteConsole();
+            AutomaticShutdown = new AutomaticShutdown();
+            WebConfigurations = new WebConfigurations();
+            WebPermissions = new WebPermissions();
+            LanguageCode = "en";
+        }
     }
 }
