@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using UnityEngine;
 
 namespace Rocket.Unturned
 {
@@ -8,6 +9,7 @@ namespace Rocket.Unturned
         public static string RocketDirectory;
         public static void Initialize()
         {
+            Application.targetFrameRate = -1;
             RocketDirectory = String.Format("Servers/{0}/Rocket/", U.Instance.InstanceId);
             if (!Directory.Exists(RocketDirectory)) Directory.CreateDirectory(RocketDirectory);
 

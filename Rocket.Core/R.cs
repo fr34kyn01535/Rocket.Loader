@@ -62,7 +62,6 @@ namespace Rocket.Core
                 Permissions = gameObject.TryAddComponent<RocketPermissionsManager>();
                 Plugins = gameObject.TryAddComponent<RocketPluginManager>();
                 OnRockedInitialized.TryInvoke();
-
             }
             catch (Exception ex)
             {
