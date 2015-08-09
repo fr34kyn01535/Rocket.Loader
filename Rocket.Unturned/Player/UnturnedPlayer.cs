@@ -147,6 +147,11 @@ namespace Rocket.Unturned.Player
             get { return player.Inventory; }
         }
 
+        public PlayerSkills Skills
+        {
+            get { return player.Skills; }
+        }
+
         public bool GiveItem(ushort itemId, byte amount)
         {
             return ItemTool.tryForceGiveItem(player,itemId,amount);
