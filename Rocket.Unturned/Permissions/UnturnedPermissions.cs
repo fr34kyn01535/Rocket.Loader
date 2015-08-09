@@ -24,7 +24,27 @@ namespace Rocket.Unturned.Permissions
         private void Awake()
         {
             OnPermissionRequested = HandlePermissionRequested;
-        }
+
+
+            //UnturnedPermissions.OnJoinRequested += (CSteamID player, ref ESteamRejection? rejectionReason) =>
+            //{
+
+            //    List<string> whitelistedGroups = new List<string>();// Configuration.Instance.WhitelistedGroups;
+            //    int whitelistedSlots = 2; // Configuration.Instance.WhitelistedSlots;
+
+            //    if ((Steam.Players.Count + whitelistedSlots)> Steam.MaxPlayers)
+            //    {
+            //        List<Core.Serialisation.RocketPermissionsGroup> playerGroups = Core.R.Permissions.GetGroups(UnturnedPlayer.FromCSteamID(player), true);
+            //        bool whitelisted = playerGroups.Where(pg => whitelistedGroups.Select(wg => wg.ToLower()).Contains(pg.Id.ToLower())).FirstOrDefault() != null;
+            //        if (!whitelisted)
+            //        {
+            //            rejectionReason = ESteamRejection.WHITELISTED;
+            //        }
+            //    }
+
+            //};
+            //}
+    }
         
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static bool CheckPermissions(SteamPlayer player, string permission)
@@ -47,6 +67,10 @@ namespace Rocket.Unturned.Permissions
                 }
             }
             return permissionGranted;
+
+
+
+
         }
 
         public static void HandlePermissionRequested(UnturnedPlayer player, string permission, ref bool permissionGranted)

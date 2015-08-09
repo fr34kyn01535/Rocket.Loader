@@ -46,7 +46,7 @@ namespace Rocket.Core
         }
 
         internal void Initialize()
-        {
+        {   
             Environment.Initialize();
             try
             {
@@ -61,6 +61,10 @@ namespace Rocket.Core
                 Translation = new XMLFileAsset<TranslationList>(String.Format(Environment.TranslationFile, Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, defaultTranslations);
                 Permissions = gameObject.TryAddComponent<RocketPermissionsManager>();
                 Plugins = gameObject.TryAddComponent<RocketPluginManager>();
+
+                if (Settings.Instance.MaxFrames < 10 && Settings.Instance.MaxFrames != -1) Settings.Instance.MaxFrames = 10;
+                Application.targetFrameRate = Settings.Instance.MaxFrames;
+
                 OnRockedInitialized.TryInvoke();
             }
             catch (Exception ex)

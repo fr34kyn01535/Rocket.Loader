@@ -57,6 +57,9 @@ namespace Rocket.Core.Serialization
         [XmlElement("LanguageCode")]
         public string LanguageCode;
 
+        [XmlElement("MaxFrames")]
+        public int MaxFrames;
+
         public void LoadDefaults()
         {
             RCON = new RemoteConsole();
@@ -64,6 +67,7 @@ namespace Rocket.Core.Serialization
             WebConfigurations = new WebConfigurations();
             WebPermissions = new WebPermissions();
             LanguageCode = "en";
+            MaxFrames = 60;
         }
     }
 }
