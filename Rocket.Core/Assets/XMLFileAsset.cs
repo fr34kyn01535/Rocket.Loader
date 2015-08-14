@@ -16,6 +16,7 @@ namespace Rocket.Core.Assets
             serializer = new XmlSerializer(typeof(T), extraTypes);
             this.file = file;
             this.defaultInstance = defaultInstance;
+            Load(null, true);
         }
 
         public override T Save(T instance = null)

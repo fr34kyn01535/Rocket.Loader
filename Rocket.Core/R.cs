@@ -22,10 +22,10 @@ namespace Rocket.Core
         public static R Instance;
         public static IRocketImplementation Implementation;
 
-        public static XMLFileAsset<RocketSettings> Settings;
-        public static XMLFileAsset<TranslationList> Translation;
-        public static RocketPermissionsManager Permissions;
-        public static RocketPluginManager Plugins;
+        public static XMLFileAsset<RocketSettings> Settings = null;
+        public static XMLFileAsset<TranslationList> Translation = null;
+        public static RocketPermissionsManager Permissions = null;
+        public static RocketPluginManager Plugins = null;
 
         private static readonly TranslationList defaultTranslations = new TranslationList(){
                 {"rocket_join_public","{0} connected to the server" },

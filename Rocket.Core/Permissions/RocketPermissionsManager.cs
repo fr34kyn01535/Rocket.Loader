@@ -1,5 +1,6 @@
 ﻿using Rocket.API;
 using Rocket.Core.Assets;
+using Rocket.Core.Logging;
 using Rocket.Core.Serialisation;
 using System;
 using System.Collections.Generic;
@@ -14,15 +15,23 @@ namespace Rocket.Core.Permissions
 
         private void Start()
         {
-            if (R.Settings.Instance.WebPermissions.Enabled)
+            try
             {
-                lastWebPermissionsUpdate = DateTime.Now;
-                permissions = new WebXMLFileAsset<RocketPermissions>(R.Settings.Instance.WebPermissions.Url + "?instance=" + R.Implementation.InstanceId);
-                updateWebPermissions = true;
+                if (R.Settings.Instance.WebPermissions.Enabled)
+                {
+                    lastWebPermissionsUpdate = DateTime.Now;
+                    permissions = new WebXMLFileAsset<RocketPermissions>(R.Settings.Instance.WebPermissions.Url + "?instance=" + R.Implementation.InstanceId);
+                    updateWebPermissions = true;
+                }
+                else
+                {
+                    permissions = new XMLFileAsset<RocketPermissions>(Environment.PermissionFile);
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                permissions = new XMLFileAsset<RocketPermissions>(Environment.PermissionFile);
+                Logger.LogException(ex);
             }
         }
         
@@ -31,13 +40,21 @@ namespace Rocket.Core.Permissions
 
         private void FixedUpdate()
         {
-            if (updateWebPermissions && R.Settings.Instance.WebPermissions.Interval > 0 && (DateTime.Now - lastWebPermissionsUpdate) > TimeSpan.FromSeconds(R.Settings.Instance.WebPermissions.Interval))
+            try
             {
-                lastWebPermissionsUpdate = DateTime.Now;
-                updateWebPermissions = false;
-                permissions.Load((IAsset<RocketPermissions> asset)=> {
-                    updateWebPermissions = true;
-                },true);
+                if (updateWebPermissions && R.Settings.Instance.WebPermissions.Interval > 0 && (DateTime.Now - lastWebPermissionsUpdate) > TimeSpan.FromSeconds(R.Settings.Instance.WebPermissions.Interval))
+                {
+                    lastWebPermissionsUpdate = DateTime.Now;
+                    updateWebPermissions = false;
+                    permissions.Load((IAsset<RocketPermissions> asset) => {
+                        updateWebPermissions = true;
+                    }, true);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 

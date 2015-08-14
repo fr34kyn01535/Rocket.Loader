@@ -7,6 +7,7 @@ using System.Reflection;
 using UnityEngine;
 using Rocket.Unturned.Commands;
 using Rocket.API;
+using Rocket.Core.Logging;
 
 namespace Rocket.Unturned.Plugins
 {
@@ -15,9 +16,16 @@ namespace Rocket.Unturned.Plugins
         private Assembly assembly;
         private void OnEnable()
         {
-            IRocketPlugin plugin = GetComponent<IRocketPlugin>();
-            assembly = plugin.GetType().Assembly;
-            RegisterFromAssembly(assembly);
+            try
+            {
+                IRocketPlugin plugin = GetComponent<IRocketPlugin>();
+                assembly = plugin.GetType().Assembly;
+                RegisterFromAssembly(assembly);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         public static void RegisterFromAssembly(Assembly assembly)
