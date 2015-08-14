@@ -18,11 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{BF6C67CB-DA1
 		dev\pdb2mdb.exe = dev\pdb2mdb.exe
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{9329681C-1177-4A1E-9590-47CC5E0E0F2E}"
-	ProjectSection(SolutionItems) = preProject
-		lib\UnityEngine.dll = lib\UnityEngine.dll
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
