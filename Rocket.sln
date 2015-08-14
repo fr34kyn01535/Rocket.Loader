@@ -11,6 +11,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Loader", "Rocket.Loa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Loader.Unturned", "Rocket.Loader.Unturned\Rocket.Loader.Unturned.csproj", "{5FF8D3F2-F404-4154-83A8-698229515863}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{BF6C67CB-DA13-47BD-8E8D-E335DD457E01}"
+	ProjectSection(SolutionItems) = preProject
+		dev\Mono.Cecil.dll = dev\Mono.Cecil.dll
+		dev\Mono.CompilerServices.SymbolWriter.dll = dev\Mono.CompilerServices.SymbolWriter.dll
+		dev\pdb2mdb.exe = dev\pdb2mdb.exe
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{9329681C-1177-4A1E-9590-47CC5E0E0F2E}"
+	ProjectSection(SolutionItems) = preProject
+		lib\UnityEngine.dll = lib\UnityEngine.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
