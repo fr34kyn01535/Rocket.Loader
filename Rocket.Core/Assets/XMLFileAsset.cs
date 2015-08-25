@@ -19,7 +19,7 @@ namespace Rocket.Core.Assets
             Load(null, true);
         }
 
-        public override T Save(T instance = null)
+        public override T Save()
         {
             try
             {
@@ -27,7 +27,7 @@ namespace Rocket.Core.Assets
                 if (!String.IsNullOrEmpty(directory) && !Directory.Exists(directory)) Directory.CreateDirectory(directory);
                 using (StreamWriter writer = new StreamWriter(file))
                 {
-                    if(instance == null)
+                    if (instance == null)
                     {
                         if (defaultInstance == null)
                         {
@@ -39,7 +39,6 @@ namespace Rocket.Core.Assets
                             instance = defaultInstance;
                         }
                     }
-                    this.instance = instance;
                     serializer.Serialize(writer,instance);
                     return instance;
                 }
@@ -66,8 +65,7 @@ namespace Rocket.Core.Assets
                         instance = (T)serializer.Deserialize(reader);
                     }
                 }
-                Save(instance);
-                if(callback != null)
+                if (callback != null)
                     callback(this);
             }
             catch (Exception ex)

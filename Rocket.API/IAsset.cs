@@ -6,7 +6,7 @@
     public interface IAsset<T> where T : class
     {
         T Instance { get; set; }
-        T Save(T instance = null);
+        T Save();
         void Load(AssetLoaded<T> callback = null, bool update = false);
         void Unload(AssetUnloaded<T> callback = null);
     }

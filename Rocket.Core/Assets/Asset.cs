@@ -18,12 +18,12 @@ namespace Rocket.Core.Assets
                 if (value != null)
                 {
                     instance = value;
-                    Save(instance);
+                    Save();
                 }
             }
         }
 
-        public virtual T Save(T instance = null)
+        public virtual T Save()
         {
             return instance;
         }

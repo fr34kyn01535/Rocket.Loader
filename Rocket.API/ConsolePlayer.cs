@@ -20,5 +20,13 @@ namespace Rocket.API
                 return "Console";
             }
         }
+
+        public bool IsAdmin
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 }

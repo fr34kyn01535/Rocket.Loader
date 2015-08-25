@@ -6,5 +6,6 @@ namespace Rocket.API
     {
         string Id { get; }
         string DisplayName { get; }
+        bool IsAdmin { get; }
     }
 }
