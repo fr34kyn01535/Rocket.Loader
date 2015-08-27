@@ -65,6 +65,11 @@ namespace Rocket.Core.Assets
                         instance = (T)serializer.Deserialize(reader);
                     }
                 }
+                else
+                {
+                    Save();
+                }
+
                 if (callback != null)
                     callback(this);
             }

@@ -55,7 +55,7 @@ namespace Rocket.Core
                     gameObject.TryAddComponent<AutomaticShutdownWatchdog>();
                     gameObject.TryAddComponent<RCONServer>();
                 };
-
+                
                 Settings = new XMLFileAsset<RocketSettings>(Environment.SettingsFile);
                 Translation = new XMLFileAsset<TranslationList>(String.Format(Environment.TranslationFile, Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, defaultTranslations);
                 Permissions = gameObject.TryAddComponent<RocketPermissionsManager>();
