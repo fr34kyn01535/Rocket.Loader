@@ -53,7 +53,7 @@ namespace Rocket.Core
                 {
                     gameObject.TryAddComponent<RocketDispatcher>();
                     gameObject.TryAddComponent<AutomaticShutdownWatchdog>();
-                    gameObject.TryAddComponent<RCONServer>();
+                    if(Settings.Instance.RCON.Enabled) gameObject.TryAddComponent<RCONServer>();
                 };
                 
                 Settings = new XMLFileAsset<RocketSettings>(Environment.SettingsFile);
