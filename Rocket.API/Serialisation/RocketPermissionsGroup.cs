@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Rocket.Core.Serialisation
+namespace Rocket.API.Serialisation
 {
     [Serializable]
     public class RocketPermissionsGroup

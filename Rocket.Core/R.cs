@@ -24,7 +24,7 @@ namespace Rocket.Core
 
         public static XMLFileAsset<RocketSettings> Settings = null;
         public static XMLFileAsset<TranslationList> Translation = null;
-        public static RocketPermissionsManager Permissions = null;
+        public static IRocketPermissionsProvider Permissions = null;
         public static RocketPluginManager Plugins = null;
 
         private static readonly TranslationList defaultTranslations = new TranslationList(){

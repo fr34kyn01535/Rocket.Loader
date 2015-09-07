@@ -82,8 +82,6 @@
     <Compile Include="Utils\RocketWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Serialisation\RocketPermissionsGroup.cs" />
-    <Compile Include="Serialisation\RocketPermissions.cs" />
     <Compile Include="Serialisation\RocketSettings.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -64,10 +64,13 @@
     <Compile Include="IRocketImplementation.cs" />
     <Compile Include="ConsolePlayer.cs" />
     <Compile Include="IRocketPlugin.cs" />
+    <Compile Include="IRocketPermissionsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\TranslationList.cs" />
     <Compile Include="IRocketPluginConfiguration.cs" />
     <Compile Include="IRocketPlayer.cs" />
+    <Compile Include="Serialisation\RocketPermissions.cs" />
+    <Compile Include="Serialisation\RocketPermissionsGroup.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

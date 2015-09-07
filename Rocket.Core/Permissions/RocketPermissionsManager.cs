@@ -1,7 +1,7 @@
 ﻿using Rocket.API;
+using Rocket.API.Serialisation;
 using Rocket.Core.Assets;
 using Rocket.Core.Logging;
-using Rocket.Core.Serialisation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Rocket.Core.Permissions
 {
-    public sealed class RocketPermissionsManager : MonoBehaviour
+    public sealed class RocketPermissionsManager : MonoBehaviour, IRocketPermissionsProvider
     {
         private Asset<RocketPermissions> permissions = null;
 
@@ -68,7 +68,6 @@ namespace Rocket.Core.Permissions
             return permissions.Instance.Groups.Where(g => ids.Select(i => i.ToLower()).Contains(g.Id.ToLower())).ToList();
         }
 
-
         private List<string> getParentGroups(List<string> parentGroups, string currentGroup)
         {
             List<string> allgroups = new List<string>();
@@ -94,11 +93,6 @@ namespace Rocket.Core.Permissions
             }
 
             return defaultReturnValue;
-        }
-
-        public string[] GetDisplayGroups(IRocketPlayer player)
-        {
-            return GetGroups(player, true).Select(g => g.DisplayName + " (" + g.Id + ")").ToArray();
         }
 
 
@@ -140,7 +134,7 @@ namespace Rocket.Core.Permissions
             return p.Distinct().ToList();
         }
 
-        public bool SetGroup(IRocketPlayer player, string groupName)
+        public bool SetGroup(IRocketPlayer player, string groupID)
         {
             bool added = false;
             foreach (RocketPermissionsGroup g in permissions.Instance.Groups)
@@ -150,7 +144,7 @@ namespace Rocket.Core.Permissions
                     g.Members.Remove(player.Id);
                 }
 
-                if (String.Compare(g.Id, groupName, true) == 0)
+                if (String.Compare(g.Id, groupID, true) == 0)
                 {
                     g.Members.Add(player.Id);
                     added = true;
