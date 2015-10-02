@@ -11,9 +11,9 @@ namespace Rocket.API.Serialisation
         {
         }
 
-        public RocketPermissionsGroup(string name, string displayName, List<string> parentGroups, List<string> members, List<string> commands)
+        public RocketPermissionsGroup(string id, string displayName, List<string> parentGroups, List<string> members, List<string> commands)
         {
-            Id = name;
+            Id = id;
             DisplayName = displayName;
             Members = members;
             Commands = commands;

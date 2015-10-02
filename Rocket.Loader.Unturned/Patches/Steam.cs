@@ -16,7 +16,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
             UnlockFieldByType("ServerConnected", "OnServerConnected");
             UnlockFieldByType("ServerDisconnected", "OnServerDisconnected");
             UnlockFieldByType(typeof(string), "Version");
-            UnlockFieldByType(typeof(string), "InstanceName", 13);
+            UnlockFieldByType(typeof(string), "InstanceName", 14);
             UnlockFieldByType(typeof(uint), "ServerPort", 1);
             UnlockFieldByType(typeof(byte), "MaxPlayers");
 
