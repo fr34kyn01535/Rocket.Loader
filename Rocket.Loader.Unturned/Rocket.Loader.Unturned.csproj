@@ -52,6 +52,7 @@
     <Compile Include="Patches\BarricadeRegion.cs" />
     <Compile Include="Patches\Character.cs" />
     <Compile Include="Patches\ChatManager.cs" />
+    <Compile Include="Patches\CommandWindow.cs" />
     <Compile Include="Patches\Command.cs" />
     <Compile Include="Patches\Commander.cs" />
     <Compile Include="Patches\CommandLine.cs" />
@@ -78,7 +79,7 @@
     <Compile Include="Patches\PlayerSkills.cs" />
     <Compile Include="Patches\PlayerStance.cs" />
     <Compile Include="Patches\ReadWrite.cs" />
-    <Compile Include="Patches\Steam.cs" />
+    <Compile Include="Patches\Provider.cs" />
     <Compile Include="Patches\SteamCaller.cs" />
     <Compile Include="Patches\SteamChannel.cs" />
     <Compile Include="Patches\SteamChannelMethod.cs" />
