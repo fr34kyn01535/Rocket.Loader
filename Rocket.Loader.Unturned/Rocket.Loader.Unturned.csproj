@@ -78,6 +78,7 @@
     <Compile Include="Patches\PlayerLife.cs" />
     <Compile Include="Patches\PlayerSkills.cs" />
     <Compile Include="Patches\PlayerStance.cs" />
+    <Compile Include="Patches\Dedicator.cs" />
     <Compile Include="Patches\ReadWrite.cs" />
     <Compile Include="Patches\Provider.cs" />
     <Compile Include="Patches\SteamCaller.cs" />

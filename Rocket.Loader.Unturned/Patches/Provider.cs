@@ -10,7 +10,6 @@ namespace Rocket.RocketLoader.Unturned.Patches
         public override void Apply()
         {
             UnlockFieldByType(typeof(string), "Version");
-            UnlockFieldByType(typeof(string), "InstanceName", 8);
 
             UnlockFieldByType(typeof(ushort), "ServerPort");
 
