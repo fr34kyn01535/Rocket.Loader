@@ -63,6 +63,7 @@
     <Compile Include="IRocketImplementationEvents.cs" />
     <Compile Include="IRocketImplementation.cs" />
     <Compile Include="ConsolePlayer.cs" />
+    <Compile Include="RocketPlayer.cs" />
     <Compile Include="IRocketPlugin.cs" />
     <Compile Include="IRocketPermissionsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
