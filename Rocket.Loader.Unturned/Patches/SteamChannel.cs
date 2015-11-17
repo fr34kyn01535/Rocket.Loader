@@ -21,7 +21,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
                  m.Parameters[2].ParameterType.Name == "ESteamPacket" &&
                  m.Parameters[3].ParameterType.Name == "Object[]").FirstOrDefault();
 
-            send.Body.GetILProcessor().InsertBefore(send.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(sendInstruction)));
+            send.Body.GetILProcessor().InsertBefore(send.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(sendInstruction)));
 
             send.Body.GetILProcessor().InsertBefore(send.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_S, sendInstruction.Parameters[3]));
             send.Body.GetILProcessor().InsertBefore(send.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_3));
@@ -36,7 +36,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
             MethodDefinition receiveInstruction = GetInterfaceMethod("TriggerReceive");
             MethodDefinition receive = Type.Methods.AsEnumerable().Where(m => m.Name=="receive").FirstOrDefault();
             int i = 30;
-            receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(receiveInstruction)));
+            receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(receiveInstruction)));
             receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Ldarg_3));
             receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Ldarg_2));
             receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Ldarg_1));

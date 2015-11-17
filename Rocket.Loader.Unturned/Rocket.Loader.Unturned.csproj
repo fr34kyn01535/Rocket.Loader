@@ -39,6 +39,11 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Rocket.Loader\lib\Mono.Cecil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -79,6 +84,7 @@
     <Compile Include="Patches\PlayerSkills.cs" />
     <Compile Include="Patches\PlayerStance.cs" />
     <Compile Include="Patches\Dedicator.cs" />
+    <Compile Include="Patches\PlayerMovement.cs" />
     <Compile Include="Patches\ReadWrite.cs" />
     <Compile Include="Patches\Provider.cs" />
     <Compile Include="Patches\SteamCaller.cs" />
