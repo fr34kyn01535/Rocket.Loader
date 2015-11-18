@@ -20,9 +20,12 @@ namespace Rocket.RocketLoader
 
     public class Patch
     {
-        public Patch(){
+        public Patch(TypeDefinition type =null){
             Class patch = (Class)System.Attribute.GetCustomAttribute(this.GetType(), typeof(Class));
-            Type = RocketLoader.UnityAssemblyDefinition.MainModule.GetType(patch.ClassName);
+            if (type != null)
+                Type = type;
+            else
+                Type = RocketLoader.UnityAssemblyDefinition.MainModule.GetType(patch.ClassName);
         }
 
         public virtual void Apply() { 
