@@ -11,7 +11,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
         {
             MethodDefinition splash = GetInterfaceMethod("Splash");
             MethodDefinition getCommands = GetMethod("getCommands");
-            getCommands.Body.GetILProcessor().InsertBefore(getCommands.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(splash)));
+            getCommands.Body.GetILProcessor().InsertBefore(getCommands.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(splash)));
         }
     }
 }

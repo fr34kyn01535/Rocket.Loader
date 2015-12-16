@@ -19,7 +19,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
             MethodDefinition receiveInstruction = GetInterfaceMethod("RegisterRocketEffect");
             MethodDefinition receive = Type.Methods.AsEnumerable().Where(m => m.Name == ".ctor").FirstOrDefault();
             int i = receive.Body.Instructions.Count - 3;
-            receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(receiveInstruction)));
+            receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(receiveInstruction)));
             receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Ldarg_3));
             receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Ldarg_2));
             receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Ldarg_1));

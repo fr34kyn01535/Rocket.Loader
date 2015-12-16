@@ -19,7 +19,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
             if (process != null)
             {
                 process.Body.Instructions[4] = Instruction.Create(OpCodes.Ldstr, "/");
-                process.Body.Instructions[8] = Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(checkPermissions));
+                process.Body.Instructions[8] = Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(checkPermissions));
                 process.Body.GetILProcessor().InsertBefore(process.Body.Instructions[8], Instruction.Create(OpCodes.Ldarg_1));
             }
 

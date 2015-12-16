@@ -20,7 +20,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
 
             MethodDefinition externalLog = GetInterfaceMethod("ExternalLog");
 
-            log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(externalLog)));
+            log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(externalLog)));
             log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_1));
             log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_0));
 #endif

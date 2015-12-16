@@ -34,7 +34,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
             int i = 3;
 
             check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[i], Instruction.Create(OpCodes.Ldarg_0));
-            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[i+1], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(checkValid)));
+            check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[i+1], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(checkValid)));
             check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[i+2], Instruction.Create(OpCodes.Ret));
             check.Body.GetILProcessor().InsertBefore(check.Body.Instructions[i+2], Instruction.Create(OpCodes.Brtrue_S, check.Body.Instructions[i+3]));
         }

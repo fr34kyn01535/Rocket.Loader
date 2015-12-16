@@ -13,7 +13,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
 
            MethodDefinition start = GetMethod("Start"); 
             MethodDefinition Instantiate = GetInterfaceMethod("InstantiateUI"); 
-            start.Body.GetILProcessor().InsertBefore(start.Body.Instructions[0],Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.Import(Instantiate)));
+            start.Body.GetILProcessor().InsertBefore(start.Body.Instructions[0],Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(Instantiate)));
         }
     }
 }

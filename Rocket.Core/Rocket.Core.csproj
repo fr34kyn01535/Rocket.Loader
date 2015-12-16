@@ -78,6 +78,7 @@
     <Compile Include="Logging\AsyncLoggerQueue.cs" />
     <Compile Include="Logging\ELogType.cs" />
     <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Steam\Profile.cs" />
     <Compile Include="Utils\AutomaticShutdownWatchdog.cs" />
     <Compile Include="Utils\RocketDispatcher.cs" />
     <Compile Include="Utils\RocketHelper.cs" />
@@ -115,4 +116,11 @@ $(SolutionDir)dev\pdb2mdb.exe $(TargetPath)
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
+    </GetAssemblyIdentity>
+    <Exec WorkingDirectory="$(TargetDir)" Command="$(SolutionDir)nuget\nuget.exe pack $(ProjectName).nuspec -Version %(AssemblyVersion.Version) -OutputDirectory $(TargetDir)" />
+    <Message Text="$(SolutionDir)nuget\nuget.exe pack $(ProjectName).nuspec -Version %(AssemblyVersion.Version) -OutputDirectory $(TargetDir)" Importance="high" />
+  </Target>
 </Project>
