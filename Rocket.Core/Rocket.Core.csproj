@@ -120,7 +120,7 @@ $(SolutionDir)dev\pdb2mdb.exe $(TargetPath)
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
     </GetAssemblyIdentity>
-    <Exec WorkingDirectory="$(TargetDir)" Command="$(SolutionDir)nuget\nuget.exe pack $(ProjectName).nuspec -Version %(AssemblyVersion.Version) -OutputDirectory $(TargetDir)" />
+    <Exec WorkingDirectory="$(TargetDir)" Command="$(TargetDir)..\..\..\nuget\nuget.exe pack $(ProjectName).nuspec -Version %(AssemblyVersion.Version) -OutputDirectory $(TargetDir)" />
     <Message Text="$(TargetDir)..\..\..\nuget\nuget.exe pack $(ProjectName).nuspec -Version %(AssemblyVersion.Version) -OutputDirectory $(TargetDir)" Importance="high" />
   </Target>
 </Project>
