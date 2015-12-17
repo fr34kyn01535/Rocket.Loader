@@ -37,8 +37,8 @@ namespace Rocket.Core.Steam
             public Uri Icon { get; set; }
             public Uri Logo { get; set; }
             public Uri LogoSmall { get; set; }
-            public double HoursPlayed { get; set; }
-            public double HoursOnRecord { get; set; }
+            public double? HoursPlayed { get; set; }
+            public double? HoursOnRecord { get; set; }
         }
 
         public class Group
@@ -64,41 +64,42 @@ namespace Rocket.Core.Steam
             Reload();
         }
 
+
         public void Reload()
         {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(new WebClient().DownloadString("http://steamcommunity.com/profiles/" + SteamID64 + "?xml=1"));
 
-            SteamID = doc["profile"]["steamID"]?.InnerText;
-            OnlineState = doc["profile"]["onlineState"]?.InnerText;
-            StateMessage = doc["profile"]["stateMessage"]?.InnerText;
-            PrivacyState = doc["profile"]["privacyState"]?.InnerText;
-            VisibilityState = doc["profile"]["visibilityState"] != null ? (ushort?)ushort.Parse(doc["profile"]["visibilityState"].InnerText) : null;
-            AvatarIcon = doc["profile"]["avatarIcon"] != null ? new Uri(doc["profile"]["avatarIcon"].InnerText) : null;
-            AvatarMedium = doc["profile"]["avatarMedium"] != null ? new Uri(doc["profile"]["avatarMedium"].InnerText) : null;
-            AvatarFull = doc["profile"]["avatarFull"] != null ? new Uri(doc["profile"]["avatarFull"].InnerText) : null;
-            IsVacBanned = doc["profile"]["vacBanned"] == null ? (bool?)(doc["profile"]["vacBanned"].InnerText == "1") : null;
-            TradeBanState = doc["profile"]["tradeBanState"]?.InnerText;
-            IsLimitedAccount = doc["profile"]["isLimitedAccount"] == null ? (bool?)(doc["profile"]["isLimitedAccount"].InnerText == "1") : null;
-            CustomURL = doc["profile"]["customURL"]?.InnerText;
-            MemberSince = doc["profile"]["memberSince"] != null ? (DateTime?)DateTime.Parse(doc["profile"]["memberSince"].InnerText.Replace("st", "").Replace("nd", "").Replace("rd", "").Replace("th", ""), new CultureInfo("en-US", false)): null;
-            HoursPlayedLastTwoWeeks = doc["profile"]["hoursPlayed2Wk"] != null ? (double?)double.Parse(doc["profile"]["hoursPlayed2Wk"].InnerText) : null;
-            Headline = doc["profile"]["headline"]?.InnerText;
-            Location = doc["profile"]["location"]?.InnerText;
-            RealName = doc["profile"]["realname"]?.InnerText;
-            Summary = doc["profile"]["summary"]?.InnerText;
+            SteamID = doc["profile"]["steamID"].ParseString();
+            OnlineState = doc["profile"]["onlineState"].ParseString();
+            StateMessage = doc["profile"]["stateMessage"].ParseString();
+            PrivacyState = doc["profile"]["privacyState"].ParseString();
+            VisibilityState = doc["profile"]["visibilityState"].ParseUInt16();
+            AvatarIcon = doc["profile"]["avatarIcon"].ParseUri();
+            AvatarMedium = doc["profile"]["avatarMedium"].ParseUri();
+            AvatarFull = doc["profile"]["avatarFull"].ParseUri();
+            IsVacBanned = doc["profile"]["vacBanned"].ParseBool();
+            TradeBanState = doc["profile"]["tradeBanState"].ParseString();
+            IsLimitedAccount = doc["profile"]["isLimitedAccount"].ParseBool();
+            CustomURL = doc["profile"]["customURL"].ParseString();
+            MemberSince = doc["profile"]["memberSince"].ParseDateTime(new CultureInfo("en-US", false));
+            HoursPlayedLastTwoWeeks = doc["profile"]["hoursPlayed2Wk"].ParseDouble();
+            Headline = doc["profile"]["headline"].ParseString();
+            Location = doc["profile"]["location"].ParseString();
+            RealName = doc["profile"]["realname"].ParseString();
+            Summary = doc["profile"]["summary"].ParseString();
 
             MostPlayedGames = new List<MostPlayedGame>();
             foreach (XmlElement mostPlayedGame in doc["profile"]["mostPlayedGames"].ChildNodes)
             {
                 MostPlayedGame newMostPlayedGame = new MostPlayedGame();
-                newMostPlayedGame.Name = mostPlayedGame["gameName"].InnerText;
-                newMostPlayedGame.Link = new Uri(mostPlayedGame["gameLink"].InnerText);
-                newMostPlayedGame.Icon = new Uri(mostPlayedGame["gameIcon"].InnerText);
-                newMostPlayedGame.Logo = new Uri(mostPlayedGame["gameLogo"].InnerText);
-                newMostPlayedGame.LogoSmall = new Uri(mostPlayedGame["gameLogoSmall"].InnerText);
-                newMostPlayedGame.HoursPlayed = double.Parse(mostPlayedGame["hoursPlayed"].InnerText);
-                newMostPlayedGame.HoursOnRecord = double.Parse(mostPlayedGame["hoursOnRecord"].InnerText);
+                newMostPlayedGame.Name = mostPlayedGame["gameName"].ParseString();
+                newMostPlayedGame.Link = mostPlayedGame["gameLink"].ParseUri();
+                newMostPlayedGame.Icon = mostPlayedGame["gameIcon"].ParseUri();
+                newMostPlayedGame.Logo = mostPlayedGame["gameLogo"].ParseUri();
+                newMostPlayedGame.LogoSmall = mostPlayedGame["gameLogoSmall"].ParseUri();
+                newMostPlayedGame.HoursPlayed = mostPlayedGame["hoursPlayed"].ParseDouble();
+                newMostPlayedGame.HoursOnRecord = mostPlayedGame["hoursOnRecord"].ParseDouble();
                 MostPlayedGames.Add(newMostPlayedGame);
             }
 
@@ -108,18 +109,110 @@ namespace Rocket.Core.Steam
                 Group newGroup = new Group();
                 newGroup.IsPrimary = group.Attributes["isPrimary"].InnerText == "1";
                 newGroup.SteamID64 = ulong.Parse(group["groupID64"].InnerText);
-                newGroup.Name = group["groupName"]?.InnerText;
-                newGroup.URL = group["groupURL"]?.InnerText;
-                newGroup.Headline = group["headline"]?.InnerText;
-                newGroup.Summary = group["summary"]?.InnerText;
-                newGroup.AvatarIcon = group["avatarIcon"] != null ? new Uri(group["avatarIcon"].InnerText) : null;
-                newGroup.AvatarMedium = group["avatarMedium"] != null ? new Uri(group["avatarMedium"].InnerText) : null;
-                newGroup.AvatarFull = group["avatarFull"] != null ? new Uri(group["avatarFull"].InnerText) : null;
-                newGroup.MemberCount = group["memberCount"] != null ? (uint?)uint.Parse(group["memberCount"].InnerText) : null;
-                newGroup.MembersInChat = group["membersInChat"] != null ? (uint?)uint.Parse(group["membersInChat"].InnerText) : null;
-                newGroup.MembersInGame = group["membersInGame"] != null ? (uint?)uint.Parse(group["membersInGame"].InnerText) : null;
-                newGroup.MembersOnline = group["membersOnline"] != null ? (uint?)uint.Parse(group["membersOnline"].InnerText) : null;
+                newGroup.Name = group["groupName"].ParseString();
+                newGroup.URL = group["groupURL"].ParseString();
+                newGroup.Headline = group["headline"].ParseString();
+                newGroup.Summary = group["summary"].ParseString();
+                newGroup.AvatarIcon = group["avatarIcon"].ParseUri();
+                newGroup.AvatarMedium = group["avatarMedium"].ParseUri();
+                newGroup.AvatarFull = group["avatarFull"].ParseUri();
+                newGroup.MemberCount = group["memberCount"].ParseUInt32();
+                newGroup.MembersInChat = group["membersInChat"].ParseUInt32();
+                newGroup.MembersInGame = group["membersInGame"].ParseUInt32();
+                newGroup.MembersOnline = group["membersOnline"].ParseUInt32();
                 Groups.Add(newGroup);
+            }
+        }
+    }
+    public static class XmlElementExtensions
+    {
+        public static string ParseString(this XmlElement element)
+        {
+            return element.InnerText;
+        }
+    
+       
+        public static DateTime? ParseDateTime(this XmlElement element, CultureInfo cultureInfo)
+        {
+            try
+            {
+                return element == null ? null : (DateTime?)DateTime.Parse(element.InnerText.Replace("st", "").Replace("nd", "").Replace("rd", "").Replace("th", ""), cultureInfo);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public static double? ParseDouble(this XmlElement element)
+        {
+            try
+            {
+                return element == null ? null : (double?)double.Parse(element.InnerText);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public static ushort? ParseUInt16(this XmlElement element)
+        {
+            try
+            {
+                return element == null ? null : (ushort?)ushort.Parse(element.InnerText);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public static uint? ParseUInt32(this XmlElement element)
+        {
+            try
+            {
+                return element == null ? null : (uint?)uint.Parse(element.InnerText);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public static ulong? ParseUInt64(this XmlElement element)
+        {
+            try
+            {
+                return element == null ? null : (ulong?)ulong.Parse(element.InnerText);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public static bool? ParseBool(this XmlElement element)
+        {
+            try
+            {
+                return element == null ? null : (bool?)(element.InnerText == "1");
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public static Uri ParseUri(this XmlElement element)
+        {
+            try
+            {
+                return element == null ? null : new Uri(element.InnerText);
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }
