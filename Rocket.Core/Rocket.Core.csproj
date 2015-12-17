@@ -122,7 +122,7 @@
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
     </GetAssemblyIdentity>
-    <Exec WorkingDirectory="$(TargetDir)" Command="$(TargetDir)..\..\..\nuget\nuget.exe pack Rocket.Core.nuspec -Version %(AssemblyVersion.Version) -OutputDirectory $(TargetDir)" />
-    <Message Text="$(TargetDir)..\..\..\nuget\nuget.exe pack Rocket.Core.nuspec -Version %(AssemblyVersion.Version) -OutputDirectory $(TargetDir)" Importance="high" />
+    <Exec WorkingDirectory="$(TargetDir)" Command="..\..\..\nuget\nuget.exe pack Rocket.Core.nuspec -Version %(AssemblyVersion.Version)" />
+    <Message Text="..\..\..\nuget\nuget.exe pack Rocket.Core.nuspec -Version %(AssemblyVersion.Version)" Importance="high" />
   </Target>
 </Project>
