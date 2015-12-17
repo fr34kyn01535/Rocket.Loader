@@ -104,10 +104,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)..\Rocket.Unturned\lib\
-if $(ConfigurationName) == Local (
-$(SolutionDir)dev\pdb2mdb.exe $(TargetPath)
-)</PostBuildEvent>
+    <PostBuildEvent>
+      copy $(TargetPath) $(SolutionDir)..\Rocket.Unturned\lib\
+      if $(ConfigurationName) == Local (
+      $(SolutionDir)dev\pdb2mdb.exe $(TargetPath)
+      )
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -120,7 +122,7 @@ $(SolutionDir)dev\pdb2mdb.exe $(TargetPath)
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
     </GetAssemblyIdentity>
-    <Exec WorkingDirectory="$(TargetDir)" Command="$(TargetDir)..\..\..\nuget\nuget.exe pack $(ProjectName).nuspec -Version %(AssemblyVersion.Version) -OutputDirectory $(TargetDir)" />
-    <Message Text="$(TargetDir)..\..\..\nuget\nuget.exe pack $(ProjectName).nuspec -Version %(AssemblyVersion.Version) -OutputDirectory $(TargetDir)" Importance="high" />
+    <Exec WorkingDirectory="$(TargetDir)" Command="$(TargetDir)..\..\..\nuget\nuget.exe pack Rocket.Core.nuspec -Version %(AssemblyVersion.Version) -OutputDirectory $(TargetDir)" />
+    <Message Text="$(TargetDir)..\..\..\nuget\nuget.exe pack Rocket.Core.nuspec -Version %(AssemblyVersion.Version) -OutputDirectory $(TargetDir)" Importance="high" />
   </Target>
 </Project>
