@@ -17,6 +17,8 @@ namespace Rocket.Core.Plugins
 
         internal override void LoadPlugin()
         {
+
+
             if (Core.R.Settings.Instance.WebConfigurations.Enabled)
             {
                 string url = string.Format(Environment.WebConfigurationTemplate, Core.R.Settings.Instance.WebConfigurations.Url, Name, R.Implementation.InstanceId);
@@ -24,7 +26,7 @@ namespace Rocket.Core.Plugins
             }
             else
             {
-                configuration = new XMLFileAsset<TConfiguration>(string.Format(Core.Environment.PluginConfigurationFileTemplate, Name,Name));
+                configuration = new XMLFileAsset<TConfiguration>(Directory + string.Format(Core.Environment.PluginConfigurationFileTemplate,Name));
                 base.LoadPlugin();
             }
         }
@@ -48,6 +50,12 @@ namespace Rocket.Core.Plugins
             {
                 return state;
             }
+        }
+
+        private string directory = null;
+        public string Directory
+        {
+            get { return directory; }
         }
 
         public string Name
@@ -84,7 +92,12 @@ namespace Rocket.Core.Plugins
         internal virtual void LoadPlugin()
         {
             Logger.Log("Loading plugin: " + Name);
-            translations = new XMLFileAsset<TranslationList>(String.Format(Environment.PluginTranslationFileTemplate,Name,R.Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, DefaultTranslations);
+
+            directory = String.Format(Core.Environment.PluginDirectory,name);
+            if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
+
+            translations = new XMLFileAsset<TranslationList>(directory + String.Format(Environment.PluginTranslationFileTemplate,Name,R.Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, DefaultTranslations);
+
             try
             {
                 Load();

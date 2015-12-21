@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Whitelist.cs" />
     <Compile Include="Debugger.cs" />
     <Compile Include="Extensions\IRocketPlayerExtension.cs" />
     <Compile Include="Extensions\MonoBehaviourExtension.cs" />
