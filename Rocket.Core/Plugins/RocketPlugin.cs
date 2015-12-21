@@ -52,8 +52,8 @@ namespace Rocket.Core.Plugins
             }
         }
 
-        private static string directory = null;
-        public static string Directory
+        private string directory = null;
+        public string Directory
         {
             get { return directory; }
         }
