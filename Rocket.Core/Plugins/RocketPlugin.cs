@@ -93,7 +93,7 @@ namespace Rocket.Core.Plugins
         {
             Logger.Log("Loading plugin: " + Name);
 
-            directory = String.Format(Core.Environment.PluginDirectory,name);
+            directory = String.Format(Core.Environment.PluginDirectory,Name);
             if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
 
             translations = new XMLFileAsset<TranslationList>(directory + String.Format(Environment.PluginTranslationFileTemplate,Name,R.Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, DefaultTranslations);
