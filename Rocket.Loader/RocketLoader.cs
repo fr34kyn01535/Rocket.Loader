@@ -1,4 +1,5 @@
 ﻿using Mono.Cecil;
+using Mono.Collections.Generic;
 using System;
 using System.IO;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace Rocket.RocketLoader
                     if (isPatched())
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Unturned is already patched");
+                        Console.WriteLine("Game is already patched");
 #if DEBUG
                         Console.ReadLine();
 #endif
@@ -80,8 +81,6 @@ namespace Rocket.RocketLoader
                         Environment.Exit(1);
                     }
                 }
-
-                UnityAssemblyDefinition.MainModule.Types.Add(new TypeDefinition("Rocket.RocketLoader", "Patched", new Mono.Cecil.TypeAttributes()));
                 UnityAssemblyDefinition.Write(unityAssemblyName);
             }
             catch (Exception ex)
@@ -92,12 +91,13 @@ namespace Rocket.RocketLoader
 #endif
                 Environment.Exit(1);
             }
+            Console.WriteLine("Done!");
         }
 
 
         private static bool isPatched()
         {
-            return RocketLoader.UnityAssemblyDefinition.MainModule.GetType("Rocket.RocketLoader", "Patched") != null;
+            return UnityAssemblyDefinition.MainModule.AssemblyReferences.Where(r => r.Name.StartsWith("Rocket.")).FirstOrDefault() != null;
         }
     }
 }

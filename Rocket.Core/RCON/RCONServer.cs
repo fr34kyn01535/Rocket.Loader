@@ -103,7 +103,7 @@ namespace Rocket.Core.RCON
                     }
                     if (command != "ia")
                         Logger.Log("Client has executed command \"" + command + "\"");
-                    R.Implementation.Execute(new ConsolePlayer(), command);
+                    R.Commands.Execute(new ConsolePlayer(), command);
                     command = "";
                 }
 

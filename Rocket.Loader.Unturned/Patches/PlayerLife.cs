@@ -15,7 +15,7 @@
             UnlockFieldByType("OxygenUpdated", "OnUpdateOxygen");
             UnlockFieldByType("BleedingUpdated", "OnUpdateBleeding");
             UnlockFieldByType("BrokenUpdated", "OnUpdateBroken");
-            UnlockFieldByType("FreezingUpdated", "OnUpdateFreezing");
+            UnlockFieldByType("TemperatureUpdated", "OnUpdateTemperature");
             UnlockFieldByType("Damaged", "OnDamaged");
             UnlockFieldByType("CSteamID", "CSteamID");
 

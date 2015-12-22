@@ -59,7 +59,7 @@ namespace Rocket.Core.Serialization
 
         [XmlElement("MaxFrames")]
         public int MaxFrames;
-
+        
         public void LoadDefaults()
         {
             RCON = new RemoteConsole();

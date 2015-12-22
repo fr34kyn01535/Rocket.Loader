@@ -6,6 +6,7 @@ using Rocket.Core.Extensions;
 using Rocket.Core.Logging;
 using System;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace Rocket.Core.Plugins
@@ -50,17 +51,21 @@ namespace Rocket.Core.Plugins
             }
         }
 
+        private Assembly assembly;
+        public Assembly Assembly { get { return assembly; } }
+
         private string directory = null;
         public string Directory
         {
             get { return directory; }
         }
 
+        private new string name;
         public string Name
         {
             get
             {
-                return GetType().Assembly.GetName().Name;
+                return name;
             }
         }
 
@@ -150,13 +155,17 @@ namespace Rocket.Core.Plugins
 
         private void OnEnable()
         {
+            assembly = GetType().Assembly;
+            name = Assembly.GetName().Name;
             directory = String.Format(Core.Environment.PluginDirectory, Name);
             if (!System.IO.Directory.Exists(directory)) System.IO.Directory.CreateDirectory(directory);
+            R.Commands.RegisterFromAssembly(Assembly);
             LoadPlugin();
         }
 
         private void OnDisable()
         {
+            R.Commands.RegisterFromAssembly(Assembly);
             UnloadPlugin();
         }
 

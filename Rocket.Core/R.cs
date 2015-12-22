@@ -11,6 +11,7 @@ using Rocket.Core.Serialization;
 using Rocket.API.Collections;
 using Rocket.Core.Extensions;
 using Rocket.Core.Logging;
+using Rocket.Core.Commands;
 
 namespace Rocket.Core
 {
@@ -26,6 +27,7 @@ namespace Rocket.Core
         public static XMLFileAsset<TranslationList> Translation = null;
         public static IRocketPermissionsProvider Permissions = null;
         public static RocketPluginManager Plugins = null;
+        public static RocketCommandManager Commands = null;
 
         private static readonly TranslationList defaultTranslations = new TranslationList(){
                 {"rocket_join_public","{0} connected to the server" },
@@ -60,6 +62,7 @@ namespace Rocket.Core
                 Translation = new XMLFileAsset<TranslationList>(String.Format(Environment.TranslationFile, Settings.Instance.LanguageCode), new Type[] { typeof(TranslationList), typeof(TranslationListEntry) }, defaultTranslations);
                 Permissions = gameObject.TryAddComponent<RocketPermissionsManager>();
                 Plugins = gameObject.TryAddComponent<RocketPluginManager>();
+                Commands = gameObject.TryAddComponent<RocketCommandManager>();
 
                 if (Settings.Instance.MaxFrames < 10 && Settings.Instance.MaxFrames != -1) Settings.Instance.MaxFrames = 10;
                 Application.targetFrameRate = Settings.Instance.MaxFrames;

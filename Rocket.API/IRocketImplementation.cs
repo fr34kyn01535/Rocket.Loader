@@ -12,7 +12,6 @@ namespace Rocket.API
         IRocketImplementationEvents ImplementationEvents { get; }
         void Shutdown();
         string InstanceId { get; }
-        void Execute(IRocketPlayer player, string command);
         void Reload();
     }
 }

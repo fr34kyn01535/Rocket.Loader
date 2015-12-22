@@ -58,7 +58,6 @@
     <Compile Include="Patches\Character.cs" />
     <Compile Include="Patches\ChatManager.cs" />
     <Compile Include="Patches\CommandWindow.cs" />
-    <Compile Include="Patches\Command.cs" />
     <Compile Include="Patches\Commander.cs" />
     <Compile Include="Patches\CommandLine.cs" />
     <Compile Include="Patches\InventorySearch.cs" />
