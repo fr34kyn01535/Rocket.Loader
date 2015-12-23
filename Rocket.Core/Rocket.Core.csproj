@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\RocketCommandAttribute.cs" />
     <Compile Include="Commands\RocketCommandManager.cs" />
     <Compile Include="Debugger.cs" />
     <Compile Include="Extensions\IRocketPlayerExtension.cs" />

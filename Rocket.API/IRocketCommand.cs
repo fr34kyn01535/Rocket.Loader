@@ -2,9 +2,11 @@
 
 namespace Rocket.API
 {
+    public enum AllowedCaller { Console, Player, Both }
+
     public interface IRocketCommand
     {
-        bool AllowFromConsole { get; }
+        AllowedCaller AllowedCaller { get; }
         string Name { get; }
         string Help { get; }
         string Syntax { get; }

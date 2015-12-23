@@ -26,6 +26,11 @@ namespace Rocket.Core.Plugins
             return Plugins;
         }
 
+        public IRocketPlugin GetPlugin(Assembly assembly)
+        {
+            return plugins.Select(g => g.GetComponent<IRocketPlugin>()).Where(p => p != null && p.GetType().Assembly == assembly).FirstOrDefault();
+        }
+
         private void Awake() {
             AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs args)
             {
@@ -45,6 +50,11 @@ namespace Rocket.Core.Plugins
         private void Start()
         {
             loadPlugins();
+        }
+
+        public Type GetMainTypeFromAssembly(Assembly assembly)
+        {
+            return RocketHelper.GetTypesFromInterface(assembly, "IRocketPlugin").FirstOrDefault();
         }
 
         private void loadPlugins()
