@@ -55,7 +55,7 @@ namespace Rocket.Core.Commands
             {
                 name = commandParts[0];
                 string[] parameters = commandParts.Skip(1).ToArray();
-
+                if (player == null) player = new ConsolePlayer();
                 IRocketCommand rocketCommand = GetCommand(name);
                 if (rocketCommand != null)
                 {
