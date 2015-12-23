@@ -33,7 +33,7 @@ namespace Rocket.Core.Commands
             return foundCommand;
         }
 
-        internal bool Register(IRocketCommand command)
+        public bool Register(IRocketCommand command)
         {
             Logger.Log("Registering " + command.GetType().FullName + " as " + command.Name);
             if (GetCommand(command) != null) return false;
@@ -41,7 +41,7 @@ namespace Rocket.Core.Commands
             return true;
         }
 
-        internal void Deregister(IRocketCommand command)
+        public void Deregister(IRocketCommand command)
         {
             Logger.Log("Deregister " + command.GetType().FullName + " as "  + command.Name);
             commands.Remove(command);
