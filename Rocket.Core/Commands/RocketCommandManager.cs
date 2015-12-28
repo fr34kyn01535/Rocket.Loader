@@ -107,8 +107,11 @@ namespace Rocket.Core.Commands
             List<Type> commands = RocketHelper.GetTypesFromInterface(assembly, "IRocketCommand");
             foreach (Type commandType in commands)
             {
-                IRocketCommand command = (IRocketCommand)Activator.CreateInstance(commandType);
-                Register(command);
+                if(commandType.GetConstructor(Type.EmptyTypes) != null)
+                {
+                    IRocketCommand command = (IRocketCommand)Activator.CreateInstance(commandType);
+                    Register(command);
+                }
             }
 
             Type plugin = R.Plugins.GetMainTypeFromAssembly(assembly);
