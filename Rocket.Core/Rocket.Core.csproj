@@ -81,6 +81,7 @@
     <Compile Include="Logging\ELogType.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Steam\Profile.cs" />
+    <Compile Include="Steam\Steam.cs" />
     <Compile Include="Utils\AutomaticShutdownWatchdog.cs" />
     <Compile Include="Utils\RocketDispatcher.cs" />
     <Compile Include="Utils\RocketHelper.cs" />
