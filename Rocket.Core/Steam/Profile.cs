@@ -81,46 +81,53 @@ namespace Rocket.Core.Steam
             IsVacBanned = doc["profile"]["vacBanned"].ParseBool();
             TradeBanState = doc["profile"]["tradeBanState"].ParseString();
             IsLimitedAccount = doc["profile"]["isLimitedAccount"].ParseBool();
-            CustomURL = doc["profile"]["customURL"].ParseString();
-            MemberSince = doc["profile"]["memberSince"].ParseDateTime(new CultureInfo("en-US", false));
-            HoursPlayedLastTwoWeeks = doc["profile"]["hoursPlayed2Wk"].ParseDouble();
-            Headline = doc["profile"]["headline"].ParseString();
-            Location = doc["profile"]["location"].ParseString();
-            RealName = doc["profile"]["realname"].ParseString();
-            Summary = doc["profile"]["summary"].ParseString();
 
-            MostPlayedGames = new List<MostPlayedGame>();
-            foreach (XmlElement mostPlayedGame in doc["profile"]["mostPlayedGames"].ChildNodes)
+            CustomURL = doc["profile"]["customURL"]?.ParseString();
+            MemberSince = doc["profile"]["memberSince"]?.ParseDateTime(new CultureInfo("en-US", false));
+            HoursPlayedLastTwoWeeks = doc["profile"]["hoursPlayed2Wk"]?.ParseDouble();
+            Headline = doc["profile"]["headline"]?.ParseString();
+            Location = doc["profile"]["location"]?.ParseString();
+            RealName = doc["profile"]["realname"]?.ParseString();
+            Summary = doc["profile"]["summary"]?.ParseString();
+
+            if (doc["profile"]["mostPlayedGames"] != null)
             {
-                MostPlayedGame newMostPlayedGame = new MostPlayedGame();
-                newMostPlayedGame.Name = mostPlayedGame["gameName"].ParseString();
-                newMostPlayedGame.Link = mostPlayedGame["gameLink"].ParseUri();
-                newMostPlayedGame.Icon = mostPlayedGame["gameIcon"].ParseUri();
-                newMostPlayedGame.Logo = mostPlayedGame["gameLogo"].ParseUri();
-                newMostPlayedGame.LogoSmall = mostPlayedGame["gameLogoSmall"].ParseUri();
-                newMostPlayedGame.HoursPlayed = mostPlayedGame["hoursPlayed"].ParseDouble();
-                newMostPlayedGame.HoursOnRecord = mostPlayedGame["hoursOnRecord"].ParseDouble();
-                MostPlayedGames.Add(newMostPlayedGame);
+                MostPlayedGames = new List<MostPlayedGame>();
+                foreach (XmlElement mostPlayedGame in doc["profile"]["mostPlayedGames"].ChildNodes)
+                {
+                    MostPlayedGame newMostPlayedGame = new MostPlayedGame();
+                    newMostPlayedGame.Name = mostPlayedGame["gameName"].ParseString();
+                    newMostPlayedGame.Link = mostPlayedGame["gameLink"].ParseUri();
+                    newMostPlayedGame.Icon = mostPlayedGame["gameIcon"].ParseUri();
+                    newMostPlayedGame.Logo = mostPlayedGame["gameLogo"].ParseUri();
+                    newMostPlayedGame.LogoSmall = mostPlayedGame["gameLogoSmall"].ParseUri();
+                    newMostPlayedGame.HoursPlayed = mostPlayedGame["hoursPlayed"].ParseDouble();
+                    newMostPlayedGame.HoursOnRecord = mostPlayedGame["hoursOnRecord"].ParseDouble();
+                    MostPlayedGames.Add(newMostPlayedGame);
+                }
             }
 
-            Groups = new List<Group>();
-            foreach (XmlElement group in doc["profile"]["groups"].ChildNodes)
+            if (doc["profile"]["groups"] != null)
             {
-                Group newGroup = new Group();
-                newGroup.IsPrimary = group.Attributes["isPrimary"].InnerText == "1";
-                newGroup.SteamID64 = ulong.Parse(group["groupID64"].InnerText);
-                newGroup.Name = group["groupName"].ParseString();
-                newGroup.URL = group["groupURL"].ParseString();
-                newGroup.Headline = group["headline"].ParseString();
-                newGroup.Summary = group["summary"].ParseString();
-                newGroup.AvatarIcon = group["avatarIcon"].ParseUri();
-                newGroup.AvatarMedium = group["avatarMedium"].ParseUri();
-                newGroup.AvatarFull = group["avatarFull"].ParseUri();
-                newGroup.MemberCount = group["memberCount"].ParseUInt32();
-                newGroup.MembersInChat = group["membersInChat"].ParseUInt32();
-                newGroup.MembersInGame = group["membersInGame"].ParseUInt32();
-                newGroup.MembersOnline = group["membersOnline"].ParseUInt32();
-                Groups.Add(newGroup);
+                Groups = new List<Group>();
+                foreach (XmlElement group in doc["profile"]["groups"].ChildNodes)
+                {
+                    Group newGroup = new Group();
+                    newGroup.IsPrimary = group.Attributes["isPrimary"].InnerText == "1";
+                    newGroup.SteamID64 = ulong.Parse(group["groupID64"].InnerText);
+                    newGroup.Name = group["groupName"].ParseString();
+                    newGroup.URL = group["groupURL"].ParseString();
+                    newGroup.Headline = group["headline"].ParseString();
+                    newGroup.Summary = group["summary"].ParseString();
+                    newGroup.AvatarIcon = group["avatarIcon"].ParseUri();
+                    newGroup.AvatarMedium = group["avatarMedium"].ParseUri();
+                    newGroup.AvatarFull = group["avatarFull"].ParseUri();
+                    newGroup.MemberCount = group["memberCount"].ParseUInt32();
+                    newGroup.MembersInChat = group["membersInChat"].ParseUInt32();
+                    newGroup.MembersInGame = group["membersInGame"].ParseUInt32();
+                    newGroup.MembersOnline = group["membersOnline"].ParseUInt32();
+                    Groups.Add(newGroup);
+                }
             }
         }
     }
@@ -130,8 +137,8 @@ namespace Rocket.Core.Steam
         {
             return element.InnerText;
         }
-    
-       
+
+
         public static DateTime? ParseDateTime(this XmlElement element, CultureInfo cultureInfo)
         {
             try
