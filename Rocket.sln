@@ -3,20 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Core", "Rocket.Core\Rocket.Core.csproj", "{7A9D652F-DC18-45FD-8964-DBAAD6384C3D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.API", "Rocket.API\Rocket.API.csproj", "{C362DF2F-1336-4932-AADC-4F2074FEDB64}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Loader", "Rocket.Loader\Rocket.Loader.csproj", "{67CD3888-82BF-4D69-AE86-A9026018765C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Loader.Unturned", "Rocket.Loader.Unturned\Rocket.Loader.Unturned.csproj", "{5FF8D3F2-F404-4154-83A8-698229515863}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{BF6C67CB-DA13-47BD-8E8D-E335DD457E01}"
-	ProjectSection(SolutionItems) = preProject
-		dev\Mono.Cecil.dll = dev\Mono.Cecil.dll
-		dev\Mono.CompilerServices.SymbolWriter.dll = dev\Mono.CompilerServices.SymbolWriter.dll
-		dev\pdb2mdb.exe = dev\pdb2mdb.exe
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Loader.Hurtworld", "Rocket.Loader.Hurtworld\Rocket.Loader.Hurtworld.csproj", "{9E2DDAF1-AE1A-49EE-9A82-F91BF9297047}"
 EndProject
