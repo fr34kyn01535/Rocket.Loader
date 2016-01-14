@@ -9,8 +9,8 @@ namespace Rocket.RocketLoader.Hurtworld.Patches
     {
         public override void Apply()
         {
-            MethodDefinition splash = GetInterfaceMethod("Splash");
-            MethodDefinition start = GetMethod("Start");
+            MethodDefinition splash = GetInterfaceMethod("Splash", "Hurtworld");
+            MethodDefinition start = GetMethod("InvalidateServerConfig");
             start.Body.GetILProcessor().InsertBefore(start.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(splash)));
         }
     }

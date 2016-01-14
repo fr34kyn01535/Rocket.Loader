@@ -49,9 +49,9 @@ namespace Rocket.RocketLoader
             }
         }
 
-        public MethodDefinition GetInterfaceMethod(string name)
+        public MethodDefinition GetInterfaceMethod(string name,string game = "Unturned")
         {
-            return RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.Interface").Methods.AsEnumerable().Where(m => m.Name == name).FirstOrDefault();
+            return RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket."+game+".Interface").Methods.AsEnumerable().Where(m => m.Name == name).FirstOrDefault();
         }
 
         public MethodDefinition GetMethod(string name)
