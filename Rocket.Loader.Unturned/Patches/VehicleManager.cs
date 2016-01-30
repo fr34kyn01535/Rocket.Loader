@@ -6,6 +6,7 @@
         public override void Apply()
         {
             UnlockFieldByType("List<InteractableVehicle>", "Vehicles");
+            UnlockFieldByType("VehicleManager", "Instance");
         }
     }
 }
