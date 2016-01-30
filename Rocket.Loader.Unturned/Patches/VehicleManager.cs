@@ -7,6 +7,7 @@
         {
             UnlockFieldByType("List<InteractableVehicle>", "Vehicles");
             UnlockFieldByType("VehicleManager", "Instance");
+            UnlockMethodByName("sendVehicle");
         }
     }
 }
