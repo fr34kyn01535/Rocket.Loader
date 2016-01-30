@@ -188,7 +188,7 @@ namespace Rocket.RocketLoader
         }
 		public void UnlockMethodByName(string nameToUnlock)
 		{
-			UnlockMethodByName (nameToUnlock);
+			UnlockMethodByName (nameToUnlock, nameToUnlock);
 		}
         /// <summary>
         /// Unlocks method that matches a specifiy name
