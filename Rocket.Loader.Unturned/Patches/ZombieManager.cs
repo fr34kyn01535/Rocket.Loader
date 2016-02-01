@@ -6,6 +6,7 @@
         public override void Apply()
         {
             UnlockFieldByType("ZombieRegion[]", "ZombieRegions");
+            UnlockFieldByType("ZombieManager", "Instance");
         }
     }
 }
