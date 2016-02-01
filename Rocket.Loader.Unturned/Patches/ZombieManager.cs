@@ -7,6 +7,9 @@
         {
             UnlockFieldByType("ZombieRegion[]", "ZombieRegions");
             UnlockFieldByType("ZombieManager", "Instance");
+            UnlockMethodByName("addZombie");
+            UnlockMethodByName("respawnZombies");
+            UnlockMethodByName("generateZombies");
         }
     }
 }
