@@ -30,7 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
-    <OutputPath>$(UNTURNED_HOME)\Unturned_Data\Managed\</OutputPath>
+    <OutputPath>C:\Users\fr34kyn01535\Desktop\Unturned\Unturned_Data\Managed\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
@@ -67,6 +67,7 @@
     <Compile Include="Patches\ItemAsset.cs" />
     <Compile Include="Patches\ItemJar.cs" />
     <Compile Include="Patches\Items.cs" />
+    <Compile Include="Patches\LevelManager.cs" />
     <Compile Include="Patches\LevelNodes.cs" />
     <Compile Include="Patches\LevelZombies.cs" />
     <Compile Include="Patches\LocationNode.cs" />
