@@ -23,6 +23,12 @@ namespace Rocket.RocketLoader.Unturned.Patches
             log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(externalLog)));
             log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_1));
             log.Body.GetILProcessor().InsertBefore(log.Body.Instructions[0], Instruction.Create(OpCodes.Ldarg_0));
+
+            MethodDefinition onInputText = Type.Methods.AsEnumerable().Where(m => m.Name == "onInputText" && m.Parameters.Count == 1).FirstOrDefault();
+            onInputText.Body.GetILProcessor().Replace(onInputText.Body.Instructions[2],Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(GetInterfaceMethod("Execute"))));
+
+
+
 #endif
         }
     }

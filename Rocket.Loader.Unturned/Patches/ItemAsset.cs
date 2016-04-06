@@ -13,7 +13,6 @@
             UnlockFieldByType("GameObject", "GameObject");
             UnlockFieldByType("AudioClip", "AudioClips");
             UnlockFieldByType("AnimationClip[]", "AnimationClips");
-            UnlockFieldByType("Blueprint[]", "Blueprints");
             UnlockFieldByType(typeof(byte), "SizeX");
             UnlockFieldByType(typeof(byte), "SizeY", 1);
             UnlockFieldByType(typeof(float), "SizeZ");
