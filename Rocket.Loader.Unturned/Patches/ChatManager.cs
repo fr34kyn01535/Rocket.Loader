@@ -18,8 +18,8 @@ namespace Rocket.RocketLoader.Unturned.Patches
             MethodDefinition process = GetMethod("process");
             if (process != null)
             {
-                process.Body.Instructions[12] = Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(checkPermissions));
-                process.Body.GetILProcessor().InsertBefore(process.Body.Instructions[12], Instruction.Create(OpCodes.Ldarg_1));
+                process.Body.Instructions[14] = Instruction.Create(OpCodes.Call, RocketLoader.UnityAssemblyDefinition.MainModule.ImportReference(checkPermissions));
+                process.Body.GetILProcessor().InsertBefore(process.Body.Instructions[14], Instruction.Create(OpCodes.Ldarg_1));
             }
 
             //MethodDefinition getChatColor = RocketLoader.APIAssemblyDefinition.MainModule.GetType("Rocket.Unturned.Permissions.RocketPermissions").Methods.AsEnumerable().Where(m => m.Name == "GetChatColor").FirstOrDefault();
