@@ -9,8 +9,6 @@ namespace Rocket.RocketLoader.Unturned.Patches
     {
         public override void Apply()
         {
-            UnlockFieldByType(typeof(string), "Version");
-
             UnlockFieldByType(typeof(ushort), "ServerPort");
 
             UnlockFieldByType(typeof(byte), "MaxPlayers");
