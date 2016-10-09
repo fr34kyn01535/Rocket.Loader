@@ -14,7 +14,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
             UnlockFieldByType("GameObject[]", "Splatter");
             UnlockFieldByType(typeof(byte), "Splatters");
             UnlockFieldByType(typeof(float), "Lifetime");
-
+/*
             //RECEIVE
             MethodDefinition receiveInstruction = GetInterfaceMethod("RegisterRocketEffect");
             MethodDefinition receive = Type.Methods.AsEnumerable().Where(m => m.Name == ".ctor").FirstOrDefault();
@@ -23,7 +23,7 @@ namespace Rocket.RocketLoader.Unturned.Patches
             receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Ldarg_3));
             receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Ldarg_2));
             receive.Body.GetILProcessor().InsertBefore(receive.Body.Instructions[i], Instruction.Create(OpCodes.Ldarg_1));
-
+*/
         }
     }
 }
